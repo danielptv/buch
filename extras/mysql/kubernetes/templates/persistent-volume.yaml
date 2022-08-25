@@ -1,0 +1,71 @@
+# Copyright (C) 2022 - present Juergen Zimmermann, Hochschule Karlsruhe
+#
+# This program is free software: you can redistribute it and/or modify
+# #it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-db-volume
+  labels:
+    app: mysql-db
+    app.kubernetes.io/name: mysql-db
+    app.kubernetes.io/instance: mysql-db
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+spec:
+  capacity:
+    storage: 2Gi
+  accessModes: [ReadWriteOnce]
+  storageClassName: manual
+  hostPath:
+    path: /run/desktop/mnt/host/c/Zimmermann/volumes/mysql/db
+    type: Directory
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-tmp-volume
+  labels:
+    app: mysql-tmp
+    app.kubernetes.io/name: mysql-tmp
+    app.kubernetes.io/instance: mysql-tmp
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+spec:
+  capacity:
+    storage: 128Ki
+  accessModes: [ReadWriteOnce]
+  storageClassName: manual
+  hostPath:
+    path: /run/desktop/mnt/host/c/Zimmermann/volumes/mysql/tmp
+    type: Directory
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-mysqld-volume
+  labels:
+    app: mysql-mysqld
+    app.kubernetes.io/name: mysql-mysqld
+    app.kubernetes.io/instance: mysql-mysqld
+    helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+spec:
+  capacity:
+    storage: 256Ki
+  accessModes: [ReadWriteOnce]
+  storageClassName: manual
+  hostPath:
+    path: /run/desktop/mnt/host/c/Zimmermann/volumes/mysql/mysqld
+    type: Directory

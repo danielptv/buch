@@ -1,0 +1,51 @@
+# Copyright (C) 2022 - present Juergen Zimmermann, Hochschule Karlsruhe
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+# kubectl apply -f network-policy.yaml
+
+# https://kubernetes.io/docs/concepts/services-networking/network-policies
+# https://hub.armosec.io/docs/c-0054
+# https://hub.armosec.io/docs/c-0049
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny
+  namespace: default
+spec:
+  podSelector:
+    # alle Pods
+    matchLabels: {}
+  # Keine weitere Spezifikation von Ingress und Egress, d.h. keine Erlaubnis fuer:
+  #   Ingress: Routing zu einem Service im Cluster
+  #   Egress: Routing von Pods zu irgendwelchen Instanzen ausserhalb des Clusters
+  # d.h. "deny all"
+  policyTypes: [Ingress, Egress]
+
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: acme-deny
+  namespace: acme
+spec:
+  podSelector:
+    # alle Pods
+    matchLabels: {}
+  policyTypes: [Ingress, Egress]
+  # Auskommentieren: jeder Ingress-Traffic ist erlaubt
+  #ingress:
+  #  - {}
