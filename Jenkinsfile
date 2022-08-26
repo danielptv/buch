@@ -92,7 +92,7 @@ pipeline {
                 sh 'echo $PATH'
                 sh 'pwd'
                 sh 'uname -a'
-                sh '/usr/bin/lsb_release -a'
+                //sh 'lsb_release -a'
                 sh 'cat /etc/os-release'
                 sh 'cat /etc/*version'
                 sh 'docker --version'
