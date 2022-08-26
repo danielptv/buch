@@ -156,7 +156,7 @@ Unterstützung für ESM ist notwendig in:
 Ein neuer Namespace, z.B. `acme`, wird durch folgendes Kommando zusammen
 mit einer _Network Policy_ für ein- und ausgehende Requests angelegt:
 
-```PowerShell
+```powershell
     cd extras\kubernetes\default
 
     kubectl create namespace acme
@@ -200,7 +200,7 @@ starten und später auch herunterfahren.
 > nicht als Superuser "root" läuft.
 > Übrigens ist das Emoji für das Ausrufezeichen von https://emojipedia.org.
 
-```PowerShell
+```powershell
     cd extras\postgres
     docker compose up
 
@@ -219,7 +219,7 @@ wird später auch als Service-Name für PostgreSQL in Kubernetes verwendet.
 > sich mit dem Docker-Container mit Namen `postgres` verbinden und im
 > Docker-Container das `bash`-Skript ausführen:
 
-```PowerShell
+```powershell
     docker compose exec postgres bash /scripts/create-db-buch.sh
 ```
 
@@ -254,7 +254,7 @@ gesetzt ist, dann wird das Profile `dev` verwendet, welches bei Helm zusätzlich
 die Datei `dev.yaml` verwendet. Bis das Port-Forwarding aktiviert ist, das in
 `skaffold.yaml` konfiguriert ist, muss man ein bisschen warten.
 
-```PowerShell
+```powershell
     cd extras\postgres\kubernete
     skaffold dev --no-prune=false --cache-artifacts=false
 
@@ -279,7 +279,7 @@ Dazu gibt es das PowerShell-Skript `delete-pvc.ps1` im Verzeichnis
 
 Statt _Skaffold_ kann man auch _helmfile_ mit manuellem Port-Forwarding verwenden:
 
-```PowerShell
+```powershell
     cd extras\postgres\kubernetes
     helmfile apply
     .\scripts\port-forward.ps1
@@ -301,7 +301,7 @@ mit _Docker Compose_ starten und später auch herunterfahren.
 > `create-db-buch.sql` aus dem Projektverzeichnis
 > `extras\mysql\scripts` nach `C:\Zimmermann\volumes\mysql\scripts` kopieren.
 
-```PowerShell
+```powershell
     cd extras\mysql
     docker compose up
 
@@ -320,7 +320,7 @@ Kubernetes verwendet.
 > Docker-Container mit Namen `mysql` verbinden und im Docker-Container das
 > `bash`-Skript ausführen:
 
-```PowerShell
+```powershell
     docker compose exec mysql bash /scripts/create-db-buch.sh
 ```
 
@@ -346,7 +346,7 @@ gesetzt ist, dann wird das Profile `dev` verwendet, welches bei Helm zusätzlich
 die Datei `dev.yaml` verwendet. Bis das Port-Forwarding aktiviert ist, das in
 `skaffold.yaml` konfiguriert ist, muss man ein bisschen warten.
 
-```PowerShell
+```powershell
     cd extras\mysql\kubernetes
     skaffold dev --no-prune=false --cache-artifacts=false
 ```
@@ -365,7 +365,7 @@ wurde. Dazu gibt es das PowerShell-Skript `delete-pvc.ps1` im Verzeichnis
 
 Statt _Skaffold_ kann man auch _helmfile_ mit manuellem Port-Forwarding verwenden:
 
-```PowerShell
+```powershell
     cd extras\mysql\kubernetes
     helmfile apply
     .\scripts\port-forward.ps1
@@ -559,14 +559,14 @@ Folgende Voraussetzungen müssen oder sollten erfüllt sein:
 
 Nun kann man die Tests folgendermaßen in einer Powershell aufrufen:
 
-```PowerShell
+```powershell
     npm t
 ```
 
 Bei der Fehlersuche ist es ratsam, nur eine einzelnen Testdatei aufzurufen,
 z.B.:
 
-```PowerShell
+```powershell
     npm exec jest --detectOpenHandles --errorOnDeprecated `
       --forceExit --runTestsByPath '__tests__\buch\buch-get.controller.test.ts'
 ```
@@ -589,7 +589,7 @@ TypeScript-Dateien in JavaScript übersetzt sind. Durch das npm-Skript `pack`
 wird das Docker-Image `docker.io/juergenzimmermann/buch:1.0.0` mit dem implizit
 übersetzten JavaScript-Code gebaut:
 
-```PowerShell
+```powershell
     # In der 2. PowerShell
     npm run pack
 ```
@@ -597,7 +597,7 @@ wird das Docker-Image `docker.io/juergenzimmermann/buch:1.0.0` mit dem implizit
 Wie das Docker-Image gebaut wurde, kann man anschließend mit folgendem Kommando
 inspizieren:
 
-```PowerShell
+```powershell
     pack inspect juergenzimmermann/buch:1.0.0
 ```
 
@@ -635,7 +635,7 @@ wieder aus Kubernetes entfernt werden:
 
 _ESLint_ wird durch folgendes npm-Skript ausgeführt:
 
-```PowerShell
+```powershell
     npm run eslint
 ```
 
@@ -644,7 +644,7 @@ _ESLint_ wird durch folgendes npm-Skript ausgeführt:
 Für eine statische Codeanalyse durch _SonarQube_ muss zunächst der
 SonarQube-Server mit _Docker Compose_ als Docker-Container gestartet werden:
 
-```PowerShell
+```powershell
     cd extras\sonarqube
     docker compose up
 ```
@@ -665,7 +665,7 @@ inspiziert werden.
 
 Abschließend wird der oben gestartete Server heruntergefahren.
 
-```PowerShell
+```powershell
     cd extras\sonarqube
     docker compose down
 ```
@@ -675,7 +675,7 @@ Abschließend wird der oben gestartete Server heruntergefahren.
 Mit `type-coverage` kann man ermitteln, wo im TypeScript-Code `any` verwendet
 wurde:
 
-```PowerShell
+```powershell
     npm run type-coverage
 ```
 
@@ -687,7 +687,7 @@ Zunächst muss man sich bei https://app.snyk.io/account registrieren und dort
 auch einen Token besorgen. Danach kann man sich folgendermaßen authentifizieren
 und das Projekt auf Sicherheitslücken überprüfen
 
-```PowerShell
+```powershell
     synk auth <MEIN_TOKEN>
     snyk test
 ```
@@ -725,22 +725,29 @@ notwendig.
 Die Dokumentation im Format HTML wird in einer Powershell folgendermaßen
 im Verzeichnis `extras\doc\html` erstellt:
 
-```PowerShell
+```powershell
     npm run asciidoc
 ```
 
 ## Continuous Integration mit Jenkins
 
-Jenkins wird nicht in Kubernetes, sondern direkt mit _Docker Compose V2_
+Jenkins wird nicht in Kubernetes, sondern direkt mit _Docker Compose_
 genutzt. Dadurch muss Jenkins nicht immer laufen und kann bei Bedarf gestartet
-und wieder heruntergefahren werden. Docker Compose V2 ist eine
-Neuimplementierung in Go statt in Python und ist selbst ein Plugin für Docker.
-Als Konfigurationsdatei wird `jenkins.yaml` verwendet.
+und wieder heruntergefahren werden. Dazu muss zunächst das Jenkins-Image um eine
+Docker-Installation ergänzt werden, wozu es das Dockerfile `jenkins.dockerfile`
+gibt, um ein solches Image zu erstellen:
 
-```PowerShell
+```powershell
+    docker build -t juergenzimmermann/jenkins-swe:1.0.0 . -f jenkins.dockerfile
+```
+
+Das neu gebaute Image `juergenzimmermann/jenkins-swe:1.0.0` wird in der
+Konfigurationsdatei wird `jenkins.yaml` für Docker Compose verwendet:
+
+```powershell
     docker compose -f jenkins.yaml up
     ...
-    # In einer 2. PowerShell
+    # In einer 2. PowerShell: Herunterfahren
     docker compose -f jenkins.yaml down
 ```
 
@@ -752,7 +759,7 @@ Jenkins-Image zugreifen. Der Benutzername ist `admin` und das Passwort
 
 ### Bash zur evtl. Fehlersuche im laufenden Jenkins-Container
 
-```PowerShell
+```powershell
     docker compose -f jenkins.yaml exec jenkins bash
 ```
 
@@ -1001,7 +1008,7 @@ Anwendung ggf. löschen.
 Um _pgadmin_ zur Administration von PostgreSQL als Add-on für Heroku zu nutzen,
 startet man einen lokalen Docker-Container mit dem Image für pgadmin:
 
-```PowerShell
+```powershell
     cd extras\postgres
     docker compose -f .\docker-compose.pgadmin.yaml up
 

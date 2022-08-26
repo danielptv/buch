@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Aufruf:   docker build -t juergenzimmermann/jenkins-swe:1.0.0 . -f Dockerfile.jenkins
+# Aufruf:   docker build -t juergenzimmermann/jenkins-swe:1.0.0 . -f jenkins.dockerfile
 #           docker sbom juergenzimmermann/jenkins-swe:1.0.0
 # https://www.jenkins.io/doc/book/installing/docker
 FROM jenkins/jenkins:2.346.3-lts-jdk17-preview
