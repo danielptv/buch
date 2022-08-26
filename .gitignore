@@ -11,6 +11,7 @@ build
 extras/doc/entwicklerhandbuch/html/*
 extras/doc/folien/*.html
 extras/doc/api/*
+extras/doc/popeye/*
 extras/kubernetes/README.md
 extras/postgres/kubernetes/README.md
 extras/mysql/kubernetes/README.md

@@ -24,7 +24,7 @@
 # https://docs.docker.com/compose/compose-file/compose-file-v3
 services:
   jenkins-certs:
-    image: 22.06.0-beta.0-dind
+    image: docker:22.06.0-beta.0-dind
     volumes:
       - type: bind
         source: C:/Zimmermann/volumes/jenkins/certs
@@ -47,7 +47,7 @@ services:
           cpus: '2'
           memory: 512M
   jenkins:
-    image: jenkinsci/blueocean:1.25.5
+    image: jenkins/jenkins:2.346.3-lts-jdk17-preview
     ports:
       - published: 9090
         target: 8080
