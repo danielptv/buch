@@ -94,7 +94,7 @@ pipeline {
                 sh 'uname -a'
                 //sh 'lsb_release -a'
                 sh 'cat /etc/os-release'
-                sh 'cat /etc/*version'
+                sh 'cat /etc/debian_version'
                 sh 'docker --version'
 
                 // sh 'apt-get install --yes sudo=1.8.27-1+deb10u3'
