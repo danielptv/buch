@@ -89,8 +89,13 @@ pipeline {
                 // https://packages.debian.org/buster/nodejs
                 sh 'cat /etc/passwd'
                 sh 'id'
-                // sh 'apt-get install --yes sudo=1.8.27-1+deb10u3'
+                sh 'uname -a'
+                sh 'lsb_release -a'
+                sh 'cat /etc/os-release'
+                sh 'cat /etc/*version'
+                sh 'docker --version'
 
+                // sh 'apt-get install --yes sudo=1.8.27-1+deb10u3'
                 // sh 'apt update'
                 // sh 'apt upgrade'
                 // sh 'apt install sudo'
@@ -103,16 +108,10 @@ pipeline {
 
                 // https://packages.debian.org/stable/python/python3
                 // https://packages.debian.org/bullseye/python3
-                sh 'apt-get install --yes python3=3.9.2-3'
-                // sh 'python --version'
-
-                // https://docs.docker.com/engine/install/debian/#install-from-a-package
-                // https://download.docker.com/linux/debian/dists/bullseye/pool/stable/amd64/docker-ce_20.10.9~3-0~debian-bullseye_amd64.deb
-                // https://packages.debian.org/bullseye/docker.io
-                // sh 'curl --silent --location https://download.docker.com/linux/debian/dists/bullseye/pool/stable/amd64/docker-ce_20.10.9~3-0~debian-bullseye_amd64.deb > /tmp/docker.deb; sudo dpkg -i /tmp/docker.deb'
-                // https://medium.com/@manav503/how-to-build-docker-images-inside-a-jenkins-container-d59944102f30
-                sh 'apt-get install --yes --no-install-recommends docker.io=20.10.5+dfsg1-1+deb11u1'
-                sh 'docker --version'
+                // https://computingforgeeks.com/how-to-install-python-on-debian-linux
+                // https://cloudcone.com/docs/article/how-to-install-python-3-10-on-debian-11
+                sh 'apt-get install --yes python3=3.9'
+                sh 'python3 --version'
 
                 script {
                     if (!fileExists("${env.WORKSPACE}/package.json")) {

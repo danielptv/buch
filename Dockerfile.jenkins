@@ -28,4 +28,8 @@ RUN echo "deb [arch=$(dpkg --print-architecture) \
   $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
 RUN apt-get update && apt-get install -y docker-ce-cli
 USER jenkins
-RUN jenkins-plugin-cli --plugins "blueocean:1.25.6 docker-workflow:1.29"
+# https://plugins.jenkins.io/blueocean
+# https://plugins.jenkins.io/docker-workflow
+# 521.v1a_a_dd2073b_2e
+RUN jenkins-plugin-cli --plugins "blueocean:1.25.6 docker-workflow:521.v1a_a_dd2073b_2e"
+#RUN jenkins-plugin-cli --plugins "blueocean:1.25.6 docker-workflow:1.29"
