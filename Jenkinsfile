@@ -87,10 +87,12 @@ pipeline {
                 // https://github.com/nodesource/distributions/blob/master/README.md#installation-instructions
                 // https://www.debian.org/distrib/packages
                 // https://packages.debian.org/buster/nodejs
-                sh 'cat /etc/passwd'
                 sh 'id'
+                sh 'cat /etc/passwd'
+                sh 'echo $PATH'
+                sh 'pwd'
                 sh 'uname -a'
-                sh 'lsb_release -a'
+                sh '/usr/bin/lsb_release -a'
                 sh 'cat /etc/os-release'
                 sh 'cat /etc/*version'
                 sh 'docker --version'
