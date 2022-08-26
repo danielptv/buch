@@ -62,6 +62,14 @@ pipeline {
         stage('Init') {
             // Step = einzelne Aufgabe
             steps {
+                // https://docs.docker.com/engine/install/debian/#install-from-a-package
+                // https://download.docker.com/linux/debian/dists/bullseye/pool/stable/amd64/docker-ce_20.10.9~3-0~debian-bullseye_amd64.deb
+                // https://packages.debian.org/bullseye/docker.io
+                // sh 'curl --silent --location https://download.docker.com/linux/debian/dists/bullseye/pool/stable/amd64/docker-ce_20.10.9~3-0~debian-bullseye_amd64.deb > /tmp/docker.deb; sudo dpkg -i /tmp/docker.deb'
+                // https://medium.com/@manav503/how-to-build-docker-images-inside-a-jenkins-container-d59944102f30
+                sh 'apt-get install --yes --no-install-recommends docker.io=20.10.5+dfsg1-1+deb11u1'
+                sh 'docker --version'
+
                 script {
                     if (!isUnix()) {
                         error 'Unix ist erforderlich'
@@ -111,8 +119,8 @@ pipeline {
                 // https://packages.debian.org/bullseye/docker.io
                 // sh 'curl --silent --location https://download.docker.com/linux/debian/dists/bullseye/pool/stable/amd64/docker-ce_20.10.9~3-0~debian-bullseye_amd64.deb > /tmp/docker.deb; sudo dpkg -i /tmp/docker.deb'
                 // https://medium.com/@manav503/how-to-build-docker-images-inside-a-jenkins-container-d59944102f30
-                sh 'apt-get install --yes --no-install-recommends docker.io=20.10.5+dfsg1-1+deb11u1'
-                sh 'docker --version'
+                // !!! sh 'apt-get install --yes --no-install-recommends docker.io=20.10.5+dfsg1-1+deb11u1'
+                // sh 'docker --version'
 
                 script {
                     if (!fileExists("${env.WORKSPACE}/package.json")) {
