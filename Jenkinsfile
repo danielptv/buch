@@ -98,7 +98,7 @@ pipeline {
                 sh 'curl --silent --fail --show-error --location https://deb.nodesource.com/setup_18.x | bash -; apt-get install --yes nodejs'
 
                 sh 'node --version'
-                sh 'npm i -g npm@8.12.1'
+                sh 'npm i -g npm@8.18.0'
                 sh 'npm --version'
 
                 // https://packages.debian.org/stable/python/python3
