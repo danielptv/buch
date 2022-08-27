@@ -27,7 +27,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Schlagwort } from '../../buch/entity/schlagwort.entity.js';
 import { buecher } from './testdaten.js';
-import { cloud } from '../cloud.js';
 import { configDir } from '../node.js';
 import { getLogger } from '../../logger/logger.js';
 import { readFileSync } from 'node:fs';
@@ -76,8 +75,7 @@ export class DbPopulateService implements OnApplicationBootstrap {
         );
         await this.#repo.query(`DROP SCHEMA IF EXISTS ${schema} CASCADE;`);
 
-        const filename =
-            cloud === 'heroku' ? 'create-table.heroku.sql' : 'create-table.sql';
+        const filename = 'create-table.sql';
         const createScript = resolve(
             configDir,
             'dev',

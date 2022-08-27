@@ -18,12 +18,6 @@
       "authUrl": "https://kubernetes.docker.internal/auth",
       "graphQlUrl": "https://kubernetes.docker.internal/graphql",
       "dbPopulateUrl": "https://kubernetes.docker.internal/dbPopulate"
-    },
-    "heroku": {
-      "restUrl": "https://protected-eyrie-38026.herokuapp.com",
-      "authUrl": "https://protected-eyrie-38026.herokuapp.com/auth",
-      "graphQlUrl": "https://protected-eyrie-38026.herokuapp.com/graphql",
-      "dbPopulateUrl": "https://protected-eyrie-38026.herokuapp.com:3000/dbPopulate"
     }
   }
 }

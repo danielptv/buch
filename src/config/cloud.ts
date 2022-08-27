@@ -17,43 +17,30 @@
 
 /**
  * Das Modul enthält die Information, ob die Anwendung überhaupt in einer Cloud
- * läuft, und ggf. ob es sich um _Heroku_ oder _OpenShift_ handelt.
+ * läuft, und ggf. ob es sich um _OpenShift_ handelt.
  * @packageDocumentation
  */
 
 import RE2 from 're2';
 import { hostname } from 'node:os';
-import process from 'node:process';
-
-/* eslint-disable n/no-process-env, @typescript-eslint/no-extra-parens */
-const isHeroku =
-    'HEROKU' in process.env ||
-    ('DYNO' in process.env && process.env.HOME === '/app');
-/* eslint-enable n/no-process-env, @typescript-eslint/no-extra-parens */
 
 /**
- * _Union Type_ für die beiden Cloud-Varianten _Heroku_ und _OpenShift_.
+ * _Union Type_ für Cloud-Varianten, z.B. _OpenShift_.
  */
-export type Cloud = 'heroku' | 'openshift';
+export type Cloud = 'openshift';
 
 const computername = hostname();
 
 /**
  * Information, ob die Anwendung überhaupt in einer Cloud läuft, und ggf. ob es
- * sich um _Heroku_ oder _OpenShift_ handelt.
- * Der Rechnername ist bei
- * - Heroku:    eine UUID
- * - OpenShift: <Projektname_aus_package.json>-\<Build-Nr>-\<random-alphanumeric-5stellig>
+ * sich um _OpenShift_ handelt. Der Rechnername ist bei OpenShift:
+ * <Projektname_aus_package.json>-\<Build-Nr>-\<random-alphanumeric-5stellig>
  */
 export let cloud: Cloud | undefined;
 
-if (isHeroku) {
-    cloud = 'heroku';
-} else {
-    const openshiftRegexp = new RE2('beispiel-\\d+-w{5}', 'u');
-    if (openshiftRegexp.test(computername)) {
-        cloud = 'openshift';
-    }
+const openshiftRegexp = new RE2('beispiel-\\d+-w{5}', 'u');
+if (openshiftRegexp.test(computername)) {
+    cloud = 'openshift';
 }
 
 console.info('cloud: %s', cloud);

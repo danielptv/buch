@@ -41,6 +41,5 @@ export const getBaseUri = (req: Request) => {
         }
     }
 
-    const schema = cloud === 'heroku' ? 'https' : protocol;
-    return `${schema}://${hostname}${port}${basePath}`;
+    return `${protocol}://${hostname}${port}${basePath}`;
 };

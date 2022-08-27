@@ -50,9 +50,7 @@
     "typedoc": "typedoc",
     "tsc": "tsc --pretty",
     "tsc:watch": "npm run tsc -- --watch",
-    "type-coverage": "type-coverage --ignore-files __tests__/**/*.ts --ignore-files dist/**/*.ts --detail --show-relative-path",
-    "heroku-postbuild-audit": "npm audit --omit dev && tsc --version && tsc && node scripts/copy-resources no-tls",
-    "heroku-postbuild": "node scripts/copy-resources no-tls && tsc --version && tsc"
+    "type-coverage": "type-coverage --ignore-files __tests__/**/*.ts --ignore-files dist/**/*.ts --detail --show-relative-path"
   },
   "keywords": [
     "Node",
@@ -107,7 +105,6 @@
     "graphql": "16.6.0",
     "helmet": "6.0.0",
     "jsonwebtoken": "8.5.1",
-    "minimist": "1.2.6",
     "mysql2": "2.3.3",
     "nodemailer": "6.7.8",
     "passport": "0.6.0",

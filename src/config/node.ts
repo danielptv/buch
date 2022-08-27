@@ -25,7 +25,6 @@ import { cloud } from './cloud.js';
 import { env } from './env.js';
 import { hostname } from 'node:os';
 import { k8sConfig } from './kubernetes.js';
-import process from 'node:process';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -39,16 +38,7 @@ if (portStr !== undefined) {
 }
 if (Number.isNaN(port)) {
     // PORT ist zwar gesetzt, aber keine Zahl
-    // https://devcenter.heroku.com/articles/runtime-principles#web-servers
-    if (cloud === undefined || cloud === 'openshift') {
-        port = 3000; // eslint-disable-line @typescript-eslint/no-magic-numbers
-    } else {
-        // Heroku
-        if (nodeConfigEnv.port === undefined) {
-            process.exit(0); // eslint-disable-line n/no-process-exit
-        }
-        port = Number.parseInt(nodeConfigEnv.port, 10);
-    }
+    port = 3000; // eslint-disable-line @typescript-eslint/no-magic-numbers
 }
 
 // https://nodejs.org/api/fs.html

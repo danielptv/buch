@@ -16,8 +16,7 @@
 # Aufruf:   docker build -t juergenzimmermann/jenkins-swe:1.0.0 . -f jenkins.dockerfile
 #           docker sbom juergenzimmermann/jenkins-swe:1.0.0
 # https://www.jenkins.io/doc/book/installing/docker
-FROM jenkins/jenkins:2.346.3-lts-jdk17-preview
-#FROM jenkins/jenkins:2.346.3-jdk11
+FROM jenkins/jenkins:2.346.3-2-lts-jdk17
 USER root
 RUN apt-get update && apt-get install -y lsb-release
 RUN curl -fsSLo /usr/share/keyrings/docker-archive-keyring.asc \
@@ -30,6 +29,4 @@ RUN apt-get update && apt-get install -y docker-ce-cli
 USER jenkins
 # https://plugins.jenkins.io/blueocean
 # https://plugins.jenkins.io/docker-workflow
-# 521.v1a_a_dd2073b_2e
 RUN jenkins-plugin-cli --plugins "blueocean:1.25.6 docker-workflow:521.v1a_a_dd2073b_2e"
-#RUN jenkins-plugin-cli --plugins "blueocean:1.25.6 docker-workflow:1.29"

@@ -16,15 +16,11 @@
  */
 import fs from 'node:fs';
 import fsExtra from 'fs-extra';
-import minimist from 'minimist';
 import path from 'node:path';
 
 const { copyFileSync, mkdirSync } = fs;
 const { copySync } = fsExtra;
 const { join } = path
-
-const argv = minimist(process.argv.slice(2));
-const noTls = argv._[0] === 'no-tls';
 
 // BEACHTE: "assets" innerhalb von nest-cli.json werden bei "--watch" NICHT beruecksichtigt
 // https://docs.nestjs.com/cli/monorepo#global-compiler-options
@@ -49,14 +45,6 @@ mkdirSync(postgresDist, { recursive: true });
 mkdirSync(mysqlDist, { recursive: true });
 copySync(postgresSrc, postgresDist);
 copySync(mysqlSrc, mysqlDist);
-
-if (!noTls) {
-    const tlsSrc = join(configSrc, 'tls');
-    const tlsDist = join(configDist, 'tls');
-    mkdirSync(tlsDist, { recursive: true });
-    // PEM-Dateien und Zertifikatdatei fuer TLS kopieren
-    copySync(tlsSrc, tlsDist);
-}
 
 // PEM-Dateien fuer JWT kopieren
 const jwtPemSrc = join(configSrc, 'jwt');

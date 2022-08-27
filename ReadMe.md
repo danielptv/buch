@@ -66,22 +66,6 @@
   - [Bash zur evtl. Fehlersuche im laufenden Jenkins-Container](#bash-zur-evtl-fehlersuche-im-laufenden-jenkins-container)
 - [Monitoring durch clinic](#monitoring-durch-clinic)
 - [Visual Studio Code](#visual-studio-code)
-- [Heroku](#heroku)
-  - [Heroku von Salesforce](#heroku-von-salesforce)
-  - [dyno, slug und buildpack](#dyno,-slug-und-buildpack)
-  - [Registrierung bei Heroku](#registrierung-bei-heroku)
-  - [Einmalig: Git-Repository erstellen](#einmalig:-git-repository-erstellen)
-  - [Einloggen und Token erstellen mit der Heroku CLI](#einloggen-und-token-erstellen-mit-der-heroku-cli)
-  - [Leere Anwendung für Heroku erstellen](#leere-anwendung-für-heroku-erstellen)
-  - [Add-on für PostgreSQL](#add-on-für-postgresql)
-  - [Umgebungsvariable für Heroku](#umgebungsvariable-für-heroku)
-  - [Deployment für Heroku](#deployment-für-heroku)
-  - [Status-Informationen zu Heroku](#status-informationen-zu-heroku)
-  - [Verfügbarkeit der eigenen Heroku-Anwendung](#verfügbarkeit-der-eigenen-heroku-anwendung)
-  - [Heroku-Console](#heroku-console)
-  - [Dashboard für die Verwaltung der eigenen Heroku-Anwendung(en)](#dashboard-für-die-verwaltung-der-eigenen-heroku-anwendungen)
-  - [pgadmin für PostgreSQL](#pgadmin-für-postgresql)
-  - [Sonstige Heroku-Kommandos](#sonstige-heroku-kommandos)
 - [Empfohlene Code-Konventionen](#empfohlene-code-konventionen)
 
 ---
@@ -148,7 +132,6 @@ Unterstützung für ESM ist notwendig in:
 - ts-node
 - ts-jest: versteht noch nicht die Datei-Endung `.mts` und beim Import `.mjs`
 - VS Code
-- Heroku mit Cloud Native Buildpacks
 - Node innerhalb von Jenkins
 
 ## Eigener Namespace in Kubernetes
@@ -404,12 +387,6 @@ _Port-Forwarding_ (s.o.) aktiviert sein. Dazu muss die Umgebungsvariable
 gesetzt sein. Durch die Umgebungsvariable `DB_POPULATE` wird festgelegt, ob die
 (Test-) DB `acme` neu geladen wird.
 
-Wenn man PostgreSQL mit _Heroku_ (s.u.) statt der lokalen Kubernetes- bzw.
-Docker-Installation benutzen möchte, muss man in der Datei `.env` die
-Konfigurationsdaten für Heroku eintragen und die jeweiligen Kommentare entfernen.
-Es ist empfehlenswert, zuerst das Beispiel mit einer lokalen
-DB-Installation zum Laufen zu bringen, um die Fehlerquellen zu reduzieren.
-
 ### OpenAPI
 
 Duch Decorators `@Api...()` kann man _OpenAPI_ (früher: Swagger) in den
@@ -492,10 +469,10 @@ der Request wird ausgeführt, wozu natürlich der Server erfolgreich gestartet
 sein sollte.
 
 Für den REST-Client benötigt man unterschiedliche Umgebungen (_Environment_) je
-nachdem, ob der Server lokal oder in einem (lokalen) Kubernetes-Cluster oder in
-der Heroku-Cloud läuft. Verschiedene Umgebungen können prinzipiell die gleichen
-Eigenschaften, aber mit verschiedenen Werten haben. Beispielsweise lautet die
-URL für die REST-Schnittstelle beim lokalen Server `https://localhost:3000/...`
+nachdem, ob der Server lokal oder in einem (lokalen) Kubernetes-Cluster läuft.
+Verschiedene Umgebungen können prinzipiell die gleichen Eigenschaften, aber mit
+verschiedenen Werten haben. Beispielsweise lautet die URL für die
+REST-Schnittstelle beim lokalen Server `https://localhost:3000/...`
 aber im Kubernetes-Cluster `http://localhost:3000/...`. Dazu kann man im
 Unterverzeichnis `.vscode` die Datei `settings.json` bearbeiten.
 
@@ -550,7 +527,7 @@ Desktop-Applikation _Postman_ nutzen: https://www.postman.com.
 
 Folgende Voraussetzungen müssen oder sollten erfüllt sein:
 
-- Der DB-Server (lokal oder bei Heroku) muss gestartet sein.
+- Der DB-Server muss gestartet sein.
 - Port-Forwarding muss für den DB-Server aktiviert sein, z.B. durch `skaffold dev`.
 - Der Appserver muss _nicht gestartet_ sein.
 - In `.env` kann man die Umgebungsvariable `LOG_DEFAULT` auf `true` setzen,
@@ -783,273 +760,6 @@ kostenfrei herunterladen.
 > - `<F1>`: Die Kommandopalette erscheint
 > - `<Strg><Shift>v`: Vorschau für MarkDown und AsciiDoctor
 > - `<Alt>d`: Vorschau für PlantUml
-
-## Heroku
-
-### Heroku von Salesforce
-
-_Heroku_ ist eine Cloud-Plattform und funktioniert als PaaS
-(= Plattform as a Service), so dass man eine Programmier- und Laufzeitumgebung
-in der Cloud hat: https://www.heroku.com/platform. Heroku wird seit 2007
-entwickelt und wurde 2010 vom CRM-Anbieter
-[Salesforce](https://www.salesforce.com/de/products/platform/products/heroku/)
-übernommen.
-
-Mit Heroku lassen sich Anwendungen für z.B. _Node_ oder _Java_ entwickeln.
-Als Datenbank kann man z.B. _PostgreSQL_ verwenden. Das Deployment erfolgt auf
-der Basis von _Git_ (s.u.).
-
-### dyno, slug und buildpack
-
-Heroku-Anwendungen laufen in mehreren leichtgewichtigen _Containern_, die
-_dyno_ heißen. Ein _Web dyno_ wird in der Datei `Procfile` mit dem Prozess-Typ
-_web_ deklariert. Nur Web dynos können HTTP-Requests empfangen und -Responses
-senden.
-
-Nachdem die eigene Anwendung gepackt und komprimiert ist, wird sie als _slug_
-bezeichnet. Ein _slug_ kann danach in einem _dyno_ ausgeführt werden.
-Die maximale Größe für ein _slug_ beträgt 500 MB.
-
-Mit Hilfe von einem _buildpack_ wird die eigene Anwendung zu einem _slug_
-transformiert. Dazu benötigt Heroku diverse Skripte, die von der jeweiligen
-Programmiersprache, z.B. JavaScript oder Java, abhängen. Mit diesen Skripten
-wird z.B. die Fremdsoftware (_dependencies_) geladen, die man innerhalb der
-eigenen Anwendung nutzt, und es wird ggf. der Compiler aufgerufen.
-
-Wenn es im Wurzelverzeichnis eine Datei `package.json` gibt, verwendet Heroku
-das _Node.js buildpack_ und ergänzt seine Umgebungsvariable `PATH` um die Pfade
-für `node`, `npm` und `node_modules/.bin`.
-
-### Registrierung bei Heroku
-
-Zu Beginn muss man sich bei https://signup.heroku.com registrieren, indem man
-das Formular ausfüllt, mit dem Button _CREATE FREE ACCOUNT_ abschickt und
-abschließend den Link in der Bestätigungsemail anklickt.
-
-### Einmalig: Git-Repository erstellen
-
-In VS Code sind folgende Einstellungen empfehlenswert, nachdem man das
-Beispielprojekt in VS Code geöffnet hat, indem man VS Code startet und über
-_Datei_ und den Unterpunkt _Ordner öffnen_ das Verzeichnis mit dem
-Beispielprojekt geöffnet hat. Jetzt kann man über _Datei_, den Unterpunkt
-_Einstellungen_ und nochmals _Einstellungen_ im Eingabefeld `Git` eingeben.
-Nun sieht man die Konfigurationsmöglichkeiten für Git und setzt die Haken bei
-`Git: Enable Smart Commit` und bei `Git: Suggest Smart Commit`.
-
-Jetzt klickt man auf das Icon _Quellcodeverwaltung_ am linken Rand und
-anschließend auf den Button `Repository initialisieren`.
-
-Man bleibt in der _Quellcodeverwaltung_ und sieht nun viele Dateien markiert mit
-`U` (ncommitted). Im Eingabefeld steht der Hinweis _Nachricht_, wo man z.B.
-`Initiale` Version eingibt und dann auf den Haken (Tooltipp: _Commit_) klickt.
-
-### Einloggen und Token erstellen mit der Heroku CLI
-
-Mit dem Tastaturkürzel `<F1>` öffnet man die Kommandopalette.
-Dort gibt man `heroku login` ein und über das nun geöffnete Powershell-Terminal
-wird der Webbrowser mit der Login-URL für Heroku gestartet, so dass man sich
-dort einloggen kann, wozu man die Emailadresse und das Passwort von der
-zuvor erfolgten Registrierung verwendet.
-
-Nach dem erfolgreichen Einloggen gibt es zur Verwaltung das Verzeichnis
-`C:\Users\<MEINE_KENNUNG>\AppData\Local\heroku`.
-
-### Leere Anwendung für Heroku erstellen
-
-Durch `<F1>` kann man in der Kommandopalette `heroku create` eingeben.
-Die Ausgabe im Powershell-Terminal sieht dann prinzipiell folgendermaßen aus:
-
-```text
-https://gener-iert-12345.herokuapp.com/ | https://git.heroku.com/gener-iert-12345-53594.git
-```
-
-Jetzt gibt es also eine generierte Domain für die eigene Anwendung, die künftig
-über z.B. https://gener-iert-12345.herokuapp.com/ erreichbar sein wird.
-
-Die ausgegebene URL nimmt man, um in _package.json_ innerhalb von `"scripts": {`
-die dortige URL `https://gener-iert-12345.herokuapp.com/` bei den Skripten
-`heroku-curl` und `heroku-open` zu überschreiben.
-
-### Add-on für PostgreSQL
-
-Der in Heroku laufende Server benötigt genauso wie der lokal laufende Server
-eine Datenbank. Solche zusätzliche Software wird bei Heroku als _Add-on_
-bezeichnet. Für Heroku gibt es z.B. _PostgreSQL_ als kostenloses Add-on.
-
-Zur eigenen Heroku-Anwendung fügt man ein Add-on hinzu, indem man den
-Karteireiter _Resources_ auswählt. Im Suchfeld unterhalb von _Add-ons_ gibt man
-den Wert `Heroku Postgres` ein. Im folgenden modalen Dialog "Plan name" wählt
-man den voreingestellten Wert "Hobby Dev - Free" aus und klickt den Button
-_Submit Order Form_ an. Nun kann man das installierte Add-On "Heroku Postgres"
-(mit den Werten _Attached as DATABASE_ und _Hobby Dev_) anklicken.
-
-Jetzt ist man bei einer neuen URL _https://data.heroku.com/datastores/..._,
-wählt den Menüpunkt _Settings_ aus und klickt den Button _View Credentials..._
-an. Dort sieht man nun die eigenen Werte für:
-
-- Host
-- Database
-- User
-- Password
-
-Diese Werte werden im nächsten Abschnitt bei den Umgebungsvariablen benötigt.
-**BEACHTE:** Heroku für von Zeit zu Zeit Wartungsmaßnahmen durch und generiert
-dabei diese Werte **NEU**.
-
-### Umgebungsvariable für Heroku
-
-Wenn man in VS Code die Erweiterungen _Heroku_ und _heroku-cli_ installiert hat,
-kann man mit der Kommandopalette durch `<F1>` das Kommando `heroku config:set`
-eingeben und anschließend Werte für Umgebungsvariable, wie z.B.
-`DB_HOST=?????.amazonaws.com`, wobei ????? gemäß der obigen Postgres-Konfiguration
-ersetzt werden müssen. Bei der Eingabe kann man im Powershell-Terminal die
-Interaktion mit Heroku verfolgen.
-
-Das wiederholt man dann noch für die Umgebungsvariable mit den passenden
-Werten für Benutzername und Passwort aus der Postgres-Konfiguration:
-
-- NODE_ENV=development
-- DB_HOST=?????.amazonaws.com
-- DB_USERNAME=?????
-- DB_PASSWORD=?????
-- DB_NAME=?????
-- DB_POPULATE=true
-- APOLLO_DEBUG=true
-- LOG_DIR=/tmp
-- LOG_LEVEL_CONSOLE=debug
-- LOG_PRETTY=true
-- USER_PASSWORD_ENCODED=$argon2i$v=19$m=4096,t=3,p=1$aaxA2v/9rRSPGkwYN+NQog$27Huii1XtD3iEd62fog+04G26LRPZMHoYCI6AGKTL8M
-
-Umgebungsvariable kann man auch mit dem Heroku Dashboard definieren, indem man
-bei der eigenen Heroku-Anwendung den Menüpunkt _Settings_ auswählt und danach
-den Button _Reveal Config Vars_ anklickt. Damit sollte man insbesondere die
-Umgebungsvariable `USER_PASSWORD_ENCODED` (s.o.) setzen, weil in deren String
-das Zeichen `$` enthalten ist.
-
-### Deployment für Heroku
-
-Für das erstmalige Deployment und nach künftigen Codeänderungen gibt man
-in der Kommandopalette (durch `<F1>`) das Kommando `git push heroku main`
-für den eigenen _main-Branch_ im Git-Repository ein. Falls man noch einen
-alten Heroku-Stack nutzt kann dieser aktualisiert werden, indem man in einer
-PowerShell das Kommando `heroku stack:set heroku-22 -a gener-iert-12345`
-aufruft, wobei `gener-iert-12345` durch den Heroku-Namen der eigenen
-Anwendung ersetzt wird.
-
-Dadurch wird in Heroku ein _slug_ erstellt: die Anwendung wird gepackt und
-komprimiert, so dass sie einschließend in einem _dyno_ (leichtgewichtiger
-Linux-Container) ablaufen kann. Im PowerShell-Terminal kann man dabei den Ablauf
-mitverfolgen.
-
-```mermaid
-stateDiagram
-  [*] --> Sources : git push heroku main
-  Sources --> Buildsystem
-  state Buildsystem {
-    [*] --> Buildpack
-    Buildpack --> Runtime
-    Runtime --> Dependencies
-    Dependencies --> slug
-  }
-  Buildsystem --> dyno
-```
-
-Nur die in Git versionierten Dateien werden für das Deployment verwendet,
-weshalb nur die TypeScript-Dateien zu Heroku hochgeladen werden, die dann dort
-zu lauffähigen JavaScript-Dateien übersetzt werden müssen. Dazu gibt es das
-npm-Skript `heroku-postbuild`, das innerhalb von Heroku aufgerufen wird und
-nicht manuell aufgerufen werden muss.
-
-Beim das Deployment werden die NPM-Packages aus dem Verzeichnis `node_modules`
-immer wieder benötigt. Deshalb nimmt Heroku defaultmäßig ein Caching von
-`node_modules` vor.
-
-Nach einem erfolgreichen Deployment sollte man (als Student/in) die
-Heroku-Anwendung durch das Kommando `heroku ps:scale web=1` so skalieren, dass
-sie nur _1_ Web dyno nutzt. Analog kann man durch `heroku ps:scale web=0` die
-eigene Anwendung deaktieren.
-
-### Status-Informationen zu Heroku
-
-Mit `heroku ps` kann man sich anzeigen lassen, wieviele freie "Dyno-Stunden"
-man im aktuellen Monat noch hat und wieviele bereits verbraucht sind.
-Persönliche Accounts verfügen monatlich über 550 freie "Dyno-Stunden":
-https://devcenter.heroku.com/articles/free-dyno-hours.
-
-### Verfügbarkeit der eigenen Heroku-Anwendung
-
-Nach dem Deployment ist die eigene Anwendung verfügbar und kann benutzt
-werden. Beispielsweise kann man in einer eigenen Powershell das Kommando
-`npm run heroku:invoke-webrequest` aufrufen. Dabei wird mit `Invoke-WebRequest`
-auf die URL `https://gener-iert-12345.herokuapp.com/000000000000000000000001`
-zugegriffen. Analog kann man `npm run heroku:curl` aufrufen, wobei `curl` statt
-`Invoke-WebRequest` verwendet wird.
-
-Alternativ kann man auch `npm run heroku:browser` aufrufen, dann wird der
-Response in einem Webbrowser angezeigt.
-
-### Heroku-Console
-
-Mit der Kommandopalette durch `<F1>` kann man
-`heroku logs --tail --app gener-iert-12345` eingeben und die Logging-Ausgaben
-auf der Heroku-Console mitverfolgen, ähnlich wie bei Linux mit `tail -f`.
-
-### Dashboard für die Verwaltung der eigenen Heroku-Anwendung(en)
-
-Unter https://dashboard.heroku.com kann man die eigene Anwendung verwalten.
-
-Wenn man dort die eigene Anwendung selektiert bzw. anklickt, kann man z.B. über
-den Karteireiter _Settings_ eine Anwendung vom Netz nehmen, indem man den
-_Maintenance Mode_ einschaltet (am Seitenende). Auch kann man dort die
-Anwendung ggf. löschen.
-
-### pgadmin für PostgreSQL
-
-Um _pgadmin_ zur Administration von PostgreSQL als Add-on für Heroku zu nutzen,
-startet man einen lokalen Docker-Container mit dem Image für pgadmin:
-
-```powershell
-    cd extras\postgres
-    docker compose -f .\docker-compose.pgadmin.yaml up
-
-    # Herunterfahren in einer 2. PowerShell:
-    docker compose -f .\docker-compose.pgadmin.yaml down
-```
-
-In einem Webbrowser ruft man nun die URL `http:localhost:8888` auf. Da pgadmin
-auf der Basis von Chromium implementiert ist, empfiehlt es sich, Chrome als
-Webbrowser zu verwenden.
-
-Beim Eintrag _Servers_ in der linken Auswahlleiste wählt man mit der rechten
-Maustaste den Menüpunkt _Register_ und dann den 1. Unterpunkt _Server..._.
-Im Konfigurationsfenster gibt man nun bei _General_ einen Namen für die neue
-Serverkonfiguration ein, z.B. `heroku`. Als nächstes wechselt man zum Menüpunkt
-_Connection_ und gibt dort die Werte aus der obigen Postgres-Konfiguration ein:
-
-- Host name: Der Rechnername (_Host_ bei Heroku)
-- Port: 5432
-- Maintenance database: Der Datenbank-Name (_Database_ bei Heroku)
-- Username: Der Benutzername (_User_ bei Heroku)
-- Password: Das Passwort (_Password_ bei Heroku)
-
-Damit man nicht bei jedem Zugriff das Passwort eingeben muss, empfiehlt es sich,
-_Save Password?_ zu aktivieren.
-
-Im Menüpunkt _SSL_ wählt man bei _SSL mode_ den Wert _Require_ aus. Abschließend
-gibt man im Menüpunkt _Advanced_ bei _DB restriction_ nochmals den Namen der
-Datenbank ein.
-
-### Sonstige Heroku-Kommandos
-
-Mit `heroku run ...` kann man ein einzelnes Kommando als REPL
-(= Read-eval-print loop) laufen lassen. So zeigt z.B. das Kommando
-`heroku run --app gener-iert-12345 node --version` an, welche Node-Version für
-die Heroku-Anwendung verwendet wird.
-Oder mit `heroku run --app gener-iert-12345 printenv` kann man sich die
-Umgebungsvariable für die Heroku-Anwendung anzeigen lassen.
-
-Mit `heroku addons` kann man sich zusätzlich installierte Add-ons anzeigen
-lassen.
 
 ## Empfohlene Code-Konventionen
 

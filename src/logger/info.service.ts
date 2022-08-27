@@ -23,7 +23,6 @@
 import { Injectable, type OnApplicationBootstrap } from '@nestjs/common';
 import { release, type, userInfo } from 'node:os';
 import RE2 from 're2';
-import { cloud } from '../config/cloud.js';
 import { getLogger } from './logger.js';
 import { hash } from 'argon2';
 import { k8sConfig } from '../config/kubernetes.js';
@@ -54,14 +53,9 @@ export class InfoService implements OnApplicationBootstrap {
         const { host, httpsOptions, nodeEnv, port, serviceHost, servicePort } =
             nodeConfig;
         const isK8s = k8sConfig.detected;
-        let plattform: string;
-        if (isK8s) {
-            plattform = `Kubernetes: BUCH_SERVICE_HOST=${serviceHost}, BUCH_SERVICE_PORT=${servicePort}`;
-        } else if (cloud === 'heroku') {
-            plattform = 'Heroku';
-        } else {
-            plattform = 'Kubernetes: N/A';
-        }
+        const plattform = isK8s
+            ? `Kubernetes: BUCH_SERVICE_HOST=${serviceHost}, BUCH_SERVICE_PORT=${servicePort}`
+            : 'Kubernetes: N/A';
 
         this.#logger.info(this.#stripIndent(this.#banner));
         // https://nodejs.org/api/process.html
@@ -73,12 +67,10 @@ export class InfoService implements OnApplicationBootstrap {
         const desPods = isK8s ? ' des Pods' : '';
         this.#logger.info('Rechnername%s: %s', desPods, host);
         this.#logger.info('Port%s: %s', desPods, port);
-        if (cloud !== 'heroku') {
-            this.#logger.info(
-                '%s',
-                httpsOptions === undefined ? 'HTTP (ohne TLS)' : 'HTTPS',
-            );
-        }
+        this.#logger.info(
+            '%s',
+            httpsOptions === undefined ? 'HTTP (ohne TLS)' : 'HTTPS',
+        );
         this.#logger.info('Betriebssystem: %s (%s)', type(), release());
         this.#logger.info('Username: %s', userInfo().username);
 

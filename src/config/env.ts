@@ -32,7 +32,7 @@ dotenv.config();
 const {
     // Umgebungsvariable `NODE_ENV` als gleichnamige Konstante, die i.a. einen der
     // folgenden Werte enthält:
-    // - `production`, z.B. in der _Heroku_-Cloud,
+    // - `production`, z.B. in einer Cloud,
     // - `development` oder
     // - `test`
     NODE_ENV,
