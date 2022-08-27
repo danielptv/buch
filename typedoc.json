@@ -6,6 +6,7 @@
     "intentionallyNotExported": [
       "Env",
       "GraphQlConfig",
+      "HealthConfig",
       "JwtConfig",
       "K8sConfig",
       "NodeConfig",
