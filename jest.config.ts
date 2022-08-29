@@ -33,6 +33,15 @@ const jestConfig: Config.InitialOptions = {
         '^(\\.{1,2}/.*)\\.m?js$': '$1', // eslint-disable-line @typescript-eslint/naming-convention
     },
 
+    transform: {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        '<rootDir>\\__tests__\\**\\*.test.ts': [
+            'ts-jest',
+            {
+                useESM: true,
+            },
+        ],
+    },
     // https://jestjs.io/docs/configuration
     globals: {
         // https://kulshekhar.github.io/ts-jest/docs/guides/esm-support
