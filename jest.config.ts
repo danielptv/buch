@@ -43,7 +43,7 @@ const jestConfig: Config.InitialOptions = {
         ],
     },
 
-    testMatch: ['<rootDir>/__tests__/**/*.test.*ts'],
+    testRegex: '__tests__\\.*\\\\.*test\\.m?ts$',
     collectCoverageFrom: ['<rootDir>/src/**/*.*ts'],
     // coverageDirectory: 'coverage',
     testEnvironment: 'node',
