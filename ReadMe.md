@@ -715,7 +715,7 @@ Docker-Installation ergänzt werden, wozu es das Dockerfile `jenkins.dockerfile`
 gibt, um ein solches Image zu erstellen:
 
 ```powershell
-    docker build -t juergenzimmermann/jenkins-swe:1.0.0 . -f jenkins.dockerfile
+    docker buildx build --tag juergenzimmermann/jenkins-swe:1.0.0 . --file jenkins.dockerfile
 ```
 
 Das neu gebaute Image `juergenzimmermann/jenkins-swe:1.0.0` wird in der
