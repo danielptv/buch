@@ -50,8 +50,8 @@ const jestConfig: Config.InitialOptions = {
 
     bail: true,
     coveragePathIgnorePatterns: [
-        '<rootDir>/src/main\\.ts$',
-        '.*\\.module\\.ts$',
+        '<rootDir>/src/main\\.m?ts$',
+        '.*\\.module\\.m?ts$',
         '<rootDir>/src/health/',
     ],
     coverageReporters: ['text-summary', 'html'],
