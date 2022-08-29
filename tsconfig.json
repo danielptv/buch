@@ -1,4 +1,14 @@
 {
+  // https://typestrong.org/ts-node/docs/configuration
+  // https://github.com/tsconfig/bases/#node-18--esm--strictest-tsconfigjson
+  // "extends": "@tsconfig/node18-strictest-esm/tsconfig.json",
+  // "extends": "@tsconfig/node18-strictest/tsconfig.json",
+  "extends": "@tsconfig/node18/tsconfig.json",
+  "ts-node": {
+      "esm": true,
+      // "transpileOnly": true,
+      // "files": true,
+  },
   "compilerOptions": {
     "module": "es2022",
     "moduleResolution": "node",

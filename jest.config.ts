@@ -23,21 +23,15 @@ import { type Config } from '@jest/types';
 
 const jestConfig: Config.InitialOptions = {
     // Verzeichnis in node_modules mit einer Datei jest-preset.js
+    // https://kulshekhar.github.io/ts-jest/docs/next/guides/esm-support
     // https://kulshekhar.github.io/ts-jest/docs/getting-started/presets
     // https://jestjs.io/docs/getting-started#via-ts-jest
-    // preset: 'ts-jest/presets/default-esm',
-    preset: 'ts-jest/presets/js-with-ts-esm',
+    preset: 'ts-jest/presets/default-esm',
 
-    extensionsToTreatAsEsm: ['.ts', '.json'],
+    extensionsToTreatAsEsm: ['.ts', '.mts', '.json'],
     moduleNameMapper: {
-        '^(\\.{1,2}/.*)\\.js$': '$1', // eslint-disable-line @typescript-eslint/naming-convention
+        '^(\\.{1,2}/.*)\\.m?js$': '$1', // eslint-disable-line @typescript-eslint/naming-convention
     },
-    // transform: {
-    //     '\\.(t|j)sx?$': '@swc/jest', // eslint-disable-line @typescript-eslint/naming-convention
-    // },
-    // transform: {
-    //     '\\.(t|j)s$': 'ts-jest', // eslint-disable-line @typescript-eslint/naming-convention
-    // },
 
     // https://jestjs.io/docs/configuration
     globals: {
