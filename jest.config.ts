@@ -35,24 +35,16 @@ const jestConfig: Config.InitialOptions = {
 
     transform: {
         // eslint-disable-next-line @typescript-eslint/naming-convention
-        '<rootDir>\\__tests__\\**\\*.test.ts': [
+        '\\.test\\.m?ts$': [
             'ts-jest',
             {
                 useESM: true,
             },
         ],
     },
-    // https://jestjs.io/docs/configuration
-    globals: {
-        // https://kulshekhar.github.io/ts-jest/docs/guides/esm-support
-        // eslint-disable-next-line @typescript-eslint/naming-convention
-        'ts-jest': {
-            useESM: true,
-        },
-    },
 
-    testMatch: ['<rootDir>/__tests__/**/*.test.ts'],
-    collectCoverageFrom: ['<rootDir>/src/**/*.ts'],
+    testMatch: ['<rootDir>/__tests__/**/*.test.*ts'],
+    collectCoverageFrom: ['<rootDir>/src/**/*.*ts'],
     // coverageDirectory: 'coverage',
     testEnvironment: 'node',
 
