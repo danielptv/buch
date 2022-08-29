@@ -56,7 +56,7 @@ const idVorhanden = [
 // T e s t s
 // -----------------------------------------------------------------------------
 // Test-Suite
-describe('GET /api/:id', () => {
+describe('GET /:id', () => {
     let client: AxiosInstance;
 
     // Testserver starten und dabei mit der DB verbinden
