@@ -16,7 +16,7 @@
 # Aufruf:   docker buildx build --tag juergenzimmermann/jenkins-swe:1.0.0 . --file jenkins.dockerfile
 #           docker sbom juergenzimmermann/jenkins-swe:1.0.0
 # https://www.jenkins.io/doc/book/installing/docker
-FROM jenkins/jenkins:2.346.3-2-lts-jdk17
+FROM jenkins/jenkins:2.366-jdk17
 USER root
 RUN apt-get update && apt-get install -y lsb-release
 RUN curl -fsSLo /usr/share/keyrings/docker-archive-keyring.asc \
