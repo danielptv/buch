@@ -33,27 +33,27 @@
 
 - [Download- und ggf. Upload-Geschwindigkeit](#download--und-ggf-upload-geschwindigkeit)
 - [Vorbereitung der Installation](#vorbereitung-der-installation)
-- [ESM = ES Modules](#esm-=-es-modules)
+- [ES Modules (ESM)](#es-modules-(esm))
 - [Eigener Namespace in Kubernetes](#eigener-namespace-in-kubernetes)
 - [Relationale Datenbanksysteme](#relationale-datenbanksysteme)
   - [PostgreSQL](#postgresql)
-  - [MySQL](#mySQL)
+  - [MySQL](#mysql)
 - [Administration des Kubernetes-Clusters](#administration-des-kubernetes-clusters)
 - [Node Best Practices](#node-best-practices)
 - [Lokaler Appserver (mit Nest)](#lokaler-appserver-mit-nest)
   - [Entwicklung in einer Powershell](#entwicklung-in-einer-powershell)
-  - [OpenAPI](#openAPI)
+  - [OpenAPI](#openapi)
   - [Apollo Sandbox](#apollo-sandbox)
-  - [REST Client für eine REST- und eine GraphQL-Schnittstelle](#rEST-client-für-eine-rEST--und-eine-graphQL-schnittstelle)
+  - [REST Client für eine REST- und eine GraphQL-Schnittstelle](#rest-client-für-eine-rest--und-eine-graphql-schnittstelle)
   - [Postman](#postman)
 - [Tests aufrufen](#tests-aufrufen)
 - [Deployment in Kubernetes](#deployment-in-kubernetes)
   - [DB-Server als Voraussetzung](#db-server-als-voraussetzung)
   - [Docker-Image durch Buildpacks](#docker-image-durch-buildpacks)
-  - [Deployment mit kubectl und Kustomize](#deployment-mit-kubectl-und-kustomize)
+  - [Deployment mit Helm](#deployment-mit-helm)
 - [Statische Codeanalyse](#statische-codeanalyse)
   - [ESLint](#eslint)
-  - [SonarQube](#sonarQube)
+  - [SonarQube](#sonarqube)
   - [type-coverage](#type-coverage)
 - [Sicherheitsanalyse durch snyk](#sicherheitsanalyse-durch-snyk)
 - [AsciiDoctor und PlantUML](#asciidoctor-und-plantuml)
@@ -95,7 +95,7 @@ Upload-Geschwindigkeit ermittelt werden.
 
 ---
 
-## ESM = ES Modules
+## ES Modules (ESM)
 
 ESM ist die gängige Abkürzung für _ES Modules_, so dass man `import` und
 `export` statt `require()` aus _CommonJS_ verwenden kann. Die Unterstützung von
@@ -144,8 +144,10 @@ mit einer _Network Policy_ für ein- und ausgehende Requests angelegt:
 
     kubectl create namespace acme
     kubectl label --overwrite ns acme `
-        pod-security.kubernetes.io/audit=baseline pod-security.kubernetes.io/audit-version=latest `
-        pod-security.kubernetes.io/warn=baseline pod-security.kubernetes.io/warn-version=latest
+        pod-security.kubernetes.io/audit=baseline `
+        pod-security.kubernetes.io/audit-version=latest `
+        pod-security.kubernetes.io/warn=baseline `
+        pod-security.kubernetes.io/warn-version=latest
 
     kubectl apply -f limit-range.yaml
     kubectl apply -f network-policy.yaml
