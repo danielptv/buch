@@ -13,8 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Aufruf:   docker buildx build --tag juergenzimmermann/jenkins-swe:1.0.0 . --file jenkins.dockerfile
-#           docker sbom juergenzimmermann/jenkins-swe:1.0.0
+# Aufruf:   docker buildx build --tag juergenzimmermann/jenkins:1.0.0 . --file jenkins.dockerfile
+#           docker sbom juergenzimmermann/jenkins:1.0.0
 # https://www.jenkins.io/doc/book/installing/docker
 FROM jenkins/jenkins:2.366-jdk17
 USER root
