@@ -1,8 +1,6 @@
 {
   // https://typestrong.org/ts-node/docs/configuration
-  // https://github.com/tsconfig/bases/#node-18--esm--strictest-tsconfigjson
-  // "extends": "@tsconfig/node18-strictest-esm/tsconfig.json",
-  // "extends": "@tsconfig/node18-strictest/tsconfig.json",
+  // https://github.com/tsconfig/bases/#node-18-tsconfigjson
   "extends": "@tsconfig/node18/tsconfig.json",
   "ts-node": {
       "esm": true,
@@ -13,7 +11,7 @@
     "module": "es2022",
     "moduleResolution": "node",
     // "moduleResolution": "node16", // ab TypeScript 4.7; oder nodenext
-    // "moduleDetection": "force", // default: "auto", ab TypeScript 4.7 https://github.com/microsoft/TypeScript/issues/47724
+    "moduleDetection": "force", // default: "auto", ab TypeScript 4.7 https://github.com/microsoft/TypeScript/issues/47724
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
@@ -25,9 +23,12 @@
     // "baseUrl": "./", // fuer z.B. webpack https://www.typescriptlang.org/tsconfig#baseUrl
     "incremental": true,
     "skipLibCheck": true, // wegen @nestjs/graphql und @nestjs/apollo
+    "allowUnreachableCode": false, // return bei then-else und try-catch
+    "allowUnusedLabels": false, // Labels muessen auch benutzt werden
     "esModuleInterop": true, // Kompatibilitaet zwischen CommonJS und ES Modulen
     "exactOptionalPropertyTypes": true, // bei optionalen Properties ggf. explizit undefined spezifizieren
     "forceConsistentCasingInFileNames": true, // Gross-/Kleinschreibung bei Dateinamen
+    // "importsNotUsedAsValues": "error", // Fehler bei nicht-benutzen Imports
     "noErrorTruncation": true,
     "noFallthroughCasesInSwitch": true, // "break" muss bei switch vorhanden sein
     "noImplicitAny": true, // Fehler bei implizitem Typ "any"
@@ -42,7 +43,7 @@
     // "noImplicitAny": true, // Fehler bei implizitem Typ "any", default bei strict
     // "noImplicitThis": true, // Fehler bei this mit implizitem "any", default bei strict
     // "useUnknownInCatchVariables": true // unknown als default-Typ bei catch-Klauseln, default bei strict
-    // "noPropertyAccessFromIndexSignature": true, // Fehler bei dot-Zugriff auf nicht-definierte Properties, z.B. response.data.statusCode
+    // "noPropertyAccessFromIndexSignature": true, // Fehler in __tests__ bei dot-Zugriff auf nicht-definierte Properties, z.B. response.data.statusCode
     // "allowJs": true, // wegen ts-jest und ESM
   }
 }

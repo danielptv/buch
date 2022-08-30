@@ -32,11 +32,10 @@ GPL v3
 - VS Code
 - ES2015+, TypeScript einschl. @types mit .d.ts sowie tsconfig.json
 - ts-node
-- RESTclient
-- (Build)pack(s) und Kustomize
+- RESTclient für REST und GraphQL
+- Buildpacks, Helm und helmfile
 - AsciiDoctor mit PlantUML
 - reveal.js
-- Heroku mit Procfile einschl. Atlas sowie VS Code mit `<F1>`
 - Jenkins
 - SonarQube
 
@@ -49,26 +48,23 @@ GPL v3
 - Request/Response mit Header/Body, Statuscodes, ETag und HATEOAS
 - GraphQL-Schema mit Types, Query und Mutation
 - Validierung mit JSON-Schema durch Ajv
-- Mongoose mit Active Record einschl. Model und Schema
+- TypeORM
 - .env, config/, reguläre Ausdrücke mit /.../ und new RE2(...)
-- index.ts als barrel
 - Error
 - Login mit POST und application/x-www-form-urlencoded
 - JWT mit RS256
 - Users als Array
-- RESTclient für REST und GraphQL
-- Tests mit Jest, Chai und Axios zzgl. Coverage durch Istanbul
-- (Sandbox)
+- Tests mit Jest und Axios zzgl. Coverage durch Istanbul
 
 ## Features von JavaScript und TypeScript
 
-| Feature                                       | ECMAScript |
-| --------------------------------------------- | ---------- |
+| Feature                                       | ECMAScript | TypeScript
+| --------------------------------------------- | ---------- |-----------
 | import, export, Modul                         | 2015       |
-| import type                                   | TS         |
-| Deklaration durch name: Typ                   | TS         |
+| import type                                   |            | X
+| Deklaration durch name: Typ                   |            | X
 | const und let (statt var)                     | 2015       |
-| Type Inference                                | TS         |
+| Type Inference                                |            | X
 | === und !==                                   | 1          |
 | Destructuring für JSON-Objekte und -Arrays    | 2015       |
 | Shorthand Properties                          | 2015       |
@@ -80,9 +76,11 @@ GPL v3
 | Trailing Comma                                | 2017       |
 | Arrow Function                                | 2015       |
 | Klasse                                        | 2015       |
-| # (private), protected, readonly              | TS         |
+| #                                             | 2020       |
+| private, protected                            |            | X
+| readonly                                      |            | X
 | for await                                     | 2018       |
 | Promise                                       | 2015       |
 | async und await                               | 2017       |
-| (Top-Level await)                             | 2020       |
+| Top-Level await                               | 2020       |
 | IIFE                                          | 1          |
