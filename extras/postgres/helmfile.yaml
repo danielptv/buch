@@ -14,12 +14,12 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 # Aufruf:   helmfile apply
-#               zzgl. Port-Forwarding
+#               zzgl. Port-Forwarding fuer pgadmin durch port-forward.ps1
 #           helmfile destroy
 
 releases:
-  - name: buch
+  - name: postgres
     namespace: acme
-    chart: .
-    values: [dev.yaml]
-    #wait: true
+    chart: helm
+    values: [helm/dev.yaml]
+    wait: true

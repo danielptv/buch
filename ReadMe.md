@@ -140,7 +140,7 @@ Ein neuer Namespace, z.B. `acme`, wird durch folgendes Kommando zusammen
 mit einer _Network Policy_ für ein- und ausgehende Requests angelegt:
 
 ```powershell
-    cd extras\kubernetes\default
+    cd extras\kubernetes\init
 
     kubectl create namespace acme
     kubectl label --overwrite ns acme `
@@ -174,7 +174,7 @@ starten und später auch herunterfahren.
 > "postgres:postgres" auskommentieren, damit die Initialisierung von PostgreSQL
 > als Linux-User `root` ausgeführt werden kann. Danach kopiert man die Skripte
 > `create-db-buch.sh` und `create-db-buch.sql` aus dem Verzeichnis
-> `extras\postgres\scripts` nach `C:\Zimmermann\volumes\postgres\scripts`.
+> `extras\postgres\sql` nach `C:\Zimmermann\volumes\postgres\sql`.
 > Für die Windows-Verzeichnisse `C:\Zimmermann\volumes\postgres\data`,
 > `C:\Zimmermann\volumes\postgres\tablespace` und
 > `C:\Zimmermann\volumes\postgres\tablespace\buch` muss außerdem Vollzugriff
@@ -205,7 +205,8 @@ wird später auch als Service-Name für PostgreSQL in Kubernetes verwendet.
 > Docker-Container das `bash`-Skript ausführen:
 
 ```powershell
-    docker compose exec postgres bash /scripts/create-db-buch.sh
+    docker compose exec postgres sh
+       psql --dbname=postgres --username=postgres --file=/sql/create-db-kunde.sql
 ```
 
 Außerdem kann _pgadmin_ zur Administration verwendet werden. pgadmin läuft
@@ -240,12 +241,10 @@ die Datei `dev.yaml` verwendet. Bis das Port-Forwarding aktiviert ist, das in
 `skaffold.yaml` konfiguriert ist, muss man ein bisschen warten.
 
 ```powershell
-    cd extras\postgres\kubernete
+    cd extras\postgres
     skaffold dev --no-prune=false --cache-artifacts=false
-
-    # Skaffold mit Helm statt Kustomize
-    cd extras\db\postgres\helm
-    skaffold dev --no-prune=false --cache-artifacts=false
+    <Strg>C
+    skaffold delete
 ```
 
 Dabei wurde auch das Administrationswerkzeug _pgadmin_ innerhalb von Kubernetes
@@ -258,20 +257,20 @@ Optionen muss man noch manuell die 4 _PersistentVolumeClaim_ mit den Namen
 `pgadmin-pgadmin-volume-pgadmin-0` und `pgadmin-pgadmin4-volume-pgadmin-0`
 löschen, die durch die _StatefulSet_ `postgres` und `pgadmin` erstellt wurden.
 Dazu gibt es das PowerShell-Skript `delete-pvc.ps1` im Verzeichnis
-`extras\postgres\kubernetes\scripts`.
+`extras\postgres`.
 
 #### helmfile für PostgreSQL und pgadmin
 
 Statt _Skaffold_ kann man auch _helmfile_ mit manuellem Port-Forwarding verwenden:
 
 ```powershell
-    cd extras\postgres\kubernetes
+    cd extras\postgres
     helmfile apply
-    .\scripts\port-forward.ps1
+    .\port-forward.ps1
 
     # Deinstallieren
     helmfile destroy
-    .\scripts\delete-pvc.ps1
+    .\delete-pvc.ps1
 ```
 
 ### MySQL
@@ -284,7 +283,7 @@ mit _Docker Compose_ starten und später auch herunterfahren.
 
 > ❗ Vor dem 1. Start von MySQL muss man die Skripte `create-db-buch.sh` und
 > `create-db-buch.sql` aus dem Projektverzeichnis
-> `extras\mysql\scripts` nach `C:\Zimmermann\volumes\mysql\scripts` kopieren.
+> `extras\mysql\sql` nach `C:\Zimmermann\volumes\mysql\sql` kopieren.
 
 ```powershell
     cd extras\mysql
@@ -306,7 +305,8 @@ Kubernetes verwendet.
 > `bash`-Skript ausführen:
 
 ```powershell
-    docker compose exec mysql bash /scripts/create-db-buch.sh
+    docker compose exec mysql sh
+        mysql --user=root --password=p < /sql/create-db-kunde.sql
 ```
 
 Jetzt läuft der DB-Server. Außerdem kann _phpMyAdmin_ zur Administration
@@ -332,7 +332,7 @@ die Datei `dev.yaml` verwendet. Bis das Port-Forwarding aktiviert ist, das in
 `skaffold.yaml` konfiguriert ist, muss man ein bisschen warten.
 
 ```powershell
-    cd extras\mysql\kubernetes
+    cd extras\mysql
     skaffold dev --no-prune=false --cache-artifacts=false
 ```
 
@@ -344,20 +344,20 @@ Mit `<Strg>C` kann das Deployment wieder zurückgerollt werden. Ohne die beiden
 Optionen muss man noch manuell das _PersistentVolumeClaim_ mit den Namen
 `mysql-db-volume-mysql-0` löschen, das durch das _StatefulSet_ `mysql` erstellt
 wurde. Dazu gibt es das PowerShell-Skript `delete-pvc.ps1` im Verzeichnis
-`extras\mysql\kubernetes\scripts`.
+`extras\mysql`.
 
 #### helmfile für MySQL und phpMyAdmin
 
 Statt _Skaffold_ kann man auch _helmfile_ mit manuellem Port-Forwarding verwenden:
 
 ```powershell
-    cd extras\mysql\kubernetes
+    cd extras\mysql
     helmfile apply
-    .\scripts\port-forward.ps1
+    .\port-forward.ps1
 
     # Deinstallieren
     helmfile destroy
-    .\scripts\delete-pvc.ps1
+    .\delete-pvc.ps1
 ```
 
 ## Administration des Kubernetes-Clusters
@@ -582,12 +582,12 @@ inspizieren:
 
 ### Deployment mit Helm
 
-Im Verzeichnis `extras\kubernetes` ist ein Helm-Chart für die Entwicklung des
+Im Verzeichnis `extras\helm` ist ein Helm-Chart für die Entwicklung des
 Appservers. Wenn das Docker-Image erstellt ist (s.o.), kann die Installation in
 Kubernetes durchgeführt werden mit
 
-- `helm install buch . -f values.yaml -f dev.yaml` in `extras\kubernetes`
-- `helmfile apply` mittels `helmfile.yaml` in `extras\kubernetes`
+- `helm install buch . -f values.yaml -f dev.yaml` in `extras\helm`
+- `helmfile apply` mittels `helmfile.yaml` im Wurzelverzeichnis
 - `skaffold dev` mittels `skaffold.yaml` im Wurzelverzeichnis
 
 Mit _Lens_ oder _Octant_ kann man anschließend die Installation inspizieren.
@@ -595,16 +595,16 @@ Dabei wird die Logdatei im internen Verzeichnis `/var/log/node` angelegt,
 welches durch _Mounting_ dem Windows-Verzeichnis `C:\Zimmermann\volumes\buch`
 entspricht und mit _Schreibberechtigung_ existieren muss.
 
-Außerdem kann man in `extras\kubernetes` eine Datei `README.md` generieren, die
+Außerdem kann man in `extras\helm` eine Datei `README.md` generieren, die
 die Default-Konfigurationswerte für die Helm-basierte Installation enthält.
-Dazu ruft man in `extras\kubernetes` das Kommando `helm-docs` auf.
+Dazu ruft man in `extras\helm` das Kommando `helm-docs` auf.
 
 Die Installation kann entsprechend der oben gewählten Installationsvariante
 wieder aus Kubernetes entfernt werden:
 
-- `helm uninstall buch` in `extras\kubernetes`
-- `helmfile destroy` in `extras\kubernetes`
-- `<Strg>C` bei `skaffold dev`
+- `helm uninstall buch` in `extras\helm`
+- `helmfile destroy` im Wurzelverzeichnis
+- `skaffold delete` bei `skaffold dev`
 
 ---
 

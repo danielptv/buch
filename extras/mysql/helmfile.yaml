@@ -20,6 +20,6 @@
 releases:
   - name: mysql
     namespace: acme
-    chart: .
-    values: [dev.yaml]
+    chart: helm
+    values: [helm/dev.yaml]
     wait: true

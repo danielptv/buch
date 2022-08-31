@@ -15,8 +15,9 @@
 
 # Aufruf:   i.a. bereits eingestellt:   $env:SKAFFOLD_PROFILE = 'dev'
 #           skaffold dev
+#           skaffold delete
 
-apiVersion: skaffold/v2beta29
+apiVersion: skaffold/v3alpha1
 kind: Config
 metadata:
   name: mysql
@@ -24,8 +25,8 @@ deploy:
   helm:
     releases:
       - name: mysql
-        chartPath: .
-        valuesFiles: [values.yaml]
+        chartPath: helm
+        valuesFiles: [helm/values.yaml]
         namespace: acme
 profiles:
   - name: dev
@@ -35,15 +36,15 @@ profiles:
       helm:
         releases:
           - name: mysql
-            chartPath: .
-            valuesFiles: [values.yaml, dev.yaml]
+            chartPath: helm
+            valuesFiles: [helm/values.yaml, helm/dev.yaml]
             namespace: acme
     portForward:
       - resourceType: service
         resourceName: mysql
-        port: mysql-service
+        port: mysql-svc
         localPort: 3306
       - resourceType: service
         resourceName: phpmyadmin
-        port: phpmyadmin-service
+        port: phpmyadmin-svc
         localPort: 8889

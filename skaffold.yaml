@@ -16,10 +16,11 @@
 # Aufruf:   i.a. bereits eingestellt:   $env:SKAFFOLD_PROFILE = 'dev'
 #                                       $env:TAG = '1.0.0'
 #           skaffold dev
+#           skaffold delete
 
 # https://skaffold.dev/docs/references/yaml
 
-apiVersion: skaffold/v2beta29
+apiVersion: skaffold/v3alpha1
 kind: Config
 metadata:
   name: buch
@@ -42,10 +43,8 @@ deploy:
   helm:
     releases:
       - name: buch
-        chartPath: extras/kubernetes
-        valuesFiles: [extras/kubernetes/values.yaml]
-        #artifactOverrides:
-        #  image: juergenzimmermann/buch
+        chartPath: extras/helm
+        valuesFiles: [extras/helm/values.yaml]
         namespace: acme
 # https://skaffold.dev/docs/environment/profiles
 profiles:
@@ -56,10 +55,8 @@ profiles:
       helm:
         releases:
           - name: buch
-            chartPath: extras/kubernetes
-            valuesFiles: [extras/kubernetes/values.yaml, extras/kubernetes/dev.yaml]
-            #artifactOverrides:
-            #  image: juergenzimmermann/buch
+            chartPath: extras/helm
+            valuesFiles: [extras/helm/values.yaml, extras/helm/dev.yaml]
             namespace: acme
     # https://skaffold.dev/docs/pipeline-stages/port-forwarding
     portForward:

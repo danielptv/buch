@@ -45,8 +45,8 @@ services:
         source: C:/Zimmermann/volumes/postgres/tablespace
         target: /var/lib/postgresql/tablespace
       - type: bind
-        source: C:/Zimmermann/volumes/postgres/scripts
-        target: /scripts
+        source: C:/Zimmermann/volumes/postgres/sql
+        target: /sql
         read_only: true
     env_file: [postgres.env]
     # beim 1. Start *NICHT* den eingeschraenkten Linux-User "postgres" verwenden, d.h. implizit "root"

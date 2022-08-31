@@ -35,8 +35,8 @@ services:
         # SELECT @@datadir;
         target: /var/lib/mysql
       - type: bind
-        source: C:/Zimmermann/volumes/mysql/scripts
-        target: /scripts
+        source: C:/Zimmermann/volumes/mysql/sql
+        target: /sql
         read_only: true
       - type: bind
         source: C:/Zimmermann/volumes/mysql/tmp

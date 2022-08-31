@@ -14,7 +14,7 @@
 -- along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 -- (1) docker compose exec mysql sh
--- (2) mysql --user=root --password=p < /scripts/create-db-kunde.sql
+-- (2) mysql --user=root --password=p < /sql/create-db-kunde.sql
 -- (3) exit
 
 -- mysqlsh ist *NICHT* im Docker-Image enthalten: https://dev.mysql.com/doc/refman/8.0/en/mysql.html
