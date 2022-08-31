@@ -15,8 +15,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Aufruf:   docker buildx build --tag juergenzimmermann/jenkins:1.0.0 . --file jenkins.dockerfile
-#           Get-Content jenkins.dockerfile | docker run --rm --interactive hadolint/hadolint:2.10.0-beta-debian
+# Aufruf:   Get-Content jenkins.dockerfile | docker run --rm --interactive hadolint/hadolint:2.10.0-beta-debian
+#           docker buildx build --tag juergenzimmermann/jenkins:1.0.0 . --file jenkins.dockerfile
 #           docker sbom juergenzimmermann/jenkins:1.0.0
 
 # https://www.jenkins.io/doc/book/installing/docker

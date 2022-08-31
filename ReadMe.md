@@ -717,6 +717,7 @@ Docker-Installation ergänzt werden, wozu es das Dockerfile `jenkins.dockerfile`
 gibt, um ein solches Image zu erstellen:
 
 ```powershell
+    Get-Content jenkins.dockerfile | docker run --rm --interactive hadolint/hadolint:2.10.0-beta-debian
     docker buildx build --tag juergenzimmermann/jenkins:1.0.0 . --file jenkins.dockerfile
 ```
 
