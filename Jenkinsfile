@@ -98,7 +98,7 @@ pipeline {
                 //sh 'docker --version'
                 sh 'apt-get update'
 
-                sh 'curl --silent --fail --show-error --location https://deb.nodesource.com/setup_18.x | bash -; apt-get install --yes nodejs'
+                sh 'curl --silent --fail --show-error --location https://deb.nodesource.com/setup_18.x | bash -; apt-get install --no-install-recommends --yes --show-progress nodejs'
                 sh 'node --version'
                 sh 'npm i -g npm@8.18.0'
                 sh 'npm --version'
@@ -107,7 +107,7 @@ pipeline {
                 // https://packages.debian.org/bullseye/python3
                 // https://computingforgeeks.com/how-to-install-python-on-debian-linux
                 // https://cloudcone.com/docs/article/how-to-install-python-3-10-on-debian-11
-                sh 'apt-get install --yes python3=3.9.2-3'
+                sh 'apt-get install --no-install-recommends --yes --show-progress python3=3.9.2-3'
                 sh 'python3 --version'
 
                 script {
