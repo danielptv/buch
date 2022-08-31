@@ -12,9 +12,11 @@ extras/doc/entwicklerhandbuch/html/*
 extras/doc/folien/*.html
 extras/doc/api/*
 extras/doc/popeye/*
-extras/kubernetes/README.md
-extras/postgres/kubernetes/README.md
-extras/mysql/kubernetes/README.md
+extras/helm/README.md
+extras/postgres/helm/README.md
+extras/postgres/.kpt-pipeline
+extras/mysql/helm/README.md
+extras/mysql/.kpt-pipeline
 node-ts
 temp
 tmp
