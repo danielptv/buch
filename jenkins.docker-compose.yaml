@@ -49,7 +49,7 @@ services:
   jenkins:
     image: juergenzimmermann/jenkins:1.0.0
     ports:
-      - published: 9090
+      - published: 7070
         target: 8080
     depends_on: ['jenkins-certs']
     volumes:

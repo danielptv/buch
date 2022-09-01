@@ -725,15 +725,15 @@ Das neu gebaute Image `juergenzimmermann/jenkins:1.0.0` wird in der
 Konfigurationsdatei wird `jenkins.yaml` für Docker Compose verwendet:
 
 ```powershell
-    docker compose -f jenkins.yaml up
+    docker compose -f jenkins.docker-compose.yaml up
     ...
     # In einer 2. PowerShell: Herunterfahren
-    docker compose -f jenkins.yaml down
+    docker compose -f jenkins.docker-compose.yaml down
 ```
 
 ### Aufruf mit Webbrowser
 
-Mit der URL https://localhost:9090 kann man von einem Webbrowser auf das
+Mit der URL https://localhost:7070 kann man von einem Webbrowser auf das
 Jenkins-Image zugreifen. Der Benutzername ist `admin` und das Passwort
 `Inf und WI.`.
 
