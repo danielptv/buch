@@ -136,26 +136,17 @@ Unterstützung für ESM ist notwendig in:
 
 ## Eigener Namespace in Kubernetes
 
-Ein neuer Namespace, z.B. `acme`, wird durch folgendes Kommando zusammen
-mit einer _Network Policy_ für ein- und ausgehende Requests angelegt:
+Genauso wie in Datenbanksystemen gibt es in Kubernetes _keine_ untergeordneten
+Namespaces. Vor allem ist es in Kubernetes empfehlenswert für die eigene
+Software einen _neuen_ Namespace anzulegen und **NICHT** den Default-Namespace
+zu benutzen. Das wurde bei der Installation von Kubernetes durch den eigenen
+Namespace `acme` bereits erledigt. Außerdem wurde aus Sicherheitsgründen beim
+defaultmäßigen Service-Account das Feature _Automounting_ deaktiviert und der
+Kubernetes-Cluster wurde intern defaultmäßig so abgesichert, dass
 
-```powershell
-    cd extras\kubernetes\init
-
-    kubectl create namespace acme
-    kubectl label --overwrite ns acme `
-        pod-security.kubernetes.io/audit=baseline `
-        pod-security.kubernetes.io/audit-version=latest `
-        pod-security.kubernetes.io/warn=baseline `
-        pod-security.kubernetes.io/warn-version=latest
-
-    kubectl apply -f limit-range.yaml
-    kubectl apply -f network-policy.yaml
-    kubectl apply -f resource-quota.yaml
-    kubectl describe namespace acme
-
-    kubectl replace -f service-account.yaml
-```
+- über das Ingress-Gateway keine Requests von anderen Kubernetes-Services
+  zulässig sind
+- über das Egress-Gateway keine Requests an andere Kubernetes-Services zulässig sind.
 
 ---
 
