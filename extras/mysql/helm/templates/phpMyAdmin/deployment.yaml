@@ -79,8 +79,7 @@ spec:
             timeoutSeconds: 5
             periodSeconds: 20
             failureThreshold: 2
-            # TODO Kubernetes 1.25
-            #terminationGracePeriodSeconds: 5
+            terminationGracePeriodSeconds: 5
           readinessProbe:
             httpGet:
               path: /

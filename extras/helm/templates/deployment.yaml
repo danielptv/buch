@@ -130,8 +130,7 @@ spec:
             periodSeconds: {{ .Values.livenessProbe.period }}
             # max. Anzahl an Fehlversuchen (default: 3)
             failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
-            # TODO Kubernetes 1.25
-            #terminationGracePeriodSeconds: 5
+            terminationGracePeriodSeconds: 5
           # Ist der Container "ready", um Requests zu beantworten? Sind Nachbarsysteme, z.B. DB-Server, ebenfalls "ready"?
           readinessProbe:
             httpGet:

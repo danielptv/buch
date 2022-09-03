@@ -85,8 +85,7 @@ spec:
             timeoutSeconds: {{ .Values.liveness.timeout }}
             periodSeconds: {{ .Values.liveness.period }}
             failureThreshold: {{ .Values.liveness.failureThreshold }}
-            # TODO Kubernetes 1.25
-            #terminationGracePeriodSeconds: 5
+            terminationGracePeriodSeconds: 5
           readinessProbe:
             exec:
               command: [ "sh", "-c", "mysqladmin --user=root --password=p --host=mysql-0 ping" ]
