@@ -13,31 +13,30 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mailserver
+  name: {{ .Release.Name }}
   labels:
-    app: mailserver
+    app: {{ .Release.Name }}
 spec:
   selector:
     matchLabels:
-      app: mailserver
+      app: {{ .Release.Name }}
   replicas: 1
   template:
     metadata:
       labels:
-        app: mailserver
+        app: {{ .Release.Name }}
     spec:
-      serviceAccountName: acme-mailserver
+      serviceAccountName: acme-{{ .Release.Name }}
       containers:
-        # Images mit einem Mailserver: analogic/poste.io und axigen/axigen
-        - image: gessnerfl/fake-smtp-server:1.9.3
-          name: mailserver
+        # Images mit einem {{ .Release.Name }}: analogic/poste.io und axigen/axigen
+        - image: gessnerfl/fake-smtp-server:1.10.0
+          name: {{ .Release.Name }}
           envFrom:
             - configMapRef:
-                name: mailserver-env
+                name: {{ .Release.Name }}-env
           ports:
             - containerPort: 5025
               name: smtp
@@ -74,9 +73,9 @@ spec:
             failureThreshold: 2
           volumeMounts:
             - mountPath: /tmp
-              name: log-mailserver
+              name: log-{{ .Release.Name }}
       volumes:
-        - name: log-mailserver
+        - name: log-{{ .Release.Name }}
           hostPath:
             path: /run/desktop/mnt/host/c/Zimmermann/volumes/fakesmtp
             type: Directory

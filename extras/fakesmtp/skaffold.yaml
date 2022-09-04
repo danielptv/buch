@@ -15,28 +15,32 @@
 
 # Aufruf:   i.a. bereits eingestellt:   $env:SKAFFOLD_PROFILE = 'dev'
 #           skaffold dev
+#           skaffold delete
 
-apiVersion: skaffold/v2beta28
+apiVersion: skaffold/v3alpha1
 kind: Config
 metadata:
-  name: backend
+  name: mailserver
 deploy:
-  kustomize:
-    paths: ["base"]
+  helm:
+    releases:
+      - name: mailserver
+        chartPath: helm
+        valuesFiles: [helm/values.yaml]
+        namespace: acme
 profiles:
   - name: dev
     activation:
       - env: SKAFFOLD_PROFILE=dev
     deploy:
-      kustomize:
-        paths: ["dev"]
+      helm:
+        releases:
+          - name: mailserver
+            chartPath: helm
+            valuesFiles: [helm/values.yaml, helm/dev.yaml]
+            namespace: acme
     portForward:
       - resourceType: service
         resourceName: mailserver
-        port: smtp
-      - resourceType: service
-        resourceName: mailserver
-        port: http
-      - resourceType: service
-        resourceName: mailserver
-        port: actuator
+        port: mailserver-http
+        localPort: 5080

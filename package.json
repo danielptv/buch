@@ -118,8 +118,8 @@
   },
   "devDependencies": {
     "@asciidoctor/reveal.js": "5.0.0-rc.1",
-    "@jest/globals": "29.0.1",
-    "@jest/types": "29.0.1",
+    "@jest/globals": "29.0.2",
+    "@jest/types": "29.0.2",
     "@nestjs/cli": "9.1.1",
     "@nestjs/schematics": "9.0.2",
     "@nestjs/testing": "9.0.11",
@@ -157,9 +157,9 @@
     "eslint-plugin-security": "1.5.0",
     "eslint-plugin-security-node": "1.1.1",
     "eslint-plugin-unicorn": "43.0.2",
-    "jest": "29.0.1",
-    "jest-config": "29.0.1",
-    "jest-each": "29.0.1",
+    "jest": "29.0.2",
+    "jest-config": "29.0.2",
+    "jest-each": "29.0.2",
     "leasot": "13.2.0",
     "rimraf": "3.0.2",
     "shelljs": "0.8.5",
@@ -167,7 +167,7 @@
     "ts-loader": "9.3.1",
     "ts-node": "10.9.1",
     "tsconfig-paths": "4.1.0",
-    "typedoc": "0.23.13",
+    "typedoc": "0.23.14",
     "typescript": "4.8.2",
     "weak-napi": "2.0.2"
   }

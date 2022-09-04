@@ -24,10 +24,9 @@ spec:
   selector:
     app: mailserver
   ports:
-    # https://istio.io/latest/docs/reference/config/analysis/ist0118
     - port: 5025
       name: smtp
     - port: 5080
-      name: http
+      name: mailserver-http
     - port: 5081
       name: actuator
