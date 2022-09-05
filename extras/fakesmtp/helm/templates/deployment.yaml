@@ -50,27 +50,30 @@ spec:
             readOnlyRootFilesystem: true
           resources:
             requests:
-              cpu: 500m
-              memory: 512Mi
+              cpu: {{ .Values.resourcesRequests.cpu }}
+              memory: {{ .Values.resourcesRequests.memory }}
+              ephemeral-storage: {{ .Values.resourcesRequests.ephemeral }}
             limits:
-              cpu: 600m
-              memory: 512Mi
+              cpu: {{ .Values.resourcesLimits.cpu }}
+              memory: {{ .Values.resourcesLimits.memory }}
+              ephemeral-storage: {{ .Values.resourcesLimits.ephemeral }}
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness
               port: actuator
-            initialDelaySeconds: 60
-            timeoutSeconds: 6
-            periodSeconds: 10
-            failureThreshold: 2
+            initialDelaySeconds: {{ .Values.livenessProbe.initialDelay }}
+            timeoutSeconds: {{ .Values.livenessProbe.timeout }}
+            periodSeconds: {{ .Values.livenessProbe.period }}
+            failureThreshold: {{ .Values.livenessProbe.failureThreshold }}
+            terminationGracePeriodSeconds: 5
           readinessProbe:
             httpGet:
               path: /actuator/health/readiness
               port: actuator
-            initialDelaySeconds: 60
-            timeoutSeconds: 60
-            periodSeconds: 10
-            failureThreshold: 2
+            initialDelaySeconds: {{ .Values.readinessProbe.initialDelay }}
+            timeoutSeconds: {{ .Values.readinessProbe.timeout }}
+            periodSeconds: {{ .Values.readinessProbe.period }}
+            failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
           volumeMounts:
             - mountPath: /tmp
               name: log-{{ .Release.Name }}

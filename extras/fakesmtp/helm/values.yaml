@@ -28,29 +28,6 @@ outputAnsiEnabled: DETECT
 # -- Anzeige des Banners
 bannerMode: CONSOLE
 
-# -- Anzahl Replica im Pod von Kubernetes
-replicas: 2
-
-image:
-  # -- Repository als Präfix beim Image-Namen
-  repository: juergenzimmermann
-  # -- Name des Image
-  name: kunde
-  # -- Image-Tag
-  tag: 2.0.0
-
-deployment:
-  # -- Name der Secret-Ressource beim DB-System
-  secretNameDB: postgres
-
-  # -- Port innerhalb des Containers
-  containerPort: 8080
-
-# -- ID des Linux-Users
-uid: 1000
-# -- ID der Linux-Gruppe
-gid: 1000
-
 resourcesRequests:
   # -- (Mindest-) Anforderung an CPU-Ressourcen in _millicores_, z.B. `500m` oder `1`
   cpu: 500m
@@ -69,20 +46,20 @@ resourcesLimits:
 
 livenessProbe:
   # -- Anzahl Sekunden, bis die Probe für Liveness abgesetzt wird
-  initialDelay: 0
+  initialDelay: 60
   # -- Timeout für Liveness-Probe in Sekunden
-  timeout: 1
+  timeout: 60
   # -- periodischer Abstand zwischen den Liveness-Proben in Sekunden
   period: 10
   # -- Max. Anzahl an Fehlversuchen bei den Liveness-Proben
-  failureThreshold: 3
+  failureThreshold: 1
 
 readinessProbe:
   # -- Anzahl Sekunden, bis die Probe für Readiness abgesetzt wird
-  initialDelay: 0
+  initialDelay: 60
   # -- Timeout für Readiness-Probe in Sekunden
-  timeout: 1
+  timeout: 60
   # -- periodischer Abstand zwischen den Readiness-Proben in Sekunden
   period: 10
   # -- Max. Anzahl an Fehlversuchen bei den Readiness-Proben
-  failureThreshold: 3
+  failureThreshold: 1
