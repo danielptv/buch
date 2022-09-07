@@ -31,6 +31,6 @@ $host.ui.RawUI.WindowTitle = 'kubescape'
 # https://github.com/zegl/kube-score
 $release = 'kunde'
 Set-Location ..\helm
-helm template $release . -f values.yaml -f dev.yaml > \temp\$release.yaml
+helm template $release . -f values.yaml -f dev.yaml > ${env:TEMP}\$release.yaml
 C:\Zimmermann\kubescape\kubescape.exe scan --enable-host-scan --verbose C:/temp/$release.yaml
 Set-Location ..\kubernetes
