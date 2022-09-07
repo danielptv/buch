@@ -15,21 +15,22 @@
 
 # https://docs.microsoft.com/en-us/powershell/scripting/developer/cmdlet/approved-verbs-for-windows-powershell-commands?view=powershell-7
 
-# Aufruf:   .\kube-score.ps1
+# Aufruf:   .\kubescape.ps1
 
 Set-StrictMode -Version Latest
 
 $versionMinimum = [Version]'7.3.0'
 $versionCurrent = $PSVersionTable.PSVersion
 if ($versionMinimum -gt $versionCurrent) {
-  throw "PowerShell $versionMinimum statt $versionCurrent erforderlich"
+    throw "PowerShell $versionMinimum statt $versionCurrent erforderlich"
 }
 
 # Titel setzen
-$host.ui.RawUI.WindowTitle = 'kube-score'
+$host.ui.RawUI.WindowTitle = 'kubescape'
 
 # https://github.com/zegl/kube-score
-$kubernetesVersion = '1.24'
-Set-Location ..
-helm template buch . | C:\Zimmermann\kube-score\kube-score score --kubernetes-version=$kubernetesVersion --verbose=1 -
-Set-Location scripts
+$release = 'kunde'
+Set-Location ..\helm
+helm template $release . -f values.yaml -f dev.yaml > \temp\$release.yaml
+C:\Zimmermann\kubescape\kubescape.exe scan --enable-host-scan --verbose C:/temp/$release.yaml
+Set-Location ..\kubernetes
