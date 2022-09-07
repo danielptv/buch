@@ -22,7 +22,7 @@
 # https://www.jenkins.io/doc/book/installing/docker
 # https://manpages.debian.org/bullseye/apt/apt-get.8.en.html
 
-FROM jenkins/jenkins:2.366-jdk17
+FROM jenkins/jenkins:2.367-jdk17
 USER root
 # https://packages.debian.org/bullseye/lsb-release
 # https://unix.stackexchange.com/questions/217369/clear-apt-get-list
@@ -47,4 +47,4 @@ RUN apt-get update && apt-get install --no-install-recommends --yes --show-progr
 USER jenkins
 # https://plugins.jenkins.io/blueocean
 # https://plugins.jenkins.io/docker-workflow
-RUN jenkins-plugin-cli --plugins "blueocean:1.25.7 docker-workflow:521.v1a_a_dd2073b_2e"
+RUN jenkins-plugin-cli --plugins "blueocean:1.25.8 docker-workflow:521.v1a_a_dd2073b_2e"

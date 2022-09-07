@@ -16,6 +16,13 @@
 # # https://www.base64decode.org
 password: cA==
 
+resourcesRequests:
+  cpu: 200m
+  memory: 64Mi
+resourcesLimits:
+  cpu: 250m
+  memory: 128Mi
+
 liveness:
   initialDelay: 10
   timeout: 5
