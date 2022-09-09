@@ -25,8 +25,8 @@ deploy:
   helm:
     releases:
       - name: mysql
-        chartPath: helm
-        valuesFiles: [helm/values.yaml]
+        chartPath: mysql
+        valuesFiles: [mysql/values.yaml]
         namespace: acme
 profiles:
   - name: dev
@@ -36,8 +36,8 @@ profiles:
       helm:
         releases:
           - name: mysql
-            chartPath: helm
-            valuesFiles: [helm/values.yaml, helm/dev.yaml]
+            chartPath: mysql
+            valuesFiles: [mysql/values.yaml, mysql/dev.yaml]
             namespace: acme
     portForward:
       - resourceType: service

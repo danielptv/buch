@@ -13,13 +13,26 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Aufruf:   helmfile apply
-#               zzgl. Port-Forwarding
-#           helmfile destroy
+# # https://www.base64decode.org
+password: cA==
 
-releases:
-  - name: buch
-    namespace: acme
-    chart: extras/buch
-    values: [extras/buch/dev.yaml]
-    #wait: true
+resourcesRequests:
+  cpu: 200m
+  memory: 64Mi
+resourcesLimits:
+  cpu: 250m
+  memory: 128Mi
+
+liveness:
+  initialDelay: 10
+  timeout: 5
+  period: 20
+  failureThreshold: 2
+readiness:
+  initialDelay: 10
+  timeout: 5
+  period: 20
+  failureThreshold: 2
+
+autoscaling:
+  enabled: false

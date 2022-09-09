@@ -13,13 +13,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Aufruf:   helmfile apply
-#               zzgl. Port-Forwarding
-#           helmfile destroy
-
-releases:
-  - name: buch
-    namespace: acme
-    chart: extras/buch
-    values: [extras/buch/dev.yaml]
-    #wait: true
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "mysql.fullname" . }}
+data:
+  TZ: Europe/Berlin
+  LANG: de_DE.utf8

@@ -13,13 +13,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Aufruf:   helmfile apply
-#               zzgl. Port-Forwarding
-#           helmfile destroy
+# disruption = Störung
 
-releases:
-  - name: buch
-    namespace: acme
-    chart: extras/buch
-    values: [extras/buch/dev.yaml]
-    #wait: true
+apiVersion: policy/v1
+# https://kubernetes.io/docs/tasks/run-application/configure-pdb
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "mysql.fullname" . }}
+  labels:
+    {{- include "mysql.labels" . | nindent 4 }}
+spec:
+  # minAvailable: 1
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      {{- include "mysql.selectorLabels" . | nindent 6 }}

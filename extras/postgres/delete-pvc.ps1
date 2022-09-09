@@ -30,6 +30,6 @@ $namespace = 'acme'
 kubectl delete pvc/postgres-data-volume-postgres-0 --namespace $namespace
 kubectl delete pvc/postgres-conf-volume-postgres-0 --namespace $namespace
 kubectl delete pvc/postgres-tablespace-volume-postgres-0 --namespace $namespace
-kubectl delete pvc/postgres-var-volume-postgres-0 --namespace $namespace
+kubectl delete pvc/postgres-run-volume-postgres-0 --namespace $namespace
 kubectl delete pvc/pgadmin-pgadmin-volume-pgadmin-0 --namespace $namespace
 kubectl delete pvc/pgadmin-pgadmin4-volume-pgadmin-0 --namespace $namespace

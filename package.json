@@ -147,7 +147,7 @@
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-eslint-comments": "3.2.0",
     "eslint-plugin-import": "2.26.0",
-    "eslint-plugin-jest": "27.0.1",
+    "eslint-plugin-jest": "27.0.2",
     "eslint-plugin-jest-formatting": "3.1.0",
     "eslint-plugin-n": "15.2.5",
     "eslint-plugin-prefer-arrow": "1.2.3",
@@ -163,12 +163,12 @@
     "leasot": "13.2.0",
     "rimraf": "3.0.2",
     "shelljs": "0.8.5",
-    "ts-jest": "29.0.0-next.1",
+    "ts-jest": "29.0.0",
     "ts-loader": "9.3.1",
     "ts-node": "10.9.1",
     "tsconfig-paths": "4.1.0",
     "typedoc": "0.23.14",
-    "typescript": "4.8.2",
+    "typescript": "4.8.3",
     "weak-napi": "2.0.2"
   }
 }

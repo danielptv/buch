@@ -25,8 +25,8 @@ deploy:
   helm:
     releases:
       - name: postgres
-        chartPath: helm
-        valuesFiles: [helm/values.yaml]
+        chartPath: postgres
+        valuesFiles: [postgres/values.yaml]
         namespace: acme
 profiles:
   - name: dev
@@ -36,8 +36,8 @@ profiles:
       helm:
         releases:
           - name: postgres
-            chartPath: helm
-            valuesFiles: [helm/values.yaml, helm/dev.yaml]
+            chartPath: postgres
+            valuesFiles: [postgres/values.yaml, postgres/dev.yaml]
             namespace: acme
     portForward:
       - resourceType: service

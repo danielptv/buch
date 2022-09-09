@@ -20,6 +20,6 @@
 releases:
   - name: postgres
     namespace: acme
-    chart: helm
-    values: [helm/dev.yaml]
+    chart: postgres
+    values: [postgres/dev.yaml]
     wait: true

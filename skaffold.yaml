@@ -43,8 +43,8 @@ deploy:
   helm:
     releases:
       - name: buch
-        chartPath: extras/helm
-        valuesFiles: [extras/helm/values.yaml]
+        chartPath: extras/buch
+        valuesFiles: [extras/buch/values.yaml]
         namespace: acme
 # https://skaffold.dev/docs/environment/profiles
 profiles:
@@ -55,8 +55,8 @@ profiles:
       helm:
         releases:
           - name: buch
-            chartPath: extras/helm
-            valuesFiles: [extras/helm/values.yaml, extras/helm/dev.yaml]
+            chartPath: extras/buch
+            valuesFiles: [extras/buch/values.yaml, extras/buch/dev.yaml]
             namespace: acme
     # https://skaffold.dev/docs/pipeline-stages/port-forwarding
     portForward:
