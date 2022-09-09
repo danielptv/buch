@@ -22,6 +22,25 @@
 # -- Namespace in NOTES.txt
 namespace: acme
 
+# -- Defaultwert ist im Chart bei `name` und kann überschrieben werden.
+nameOverride: ""
+
+# -- _Fully Qualified Name (FQN)_ ist defaultmäßig im Chart bei `name` und kann überschrieben werden.
+fullnameOverride: ""
+
+# -- Anzahl Replica im Pod von Kubernetes
+replicaCount: 2
+
+image:
+  # -- Repository als Präfix beim Image-Namen
+  repository: gessnerfl
+  # -- Name des Image
+  name: fake-smtp-server
+  # -- Pull-Policy für das Image
+  pullPolicy: IfNotPresent
+  # -- Defaultwert ist im Chart bei `appVersion` und kann überschrieben werden.
+  tag: ""
+
 # -- ANSI Escape-Sequencen für die Ausgabe in der Konsole erkennen
 outputAnsiEnabled: DETECT
 
@@ -63,3 +82,15 @@ readinessProbe:
   period: 10
   # -- Max. Anzahl an Fehlversuchen bei den Readiness-Proben
   failureThreshold: 1
+
+autoscaling:
+  # -- Ist Autoscaling aktiviert?
+  enabled: true
+  # -- Mininmale Anzahl an Replicas
+  minReplicas: 1
+  # -- Maximale Anzahl an Replicas
+  maxReplicas: 100
+  # -- Maximale CPU-Auslastung
+  targetCPUUtilizationPercentage: 80
+  # -- Maximale RAM-Auslastung
+  targetMemoryUtilizationPercentage: 80

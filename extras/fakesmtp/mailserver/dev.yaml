@@ -1,4 +1,4 @@
-# Copyright (C) 2020 - present Juergen Zimmermann, Hochschule Karlsruhe
+# Copyright (C) 2022 - present Juergen Zimmermann, Hochschule Karlsruhe
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -13,20 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: mailserver
-  labels:
-    app: mailserver
-spec:
-  selector:
-    app: mailserver
-  ports:
-    - port: 5025
-      name: smtp
-    - port: 5080
-      name: mailserver-http
-    - port: 5081
-      name: actuator
+replicaCount: 1
+outputAnsiEnabled: ALWAYS
+bannerMode: LOG
+autoscaling:
+  enabled: false

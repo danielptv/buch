@@ -13,11 +13,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+# "." am Anfang bezeichnet den Top-Level Namensraum bei Helm
+
 apiVersion: v1
 # https://kubernetes.io/docs/concepts/configuration/configmap
 kind: ConfigMap
 metadata:
-  name: {{ .Release.Name }}-env
+  name: {{ include "mailserver.fullname" . }}
 data:
   # Key-Value-Paare (hier: fuer die Umgebungsvariable)
   TZ: Europe/Berlin

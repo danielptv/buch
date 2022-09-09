@@ -25,8 +25,8 @@ deploy:
   helm:
     releases:
       - name: mailserver
-        chartPath: helm
-        valuesFiles: [helm/values.yaml]
+        chartPath: mailserver
+        valuesFiles: [mailserver/values.yaml]
         namespace: acme
 profiles:
   - name: dev
@@ -36,8 +36,8 @@ profiles:
       helm:
         releases:
           - name: mailserver
-            chartPath: helm
-            valuesFiles: [helm/values.yaml, helm/dev.yaml]
+            chartPath: mailserver
+            valuesFiles: [mailserver/values.yaml, mailserver/dev.yaml]
             namespace: acme
     portForward:
       - resourceType: service
