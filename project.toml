@@ -65,7 +65,7 @@ include = [
 # https://registry.buildpacks.io/buildpacks/paketo-buildpacks/node-engine
 # https://github.com/paketo-buildpacks/node-engine/tags
 # https://console.cloud.google.com/gcr/images/paketo-buildpacks/GLOBAL/node-engine
-#uri = "urn:cnb:registry:paketo-buildpacks/node-engine@0.16.0"
+uri = "urn:cnb:registry:paketo-buildpacks/node-engine@0.17.0"
 
 [[build.buildpacks]]
 # https://registry.buildpacks.io/buildpacks/paketo-buildpacks/nodejs

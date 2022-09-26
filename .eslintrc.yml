@@ -419,6 +419,7 @@ rules:
   # wegen //NOSONAR
   #line-comment-position: error
   linebreak-style: error
+  logical-assignment-operators: error
   max-classes-per-file: error
   max-depth: error
   # https://github.com/prettier/eslint-config-prettier#max-len

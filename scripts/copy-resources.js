@@ -53,10 +53,11 @@ mkdirSync(jwtPemDist, { recursive: true });
 copySync(jwtPemSrc, jwtPemDist);
 
 // GraphQL-Schema kopieren
-const graphqlSrc = join(src, 'buch', 'graphql');
-const graphqlDist = join(dist, src, 'buch', 'graphql');
+const businessDir = 'buch'
+const graphqlSrc = join(src, businessDir, 'graphql');
+const graphqlDist = join(dist, src, businessDir, 'graphql');
 mkdirSync(graphqlDist, { recursive: true });
-copyFileSync(join(graphqlSrc, 'buch.graphql'), join(graphqlDist, 'buch.graphql'));
+copyFileSync(join(graphqlSrc, 'schema.graphql'), join(graphqlDist, 'schema.graphql'));
 
 const graphqlAuthSrc = join(src, 'security', 'auth');
 const graphqlAuthDist = join(dist, src, 'security', 'auth');
