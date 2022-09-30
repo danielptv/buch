@@ -65,16 +65,19 @@ include = [
 # https://registry.buildpacks.io/buildpacks/paketo-buildpacks/node-engine
 # https://github.com/paketo-buildpacks/node-engine/tags
 # https://console.cloud.google.com/gcr/images/paketo-buildpacks/GLOBAL/node-engine
-uri = "urn:cnb:registry:paketo-buildpacks/node-engine@0.17.0"
+#uri = "urn:cnb:registry:paketo-buildpacks/node-engine@0.17.1"
 
 [[build.buildpacks]]
 # https://registry.buildpacks.io/buildpacks/paketo-buildpacks/nodejs
 # https://github.com/paketo-buildpacks/nodejs/tags
 # https://console.cloud.google.com/gcr/images/paketo-buildpacks/GLOBAL/nodejs
 uri = "urn:cnb:registry:paketo-buildpacks/nodejs@0.24.0"
+#uri = "urn:cnb:registry:paketo-buildpacks/nodejs@0.25.0"
 
 [[build.env]]
 name = "BP_NODE_VERSION"
+#value = "18.10.0"
+#value = "18.9.1"
 value = "18.8.0"
 
 [[build.env]]
