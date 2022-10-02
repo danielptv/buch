@@ -279,17 +279,21 @@ export class BuchWriteController {
 
     #handleCreateError(err: CreateError, res: Response) {
         switch (err.type) {
-            case 'ConstraintViolations':
+            case 'ConstraintViolations': {
                 return this.#handleValidationError(err.messages, res);
+            }
 
-            case 'TitelExists':
+            case 'TitelExists': {
                 return this.#handleTitelExists(err.titel, res);
+            }
 
-            case 'IsbnExists':
+            case 'IsbnExists': {
                 return this.#handleIsbnExists(err.isbn, res);
+            }
 
-            default:
+            default: {
                 return res.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
         }
     }
 
@@ -349,8 +353,9 @@ export class BuchWriteController {
 
     #handleUpdateError(err: UpdateError, res: Response): Response {
         switch (err.type) {
-            case 'ConstraintViolations':
+            case 'ConstraintViolations': {
                 return this.#handleValidationError(err.messages, res);
+            }
 
             case 'BuchNotExists': {
                 const { id } = err;
@@ -362,8 +367,9 @@ export class BuchWriteController {
                     .send(msg);
             }
 
-            case 'TitelExists':
+            case 'TitelExists': {
                 return this.#handleTitelExists(err.titel, res);
+            }
 
             case 'VersionInvalid': {
                 const { version } = err;
@@ -385,8 +391,9 @@ export class BuchWriteController {
                     .send(msg);
             }
 
-            default:
+            default: {
                 return res.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
         }
     }
 }

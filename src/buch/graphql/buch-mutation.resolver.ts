@@ -135,31 +135,41 @@ export class BuchMutationResolver {
 
     #errorMsgCreateBuch(err: CreateError) {
         switch (err.type) {
-            case 'ConstraintViolations':
+            case 'ConstraintViolations': {
                 return err.messages.join(' ');
-            case 'TitelExists':
+            }
+            case 'TitelExists': {
                 return `Der Titel "${err.titel}" existiert bereits`;
-            case 'IsbnExists':
+            }
+            case 'IsbnExists': {
                 return `Die ISBN ${err.isbn} existiert bereits`;
-            default:
+            }
+            default: {
                 return 'Unbekannter Fehler';
+            }
         }
     }
 
     #errorMsgUpdateBuch(err: UpdateError) {
         switch (err.type) {
-            case 'ConstraintViolations':
+            case 'ConstraintViolations': {
                 return err.messages.join(' ');
-            case 'TitelExists':
+            }
+            case 'TitelExists': {
                 return `Der Titel "${err.titel}" existiert bereits`;
-            case 'BuchNotExists':
+            }
+            case 'BuchNotExists': {
                 return `Es gibt kein Buch mit der ID ${err.id}`;
-            case 'VersionInvalid':
+            }
+            case 'VersionInvalid': {
                 return `"${err.version}" ist keine gueltige Versionsnummer`;
-            case 'VersionOutdated':
+            }
+            case 'VersionOutdated': {
                 return `Die Versionsnummer "${err.version}" ist nicht mehr aktuell`;
-            default:
+            }
+            default: {
                 return 'Unbekannter Fehler';
+            }
         }
     }
 }
