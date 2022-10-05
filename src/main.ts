@@ -52,6 +52,11 @@ const setupSwagger = (app: INestApplication) => {
     SwaggerModule.setup(paths.swagger, app, document, options);
 };
 
+interface Route {
+    path: string;
+    method: string;
+}
+
 interface Layer {
     route:
         | {
@@ -59,11 +64,6 @@ interface Layer {
               stack: [{ method: string }];
           }
         | undefined;
-}
-
-interface Route {
-    path: string;
-    method: string;
 }
 
 // Promise ab ES 2015, vgl: Future in Java

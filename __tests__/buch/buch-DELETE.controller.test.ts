@@ -59,7 +59,9 @@ describe('DELETE /buecher', () => {
         // given
         const url = `/${id}`;
         const token = await loginRest(client);
-        const headers = { Authorization: `Bearer ${token}` }; // eslint-disable-line @typescript-eslint/naming-convention
+        const headers: Record<string, string> = {
+            Authorization: `Bearer ${token}`, // eslint-disable-line @typescript-eslint/naming-convention
+        };
 
         // when
         const response: AxiosResponse<string> = await client.delete(url, {
@@ -92,7 +94,9 @@ describe('DELETE /buecher', () => {
         // given
         const url = `/${id}`;
         const token = 'FALSCH';
-        const headers = { Authorization: `Bearer ${token}` }; // eslint-disable-line @typescript-eslint/naming-convention
+        const headers: Record<string, string> = {
+            Authorization: `Bearer ${token}`, // eslint-disable-line @typescript-eslint/naming-convention
+        };
 
         // when
         const response: AxiosResponse<Record<string, any>> =
