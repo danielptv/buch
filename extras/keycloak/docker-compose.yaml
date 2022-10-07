@@ -26,7 +26,7 @@
 # https://docs.docker.com/compose/compose-file/compose-file-v3
 services:
   keycloak:
-    image: quay.io/keycloak/keycloak:19.0.2
+    image: quay.io/keycloak/keycloak:19.0.3
     #depends_on: [postgres]
     ports:
       - published: 8080
