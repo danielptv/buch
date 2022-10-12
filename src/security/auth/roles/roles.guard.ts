@@ -57,13 +57,9 @@ export class RolesGuard implements CanActivate {
                 context.getHandler(),
                 context.getClass(),
             ]);
-        if (requiredRoles === undefined) {
-            this.#logger.debug('canActivate: requiredRoles=undefined');
-        } else {
-            this.#logger.debug('canActivate: requiredRoles=%o', requiredRoles);
-        }
+        this.#logger.debug('canActivate: requiredRoles=%o', requiredRoles);
         if (requiredRoles === undefined || requiredRoles.length === 0) {
-            return true;
+            return false;
         }
 
         const request: RequestWithUser = context.switchToHttp().getRequest();
