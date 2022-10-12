@@ -62,16 +62,13 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
         const user = await this.#authService.validate(username, password);
         if (user === undefined) {
             this.#logger.debug('validate: user=undefined');
-        } else {
-            this.#logger.debug('validate: user=%o', user);
-        }
-        if (user === undefined) {
             // Zur userid in der Payload des Tokens gibt es keinen User
             // Was ist das fuer ein Token? Wer verwendet einen solchen Token?!
             // Deshalb: KEINE Information liefern, dass es keinen User gibt
             //          d.h. nicht 401 sondern 403 als Statuscode
             throw new UnauthorizedException();
         }
+        this.#logger.debug('validate: user=%o', user);
         return user;
     }
 }
