@@ -49,6 +49,7 @@ extends:
   - plugin:prettier/recommended
   - prettier
   - plugin:n/recommended
+  # https://github.com/eslint-community/eslint-plugin-promise#rules
   - plugin:promise/recommended
   - plugin:security/recommended
   - plugin:security-node/recommended
@@ -321,6 +322,8 @@ rules:
   prefer-arrow/prefer-arrow-functions:
     - error
     - classPropertiesAllowed: false
+
+  promise/no-multiple-resolved: error
 
   regexp/prefer-regexp-exec: error
 
