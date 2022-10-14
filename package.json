@@ -89,7 +89,7 @@
     "ajv-errors": "3.0.0",
     "ajv-formats": "2.1.1",
     "apollo-server-express": "3.10.3",
-    "argon2": "0.29.1",
+    "argon2": "0.30.1",
     "axios": "1.1.2",
     "chalk": "5.1.2",
     "class-validator": "0.13.2",

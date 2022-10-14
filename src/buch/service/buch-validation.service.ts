@@ -126,9 +126,10 @@ export class BuchValidationService {
      * aktualisiert bzw. überschrieben werden sollen.
      */
     validate(buch: Buch) {
-        this.#logger.debug('validate: buch=%o', buch);
+        this.#logger.debug('#validate: buch=%o', buch);
         // Keine Property, um validate.errors (s.u.) konkurrierend zu verwenden
         const validate = this.#ajv.compile<Buch>(jsonSchema);
+        validate(buch);
 
         // nullish coalescing
         const errors = validate.errors ?? [];
