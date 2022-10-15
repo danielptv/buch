@@ -58,6 +58,7 @@ const jestConfig: Config.InitialOptions = {
     errorOnDeprecated: true,
     testTimeout: 10_000,
     verbose: true,
+    // showSeed: true,
 };
 
 export default jestConfig;
