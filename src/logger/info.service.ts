@@ -75,6 +75,12 @@ export class InfoService implements OnApplicationBootstrap {
         this.#logger.info('Username: %s', userInfo().username);
 
         // const options: argon2.Options = {...};
+        // Argon2 Defaultwerte https://www.rfc-editor.org/rfc/rfc9106.txt
+        // t=1 iteration,
+        // p=4 lanes,
+        // m=2^21 (2 GiB of RAM),
+        // 128-bit salt, and
+        // 256-bit tag size
         const hashValue = await hash('p');
         this.#logger.debug('argon2id: p -> %s', hashValue);
     }
