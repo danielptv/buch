@@ -15,24 +15,24 @@
 
 -- (1) PostgreSQL NICHT als user "postgres" starten, sondern implizit als "root"
 --     d.h. auskommentieren in docker-compose.yaml
--- (2) docker compose exec postgres sh
+-- (2) docker compose exec postgres bash
 -- (3) chown postgres:postgres /var/lib/postgresql/tablespace
--- (4) chown postgres:postgres /var/lib/postgresql/tablespace/kunde
--- (5) docker compose down
--- (6) in docker-compose.yaml den User "postgres" wieder aktivieren
--- (7) docker compose up
--- (8) docker compose exec postgres sh
--- (9) psql --dbname=postgres --username=postgres --file=/sql/create-db-kunde.sql
--- (10) exit
+-- (4) chown postgres:postgres /var/lib/postgresql/tablespace/buch
+-- (5) exit
+-- (6) docker compose down
+-- (7) in docker-compose.yaml den User "postgres" wieder aktivieren
+-- (8) docker compose up
+-- (9) docker compose exec postgres bash
+-- (10) psql --dbname=postgres --username=postgres --file=/sql/create-db-buch.sql
+-- (11) exit
 
 -- https://www.postgresql.org/docs/current/sql-createrole.html
-CREATE ROLE kunde LOGIN PASSWORD 'p';
+CREATE ROLE buch LOGIN PASSWORD 'p';
 
 -- https://www.postgresql.org/docs/current/sql-createdatabase.html
-CREATE DATABASE kunde;
+CREATE DATABASE buch;
 
--- https://www.postgresql.org/docs/current/sql-grant.html
-GRANT ALL ON DATABASE kunde TO kunde;
+GRANT ALL ON DATABASE buch TO buch;
 
 -- https://www.postgresql.org/docs/10/sql-createtablespace.html
-CREATE TABLESPACE kundespace OWNER kunde LOCATION '/var/lib/postgresql/tablespace/kunde';
+CREATE TABLESPACE buchspace OWNER buch LOCATION '/var/lib/postgresql/tablespace/buch';
