@@ -17,7 +17,7 @@
 #           skaffold dev
 #           skaffold delete
 
-apiVersion: skaffold/v3alpha1
+apiVersion: skaffold/v3
 kind: Config
 metadata:
   name: mysql

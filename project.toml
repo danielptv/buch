@@ -41,6 +41,8 @@ type = "GPL-3.0"
 [build]
 # fuer Verzeichnis /workspace im Image
 include = [
+  "/src/config/jwt/*.pem",
+  "/src/config/tls/*.pem",
   "/dist/src",
   "!/dist/src/**/*.js.map",
   "!/dist/src/**/*.d.ts",

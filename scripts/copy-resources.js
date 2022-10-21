@@ -46,6 +46,12 @@ mkdirSync(mysqlDist, { recursive: true });
 copySync(postgresSrc, postgresDist);
 copySync(mysqlSrc, mysqlDist);
 
+// PEM-Dateien fuer TLS kopieren
+const tlsPemSrc = join(configSrc, 'tls');
+const tlsPemDist = join(configDist, 'tls');
+mkdirSync(tlsPemDist, { recursive: true });
+copySync(tlsPemSrc, tlsPemDist);
+
 // PEM-Dateien fuer JWT kopieren
 const jwtPemSrc = join(configSrc, 'jwt');
 const jwtPemDist = join(configDist, 'jwt');

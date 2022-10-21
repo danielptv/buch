@@ -20,7 +20,7 @@
 
 # https://skaffold.dev/docs/references/yaml
 
-apiVersion: skaffold/v3alpha1
+apiVersion: skaffold/v3
 kind: Config
 metadata:
   name: buch
