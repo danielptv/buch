@@ -33,11 +33,11 @@ GPL v3
 - ES2015+, TypeScript einschl. @types mit .d.ts sowie tsconfig.json
 - ts-node
 - RESTclient für REST und GraphQL
+- SonarQube
 - Buildpacks, Helm und helmfile
 - AsciiDoctor mit PlantUML
 - reveal.js
 - Jenkins
-- SonarQube
 
 ## Nest
 
@@ -76,6 +76,7 @@ GPL v3
 | Trailing Comma                                | 2017       |
 | Arrow Function                                | 2015       |
 | Klasse                                        | 2015       |
+| Interface                                     |            | X
 | #                                             | 2020       |
 | private, protected                            |            | X
 | readonly                                      |            | X

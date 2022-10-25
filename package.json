@@ -23,7 +23,7 @@
     "pretest": "npm run copy-resources",
     "test": "jest --runInBand --forceExit --expand",
     "test:beispiel": "jest --runInBand --forceExit --expand __tests__/buch/beispiel.test.ts",
-    "test:coverage": "npm t -- --coverage",
+    "test:istanbul": "npm t -- --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "asciidoctor": "node scripts/asciidoctor",
     "clinic": "clinic doctor -- node dist/src/main.js",

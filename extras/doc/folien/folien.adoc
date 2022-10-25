@@ -58,10 +58,10 @@ Jürgen Zimmermann <Juergen.Zimmermann@h-ka.de>
 
 * pack für Docker Images
 * Kubernetes
-  - Kustomize
+  - Helm
+  - helmfile
   - (Skaffold)
   - Lens und Octant: Pods, Logs, ...
-* Heroku und Buildpack
 * Continuous Integration (CI) durch eine Jenkins Pipeline
 
 === Dokumentation

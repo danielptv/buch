@@ -41,8 +41,8 @@ export class BuchQueryResolver {
         this.#service = service;
     }
 
-    @Query('buch')
-    async findById(@Args() id: IdInput) {
+    @Query()
+    async buch(@Args() id: IdInput) {
         const idStr = id.id;
         this.#logger.debug('findById: id=%s', idStr);
 
@@ -62,8 +62,8 @@ export class BuchQueryResolver {
         return buchDTO;
     }
 
-    @Query('buecher')
-    async find(@Args() titel: { titel: string } | undefined) {
+    @Query()
+    async buecher(@Args() titel: { titel: string } | undefined) {
         const titelStr = titel?.titel;
         this.#logger.debug('find: titel=%s', titelStr);
         const suchkriterium = titelStr === undefined ? {} : { titel: titelStr };
