@@ -24,29 +24,27 @@
 
 FROM jenkins/jenkins:2.375-jdk17
 USER root
+RUN <<EOF
 # https://packages.debian.org/bullseye/lsb-release
 # https://unix.stackexchange.com/questions/217369/clear-apt-get-list
-RUN apt-get update && \
-  apt-get install --no-install-recommends --yes --show-progress lsb-release=11.1.0 && \
-  apt-get clean && \
-  rm -rf /var/lib/apt/lists/*
+apt-get update
+apt-get install --no-install-recommends --yes --show-progress lsb-release=11.1.0
+apt-get clean
+rm -rf /var/lib/apt/lists/*
 # GPG-Schluessel fuer Docker hinzufuegen
 # https://www.howtoforge.de/anleitung/so-installierst-du-docker-unter-debian-11
-RUN curl -fsSLo /usr/share/keyrings/docker-archive-keyring.asc \
-  https://download.docker.com/linux/debian/gpg
+curl -fsSLo /usr/share/keyrings/docker-archive-keyring.asc https://download.docker.com/linux/debian/gpg
 # Docker-Repository hinzufuegen
 # https://www.howtoforge.de/anleitung/so-installierst-du-docker-unter-debian-11
-RUN echo "deb [arch=$(dpkg --print-architecture) \
-  signed-by=/usr/share/keyrings/docker-archive-keyring.asc] \
-  https://download.docker.com/linux/debian \
-  $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.asc] https://download.docker.com/linux/debian $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list
 # https://docs.docker.com/engine/install/debian/#install-from-a-package
 # https://download.docker.com/linux/debian/dists/bullseye/pool/stable/amd64
 # https://debian.pkgs.org/11/docker-ce-amd64
 # apt-cache policy docker-ce-cli
-RUN apt-get update && \
-  apt-get install --no-install-recommends --yes --show-progress docker-ce-cli=5:20.10.17~3-0~debian-bullseye && \
-  apt-get clean && rm -rf /var/lib/apt/lists/*
+apt-get update
+apt-get install --no-install-recommends --yes --show-progress docker-ce-cli=5:20.10.17~3-0~debian-bullseye
+apt-get clean && rm -rf /var/lib/apt/lists/*
+EOF
 USER jenkins
 # https://plugins.jenkins.io/blueocean
 # https://plugins.jenkins.io/docker-workflow
