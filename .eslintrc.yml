@@ -464,6 +464,7 @@ rules:
   # siehe import/no-duplicates
   #no-duplicate-imports: error
   no-else-return: error
+  no-empty-static-block: error
   no-eq-null: error
   no-eval: error
   no-extend-native: error
@@ -495,6 +496,7 @@ rules:
   no-nested-ternary: error
   no-new: error
   no-new-func: error
+  no-new-native-nonconstructor: error
   no-new-object: error
   no-new-wrappers: error
   no-param-reassign: error
