@@ -747,13 +747,14 @@ https://github.com/clinicjs/node-clinic-doctor/issues/304
 [Visual Studio Code](https://code.visualstudio.com/Download) kann man
 kostenfrei herunterladen.
 
-> Tipps:
->
-> - `<Strg>kc` : Markierte Zeilen werden auskommentiert (wie bei Visual Studio)
-> - `<Strg>ku` : Bei markierten Zeilen wird der Kommentar entfernt
-> - `<F1>`: Die Kommandopalette erscheint
-> - `<Strg><Shift>v`: Vorschau für MarkDown und AsciiDoctor
-> - `<Alt>d`: Vorschau für PlantUml
+Tipps:
+
+- `<Strg>#` : Kommentare setzen und entfernen
+- `<F1>`: Die Kommandopalette erscheint
+- `<Strg><Shift>v`: Vorschau für MarkDown und AsciiDoctor
+- `<Alt>d`: Vorschau für PlantUml
+- _https://vscodecandothat.com_: Kurze Videos zu VS Code
+- _https://www.youtube.com/watch?v=beNIDKgdzwQ_: Video für Debugging
 
 ## Empfohlene Code-Konventionen
 
