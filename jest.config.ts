@@ -26,6 +26,7 @@ const jestConfig: Config.InitialOptions = {
     // https://kulshekhar.github.io/ts-jest/docs/next/guides/esm-support
     // https://kulshekhar.github.io/ts-jest/docs/getting-started/presets
     // https://jestjs.io/docs/getting-started#via-ts-jest
+    // https://swc.rs/docs/usage/jest: swc ("speedy web compiler") statt ts-jest
     preset: 'ts-jest/presets/default-esm',
 
     extensionsToTreatAsEsm: ['.ts', '.mts', '.json'],
