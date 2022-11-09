@@ -72,7 +72,7 @@ export class HealthController {
                     'buch REST-API',
                     `${this.#schema}://${nodeConfig.host}:${
                         nodeConfig.port
-                    }/api/00000000-0000-0000-0000-000000000001`,
+                    }/00000000-0000-0000-0000-000000000001`,
                     { httpsAgent: this.#httpsAgent },
                 ),
         ]);

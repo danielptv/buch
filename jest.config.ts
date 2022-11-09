@@ -57,7 +57,8 @@ const jestConfig: Config.InitialOptions = {
     ],
     coverageReporters: ['text-summary', 'html'],
     errorOnDeprecated: true,
-    testTimeout: 10_000,
+    // Hoher Timeout-Wert, insbesondere fuer den ersten Mutation-Test
+    testTimeout: 60_000,
     verbose: true,
     // showSeed: true,
 };
