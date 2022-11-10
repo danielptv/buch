@@ -28,6 +28,7 @@ import {
 import { HttpStatus } from '@nestjs/common';
 import dotenv from 'dotenv';
 import each from 'jest-each';
+import process from 'node:process';
 
 dotenv.config();
 const { env } = process;

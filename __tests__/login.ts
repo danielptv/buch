@@ -19,6 +19,7 @@ import { type GraphQLRequest, type GraphQLResponse } from 'apollo-server-types';
 import { httpsAgent, loginPath } from './testserver.js';
 import { type LoginResult } from '../src/security/auth/service/auth.service.js';
 import dotenv from 'dotenv';
+import process from 'node:process';
 
 const usernameDefault = 'admin';
 
