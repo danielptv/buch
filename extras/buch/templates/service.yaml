@@ -22,16 +22,17 @@ metadata:
   # https://helm.sh/docs/chart_template_guide/functions_and_pipelines
   # https://godoc.org/text/template
   # https://masterminds.github.io/sprig
-  name: {{ include "buch.fullname" . }}
+  name: { { include "buch.fullname" . } }
+  namespace: { { .Values.namespace } }
   labels:
     # https://helm.sh/docs/chart_template_guide/function_list
     # nindent rueckt um eine bestimmte Anzahl ("n") Zeichen ein
-    {{- include "buch.labels" . | nindent 4 }}
+    { { - include "buch.labels" . | nindent 4 } }
 spec:
   # Selektion der Pods fuer eingehende Requests
-  selector: {{- include "buch.selectorLabels" . | nindent 4 }}
+  selector: { { - include "buch.selectorLabels" . | nindent 4 } }
   ports:
-    - port: {{ .Values.servicePort }}
+    - port: { { .Values.servicePort } }
       name: http-svc
       targetPort: http
       # https://kubernetes.io/docs/concepts/services-networking/service/#protocol-support

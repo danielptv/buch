@@ -16,7 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { type GraphQLRequest, type GraphQLResponse } from 'apollo-server-types';
+import {
+    type GraphQLQuery,
+    type GraphQLResponseBody,
+} from '../../buch/buch-query.resolver.test.js';
 import { afterAll, beforeAll, describe, test } from '@jest/globals';
 import axios, { type AxiosInstance, type AxiosResponse } from 'axios';
 import {
@@ -55,7 +58,7 @@ describe('Login', () => {
         // given
         const username = 'admin';
         const password = 'p'; //NOSONAR
-        const body: GraphQLRequest = {
+        const body: GraphQLQuery = {
             query: `
                 mutation {
                     login(
@@ -69,7 +72,7 @@ describe('Login', () => {
         };
 
         // when
-        const response: AxiosResponse<GraphQLResponse> = await client.post(
+        const response: AxiosResponse<GraphQLResponseBody> = await client.post(
             graphqlPath,
             body,
         );
@@ -103,7 +106,7 @@ describe('Login', () => {
         // given
         const username = 'admin';
         const password = 'FALSCH'; //NOSONAR
-        const body: GraphQLRequest = {
+        const body: GraphQLQuery = {
             query: `
                 mutation {
                     login(
@@ -117,7 +120,7 @@ describe('Login', () => {
         };
 
         // when
-        const response: AxiosResponse<GraphQLResponse> = await client.post(
+        const response: AxiosResponse<GraphQLResponseBody> = await client.post(
             graphqlPath,
             body,
         );

@@ -16,7 +16,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { type GraphQLRequest, type GraphQLResponse } from 'apollo-server-types';
+import {
+    type GraphQLQuery,
+    type GraphQLResponseBody,
+} from './buch-query.resolver.test.js';
 import { afterAll, beforeAll, describe, test } from '@jest/globals';
 import axios, { type AxiosInstance, type AxiosResponse } from 'axios';
 import {
@@ -64,7 +67,7 @@ describe('GraphQL Mutations', () => {
         // given
         const token = await loginGraphQL(client);
         const authorization = { Authorization: `Bearer ${token}` }; // eslint-disable-line @typescript-eslint/naming-convention
-        const body: GraphQLRequest = {
+        const body: GraphQLQuery = {
             query: `
                 mutation {
                     create(
@@ -87,7 +90,7 @@ describe('GraphQL Mutations', () => {
         };
 
         // when
-        const response: AxiosResponse<GraphQLResponse> = await client.post(
+        const response: AxiosResponse<GraphQLResponseBody> = await client.post(
             graphqlPath,
             body,
             { headers: authorization },
@@ -112,7 +115,7 @@ describe('GraphQL Mutations', () => {
         // given
         const token = await loginGraphQL(client, 'dirk.delta', 'p');
         const authorization = { Authorization: `Bearer ${token}` }; // eslint-disable-line @typescript-eslint/naming-convention
-        const body: GraphQLRequest = {
+        const body: GraphQLQuery = {
             query: `
                 mutation {
                     create(
@@ -135,7 +138,7 @@ describe('GraphQL Mutations', () => {
         };
 
         // when
-        const response: AxiosResponse<GraphQLResponse> = await client.post(
+        const response: AxiosResponse<GraphQLResponseBody> = await client.post(
             graphqlPath,
             body,
             { headers: authorization },
@@ -164,7 +167,7 @@ describe('GraphQL Mutations', () => {
         // given
         const token = await loginGraphQL(client);
         const authorization = { Authorization: `Bearer ${token}` }; // eslint-disable-line @typescript-eslint/naming-convention
-        const body: GraphQLRequest = {
+        const body: GraphQLQuery = {
             query: `
                 mutation {
                     update(
@@ -188,7 +191,7 @@ describe('GraphQL Mutations', () => {
         };
 
         // when
-        const response: AxiosResponse<GraphQLResponse> = await client.post(
+        const response: AxiosResponse<GraphQLResponseBody> = await client.post(
             graphqlPath,
             body,
             { headers: authorization },
@@ -213,7 +216,7 @@ describe('GraphQL Mutations', () => {
         // given
         const token = await loginGraphQL(client);
         const authorization = { Authorization: `Bearer ${token}` }; // eslint-disable-line @typescript-eslint/naming-convention
-        const body: GraphQLRequest = {
+        const body: GraphQLQuery = {
             query: `
                 mutation {
                     update(
@@ -237,7 +240,7 @@ describe('GraphQL Mutations', () => {
         };
 
         // when
-        const response: AxiosResponse<GraphQLResponse> = await client.post(
+        const response: AxiosResponse<GraphQLResponseBody> = await client.post(
             graphqlPath,
             body,
             { headers: authorization },
@@ -294,7 +297,7 @@ describe('GraphQL Mutations', () => {
         const token = await loginGraphQL(client);
         const authorization = { Authorization: `Bearer ${token}` }; // eslint-disable-line @typescript-eslint/naming-convention
         const id = '99999999-9999-9999-9999-999999999999';
-        const body: GraphQLRequest = {
+        const body: GraphQLQuery = {
             query: `
                 mutation {
                     update(
@@ -318,7 +321,7 @@ describe('GraphQL Mutations', () => {
         };
 
         // when
-        const response: AxiosResponse<GraphQLResponse> = await client.post(
+        const response: AxiosResponse<GraphQLResponseBody> = await client.post(
             graphqlPath,
             body,
             { headers: authorization },
@@ -352,7 +355,7 @@ describe('GraphQL Mutations', () => {
         // given
         const token = await loginGraphQL(client);
         const authorization = { Authorization: `Bearer ${token}` }; // eslint-disable-line @typescript-eslint/naming-convention
-        const body: GraphQLRequest = {
+        const body: GraphQLQuery = {
             query: `
                 mutation {
                     delete(id: "${id}")
@@ -361,7 +364,7 @@ describe('GraphQL Mutations', () => {
         };
 
         // when
-        const response: AxiosResponse<GraphQLResponse> = await client.post(
+        const response: AxiosResponse<GraphQLResponseBody> = await client.post(
             graphqlPath,
             body,
             { headers: authorization },

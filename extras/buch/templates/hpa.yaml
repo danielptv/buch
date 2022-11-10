@@ -21,6 +21,7 @@ apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "buch.fullname" . }}
+  namespace: {{ .Values.namespace }}
   labels:
     {{- include "buch.labels" . | nindent 4 }}
 spec:

@@ -30,6 +30,11 @@ import { type BuchDTO } from '../../src/buch/graphql/buch-query.resolver.js';
 import { HttpStatus } from '@nestjs/common';
 import each from 'jest-each';
 
+/* eslint-disable jest/no-export */
+export type GraphQLQuery = Pick<GraphQLRequest, 'query'>;
+export type GraphQLResponseBody = Pick<GraphQLResponse, 'data' | 'errors'>;
+/* eslint-enable jest/no-export */
+
 // -----------------------------------------------------------------------------
 // T e s t d a t e n
 // -----------------------------------------------------------------------------
@@ -84,7 +89,7 @@ describe('GraphQL Queries', () => {
         };
 
         // when
-        const response: AxiosResponse<GraphQLResponse> = await client.post(
+        const response: AxiosResponse<GraphQLResponseBody> = await client.post(
             graphqlPath,
             body,
         );
@@ -119,7 +124,7 @@ describe('GraphQL Queries', () => {
         };
 
         // when
-        const response: AxiosResponse<GraphQLResponse> = await client.post(
+        const response: AxiosResponse<GraphQLResponseBody> = await client.post(
             graphqlPath,
             body,
         );
@@ -161,10 +166,8 @@ describe('GraphQL Queries', () => {
             };
 
             // when
-            const response: AxiosResponse<GraphQLResponse> = await client.post(
-                graphqlPath,
-                body,
-            );
+            const response: AxiosResponse<GraphQLResponseBody> =
+                await client.post(graphqlPath, body);
 
             // then
             const { status, headers, data } = response;
@@ -205,10 +208,8 @@ describe('GraphQL Queries', () => {
             };
 
             // when
-            const response: AxiosResponse<GraphQLResponse> = await client.post(
-                graphqlPath,
-                body,
-            );
+            const response: AxiosResponse<GraphQLResponseBody> =
+                await client.post(graphqlPath, body);
 
             // then
             const { status, headers, data } = response;
@@ -249,10 +250,8 @@ describe('GraphQL Queries', () => {
             };
 
             // when
-            const response: AxiosResponse<GraphQLResponse> = await client.post(
-                graphqlPath,
-                body,
-            );
+            const response: AxiosResponse<GraphQLResponseBody> =
+                await client.post(graphqlPath, body);
 
             // then
             const { status, headers, data } = response;

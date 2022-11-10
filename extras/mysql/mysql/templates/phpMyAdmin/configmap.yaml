@@ -18,10 +18,11 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ .Values.phpMyAdmin.name }}
+  name: { { .Values.phpMyAdmin.name } }
+  namespace: { { .Values.namespace } }
 data:
   TZ: Europe/Berlin
   LANG: de_DE.utf8
-  PMA_HOST: {{ include "mysql.fullname" . }}
-  PMA_PORT: "3306"
-  PMA_ARBITRARY: "1"
+  PMA_HOST: { { include "mysql.fullname" . } }
+  PMA_PORT: '3306'
+  PMA_ARBITRARY: '1'

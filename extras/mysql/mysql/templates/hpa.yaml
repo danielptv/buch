@@ -21,6 +21,7 @@ apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "mysql.fullname" . }}
+  namespace: { { .Values.namespace } }
   labels:
     {{- include "mysql.labels" . | nindent 4 }}
 spec:

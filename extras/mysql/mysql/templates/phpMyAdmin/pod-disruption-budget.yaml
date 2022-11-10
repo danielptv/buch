@@ -19,12 +19,11 @@ apiVersion: policy/v1
 # https://kubernetes.io/docs/tasks/run-application/configure-pdb
 kind: PodDisruptionBudget
 metadata:
-  name: {{ .Values.phpMyAdmin.name }}
-  labels:
-    {{- include "phpMyAdmin.labels" . | nindent 4 }}
+  name: { { .Values.phpMyAdmin.name } }
+  namespace: { { .Values.namespace } }
+  labels: { { - include "phpMyAdmin.labels" . | nindent 4 } }
 spec:
   # minAvailable: 1
   maxUnavailable: 1
   selector:
-    matchLabels:
-      {{- include "phpMyAdmin.selectorLabels" . | nindent 6 }}
+    matchLabels: { { - include "phpMyAdmin.selectorLabels" . | nindent 6 } }

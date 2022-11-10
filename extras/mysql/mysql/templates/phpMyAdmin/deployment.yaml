@@ -18,6 +18,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Values.phpMyAdmin.name }}
+  namespace: { { .Values.namespace } }
   labels:
     {{- include "phpMyAdmin.labels" . | nindent 4 }}
 spec:

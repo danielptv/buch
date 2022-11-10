@@ -15,7 +15,10 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { type AxiosInstance, type AxiosResponse } from 'axios';
-import { type GraphQLRequest, type GraphQLResponse } from 'apollo-server-types';
+import {
+    type GraphQLQuery,
+    type GraphQLResponseBody,
+} from './buch/buch-query.resolver.test.js';
 import { httpsAgent, loginPath } from './testserver.js';
 import { type LoginResult } from '../src/security/auth/service/auth.service.js';
 import dotenv from 'dotenv';
@@ -49,7 +52,7 @@ export const loginGraphQL = async (
     username: string = usernameDefault,
     password: string = passwordDefault,
 ): Promise<string> => {
-    const body: GraphQLRequest = {
+    const body: GraphQLQuery = {
         query: `
             mutation {
                 login(
@@ -62,11 +65,8 @@ export const loginGraphQL = async (
         `,
     };
 
-    const response: AxiosResponse<GraphQLResponse> = await axiosInstance.post(
-        'graphql',
-        body,
-        { httpsAgent },
-    );
+    const response: AxiosResponse<GraphQLResponseBody> =
+        await axiosInstance.post('graphql', body, { httpsAgent });
 
     const data = response.data.data!; // eslint-disable-line @typescript-eslint/no-non-null-assertion
     return data.login.token; // eslint-disable-line @typescript-eslint/no-unsafe-return
