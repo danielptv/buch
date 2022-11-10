@@ -100,7 +100,7 @@ pipeline {
 
                 sh 'curl --silent --fail --show-error --location https://deb.nodesource.com/setup_19.x | bash -; apt-get install --no-install-recommends --yes --show-progress nodejs'
                 sh 'node --version'
-                sh 'npm i -g npm@9.1.0'
+                sh 'npm i -g npm@9.1.1'
                 sh 'npm --version'
 
                 // https://packages.debian.org/stable/python/python3
