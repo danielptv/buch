@@ -15,14 +15,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Aufruf:   Get-Content jenkins.dockerfile | docker run --rm --interactive hadolint/hadolint:2.10.0-beta-debian
-#           docker buildx build --tag juergenzimmermann/jenkins:1.0.0 . --file jenkins.dockerfile
+# Aufruf:   docker buildx build --tag juergenzimmermann/jenkins:1.0.0 . --file jenkins.dockerfile
 #           docker sbom juergenzimmermann/jenkins:1.0.0
+#           Get-Content jenkins.dockerfile | docker run --rm --interactive hadolint/hadolint:2.12.1-beta-debian
 
 # https://www.jenkins.io/doc/book/installing/docker
 # https://manpages.debian.org/bullseye/apt/apt-get.8.en.html
 
-FROM jenkins/jenkins:2.377-jdk17
+FROM jenkins/jenkins:2.378-jdk17
 USER root
 RUN <<EOF
 # https://packages.debian.org/bullseye/lsb-release
@@ -45,6 +45,7 @@ apt-get update
 apt-get install --no-install-recommends --yes --show-progress docker-ce-cli=5:20.10.17~3-0~debian-bullseye
 apt-get clean && rm -rf /var/lib/apt/lists/*
 EOF
+
 USER jenkins
 # https://plugins.jenkins.io/blueocean
 # https://plugins.jenkins.io/docker-workflow

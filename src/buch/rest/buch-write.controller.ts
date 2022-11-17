@@ -62,7 +62,7 @@ export type BuchDTO = Omit<
     Buch,
     'aktualisiert' | 'erzeugt' | 'id' | 'schlagwoerter' | 'version'
 > & {
-    schlagwoerter: string[];
+    schlagwoerter: string[] | undefined;
 };
 
 export type BuchUpdateDTO = Omit<
@@ -265,7 +265,7 @@ export class BuchWriteController {
         };
 
         // Rueckwaertsverweis von Schlagwort zu Buch
-        buchDTO.schlagwoerter.forEach((s) => {
+        buchDTO.schlagwoerter?.forEach((s) => {
             const schlagwort: Schlagwort = {
                 id: undefined,
                 schlagwort: s,

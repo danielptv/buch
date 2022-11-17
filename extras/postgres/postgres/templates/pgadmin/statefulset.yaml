@@ -55,7 +55,7 @@ spec:
             runAsUser: 5050
             runAsNonRoot: true
             allowPrivilegeEscalation: false
-            # Schreibzugriff auf Homedirectory "/pgadmin4"
+            # Schreibzugriff auf Homedirectory "/pgadmin4": Webserver mit Python und gunicorn
             #readOnlyRootFilesystem: true
             seccompProfile:
               type: RuntimeDefault
