@@ -13,8 +13,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# # https://www.base64decode.org
+# https://www.base64decode.org
 password: cA==
+
+autoscaling:
+  maxReplicas: 1
 
 resourcesRequests:
   cpu: 200m
@@ -33,6 +36,3 @@ readiness:
   timeout: 5
   period: 20
   failureThreshold: 2
-
-autoscaling:
-  enabled: false

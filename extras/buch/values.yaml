@@ -115,13 +115,11 @@ readinessProbe:
   failureThreshold: 3
 
 autoscaling:
-  # -- Ist Autoscaling aktiviert?
-  enabled: true
   # -- Mininmale Anzahl an Replicas
   minReplicas: 1
   # -- Maximale Anzahl an Replicas
   maxReplicas: 100
   # -- Maximale CPU-Auslastung
-  targetCPUUtilizationPercentage: 80
+  cpuUtilizationPercentage: 80
   # -- Maximale RAM-Auslastung
-  targetMemoryUtilizationPercentage: 80
+  memoryUtilizationPercentage: 80

@@ -13,7 +13,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-{{- if .Values.autoscaling.enabled }}
 apiVersion: autoscaling/v2
 # https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale
 # automatische Skalierung fuer die Anzahl der Pods basierend auf der CPU-Auslastung oder durch Metriken, die von der
@@ -32,18 +31,13 @@ spec:
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:
-    {{- if .Values.autoscaling.targetCPUUtilizationPercentage }}
     - type: Resource
       resource:
         name: cpu
         target:
-          averageUtilization:  {{ .Values.autoscaling.targetCPUUtilizationPercentage }}
-    {{- end }}
-    {{- if .Values.autoscaling.targetMemoryUtilizationPercentage }}
+          averageUtilization:  {{ .Values.autoscaling.cpuUtilizationPercentage }}
     - type: Resource
       resource:
         name: memory
         target:
-          averageUtilization:  {{ .Values.autoscaling.targetCPUUtilizationPercentage }}
-    {{- end }}
-{{- end }}
+          averageUtilization:  {{ .Values.autoscaling.memoryUtilizationPercentage }}

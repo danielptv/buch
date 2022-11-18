@@ -23,6 +23,9 @@ dbPassword: p
 dbPopulate: "true"
 userPasswordEncoded: "$argon2i$v=19$m=4096,t=3,p=1$aaxA2v/9rRSPGkwYN+NQog$27Huii1XtD3iEd62fog+04G26LRPZMHoYCI6AGKTL8M"
 
+autoscaling:
+  maxReplicas: 1
+
 replicaCount: 1
 
 resourcesRequests:
@@ -45,6 +48,3 @@ readinessProbe:
   timeout: 15
   period: 120
   failureThreshold: 1
-
-autoscaling:
-  enabled: false
