@@ -345,6 +345,7 @@ rules:
   unicorn/no-fn-reference-in-iterator: off
   unicorn/no-array-for-each: off
   unicorn/no-keyword-prefix: error
+  unicorn/no-negated-condition: error
   unicorn/no-nested-ternary: error
   unicorn/no-object-as-default-parameter: error
   unicorn/no-process-exit: off
