@@ -43,6 +43,7 @@ import { typeOrmModuleOptions } from './config/db.js';
             // alternativ: Mercurius (statt Apollo) fuer Fastify (statt Express)
             driver: ApolloDriver,
             debug: graphQlConfig.debug,
+            playground: true,
         }),
         LoggerModule,
         HealthModule,

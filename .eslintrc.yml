@@ -104,7 +104,7 @@ rules:
   '@typescript-eslint/explicit-module-boundary-types': off
   '@typescript-eslint/func-call-spacing': error
   '@typescript-eslint/interface-name-prefix': off
-  '@typescript-eslint/keyword-spacing': error
+  #'@typescript-eslint/keyword-spacing': error
   '@typescript-eslint/lines-between-class-members': error
   '@typescript-eslint/member-ordering': error
   '@typescript-eslint/method-signature-style': error
@@ -327,6 +327,7 @@ rules:
 
   promise/no-multiple-resolved: error
 
+  regexp/no-extra-lookaround-assertions: error
   regexp/no-missing-g-flag: error
   regexp/prefer-regexp-exec: error
 

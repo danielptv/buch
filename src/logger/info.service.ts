@@ -73,6 +73,7 @@ export class InfoService implements OnApplicationBootstrap {
         );
         this.#logger.info('Betriebssystem: %s (%s)', type(), release());
         this.#logger.info('Username: %s', userInfo().username);
+        this.#logger.info('GraphQL playground: %s', '/graphql');
 
         // const options: argon2.Options = {...};
         // Argon2 Defaultwerte https://www.rfc-editor.org/rfc/rfc9106.txt
