@@ -22,7 +22,7 @@
 
 import { Injectable, type OnApplicationBootstrap } from '@nestjs/common';
 import { release, type, userInfo } from 'node:os';
-import RE2 from 're2';
+import figlet from 'figlet';
 import { getLogger } from './logger.js';
 import { hash } from 'argon2';
 import { k8sConfig } from '../config/kubernetes.js';
@@ -35,15 +35,6 @@ import process from 'node:process';
  */
 @Injectable()
 export class InfoService implements OnApplicationBootstrap {
-    readonly #banner = `
-        .       __                                    _____
-        .      / /_  _____  _________ ____  ____     /__  /
-        . __  / / / / / _ \\/ ___/ __ \`/ _ \\/ __ \\      / /
-        ./ /_/ / /_/ /  __/ /  / /_/ /  __/ / / /     / /___
-        .\\____/\\__,_/\\___/_/   \\__, /\\___/_/ /_/     /____(_)
-        .                     /____/
-    `;
-
     readonly #logger = getLogger(InfoService.name);
 
     /**
@@ -57,7 +48,7 @@ export class InfoService implements OnApplicationBootstrap {
             ? `Kubernetes: BUCH_SERVICE_HOST=${serviceHost}, BUCH_SERVICE_PORT=${servicePort}`
             : 'Kubernetes: N/A';
 
-        this.#logger.info(this.#stripIndent(this.#banner));
+        figlet('buch', (_, data) => console.info(data));
         // https://nodejs.org/api/process.html
         // "Template String" ab ES 2015
         this.#logger.info('Node: %s', process.version);
@@ -84,30 +75,5 @@ export class InfoService implements OnApplicationBootstrap {
         // 256-bit tag size
         const hashValue = await hash('p');
         this.#logger.debug('argon2id: p -> %s', hashValue);
-    }
-
-    #stripIndent(string: string) {
-        // https://github.com/jamiebuilds/min-indent/blob/master/index.js
-        // \S = kein Whitespace
-        // g = global, m = multiline, u = unicode
-        // Array mit den Leerzeichen oder Tabs jeweils am Zeilenanfang
-        const leerzeichenArray = string.match(/^[ \t]*(?=\S)/gmu);
-        if (leerzeichenArray === null) {
-            return string;
-        }
-
-        let indent = Number.POSITIVE_INFINITY;
-        leerzeichenArray.forEach((leerzeichenStr) => {
-            indent = Math.min(indent, leerzeichenStr.length);
-        });
-
-        if (indent === 0) {
-            return string;
-        }
-
-        // https://github.com/sindresorhus/strip-indent/blob/main/index.js
-        // g = global, m = multiline, u = unicode
-        const regex = new RE2(`^[ \\t]{${indent}}`, 'gmu');
-        return string.replace(regex, '');
     }
 }
