@@ -62,6 +62,29 @@ export class BuchValidationService {
         return ID_PATTERN.test(id);
     }
 
+    /**
+     * Funktion zur Validierung, wenn neue Bücher angelegt oder vorhandene Bücher
+     * aktualisiert bzw. überschrieben werden sollen.
+     */
+    validate(buch: Buch) {
+        this.#logger.debug('#validate: buch=%o', buch);
+        // Keine Property, um validate.errors (s.u.) konkurrierend zu verwenden
+        const validate = this.#ajv.compile<Buch>(jsonSchema);
+        validate(buch);
+
+        // nullish coalescing
+        const errors = validate.errors ?? [];
+        const messages = errors
+            .map((error) => error.message)
+            .filter((msg) => msg !== undefined);
+        this.#logger.debug(
+            'validate: errors=%o, messages=%o',
+            errors,
+            messages,
+        );
+        return messages.length > 0 ? (messages as string[]) : undefined;
+    }
+
     #checkChars(chars: string[]) {
         /* eslint-disable @typescript-eslint/no-magic-numbers, unicorn/no-for-loop, security/detect-object-injection */
         let sum = 0;
@@ -120,27 +143,4 @@ export class BuchValidationService {
 
         return false;
     };
-
-    /**
-     * Funktion zur Validierung, wenn neue Bücher angelegt oder vorhandene Bücher
-     * aktualisiert bzw. überschrieben werden sollen.
-     */
-    validate(buch: Buch) {
-        this.#logger.debug('#validate: buch=%o', buch);
-        // Keine Property, um validate.errors (s.u.) konkurrierend zu verwenden
-        const validate = this.#ajv.compile<Buch>(jsonSchema);
-        validate(buch);
-
-        // nullish coalescing
-        const errors = validate.errors ?? [];
-        const messages = errors
-            .map((error) => error.message)
-            .filter((msg) => msg !== undefined);
-        this.#logger.debug(
-            'validate: errors=%o, messages=%o',
-            errors,
-            messages,
-        );
-        return messages.length > 0 ? (messages as string[]) : undefined;
-    }
 }

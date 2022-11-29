@@ -36,10 +36,6 @@ import { tap } from 'rxjs/operators';
 export class ResponseTimeInterceptor implements NestInterceptor {
     readonly #logger = getLogger(ResponseTimeInterceptor.name);
 
-    readonly #empty = () => {
-        /* do nothing */
-    };
-
     intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
         const start = Temporal.Now.instant().epochMilliseconds;
         const responseTimeObserver: TapObserver<unknown> = {
@@ -70,4 +66,8 @@ export class ResponseTimeInterceptor implements NestInterceptor {
         // tap() ist ein Operator fuer Seiteneffekte
         return next.handle().pipe(tap(responseTimeObserver));
     }
+
+    readonly #empty = () => {
+        /* do nothing */
+    };
 }
