@@ -68,7 +68,7 @@ export type BuchArt = 'DRUCKAUSGABE' | 'KINDLE';
 // https://typeorm.io/entities
 @Entity()
 export class Buch {
-    @Column('char')
+    @Column({ type: 'char', length: 36 })
     // https://typeorm.io/entities#primary-columns
     // CAVEAT: zuerst @Column() und erst dann @PrimaryColumn()
     @PrimaryColumn('uuid')
@@ -77,7 +77,7 @@ export class Buch {
     @VersionColumn()
     readonly version: number | undefined;
 
-    @Column('varchar')
+    @Column({ type: 'varchar', unique: true, length: 40 })
     @ApiProperty({ example: 'Der Titel', type: String })
     readonly titel!: string; //NOSONAR
 
@@ -85,20 +85,30 @@ export class Buch {
     @ApiProperty({ example: 5, type: Number })
     readonly rating: number | undefined;
 
-    @Column('varchar')
+    @Column({ type: 'varchar', length: 12 })
     @ApiProperty({ example: 'DRUCKAUSGABE', type: String })
     readonly art: BuchArt | undefined;
 
-    @Column('varchar')
+    @Column({ type: 'varchar', length: 12 })
     @ApiProperty({ example: 'FOO_VERLAG', type: String })
     readonly verlag!: Verlag;
 
-    @Column({ type: 'decimal', transformer: new DecimalTransformer() })
+    @Column({
+        type: 'decimal',
+        precision: 8,
+        scale: 2,
+        transformer: new DecimalTransformer(),
+    })
     @ApiProperty({ example: 1, type: Number })
     // statt number ggf. Decimal aus decimal.js analog zu BigDecimal von Java
     readonly preis!: number;
 
-    @Column({ type: 'decimal', transformer: new DecimalTransformer() })
+    @Column({
+        type: 'decimal',
+        precision: 4,
+        scale: 3,
+        transformer: new DecimalTransformer(),
+    })
     @ApiProperty({ example: 0.1, type: Number })
     readonly rabatt: number | undefined;
 
@@ -107,15 +117,15 @@ export class Buch {
     readonly lieferbar: boolean | undefined;
 
     // das Temporal-API ab ES2022 wird von TypeORM noch nicht unterstuetzt
-    @Column('date')
+    @Column({ type: 'date' })
     @ApiProperty({ example: '2021-01-31' })
     readonly datum: Date | string | undefined;
 
-    @Column('varchar')
+    @Column({ type: 'varchar', unique: true, length: 16 })
     @ApiProperty({ example: '0-0070-0644-6', type: String })
     readonly isbn!: string;
 
-    @Column('varchar')
+    @Column({ type: 'varchar', length: 40 })
     @ApiProperty({ example: 'https://test.de/', type: String })
     readonly homepage: string | undefined;
 

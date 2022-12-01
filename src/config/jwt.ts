@@ -57,7 +57,7 @@ const privateKey = readFileSync(resolve(jwtDir, 'private-key.pem'), utf8);
 //  iss(uer)
 // https://docs.microsoft.com/en-us/azure/active-directory/develop/id-tokens
 
-// destructuring
+// destructuring (default fuer expiresIn: 1h)
 const { expiresIn, issuer } = env.authConfigEnv;
 
 // shorthand property

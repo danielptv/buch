@@ -29,7 +29,7 @@ import { Buch } from './buch.entity.js';
  */
 @Entity()
 export class Schlagwort {
-    @Column('char')
+    @Column({ type: 'char', length: 36 })
     @PrimaryColumn('uuid')
     id: string | undefined;
 
@@ -39,7 +39,7 @@ export class Schlagwort {
     @JoinColumn({ name: 'buch_id' })
     readonly buch: Buch | null | undefined;
 
-    @Column('varchar')
+    @Column({ type: 'char', length: 16 })
     @ApiProperty({ example: 'Das Schlagwort', type: String })
     readonly schlagwort: string | null | undefined; //NOSONAR
 }

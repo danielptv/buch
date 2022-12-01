@@ -24,7 +24,7 @@ pipeline {
     agent {
         docker {
             // https://www.debian.org/releases: Bullseye = Debian 11
-            image 'node:19.1.0-bullseye'
+            image 'node:19.2.0-bullseye'
             // https://stackoverflow.com/questions/62330354/jenkins-pipeline-alpine-agent-apk-update-error-unable-to-lock-database-permis
             // https://stackoverflow.com/questions/42630894/jenkins-docker-how-to-control-docker-user-when-using-image-inside-command/51986870#51986870
             // https://stackoverflow.com/questions/42743201/npm-install-fails-in-jenkins-pipeline-in-docker
@@ -100,7 +100,7 @@ pipeline {
 
                 sh 'curl --silent --fail --show-error --location https://deb.nodesource.com/setup_19.x | bash -; apt-get install --no-install-recommends --yes --show-progress nodejs'
                 sh 'node --version'
-                sh 'npm i -g npm@9.1.1'
+                sh 'npm i -g npm'
                 sh 'npm --version'
 
                 // https://packages.debian.org/stable/python/python3

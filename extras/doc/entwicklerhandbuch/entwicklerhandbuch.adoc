@@ -130,9 +130,19 @@ accumsan id imperdiet et, porttitor at sem.
 include::Buch.plantuml[]
 ----
 
+=== ER-Diagramm
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+
+.ER-Diagramm
+[plantuml,ER-Diagramm,svg]
+----
+include::ER-Diagramm.plantuml[]
+----
+
 == Programmierrichtlinien für TypeScript und JavaScript
 
-Für die Programmierung mit *TypeScript* und *JavaScript* wird folgende
+Für die Programmierung mit *TypeScript* und *JavaScript* sind folgende
 Styleguides empfehlenswert:
 
 [horizontal]
