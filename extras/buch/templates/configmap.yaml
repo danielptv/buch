@@ -19,20 +19,20 @@ apiVersion: v1
 # https://kubernetes.io/docs/concepts/configuration/configmap
 kind: ConfigMap
 metadata:
-  name: { { include "buch.fullname" . } }
-  namespace: { { .Values.namespace } }
+  name: {{ include "buch.fullname" . }}
+  namespace: {{ .Values.namespace }}
 data:
   TZ: Europe/Berlin
-  NODE_ENV: { { .Values.nodeConfig } }
+  NODE_ENV: {{ .Values.nodeConfig }}
   LOG_DIR: /var/log/node
-  LOG_LEVEL: { { .Values.loglevel } }
+  LOG_LEVEL: {{ .Values.loglevel }}
   # String "true" statt Boolean true durch die Funktion quote
-  LOG_PRETTY: { { quote .Values.logPretty } }
+  LOG_PRETTY: {{ quote .Values.logPretty }}
   #APOLLO_DEBUG: "false"
-  HEALTH_PRETTY_PRINT: { { quote .Values.logHealthyPretty } }
+  HEALTH_PRETTY_PRINT: {{ quote .Values.logHealthyPretty }}
   DB_HOST: postgres
-  DB_USER: { { .Values.dbUser } }
-  DB_PASS: { { .Values.dbPassword } }
-  DB_POPULATE: { { quote .Values.dbPopulate } }
+  DB_USER: {{ .Values.dbUser }}
+  DB_PASS: {{ .Values.dbPassword }}
+  DB_POPULATE: {{ quote .Values.dbPopulate }}
   K8S_TLS: 'false'
-  USER_PASSWORD_ENCODED: { { .Values.userPasswordEncoded } }
+  USER_PASSWORD_ENCODED: {{ .Values.userPasswordEncoded }}

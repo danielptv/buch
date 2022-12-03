@@ -21,7 +21,7 @@ kind: HorizontalPodAutoscaler
 metadata:
   name: {{ include "buch.fullname" . }}
   namespace: {{ .Values.namespace }}
-  labels: {{ - include "buch.labels" . | nindent 4 }}
+  labels: {{- include "buch.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
@@ -34,11 +34,11 @@ spec:
       resource:
         name: cpu
         target:
-          averageUtilization:
-            {{ .Values.autoscaling.cpuUtilizationPercentage }}
+          type: Utilization
+          averageUtilization: {{ .Values.autoscaling.cpuUtilizationPercentage }}
     - type: Resource
       resource:
         name: memory
         target:
-          averageUtilization:
-            {{ .Values.autoscaling.memoryUtilizationPercentage }}
+          type: Utilization
+          averageUtilization: {{ .Values.autoscaling.memoryUtilizationPercentage }}

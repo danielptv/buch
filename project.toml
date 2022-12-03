@@ -60,7 +60,7 @@ include = [
   "/Procfile",
   "/package*.json",
   "/project.toml",
-  "/tsconfig.json",
+  #"/tsconfig.json",
   "/scripts/copy-resources.js",
   #"/node_modules",
 ]
