@@ -15,11 +15,12 @@
 
 #  "." am Anfang bezeichnet den Top-Level Namensraum
 
+---
 apiVersion: v1
 kind: Service
 metadata:
   name: {{ .Values.pgadmin.name }}
-  namespace: { { .Values.namespace } }
+  namespace: {{ .Values.namespace }}
   labels:
     {{- include "pgadmin.labels" . | nindent 4 }}
 spec:
