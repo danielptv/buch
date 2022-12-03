@@ -8,7 +8,7 @@
   "exports": "./dist/src/main.js",
   "type": "module",
   "engines": {
-    "node": ">=18.11.0",
+    "node": ">=19.0.1",
     "npm": ">=8.19.2"
   },
   "scripts": {
@@ -34,7 +34,8 @@
     "leasot": "leasot --exit-nicely src/**/*.ts",
     "invoke-webrequest": "pwsh -Command Invoke-WebRequest https://localhost:3000/00000000-0000-0000-0000-000000000001 -SslProtocol Tls13 -SkipCertificateCheck",
     "prepack": "npm run clean && npm run copy-resources && npm run tsc",
-    "pack": "pack build juergenzimmermann/buch:1.0.0 --builder paketobuildpacks/builder:base",
+    "pack": "pack build juergenzimmermann/buch:1.0.0 --builder paketobuildpacks/builder:full",
+    "pack2": "pack build juergenzimmermann/buch:1.0.0 --builder paketobuildpacks/builder:full",
     "postpack": "docker tag juergenzimmermann/buch:1.0.0 juergenzimmermann/buch:latest",
     "pack:clear-cache": "pack build juergenzimmermann/buch:1.0.0 --builder paketobuildpacks/builder:base --clear-cache",
     "pack:inspect": "pack inspect juergenzimmermann/buch:1.0.0",

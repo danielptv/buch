@@ -27,18 +27,17 @@ import { env } from './env.js';
 import { k8sConfig } from './kubernetes.js';
 import { nodeConfig } from './node.js';
 
-const { dbConfigEnv } = env;
+const { DB_TYPE, DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWORD, DB_POPULATE } =
+    env;
 
 // nullish coalescing
-const database = dbConfigEnv.name ?? Buch.name.toLowerCase();
+const database = DB_NAME ?? Buch.name.toLowerCase();
 const { detected } = k8sConfig;
 const dbType =
-    dbConfigEnv.type === undefined || dbConfigEnv.type === 'postgres'
-        ? 'postgres'
-        : 'mysql';
-const host = detected ? dbType : dbConfigEnv.host ?? 'localhost';
-const username = dbConfigEnv.username ?? Buch.name.toLowerCase();
-const pass = dbConfigEnv.password ?? 'p';
+    DB_TYPE === undefined || DB_TYPE === 'postgres' ? 'postgres' : 'mysql';
+const host = detected ? dbType : DB_HOST ?? 'localhost';
+const username = DB_USERNAME ?? Buch.name.toLowerCase();
+const pass = DB_PASSWORD ?? 'p';
 
 export const typeOrmModuleOptions: TypeOrmModuleOptions =
     dbType === 'postgres'
@@ -73,8 +72,9 @@ export const typeOrmModuleOptions: TypeOrmModuleOptions =
                   nodeConfig.nodeEnv === 'test',
               logger: 'advanced-console',
           };
+Object.freeze(typeOrmModuleOptions);
 
 const { password, ...typeOrmModuleOptionsLog } = typeOrmModuleOptions;
 console.info('typeOrmModuleOptions: %o', typeOrmModuleOptionsLog);
 
-export const dbPopulate = dbConfigEnv.populate?.toLowerCase() === 'true';
+export const dbPopulate = DB_POPULATE?.toLowerCase() === 'true';

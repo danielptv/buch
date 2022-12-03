@@ -58,26 +58,29 @@ const privateKey = readFileSync(resolve(jwtDir, 'private-key.pem'), utf8);
 // https://docs.microsoft.com/en-us/azure/active-directory/develop/id-tokens
 
 // destructuring (default fuer expiresIn: 1h)
-const { expiresIn, issuer } = env.authConfigEnv;
+const { JWT_EXPIRES_IN, JWT_ISSUER } = env;
 
 // shorthand property
-const signOptions: SignOptions = { algorithm, expiresIn, issuer };
+const signOptions: SignOptions = {
+    algorithm,
+    expiresIn: JWT_EXPIRES_IN ?? '1h',
+    issuer: JWT_ISSUER ?? 'https://hka.de/JuergenZimmermann',
+};
 
-const verifyOptions: VerifyOptions = { algorithms: [algorithm], issuer };
+const verifyOptions: VerifyOptions = {
+    algorithms: [algorithm],
+    issuer: signOptions.issuer,
+};
 
-interface JwtConfig {
-    readonly algorithm: string;
-    readonly publicKey: string;
-    readonly privateKey: string;
-    readonly signOptions: SignOptions;
-    readonly verifyOptions: VerifyOptions;
-}
-
-export const jwtConfig: JwtConfig = {
+/**
+ * Das Konfigurationsobjekt für JWT.
+ */
+// https://twitter.com/mattpocockuk/status/1598708710523772929
+export const jwtConfig = {
     // shorthand properties
     algorithm,
     publicKey,
     privateKey,
     signOptions,
     verifyOptions,
-};
+} as const;

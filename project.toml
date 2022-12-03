@@ -39,6 +39,13 @@ authors = ["Juergen.Zimmermann@h-ka.de"]
 type = "GPL-3.0"
 
 [build]
+# siehe Skript "pack" in package.json: full wegen node-gyp, Python und C++
+# https://paketo.io/docs/concepts/builders
+# https://paketo.io/docs/concepts/stacks
+# https://github.com/paketo-buildpacks/jammy-full-stack
+# https://github.com/paketo-buildpacks/bionic-full-stack
+#builder = "paketobuildpacks/builder:full"
+
 # fuer Verzeichnis /workspace im Image
 include = [
   "/src/config/jwt/*.pem",
@@ -68,19 +75,24 @@ include = [
 # https://registry.buildpacks.io/buildpacks/paketo-buildpacks/node-engine
 # https://github.com/paketo-buildpacks/node-engine/releases
 # https://console.cloud.google.com/gcr/images/paketo-buildpacks/GLOBAL/node-engine
-#uri = "urn:cnb:registry:paketo-buildpacks/node-engine@0.19.0"
+#uri = "urn:cnb:registry:paketo-buildpacks/node-engine@0.20.0"
 
 [[build.buildpacks]]
 # https://registry.buildpacks.io/buildpacks/paketo-buildpacks/nodejs
 # https://github.com/paketo-buildpacks/nodejs/releases
 # https://console.cloud.google.com/gcr/images/paketo-buildpacks/GLOBAL/nodejs
-#uri = "urn:cnb:registry:paketo-buildpacks/nodejs@0.27.0"
-uri = "urn:cnb:registry:paketo-buildpacks/nodejs@0.26.0"
+uri = "urn:cnb:registry:paketo-buildpacks/nodejs@0.27.0"
 
 [[build.env]]
 name = "BP_NODE_VERSION"
-#value = "19.0.1"
-value = "18.11.0"
+#value = "19.2.0"
+value = "19.0.1"
+
+# https://paketo.io/docs/howto/nodejs/#compile-native-extensions-with-node-gyp
+
+#[[build.env]]
+#name = "BP_NODE_RUN_SCRIPTS"
+#value = "myNpmScript,myOtherNpmScript"
 
 [[build.env]]
 name = "BP_LAUNCHPOINT"

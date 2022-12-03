@@ -28,11 +28,11 @@ import { k8sConfig } from './kubernetes.js';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-const { nodeConfigEnv } = env;
+const { NODE_ENV, PORT, BUCH_SERVICE_HOST, BUCH_SERVICE_PORT } = env;
 
 const computername = hostname();
 let port = Number.NaN;
-const portStr = nodeConfigEnv.port;
+const portStr = PORT;
 if (portStr !== undefined) {
     port = Number.parseInt(portStr, 10);
 }
@@ -78,18 +78,6 @@ if (cloud === undefined) {
     }
 }
 
-const { nodeEnv, serviceHost, servicePort } = nodeConfigEnv;
-
-interface NodeConfig {
-    readonly host: string;
-    readonly port: number;
-    readonly configDir: string;
-    readonly httpsOptions: HttpsOptions | undefined;
-    readonly nodeEnv: 'development' | 'production' | 'test' | undefined;
-    readonly serviceHost: string | undefined;
-    readonly servicePort: string | undefined;
-}
-
 /**
  * Die Konfiguration für den _Node_-basierten Server:
  * - Rechnername
@@ -98,22 +86,19 @@ interface NodeConfig {
  * - `PEM`- und Zertifikat-Datei mit dem öffentlichen und privaten Schlüssel
  *   für TLS
  */
-export const nodeConfig: NodeConfig = {
+// https://twitter.com/mattpocockuk/status/1598708710523772929
+export const nodeConfig = {
     // Shorthand Property ab ES 2015
     host: computername,
     port,
     configDir,
     httpsOptions,
-    nodeEnv: nodeEnv as 'development' | 'production' | 'test' | undefined,
-    serviceHost,
-    servicePort,
-};
-
-// "unknown" bedeutet, dass keine Operationen mit dem Datentyp ausgefuehrt werden
-const logNodeConfig: Record<string, unknown> = {
-    host: computername,
-    port,
-    configDir,
-    nodeEnv,
-};
-console.info('nodeConfig: %o', logNodeConfig);
+    nodeEnv: NODE_ENV as
+        | 'development'
+        | 'PRODUCTION'
+        | 'production'
+        | 'test'
+        | undefined,
+    serviceHost: BUCH_SERVICE_HOST,
+    servicePort: BUCH_SERVICE_PORT,
+} as const;

@@ -22,19 +22,16 @@
 
 import { env } from './env.js';
 
-interface HealthConfig {
-    readonly prettyPrint: boolean;
-}
-
-const { healthConfigEnv } = env;
-const { prettyPrint } = healthConfigEnv;
+const { HEALTH_PRETTY_PRINT } = env;
 
 /**
  * Das Konfigurationsobjekt für Health.
  */
-export const healthConfig: HealthConfig = {
+// https://twitter.com/mattpocockuk/status/1598708710523772929
+export const healthConfig = {
     prettyPrint:
-        prettyPrint !== undefined && prettyPrint.toLowerCase() === 'true',
-};
+        HEALTH_PRETTY_PRINT !== undefined &&
+        HEALTH_PRETTY_PRINT.toLowerCase() === 'true',
+} as const;
 
 console.info('healthConfig: %o', healthConfig);

@@ -18,6 +18,7 @@
 import { type PrettyOptions } from 'pino-pretty';
 import { type SonicBoom } from 'sonic-boom';
 import { env } from './env.js';
+import { nodeConfig } from './node.js';
 import pino from 'pino';
 import { resolve } from 'node:path';
 
@@ -30,7 +31,8 @@ const logDirDefault = 'log';
 const logFileNameDefault = 'server.log';
 const logFileDefault = resolve(logDirDefault, logFileNameDefault);
 
-const { logConfigEnv, nodeConfigEnv } = env;
+const { LOG_LEVEL, LOG_DIR, LOG_PRETTY, LOG_DEFAULT } = env;
+const { nodeEnv } = nodeConfig;
 
 // https://getpino.io
 // Log-Levels: fatal, error, warn, info, debug, trace
@@ -38,18 +40,23 @@ const { logConfigEnv, nodeConfigEnv } = env;
 // Pino wird auch von Fastify genutzt.
 // https://blog.appsignal.com/2021/09/01/best-practices-for-logging-in-nodejs.html
 
-const { nodeEnv } = nodeConfigEnv;
-const production = nodeEnv === 'production' || nodeEnv === 'PRODUCTION';
-let { logLevel } = logConfigEnv;
-if (logLevel === undefined) {
-    logLevel = production ? 'info' : 'debug';
+let logLevel = 'info';
+if (
+    LOG_LEVEL !== undefined &&
+    nodeEnv !== 'production' &&
+    nodeEnv !== 'PRODUCTION'
+) {
+    logLevel = 'debug';
 }
 
-const { logDir, pretty, defaultValue } = logConfigEnv;
+const logDir = LOG_DIR === undefined ? LOG_DIR : LOG_DIR.trimEnd();
 const logFile =
     logDir === undefined ? logFileDefault : resolve(logDir, logFileNameDefault);
+const pretty = LOG_PRETTY?.toLowerCase() === 'true';
+const defaultValue = LOG_DEFAULT?.toLowerCase() === 'true';
+
 console.info(
-    `loggerConfig: logLevel=${logLevel}, logFile=${logFile}, pretty=${pretty}, defaultValue=${defaultValue}`,
+    `logger config: logLevel=${logLevel}, logFile=${logFile}, pretty=${pretty}, defaultValue=${defaultValue}`,
 );
 
 const fileOptions = {

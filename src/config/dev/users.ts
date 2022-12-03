@@ -18,7 +18,8 @@
 import { type User } from '../../security/auth/service/user.service.js';
 import { env } from '../env.js';
 
-const { password } = env.authConfigEnv;
+const { USER_PASSWORD_ENCODED } = env;
+const password = USER_PASSWORD_ENCODED ?? '! To Be Changed !';
 
 /**
  * Ein JSON-Array der Benutzerdaten mit den vorhandenen Rollen.

@@ -17,13 +17,12 @@
 
 import { env } from './env.js';
 
-const { apolloConfigEnv } = env;
-const { debug } = apolloConfigEnv;
+const { APOLLO_DEBUG } = env;
 
-interface GraphQlConfig {
-    readonly debug: boolean;
-}
-
-export const graphQlConfig: GraphQlConfig = {
-    debug: debug?.toLowerCase() === 'true',
-};
+/**
+ * Das Konfigurationsobjekt für GraphQL.
+ */
+// https://twitter.com/mattpocockuk/status/1598708710523772929
+export const graphQlConfig = {
+    debug: APOLLO_DEBUG?.toLowerCase() === 'true',
+} as const;
