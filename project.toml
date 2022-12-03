@@ -60,16 +60,10 @@ include = [
   "/Procfile",
   "/package*.json",
   "/project.toml",
-  #"/tsconfig.json",
   "/scripts/copy-resources.js",
   #"/node_modules",
+  #"/tsconfig.json",
 ]
-
-#[[build.buildpacks]]
-# https://registry.buildpacks.io/buildpacks/paketo-buildpacks/procfile
-# https://github.com/paketo-buildpacks/procfile/releases
-# https://console.cloud.google.com/gcr/images/paketo-buildpacks/GLOBAL/procfile
-#uri = "urn:cnb:registry:paketo-buildpacks/procfile@5.4.0"
 
 #[[build.buildpacks]]
 # https://registry.buildpacks.io/buildpacks/paketo-buildpacks/node-engine
@@ -81,12 +75,12 @@ include = [
 # https://registry.buildpacks.io/buildpacks/paketo-buildpacks/nodejs
 # https://github.com/paketo-buildpacks/nodejs/releases
 # https://console.cloud.google.com/gcr/images/paketo-buildpacks/GLOBAL/nodejs
-uri = "urn:cnb:registry:paketo-buildpacks/nodejs@0.27.0"
+uri = "urn:cnb:registry:paketo-buildpacks/nodejs@0.28.0"
 
 [[build.env]]
 name = "BP_NODE_VERSION"
-#value = "19.2.0"
-value = "19.0.1"
+value = "19.2.0"
+# value = "18.12.1"
 
 # https://paketo.io/docs/howto/nodejs/#compile-native-extensions-with-node-gyp
 

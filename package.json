@@ -8,7 +8,7 @@
   "exports": "./dist/src/main.js",
   "type": "module",
   "engines": {
-    "node": ">=19.0.1",
+    "node": ">=19.2.0",
     "npm": ">=8.19.2"
   },
   "scripts": {
@@ -147,7 +147,7 @@
     "asciidoctor-kroki": "0.16.0",
     "clinic": "12.0.0",
     "depcheck": "1.4.3",
-    "eslint": "8.28.0",
+    "eslint": "8.29.0",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-eslint-comments": "3.2.0",
     "eslint-plugin-import": "2.26.0",
