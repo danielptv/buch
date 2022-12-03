@@ -27,7 +27,8 @@ const { HEALTH_PRETTY_PRINT } = env;
 /**
  * Das Konfigurationsobjekt für Health.
  */
-// https://twitter.com/mattpocockuk/status/1598708710523772929
+// "as const" fuer readonly
+// https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions
 export const healthConfig = {
     prettyPrint:
         HEALTH_PRETTY_PRINT !== undefined &&

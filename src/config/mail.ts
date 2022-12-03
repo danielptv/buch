@@ -49,6 +49,6 @@ export const mailConfig: Options = {
 
     priority: 'normal',
     logger,
-};
+} as const;
 Object.freeze(mailConfig);
 console.info('mailConfig: %o', mailConfig);

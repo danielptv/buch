@@ -60,6 +60,9 @@ const {
     USER_PASSWORD_ENCODED,
 } = process.env; // eslint-disable-line n/no-process-env
 
+// "as const" fuer readonly
+// https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions
+
 /* eslint-disable @typescript-eslint/naming-convention */
 export const env = {
     // Umgebungsvariable `NODE_ENV` als gleichnamige Konstante, die i.a. einen der
@@ -92,26 +95,3 @@ export const env = {
     USER_PASSWORD_ENCODED,
 } as const;
 /* eslint-enable @typescript-eslint/naming-convention */
-
-// https://twitter.com/mattpocockuk/status/1598708710523772929
-const nodeConfigEnv = {
-    nodeEnv: NODE_ENV,
-    port: PORT,
-    serviceHost: BUCH_SERVICE_HOST,
-    servicePort: BUCH_SERVICE_PORT,
-} as const;
-
-const logConfigEnv = {
-    logLevel: LOG_LEVEL as pino.Level | undefined,
-    logDir: LOG_DIR === undefined ? LOG_DIR : LOG_DIR.trimEnd(),
-    pretty: LOG_PRETTY?.toLowerCase() === 'true',
-    defaultValue: LOG_DEFAULT?.toLowerCase() === 'true',
-} as const;
-
-/**
- * Eingelesene Umgebungsvariable
- */
-export const env2 = {
-    nodeConfigEnv,
-    logConfigEnv,
-} as const;

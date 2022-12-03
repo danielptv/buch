@@ -31,7 +31,8 @@ const { K8S_TLS } = env;
 /**
  * Das Konfigurationsobjekt für Kubernetes.
  */
-// https://twitter.com/mattpocockuk/status/1598708710523772929
+// "as const" fuer readonly
+// https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions
 export const k8sConfig = {
     detected: isK8s,
     tls: K8S_TLS === undefined || K8S_TLS.toLowerCase() === 'true',

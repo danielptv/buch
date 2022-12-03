@@ -22,7 +22,8 @@ const { APOLLO_DEBUG } = env;
 /**
  * Das Konfigurationsobjekt für GraphQL.
  */
-// https://twitter.com/mattpocockuk/status/1598708710523772929
+// "as const" fuer readonly
+// https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions
 export const graphQlConfig = {
     debug: APOLLO_DEBUG?.toLowerCase() === 'true',
 } as const;

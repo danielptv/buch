@@ -20,4 +20,4 @@ export const paths = {
     login: 'login',
     roles: 'roles',
     swagger: 'swagger',
-};
+} as const;
