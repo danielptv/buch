@@ -23,7 +23,6 @@
 // Umgebungsvariable durch die Konfigurationsdatei .env
 // evtl. node-config
 import dotenv from 'dotenv';
-import type pino from 'pino';
 import process from 'node:process';
 
 // .env nur einlesen, falls nicht in Kubernetes bzw. in der Cloud
