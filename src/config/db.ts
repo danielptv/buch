@@ -25,6 +25,7 @@ import { Schlagwort } from '../buch/entity/schlagwort.entity.js';
 import { type TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { env } from './env.js';
 import { k8sConfig } from './kubernetes.js';
+import { defaultValue as loggerDefaultValue } from './logger.js';
 import { nodeConfig } from './node.js';
 
 const { DB_TYPE, DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWORD, DB_POPULATE } =
@@ -39,6 +40,15 @@ const host = detected ? dbType : DB_HOST ?? 'localhost';
 const username = DB_USERNAME ?? Buch.name.toLowerCase();
 const pass = DB_PASSWORD ?? 'p';
 
+// siehe auch src\buch\buch.module.ts
+const entities = [Buch, Schlagwort];
+
+// logging durch console.log()
+const logging =
+    (nodeConfig.nodeEnv === 'development' || nodeConfig.nodeEnv === 'test') &&
+    !loggerDefaultValue;
+const logger = 'advanced-console';
+
 export const typeOrmModuleOptions: TypeOrmModuleOptions =
     dbType === 'postgres'
         ? {
@@ -48,13 +58,9 @@ export const typeOrmModuleOptions: TypeOrmModuleOptions =
               username,
               password: pass,
               database,
-              // siehe auch src\buch\buch.module.ts
-              entities: [Buch, Schlagwort],
-              // logging durch console.log()
-              logging:
-                  nodeConfig.nodeEnv === 'development' ||
-                  nodeConfig.nodeEnv === 'test',
-              logger: 'advanced-console',
+              entities,
+              logging,
+              logger,
           }
         : {
               type: 'mysql',
@@ -63,14 +69,10 @@ export const typeOrmModuleOptions: TypeOrmModuleOptions =
               username,
               password: pass,
               database,
-              // siehe auch src\buch\buch.module.ts
-              entities: [Buch, Schlagwort],
+              entities,
               supportBigNumbers: true,
-              // logging durch console.log()
-              logging:
-                  nodeConfig.nodeEnv === 'development' ||
-                  nodeConfig.nodeEnv === 'test',
-              logger: 'advanced-console',
+              logging,
+              logger,
           };
 Object.freeze(typeOrmModuleOptions);
 

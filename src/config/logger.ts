@@ -34,6 +34,14 @@ const logFileDefault = resolve(logDirDefault, logFileNameDefault);
 const { LOG_LEVEL, LOG_DIR, LOG_PRETTY, LOG_DEFAULT } = env;
 const { nodeEnv } = nodeConfig;
 
+// Default-Einstellung fuer Logging
+export const defaultValue = LOG_DEFAULT?.toLowerCase() === 'true';
+
+const logDir = LOG_DIR === undefined ? LOG_DIR : LOG_DIR.trimEnd();
+const logFile =
+    logDir === undefined ? logFileDefault : resolve(logDir, logFileNameDefault);
+const pretty = LOG_PRETTY?.toLowerCase() === 'true';
+
 // https://getpino.io
 // Log-Levels: fatal, error, warn, info, debug, trace
 // Alternativen: Winston, log4js, Bunyan
@@ -42,18 +50,13 @@ const { nodeEnv } = nodeConfig;
 
 let logLevel = 'info';
 if (
-    LOG_LEVEL !== undefined &&
+    LOG_LEVEL === 'debug' &&
     nodeEnv !== 'production' &&
-    nodeEnv !== 'PRODUCTION'
+    nodeEnv !== 'PRODUCTION' &&
+    !defaultValue
 ) {
     logLevel = 'debug';
 }
-
-const logDir = LOG_DIR === undefined ? LOG_DIR : LOG_DIR.trimEnd();
-const logFile =
-    logDir === undefined ? logFileDefault : resolve(logDir, logFileNameDefault);
-const pretty = LOG_PRETTY?.toLowerCase() === 'true';
-const defaultValue = LOG_DEFAULT?.toLowerCase() === 'true';
 
 console.info(
     `logger config: logLevel=${logLevel}, logFile=${logFile}, pretty=${pretty}, defaultValue=${defaultValue}`,
