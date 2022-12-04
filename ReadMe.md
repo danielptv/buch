@@ -767,23 +767,10 @@ In Anlehnung an die
 - Klassennamen mit PascalCase
 - Union-Types (mit Strings) statt Enums
 - Attribute und Funktionen mit camelCase
+- `#` für private Properties
 - private Properties _nicht_ mit vorangestelltem **\_**
 - Interfaces _nicht_ mit vorangestelltem **I**
-- _Barrel_ für häufige Imports, z.B.
-  - `config\index.ts` erstellen:
-
-```javascript
-    export * from './bar';
-    export * from './foo';
-```
-
-- einfaches Importieren:
-
-```javascript
-    import { Bar, Foo } from 'config';
-```
-
-- [...].`forEach`(), [...].`filter`() und [...].`map`() statt for-Schleife
+- Higher-Order Functions: [...].`forEach`(), [...].`filter`() und [...].`map`()
 - Arrow-Functions statt function()
 - `undefined` verwenden und nicht `null`
 - Geschweifte Klammern bei if-Anweisungen
