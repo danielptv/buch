@@ -49,6 +49,8 @@ const logging =
     !loggerDefaultValue;
 const logger = 'advanced-console';
 
+// TODO records als "deeply immutable data structure" (Stage 2)
+// https://github.com/tc39/proposal-record-tuple
 export const typeOrmModuleOptions: TypeOrmModuleOptions =
     dbType === 'postgres'
         ? {
