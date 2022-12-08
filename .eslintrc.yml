@@ -73,6 +73,13 @@ env:
   es2021: true
   jest: true
 
+overrides:
+  # https://github.com/B2o5T/graphql-eslint
+  - files: ['*.graphql']
+    parser: '@graphql-eslint/eslint-plugin'
+    plugins: ['@graphql-eslint']
+    extends: 'plugin:@graphql-eslint/schema-all'
+
 rules:
   # https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/eslint-plugin#supported-rules
   # https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/eslint-plugin/docs/rules
