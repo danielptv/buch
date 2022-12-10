@@ -27,7 +27,6 @@ import {
 } from '../../testserver.js';
 import { HttpStatus } from '@nestjs/common';
 import dotenv from 'dotenv';
-import each from 'jest-each';
 import process from 'node:process';
 
 dotenv.config();
@@ -39,7 +38,7 @@ const { USER_PASSWORD, USER_PASSWORD_FALSCH } = env;
 // -----------------------------------------------------------------------------
 const username = 'admin';
 const password = USER_PASSWORD;
-const passwordFalsch = [USER_PASSWORD_FALSCH, USER_PASSWORD_FALSCH];
+const passwordFalsch = USER_PASSWORD_FALSCH;
 
 // -----------------------------------------------------------------------------
 // T e s t s
@@ -86,24 +85,23 @@ describe('REST-Schnittstelle /login', () => {
         expect(token).toMatch(/^[a-z\d]+\.[a-z\d]+\.[\w-]+$/iu);
     });
 
-    each(passwordFalsch).test(
-        'Login mit falschem Passwort',
-        async (pwd: string) => {
-            // given
-            const body = `username=${username}&password=${pwd}`;
+    test('Login mit falschem Passwort', async () => {
+        // given
+        const body = `username=${username}&password=${passwordFalsch}`;
 
-            // when
-            const response: AxiosResponse<Record<string, any>> =
-                await client.post(loginPath, body);
+        // when
+        const response: AxiosResponse<Record<string, any>> = await client.post(
+            loginPath,
+            body,
+        );
 
-            // then
-            const { status, data } = response;
+        // then
+        const { status, data } = response;
 
-            expect(status).toBe(HttpStatus.UNAUTHORIZED);
-            expect(data.statusCode).toBe(HttpStatus.UNAUTHORIZED);
-            expect(data.message).toMatch(/^Unauthorized$/iu);
-        },
-    );
+        expect(status).toBe(HttpStatus.UNAUTHORIZED);
+        expect(data.statusCode).toBe(HttpStatus.UNAUTHORIZED);
+        expect(data.message).toMatch(/^Unauthorized$/iu);
+    });
 
     test('Login ohne Benutzerkennung', async () => {
         // given

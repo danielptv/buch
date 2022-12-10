@@ -29,7 +29,7 @@ import { AppModule } from './app.module.js';
 import { type INestApplication } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import compression from 'compression';
-import { corsOptions } from './security/http/cors.options.js';
+import { corsOptions } from './config/cors.options.js';
 import { helmetHandlers } from './security/http/helmet.handler.js';
 import { nodeConfig } from './config/node.js';
 import { paths } from './config/paths.js';

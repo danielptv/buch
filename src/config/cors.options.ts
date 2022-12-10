@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { type CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
+import { type CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface.js';
 
 export const corsOptions: CorsOptions = {
     // Access-Control-Allow-Origin (nur Requests von origin zulassen)

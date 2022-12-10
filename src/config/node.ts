@@ -20,7 +20,7 @@
  * @packageDocumentation
  */
 
-import { type HttpsOptions } from '@nestjs/common/interfaces/external/https-options.interface';
+import { type HttpsOptions } from '@nestjs/common/interfaces/external/https-options.interface.js';
 import { cloud } from './cloud.js';
 import { env } from './env.js';
 import { hostname } from 'node:os';

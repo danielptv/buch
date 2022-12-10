@@ -39,6 +39,8 @@ import { jsonSchema } from './jsonSchema.js';
 export const ID_PATTERN = new RE2(
     '^[\\dA-Fa-f]{8}-[\\dA-Fa-f]{4}-[\\dA-Fa-f]{4}-[\\dA-Fa-f]{4}-[\\dA-Fa-f]{12}$',
 );
+
+/* eslint-disable @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-assignment, , @typescript-eslint/no-unsafe-return */
 @Injectable()
 export class BuchValidationService {
     #ajv = new Ajv2020({
@@ -50,8 +52,8 @@ export class BuchValidationService {
 
     constructor() {
         // https://github.com/ajv-validator/ajv-formats#formats
-        formatsPlugin(this.#ajv, ['date', 'email', 'uri']);
-        ajvErrors(this.#ajv);
+        formatsPlugin.default(this.#ajv, ['date', 'email', 'uri']);
+        ajvErrors.default(this.#ajv);
         this.#ajv.addFormat('ISBN', {
             type: 'string',
             validate: this.#validateISBN,
@@ -144,3 +146,4 @@ export class BuchValidationService {
         return false;
     };
 }
+/* eslint-enable @typescript-eslint/no-unsafe-argument, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-return */

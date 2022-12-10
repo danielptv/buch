@@ -101,7 +101,6 @@ describe('PUT /:id', () => {
     // Testserver starten und dabei mit der DB verbinden
     beforeAll(async () => {
         await startServer();
-
         const baseURL = `https://${host}:${port}`;
         client = axios.create({
             baseURL,

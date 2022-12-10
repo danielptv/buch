@@ -19,7 +19,7 @@ import {
     Module,
     type NestModule,
 } from '@nestjs/common';
-import { ApolloDriver } from '@nestjs/apollo';
+import { type ApolloDriverConfig } from '@nestjs/apollo';
 import { AuthModule } from './security/auth/auth.module.js';
 import { BuchGetController } from './buch/rest/buch-get.controller.js';
 import { BuchModule } from './buch/buch.module.js';
@@ -30,7 +30,7 @@ import { HealthModule } from './health/health.module.js';
 import { LoggerModule } from './logger/logger.module.js';
 import { RequestLoggerMiddleware } from './logger/request-logger.middleware.js';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { graphQlConfig } from './config/graphql.js';
+import { graphQlModuleOptions } from './config/graphql.js';
 import { typeOrmModuleOptions } from './config/db.js';
 
 @Module({
@@ -38,13 +38,7 @@ import { typeOrmModuleOptions } from './config/db.js';
         AuthModule,
         BuchModule,
         DevModule,
-        GraphQLModule.forRoot({
-            typePaths: ['./**/*.graphql'],
-            // alternativ: Mercurius (statt Apollo) fuer Fastify (statt Express)
-            driver: ApolloDriver,
-            debug: graphQlConfig.debug,
-            playground: true,
-        }),
+        GraphQLModule.forRoot<ApolloDriverConfig>(graphQlModuleOptions),
         LoggerModule,
         HealthModule,
         TypeOrmModule.forRoot(typeOrmModuleOptions),

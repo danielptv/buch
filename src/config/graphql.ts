@@ -15,6 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+import { ApolloDriver, type ApolloDriverConfig } from '@nestjs/apollo';
 import { env } from './env.js';
 
 const { APOLLO_DEBUG } = env;
@@ -22,10 +23,11 @@ const { APOLLO_DEBUG } = env;
 /**
  * Das Konfigurationsobjekt für GraphQL.
  */
-// "as const" fuer readonly
-// https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions
-// TODO records als "deeply immutable data structure" (Stage 2)
-// https://github.com/tc39/proposal-record-tuple
-export const graphQlConfig = {
+export const graphQlModuleOptions: ApolloDriverConfig = {
+    typePaths: ['./**/*.graphql'],
+    // alternativ: Mercurius (statt Apollo) fuer Fastify (statt Express)
+    driver: ApolloDriver,
     debug: APOLLO_DEBUG?.toLowerCase() === 'true',
-} as const;
+    playground: true,
+    // TODO formatError und logger konfigurieren, damit UserInputError nicht in der Konsole protokolliert wird
+};

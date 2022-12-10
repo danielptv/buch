@@ -49,7 +49,7 @@ export class BuchQueryResolver {
         const buch = await this.#service.findById(idStr);
         if (buch === undefined) {
             // UserInputError liefert Statuscode 200
-            // Weitere Error-Klasse in apollo-server-errors:
+            // Weitere Error-Klassen in apollo-server-errors:
             // SyntaxError, ValidationError, AuthenticationError, ForbiddenError,
             // PersistedQuery, PersistedQuery
             // https://www.apollographql.com/blog/graphql/error-handling/full-stack-error-handling-with-graphql-apollo

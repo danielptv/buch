@@ -17,7 +17,7 @@
  */
 
 import { type GraphQLRequest, type GraphQLResponse } from 'apollo-server-types';
-import { afterAll, beforeAll, describe, test } from '@jest/globals';
+import { afterAll, beforeAll, describe, expect, test } from '@jest/globals';
 import axios, { type AxiosInstance, type AxiosResponse } from 'axios';
 import {
     host,
@@ -28,7 +28,6 @@ import {
 } from '../testserver.js';
 import { type BuchDTO } from '../../src/buch/graphql/buch-query.resolver.js';
 import { HttpStatus } from '@nestjs/common';
-import each from 'jest-each';
 
 /* eslint-disable jest/no-export */
 export type GraphQLQuery = Pick<GraphQLRequest, 'query'>;
@@ -38,17 +37,13 @@ export type GraphQLResponseBody = Pick<GraphQLResponse, 'data' | 'errors'>;
 // -----------------------------------------------------------------------------
 // T e s t d a t e n
 // -----------------------------------------------------------------------------
-const idVorhanden = [
-    '00000000-0000-0000-0000-000000000001',
-    '00000000-0000-0000-0000-000000000002',
-    '00000000-0000-0000-0000-000000000003',
-];
+const idVorhanden = '00000000-0000-0000-0000-000000000001';
 
-const titelVorhanden = ['Alpha', 'Beta', 'Gamma'];
+const titelVorhanden = 'Alpha';
 
-const teilTitelVorhanden = ['a', 't', 'g'];
+const teilTitelVorhanden = 'a';
 
-const teilTitelNichtVorhanden = ['Xyz', 'abc'];
+const teilTitelNichtVorhanden = 'abc';
 
 // -----------------------------------------------------------------------------
 // T e s t s
@@ -73,12 +68,12 @@ describe('GraphQL Queries', () => {
         await shutdownServer();
     });
 
-    each(idVorhanden).test('Buch zu vorhandener ID %s', async (id: string) => {
+    test('Buch zu vorhandener ID', async () => {
         // given
         const body: GraphQLRequest = {
             query: `
                 {
-                    buch(id: "${id}") {
+                    buch(id: "${idVorhanden}") {
                         titel
                         art
                         isbn
@@ -150,129 +145,126 @@ describe('GraphQL Queries', () => {
         expect(extensions!.code).toBe('BAD_USER_INPUT');
     });
 
-    each(titelVorhanden).test(
-        'Buch zu vorhandenem Titel %s',
-        async (titel: string) => {
-            // given
-            const body: GraphQLRequest = {
-                query: `
-                    {
-                        buecher(titel: "${titel}") {
-                            titel
-                            art
-                        }
+    test('Buch zu vorhandenem Titel', async () => {
+        // given
+        const body: GraphQLRequest = {
+            query: `
+                {
+                    buecher(titel: "${titelVorhanden}") {
+                        titel
+                        art
                     }
-                `,
-            };
+                }
+            `,
+        };
 
-            // when
-            const response: AxiosResponse<GraphQLResponseBody> =
-                await client.post(graphqlPath, body);
+        // when
+        const response: AxiosResponse<GraphQLResponseBody> = await client.post(
+            graphqlPath,
+            body,
+        );
 
-            // then
-            const { status, headers, data } = response;
+        // then
+        const { status, headers, data } = response;
 
-            expect(status).toBe(HttpStatus.OK);
-            expect(headers['content-type']).toMatch(/json/iu);
-            expect(data.errors).toBeUndefined();
+        expect(status).toBe(HttpStatus.OK);
+        expect(headers['content-type']).toMatch(/json/iu);
+        expect(data.errors).toBeUndefined();
 
-            expect(data.data).toBeDefined();
+        expect(data.data).toBeDefined();
 
-            const { buecher } = data.data!;
+        const { buecher } = data.data!;
 
-            expect(buecher).not.toHaveLength(0);
+        expect(buecher).not.toHaveLength(0);
 
-            const buecherArray: BuchDTO[] = buecher;
+        const buecherArray: BuchDTO[] = buecher;
 
-            expect(buecherArray).toHaveLength(1);
+        expect(buecherArray).toHaveLength(1);
 
-            const [buch] = buecherArray;
+        const [buch] = buecherArray;
 
-            expect(buch!.titel).toBe(titel);
-        },
-    );
+        expect(buch!.titel).toBe(titelVorhanden);
+    });
 
-    each(teilTitelVorhanden).test(
-        'Buch zu vorhandenem Teil-Titel %s',
-        async (teilTitel: string) => {
-            // given
-            const body: GraphQLRequest = {
-                query: `
-                    {
-                        buecher(titel: "${teilTitel}") {
-                            titel
-                            art
-                        }
+    test('Buch zu vorhandenem Teil-Titel', async () => {
+        // given
+        const body: GraphQLRequest = {
+            query: `
+                {
+                    buecher(titel: "${teilTitelVorhanden}") {
+                        titel
+                        art
                     }
-                `,
-            };
+                }
+            `,
+        };
 
-            // when
-            const response: AxiosResponse<GraphQLResponseBody> =
-                await client.post(graphqlPath, body);
+        // when
+        const response: AxiosResponse<GraphQLResponseBody> = await client.post(
+            graphqlPath,
+            body,
+        );
 
-            // then
-            const { status, headers, data } = response;
+        // then
+        const { status, headers, data } = response;
 
-            expect(status).toBe(HttpStatus.OK);
-            expect(headers['content-type']).toMatch(/json/iu);
-            expect(data.errors).toBeUndefined();
-            expect(data.data).toBeDefined();
+        expect(status).toBe(HttpStatus.OK);
+        expect(headers['content-type']).toMatch(/json/iu);
+        expect(data.errors).toBeUndefined();
+        expect(data.data).toBeDefined();
 
-            const { buecher } = data.data!;
+        const { buecher } = data.data!;
 
-            expect(buecher).not.toHaveLength(0);
+        expect(buecher).not.toHaveLength(0);
 
-            const buecherArray: BuchDTO[] = buecher;
-            buecherArray
-                .map((buch) => buch.titel)
-                .forEach((titel: string) =>
-                    expect(titel.toLowerCase()).toEqual(
-                        expect.stringContaining(teilTitel),
-                    ),
-                );
-        },
-    );
+        const buecherArray: BuchDTO[] = buecher;
+        buecherArray
+            .map((buch) => buch.titel)
+            .forEach((titel: string) =>
+                expect(titel.toLowerCase()).toEqual(
+                    expect.stringContaining(teilTitelVorhanden),
+                ),
+            );
+    });
 
-    each(teilTitelNichtVorhanden).test(
-        'Buch zu nicht vorhandenem Titel %s',
-        async (teilTitel: string) => {
-            // given
-            const body: GraphQLRequest = {
-                query: `
-                    {
-                        buecher(titel: "${teilTitel}") {
-                            titel
-                            art
-                        }
+    test('Buch zu nicht vorhandenem Titel', async () => {
+        // given
+        const body: GraphQLRequest = {
+            query: `
+                {
+                    buecher(titel: "${teilTitelNichtVorhanden}") {
+                        titel
+                        art
                     }
-                `,
-            };
+                }
+            `,
+        };
 
-            // when
-            const response: AxiosResponse<GraphQLResponseBody> =
-                await client.post(graphqlPath, body);
+        // when
+        const response: AxiosResponse<GraphQLResponseBody> = await client.post(
+            graphqlPath,
+            body,
+        );
 
-            // then
-            const { status, headers, data } = response;
+        // then
+        const { status, headers, data } = response;
 
-            expect(status).toBe(HttpStatus.OK);
-            expect(headers['content-type']).toMatch(/json/iu);
-            expect(data.data!.buecher).toBeNull();
+        expect(status).toBe(HttpStatus.OK);
+        expect(headers['content-type']).toMatch(/json/iu);
+        expect(data.data!.buecher).toBeNull();
 
-            const { errors } = data;
+        const { errors } = data;
 
-            expect(errors).toHaveLength(1);
+        expect(errors).toHaveLength(1);
 
-            const [error] = errors!;
-            const { message, path, extensions } = error!;
+        const [error] = errors!;
+        const { message, path, extensions } = error!;
 
-            expect(message).toBe('Es wurden keine Buecher gefunden.');
-            expect(path).toBeDefined();
-            expect(path!![0]).toBe('buecher');
-            expect(extensions).toBeDefined();
-            expect(extensions!.code).toBe('BAD_USER_INPUT');
-        },
-    );
+        expect(message).toBe('Es wurden keine Buecher gefunden.');
+        expect(path).toBeDefined();
+        expect(path!![0]).toBe('buecher');
+        expect(extensions).toBeDefined();
+        expect(extensions!.code).toBe('BAD_USER_INPUT');
+    });
 });
 /* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-extra-non-null-assertion */

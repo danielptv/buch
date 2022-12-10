@@ -44,24 +44,13 @@ import {
 } from '../testserver.js';
 import { type BuchModel } from '../../src/buch/rest/buch-get.controller.js';
 import { HttpStatus } from '@nestjs/common';
-import each from 'jest-each';
 
 // -----------------------------------------------------------------------------
 // T e s t d a t e n
 // -----------------------------------------------------------------------------
-const idVorhanden = [
-    '00000000-0000-0000-0000-000000000001',
-    '00000000-0000-0000-0000-000000000002',
-    '00000000-0000-0000-0000-000000000003',
-];
-const idNichtVorhanden = [
-    '88888888-8888-8888-8888-888888888888',
-    '99999999-9999-9999-9999-999999999999',
-];
-const idVorhandenETag = [
-    ['00000000-0000-0000-0000-000000000001', '"0"'],
-    ['00000000-0000-0000-0000-000000000002', '"0"'],
-];
+const idVorhanden = '00000000-0000-0000-0000-000000000001';
+const idNichtVorhanden = '99999999-9999-9999-9999-999999999999';
+const idVorhandenETag = '00000000-0000-0000-0000-000000000001';
 
 // -----------------------------------------------------------------------------
 // T e s t s
@@ -86,9 +75,9 @@ describe('GET /:id', () => {
         await shutdownServer();
     });
 
-    each(idVorhanden).test('Buch zu vorhandener ID %s', async (id: string) => {
+    test('Buch zu vorhandener ID', async () => {
         // given
-        const url = `/${id}`;
+        const url = `/${idVorhanden}`;
 
         // when
         const response: AxiosResponse<BuchModel> = await client.get(url);
@@ -106,39 +95,33 @@ describe('GET /:id', () => {
         expect(selfLink).toMatch(new RegExp(`${url}$`, 'u'));
     });
 
-    each(idNichtVorhanden).test(
-        'Kein Buch zu nicht-vorhandener ID %s',
-        async (id: string) => {
-            // given
-            const url = `/${id}`;
+    test('Kein Buch zu nicht-vorhandener ID', async () => {
+        // given
+        const url = `/${idNichtVorhanden}`;
 
-            // when
-            const response: AxiosResponse<string> = await client.get(url);
+        // when
+        const response: AxiosResponse<string> = await client.get(url);
 
-            // then
-            const { status, data } = response;
+        // then
+        const { status, data } = response;
 
-            expect(status).toBe(HttpStatus.NOT_FOUND);
-            expect(data).toMatch(/^not found$/iu);
-        },
-    );
+        expect(status).toBe(HttpStatus.NOT_FOUND);
+        expect(data).toMatch(/^not found$/iu);
+    });
 
-    each(idVorhandenETag).test(
-        'Buch zu vorhandener ID %s mit ETag %s',
-        async (id: string, etag: string) => {
-            // given
-            const url = `/${id}`;
+    test('Buch zu vorhandener ID mit ETag', async () => {
+        // given
+        const url = `/${idVorhandenETag}`;
 
-            // when
-            const response: AxiosResponse<string> = await client.get(url, {
-                headers: { 'If-None-Match': etag }, // eslint-disable-line @typescript-eslint/naming-convention
-            });
+        // when
+        const response: AxiosResponse<string> = await client.get(url, {
+            headers: { 'If-None-Match': '"0"' }, // eslint-disable-line @typescript-eslint/naming-convention
+        });
 
-            // then
-            const { status, data } = response;
+        // then
+        const { status, data } = response;
 
-            expect(status).toBe(HttpStatus.NOT_MODIFIED);
-            expect(data).toBe('');
-        },
-    );
+        expect(status).toBe(HttpStatus.NOT_MODIFIED);
+        expect(data).toBe('');
+    });
 });

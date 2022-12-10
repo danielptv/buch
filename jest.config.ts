@@ -22,6 +22,10 @@
 import { type Config } from '@jest/types';
 
 const jestConfig: Config.InitialOptions = {
+    // globalSetup: '<rootDir>/dist/__tests__/global-setup.js',
+    // globalTeardown: '<rootDir>/dist/__tests__/global-teardown.js',
+    // setupFilesAfterEnv: ['<rootDir>/dist/__tests__/setup-jest.js'],
+
     // Verzeichnis in node_modules mit einer Datei jest-preset.js
     // https://kulshekhar.github.io/ts-jest/docs/next/guides/esm-support
     // https://kulshekhar.github.io/ts-jest/docs/getting-started/presets

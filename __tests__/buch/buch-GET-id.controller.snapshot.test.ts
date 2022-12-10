@@ -41,16 +41,11 @@ import {
 } from '../testserver.js';
 import { type BuchModel } from '../../src/buch/rest/buch-get.controller.js';
 import { HttpStatus } from '@nestjs/common';
-import each from 'jest-each';
 
 // -----------------------------------------------------------------------------
 // T e s t d a t e n
 // -----------------------------------------------------------------------------
-const idVorhanden = [
-    '00000000-0000-0000-0000-000000000001',
-    '00000000-0000-0000-0000-000000000002',
-    '00000000-0000-0000-0000-000000000003',
-];
+const idVorhanden = '00000000-0000-0000-0000-000000000001';
 
 // -----------------------------------------------------------------------------
 // T e s t s
@@ -74,9 +69,9 @@ describe('GET /:id', () => {
         await shutdownServer();
     });
 
-    each(idVorhanden).test('Buch zu vorhandener ID %s', async (id: string) => {
+    test('Buch zu vorhandener ID', async () => {
         // given
-        const url = `/${id}`;
+        const url = `/${idVorhanden}`;
 
         // when
         const response: AxiosResponse<BuchModel> = await client.get(url);

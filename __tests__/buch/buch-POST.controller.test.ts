@@ -94,8 +94,6 @@ describe('POST /', () => {
         });
     });
 
-    // (done?: DoneFn) => Promise<void | undefined | unknown> | void | undefined
-    // close(callback?: (err?: Error) => void): this
     afterAll(async () => {
         await shutdownServer();
     });

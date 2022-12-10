@@ -31,13 +31,12 @@ import {
 } from '../testserver.js';
 import { HttpStatus } from '@nestjs/common';
 import { ID_PATTERN } from '../../src/buch/service/buch-validation.service.js';
-import each from 'jest-each';
 import { loginGraphQL } from '../login.js';
 
 // -----------------------------------------------------------------------------
 // T e s t d a t e n
 // -----------------------------------------------------------------------------
-const idsLoeschen = ['00000000-0000-0000-0000-000000000003'];
+const idLoeschen = '00000000-0000-0000-0000-000000000003';
 
 // -----------------------------------------------------------------------------
 // T e s t s
@@ -351,14 +350,14 @@ describe('GraphQL Mutations', () => {
     });
 
     // -------------------------------------------------------------------------
-    each(idsLoeschen).test('Buch loeschen %s', async (id: string) => {
+    test('Buch loeschen', async () => {
         // given
         const token = await loginGraphQL(client);
         const authorization = { Authorization: `Bearer ${token}` }; // eslint-disable-line @typescript-eslint/naming-convention
         const body: GraphQLQuery = {
             query: `
                 mutation {
-                    delete(id: "${id}")
+                    delete(id: "${idLoeschen}")
                 }
             `,
         };

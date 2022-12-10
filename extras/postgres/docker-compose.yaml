@@ -16,8 +16,8 @@
 # Aufruf:   docker compose up
 #           docker compose down
 
-# BEACHTE: Bei "pgadmin" immer Ausloggen.
-# Sonst hat man abgelaufene Sessions und erhaelt die Fehlermeldung "The CSRF session token is missing."
+# Netzwerk "postgres_default" für die die Container durch den Verzeichnisnamen
+# BEACHTE: Bei "pgadmin" immer Ausloggen. Sonst: Fehlermeldung "The CSRF session token is missing."
 
 # docker compose exec postgres bash
 #   psql --username=postgres
