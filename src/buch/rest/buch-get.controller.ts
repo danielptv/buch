@@ -178,7 +178,7 @@ export class BuchGetController {
      * @returns Leeres Promise-Objekt.
      */
     // eslint-disable-next-line max-params, max-lines-per-function
-    @Get('/:id')
+    @Get(':id')
     @ApiOperation({ summary: 'Suche mit der Buch-ID', tags: ['Suchen'] })
     @ApiParam({
         name: 'id',

@@ -151,7 +151,7 @@ export class BuchWriteController {
      * @returns Leeres Promise-Objekt.
      */
     // eslint-disable-next-line max-params
-    @Put('/:id')
+    @Put(':id')
     @Roles('admin', 'mitarbeiter')
     @ApiOperation({
         summary: 'Ein vorhandenes Buch aktualisieren',
@@ -219,7 +219,7 @@ export class BuchWriteController {
      * @param res Leeres Response-Objekt von Express.
      * @returns Leeres Promise-Objekt.
      */
-    @Delete('/:id')
+    @Delete(':id')
     @Roles('admin')
     @ApiOperation({ summary: 'Buch mit der ID löschen', tags: ['Loeschen'] })
     @ApiHeader({
