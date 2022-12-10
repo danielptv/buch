@@ -57,6 +57,7 @@ import { RolesGuard } from '../../security/auth/roles/roles.guard.js';
 import { type Schlagwort } from '../entity/schlagwort.entity.js';
 import { getBaseUri } from './getBaseUri.js';
 import { getLogger } from '../../logger/logger.js';
+import { paths } from '../../config/paths.js';
 
 export type BuchDTO = Omit<
     Buch,
@@ -73,7 +74,7 @@ export type BuchUpdateDTO = Omit<
 /**
  * Die Controller-Klasse für die Verwaltung von Bücher.
  */
-@Controller()
+@Controller(paths.rest)
 @UseGuards(JwtAuthGuard, RolesGuard)
 @UseInterceptors(ResponseTimeInterceptor)
 @ApiTags('Buch API')
@@ -150,7 +151,7 @@ export class BuchWriteController {
      * @returns Leeres Promise-Objekt.
      */
     // eslint-disable-next-line max-params
-    @Put(':id')
+    @Put('/:id')
     @Roles('admin', 'mitarbeiter')
     @ApiOperation({
         summary: 'Ein vorhandenes Buch aktualisieren',
@@ -218,7 +219,7 @@ export class BuchWriteController {
      * @param res Leeres Response-Objekt von Express.
      * @returns Leeres Promise-Objekt.
      */
-    @Delete(':id')
+    @Delete('/:id')
     @Roles('admin')
     @ApiOperation({ summary: 'Buch mit der ID löschen', tags: ['Loeschen'] })
     @ApiHeader({

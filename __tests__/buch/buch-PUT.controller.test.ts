@@ -92,7 +92,7 @@ const veraltesBuch: BuchUpdateDTO = {
 // -----------------------------------------------------------------------------
 // Test-Suite
 // eslint-disable-next-line max-lines-per-function
-describe('PUT /:id', () => {
+describe('PUT /rest/:id', () => {
     let client: AxiosInstance;
     const headers: Record<string, string> = {
         'Content-Type': 'application/json', // eslint-disable-line @typescript-eslint/naming-convention
@@ -116,7 +116,7 @@ describe('PUT /:id', () => {
 
     test('Vorhandenes Buch aendern', async () => {
         // given
-        const url = `/${idVorhanden}`;
+        const url = `/rest/${idVorhanden}`;
         const token = await loginRest(client);
         headers.Authorization = `Bearer ${token}`;
         headers['If-Match'] = '"0"';
@@ -137,7 +137,7 @@ describe('PUT /:id', () => {
 
     test('Nicht-vorhandenes Buch aendern', async () => {
         // given
-        const url = `/${idNichtVorhanden}`;
+        const url = `/rest/${idNichtVorhanden}`;
         const token = await loginRest(client);
         headers.Authorization = `Bearer ${token}`;
         headers['If-Match'] = '"0"';
@@ -160,7 +160,7 @@ describe('PUT /:id', () => {
 
     test('Vorhandenes Buch aendern, aber mit ungueltigen Daten', async () => {
         // given
-        const url = `/${idVorhanden}`;
+        const url = `/rest/${idVorhanden}`;
         const token = await loginRest(client);
         headers.Authorization = `Bearer ${token}`;
         headers['If-Match'] = '"0"';
@@ -191,7 +191,7 @@ describe('PUT /:id', () => {
 
     test('Vorhandenes Buch aendern, aber ohne Versionsnummer', async () => {
         // given
-        const url = `/${idVorhanden}`;
+        const url = `/rest/${idVorhanden}`;
         const token = await loginRest(client);
         headers.Authorization = `Bearer ${token}`;
         delete headers['If-Match'];
@@ -212,7 +212,7 @@ describe('PUT /:id', () => {
 
     test('Vorhandenes Buch aendern, aber mit alter Versionsnummer', async () => {
         // given
-        const url = `/${idVorhanden}`;
+        const url = `/rest/${idVorhanden}`;
         const token = await loginRest(client);
         headers.Authorization = `Bearer ${token}`;
         headers['If-Match'] = '"-1"';
@@ -233,7 +233,7 @@ describe('PUT /:id', () => {
 
     test('Vorhandenes Buch aendern, aber ohne Token', async () => {
         // given
-        const url = `/${idVorhanden}`;
+        const url = `/rest/${idVorhanden}`;
         delete headers.Authorization;
         headers['If-Match'] = '"0"';
 
@@ -253,7 +253,7 @@ describe('PUT /:id', () => {
 
     test('Vorhandenes Buch aendern, aber mit falschem Token', async () => {
         // given
-        const url = `/${idVorhanden}`;
+        const url = `/rest/${idVorhanden}`;
         const token = 'FALSCH';
         headers.Authorization = `Bearer ${token}`;
 

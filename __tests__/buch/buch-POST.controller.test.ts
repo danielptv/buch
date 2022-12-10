@@ -77,7 +77,7 @@ const neuesBuchTitelExistiert: BuchDTO = {
 // -----------------------------------------------------------------------------
 // Test-Suite
 // eslint-disable-next-line max-lines-per-function
-describe('POST /', () => {
+describe('POST /rest', () => {
     let client: AxiosInstance;
     const headers: Record<string, string> = {
         'Content-Type': 'application/json', // eslint-disable-line @typescript-eslint/naming-convention
@@ -105,7 +105,7 @@ describe('POST /', () => {
 
         // when
         const response: AxiosResponse<string> = await client.post(
-            '/',
+            '/rest',
             neuesBuch,
             { headers },
         );
@@ -139,7 +139,7 @@ describe('POST /', () => {
 
         // when
         const response: AxiosResponse<string> = await client.post(
-            '/',
+            '/rest',
             neuesBuchInvalid,
             { headers },
         );
@@ -168,7 +168,7 @@ describe('POST /', () => {
 
         // when
         const response: AxiosResponse<string> = await client.post(
-            '/',
+            '/rest',
             neuesBuchTitelExistiert,
             { headers },
         );
@@ -183,7 +183,7 @@ describe('POST /', () => {
     test('Neues Buch, aber ohne Token', async () => {
         // when
         const response: AxiosResponse<Record<string, any>> = await client.post(
-            '/',
+            '/rest',
             neuesBuch,
         );
 
@@ -201,7 +201,7 @@ describe('POST /', () => {
 
         // when
         const response: AxiosResponse<Record<string, any>> = await client.post(
-            '/',
+            '/rest',
             neuesBuch,
             { headers },
         );

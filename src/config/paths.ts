@@ -16,6 +16,7 @@
  */
 
 export const paths = {
+    rest: 'rest',
     auth: 'auth',
     login: 'login',
     roles: 'roles',

@@ -37,13 +37,13 @@ const id = '00000000-0000-0000-0000-000000000050';
 // -----------------------------------------------------------------------------
 // Test-Suite
 // eslint-disable-next-line max-lines-per-function
-describe('DELETE /buecher', () => {
+describe('DELETE /rest/buecher', () => {
     let client: AxiosInstance;
 
     // Testserver starten und dabei mit der DB verbinden
     beforeAll(async () => {
         await startServer();
-        const baseURL = `https://${host}:${port}/`;
+        const baseURL = `https://${host}:${port}`;
         client = axios.create({
             baseURL,
             httpsAgent,
@@ -57,7 +57,7 @@ describe('DELETE /buecher', () => {
 
     test('Vorhandenes Buch loeschen', async () => {
         // given
-        const url = `/${id}`;
+        const url = `/rest/${id}`;
         const token = await loginRest(client);
         const headers: Record<string, string> = {
             Authorization: `Bearer ${token}`, // eslint-disable-line @typescript-eslint/naming-convention
@@ -77,7 +77,7 @@ describe('DELETE /buecher', () => {
 
     test('Buch loeschen, aber ohne Token', async () => {
         // given
-        const url = `/${id}`;
+        const url = `/rest/${id}`;
 
         // when
         const response: AxiosResponse<Record<string, any>> =
@@ -92,7 +92,7 @@ describe('DELETE /buecher', () => {
 
     test('Buch loeschen, aber mit falschem Token', async () => {
         // given
-        const url = `/${id}`;
+        const url = `/rest/${id}`;
         const token = 'FALSCH';
         const headers: Record<string, string> = {
             Authorization: `Bearer ${token}`, // eslint-disable-line @typescript-eslint/naming-convention

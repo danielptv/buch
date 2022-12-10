@@ -52,6 +52,7 @@ import { Request, Response } from 'express';
 import { ResponseTimeInterceptor } from '../../logger/response-time.interceptor.js';
 import { getBaseUri } from './getBaseUri.js';
 import { getLogger } from '../../logger/logger.js';
+import { paths } from '../../config/paths.js';
 
 // TypeScript
 interface Link {
@@ -136,7 +137,7 @@ export class BuchQuery implements Suchkriterien {
  */
 // Decorator in TypeScript, zur Standardisierung in ES vorgeschlagen (stage 3)
 // https://github.com/tc39/proposal-decorators
-@Controller()
+@Controller(paths.rest)
 // @UseGuards(JwtAuthGuard, RolesGuard)
 @UseInterceptors(ResponseTimeInterceptor)
 @ApiTags('Buch API')
@@ -176,9 +177,8 @@ export class BuchGetController {
      * @param res Leeres Response-Objekt von Express.
      * @returns Leeres Promise-Objekt.
      */
-    // vgl Kotlin: Schluesselwort "suspend"
     // eslint-disable-next-line max-params, max-lines-per-function
-    @Get(':id')
+    @Get('/:id')
     @ApiOperation({ summary: 'Suche mit der Buch-ID', tags: ['Suchen'] })
     @ApiParam({
         name: 'id',

@@ -41,13 +41,13 @@ const schlagwortNichtVorhanden = 'csharp';
 // -----------------------------------------------------------------------------
 // Test-Suite
 // eslint-disable-next-line max-lines-per-function
-describe('GET /', () => {
+describe('GET /rest', () => {
     let baseURL: string;
     let client: AxiosInstance;
 
     beforeAll(async () => {
         await startServer();
-        baseURL = `https://${host}:${port}`;
+        baseURL = `https://${host}:${port}/rest`;
         client = axios.create({
             baseURL,
             httpsAgent,

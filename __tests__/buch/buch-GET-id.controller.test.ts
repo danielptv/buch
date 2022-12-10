@@ -57,13 +57,13 @@ const idVorhandenETag = '00000000-0000-0000-0000-000000000001';
 // -----------------------------------------------------------------------------
 // Test-Suite
 // eslint-disable-next-line max-lines-per-function
-describe('GET /:id', () => {
+describe('GET /rest/:id', () => {
     let client: AxiosInstance;
 
     // Testserver starten und dabei mit der DB verbinden
     beforeAll(async () => {
         await startServer();
-        const baseURL = `https://${host}:${port}`;
+        const baseURL = `https://${host}:${port}/rest`;
         client = axios.create({
             baseURL,
             httpsAgent,
