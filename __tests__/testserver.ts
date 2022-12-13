@@ -124,7 +124,10 @@ export const shutdownServer = async () => {
     } catch {
         console.warn('Der Server wurde fehlerhaft beendet.');
     }
-    await shutdownDbServer();
+
+    if (env.START_DB_SERVER === 'true' || env.START_DB_SERVER === 'TRUE') {
+        await shutdownDbServer();
+    }
 };
 
 // fuer selbst-signierte Zertifikate
