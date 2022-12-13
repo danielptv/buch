@@ -157,7 +157,7 @@ describe('GraphQL Mutations', () => {
 
         expect(status).toBe(HttpStatus.OK);
         expect(headers['content-type']).toMatch(/json/iu);
-        expect(data.data!.update).toBeNull();
+        expect(data.data!.create).toBeNull();
 
         const { errors } = data;
 
