@@ -71,7 +71,7 @@ describe('GraphQL Mutations', () => {
                 mutation {
                     create(
                         input: {
-                            titel: "Testgraphql",
+                            titel: "Mutationtest",
                             rating: 1,
                             art: KINDLE,
                             verlag: FOO_VERLAG,
@@ -119,7 +119,7 @@ describe('GraphQL Mutations', () => {
                 mutation {
                     create(
                         input: {
-                            titel: "Nichtadmin",
+                            titel: "Mutationnichtadmin",
                             rating: 1,
                             art: KINDLE,
                             verlag: FOO_VERLAG,
@@ -173,7 +173,7 @@ describe('GraphQL Mutations', () => {
                         input: {
                             id: "00000000-0000-0000-0000-000000000003",
                             version: 0,
-                            titel: "Geaendert",
+                            titel: "Geaendertmutation",
                             rating: 5,
                             art: DRUCKAUSGABE,
                             verlag: FOO_VERLAG,
@@ -290,7 +290,7 @@ describe('GraphQL Mutations', () => {
                         input: {
                             id: "${id}",
                             version: 0,
-                            titel: "Nichtvorhanden",
+                            titel: "Nichtvorhandenmutation",
                             rating: 5,
                             art: DRUCKAUSGABE,
                             verlag: FOO_VERLAG,

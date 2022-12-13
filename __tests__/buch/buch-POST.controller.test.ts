@@ -33,7 +33,7 @@ import { loginRest } from '../login.js';
 // T e s t d a t e n
 // -----------------------------------------------------------------------------
 const neuesBuch: BuchDTO = {
-    titel: 'Testrest',
+    titel: 'Neuresttest',
     rating: 1,
     art: 'DRUCKAUSGABE',
     verlag: 'FOO_VERLAG',

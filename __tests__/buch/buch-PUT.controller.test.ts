@@ -32,7 +32,7 @@ import { loginRest } from '../login.js';
 // T e s t d a t e n
 // -----------------------------------------------------------------------------
 const geaendertesBuch: BuchOhneSchlagwoerterDTO = {
-    titel: 'Geaendertrest',
+    titel: 'Geaendertresttest',
     rating: 5,
     art: 'KINDLE',
     verlag: 'FOO_VERLAG',
@@ -73,7 +73,7 @@ const geaendertesBuchInvalid: Record<string, unknown> = {
 };
 
 const veraltesBuch: BuchOhneSchlagwoerterDTO = {
-    titel: 'Veraltet',
+    titel: 'Veraltetput',
     rating: 1,
     art: 'DRUCKAUSGABE',
     verlag: 'BAR_VERLAG',
