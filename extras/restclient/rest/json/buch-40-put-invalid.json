@@ -1,12 +1,12 @@
 {
   "titel": "?!",
-  "rating": 5,
+  "rating": -1,
   "art": "UNSICHTBAR",
-  "verlag": "IWI_VERLAG",
-  "preis": 9999,
-  "rabatt": 1,
+  "verlag": "NO_VERLAG",
+  "preis": -1,
+  "rabatt": 2,
   "lieferbar": true,
   "datum": "12345-123-123",
-  "isbn": "falsche-isbn",
+  "isbn": "falsche-ISBN",
   "homepage": "anyHomepage"
 }

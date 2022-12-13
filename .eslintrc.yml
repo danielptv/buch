@@ -133,7 +133,6 @@ rules:
       leadingUnderscore: allow
     - selector: classProperty
       modifiers:
-        - private
         - static
         - readonly
       format:

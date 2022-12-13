@@ -46,6 +46,7 @@ import {
     UseGuards,
     UseInterceptors,
 } from '@nestjs/common';
+import { BuchDTO, BuchOhneSchlagwoerterDTO } from './buchDTO.entity.js';
 import { type CreateError, type UpdateError } from '../service/errors.js';
 import { Request, Response } from 'express';
 import { type Buch } from '../entity/buch.entity.js';
@@ -58,18 +59,6 @@ import { type Schlagwort } from '../entity/schlagwort.entity.js';
 import { getBaseUri } from './getBaseUri.js';
 import { getLogger } from '../../logger/logger.js';
 import { paths } from '../../config/paths.js';
-
-export type BuchDTO = Omit<
-    Buch,
-    'aktualisiert' | 'erzeugt' | 'id' | 'schlagwoerter' | 'version'
-> & {
-    schlagwoerter: string[] | undefined;
-};
-
-export type BuchUpdateDTO = Omit<
-    Buch,
-    'aktualisiert' | 'erzeugt' | 'id' | 'schlagwoerter' | 'version'
->;
 
 /**
  * Die Controller-Klasse für die Verwaltung von Bücher.
@@ -177,7 +166,7 @@ export class BuchWriteController {
         description: 'Header "If-Match" fehlt',
     })
     async update(
-        @Body() buchDTO: BuchUpdateDTO,
+        @Body() buchDTO: BuchOhneSchlagwoerterDTO,
         @Param('id') id: string,
         @Headers('If-Match') version: string | undefined,
         @Res() res: Response,
@@ -280,10 +269,6 @@ export class BuchWriteController {
 
     #handleCreateError(err: CreateError, res: Response) {
         switch (err.type) {
-            case 'ConstraintViolations': {
-                return this.#handleValidationError(err.messages, res);
-            }
-
             case 'TitelExists': {
                 return this.#handleTitelExists(err.titel, res);
             }
@@ -296,14 +281,6 @@ export class BuchWriteController {
                 return res.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
-    }
-
-    #handleValidationError(
-        messages: readonly string[],
-        res: Response,
-    ): Response {
-        this.#logger.debug('#handleValidationError: messages=%o', messages);
-        return res.status(HttpStatus.UNPROCESSABLE_ENTITY).send(messages);
     }
 
     #handleTitelExists(
@@ -330,7 +307,7 @@ export class BuchWriteController {
             .send(msg);
     }
 
-    #updateDtoToBuch(buchDTO: BuchUpdateDTO): Buch {
+    #updateDtoToBuch(buchDTO: BuchOhneSchlagwoerterDTO): Buch {
         const buch: Buch = {
             id: undefined,
             version: undefined,
@@ -354,10 +331,6 @@ export class BuchWriteController {
 
     #handleUpdateError(err: UpdateError, res: Response): Response {
         switch (err.type) {
-            case 'ConstraintViolations': {
-                return this.#handleValidationError(err.messages, res);
-            }
-
             case 'BuchNotExists': {
                 const { id } = err;
                 const msg = `Es gibt kein Buch mit der ID "${id}".`;

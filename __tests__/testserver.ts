@@ -14,9 +14,13 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+import {
+    HttpStatus,
+    type INestApplication,
+    ValidationPipe,
+} from '@nestjs/common';
 import { Agent } from 'node:https';
 import { AppModule } from '../src/app.module.js';
-import { type INestApplication } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import dockerCompose from 'docker-compose';
 import isPortReachable from 'is-port-reachable';
@@ -100,6 +104,12 @@ export const startServer = async () => {
         logger: ['log'],
         // logger: ['debug'],
     });
+    server.useGlobalPipes(
+        new ValidationPipe({
+            errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+        }),
+    );
+
     await server.listen(port);
     return server;
 };

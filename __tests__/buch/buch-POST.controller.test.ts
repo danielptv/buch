@@ -24,10 +24,9 @@ import {
     shutdownServer,
     startServer,
 } from '../testserver.js';
-import { type BuchDTO } from '../../src/buch/rest/buch-write.controller.js';
+import { type BuchDTO } from '../../src/buch/rest/buchDTO.entity.js';
+import { BuchReadService } from '../../src/buch/service/buch-read.service.js';
 import { HttpStatus } from '@nestjs/common';
-import { ID_PATTERN } from '../../src/buch/service/buch-validation.service.js';
-import { MAX_RATING } from '../../src/buch/service/jsonSchema.js';
 import { loginRest } from '../login.js';
 
 // -----------------------------------------------------------------------------
@@ -42,21 +41,21 @@ const neuesBuch: BuchDTO = {
     rabatt: 0.099,
     lieferbar: true,
     datum: '2022-02-28',
-    isbn: '9780007006441',
+    isbn: '978-0-007-00644-1',
     homepage: 'https://test.de/',
     schlagwoerter: ['JAVASCRIPT', 'TYPESCRIPT'],
 };
 const neuesBuchInvalid: Record<string, unknown> = {
-    titel: '!?$',
+    titel: '!?',
     rating: -1,
     art: 'UNSICHTBAR',
     verlag: 'NO_VERLAG',
-    preis: 0,
+    preis: -1,
     rabatt: 2,
     lieferbar: true,
-    datum: '12345123123',
+    datum: '12345-123-123',
     isbn: 'falsche-ISBN',
-    schlagwoerter: [],
+    homepage: 'anyHomepage',
 };
 const neuesBuchTitelExistiert: BuchDTO = {
     titel: 'Alpha',
@@ -67,7 +66,7 @@ const neuesBuchTitelExistiert: BuchDTO = {
     rabatt: 0.099,
     lieferbar: true,
     datum: '2022-02-28',
-    isbn: '9780007097326',
+    isbn: '978-0-007-09732-6',
     homepage: 'https://test.de/',
     schlagwoerter: ['JAVASCRIPT', 'TYPESCRIPT'],
 };
@@ -127,7 +126,7 @@ describe('POST /rest', () => {
         const idStr = location.slice(indexLastSlash + 1);
 
         expect(idStr).toBeDefined();
-        expect(ID_PATTERN.test(idStr)).toBe(true);
+        expect(BuchReadService.ID_PATTERN.test(idStr)).toBe(true);
 
         expect(data).toBe('');
     });
@@ -136,9 +135,20 @@ describe('POST /rest', () => {
         // given
         const token = await loginRest(client);
         headers.Authorization = `Bearer ${token}`;
+        const expectedMsg = [
+            expect.stringMatching(/^titel /u),
+            expect.stringMatching(/^rating /u),
+            expect.stringMatching(/^art /u),
+            expect.stringMatching(/^verlag /u),
+            expect.stringMatching(/^preis /u),
+            expect.stringMatching(/^rabatt /u),
+            expect.stringMatching(/^datum /u),
+            expect.stringMatching(/^isbn /u),
+            expect.stringMatching(/^homepage /u),
+        ];
 
         // when
-        const response: AxiosResponse<string> = await client.post(
+        const response: AxiosResponse<Record<string, any>> = await client.post(
             '/rest',
             neuesBuchInvalid,
             { headers },
@@ -148,17 +158,13 @@ describe('POST /rest', () => {
         const { status, data } = response;
 
         expect(status).toBe(HttpStatus.UNPROCESSABLE_ENTITY);
-        expect(data).toEqual(
-            expect.arrayContaining([
-                'Ein Buchtitel muss mit einem Buchstaben, einer Ziffer oder _ beginnen.',
-                `Eine Bewertung muss zwischen 0 und ${MAX_RATING} liegen.`,
-                'Die Art eines Buches muss KINDLE oder DRUCKAUSGABE sein.',
-                'Der Verlag eines Buches muss FOO_VERLAG oder BAR_VERLAG sein.',
-                'Der Rabatt muss ein Wert zwischen 0 und 1 sein.',
-                'Das Datum muss im Format yyyy-MM-dd sein.',
-                'Die ISBN-Nummer ist nicht korrekt.',
-            ]),
-        );
+
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const messages: string[] = data.message;
+
+        expect(messages).toBeDefined();
+        expect(messages).toHaveLength(expectedMsg.length);
+        expect(messages).toEqual(expect.arrayContaining(expectedMsg));
     });
 
     test('Neues Buch, aber der Titel existiert bereits', async () => {

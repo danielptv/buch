@@ -29,8 +29,8 @@ import {
     shutdownServer,
     startServer,
 } from '../testserver.js';
+import { BuchReadService } from '../../src/buch/service/buch-read.service.js';
 import { HttpStatus } from '@nestjs/common';
-import { ID_PATTERN } from '../../src/buch/service/buch-validation.service.js';
 import { loginGraphQL } from '../login.js';
 
 // -----------------------------------------------------------------------------
@@ -79,8 +79,8 @@ describe('GraphQL Mutations', () => {
                             rabatt: 0.099,
                             lieferbar: true,
                             datum: "2022-02-28",
-                            isbn: "3897225832",
-                            homepage: "http://test.de/",
+                            isbn: "978-0-321-19368-1",
+                            homepage: "http://test.de",
                             schlagwoerter: ["JAVASCRIPT"]
                         }
                     )
@@ -106,7 +106,7 @@ describe('GraphQL Mutations', () => {
 
         // Der Wert der Mutation ist die generierte ObjectID
         expect(create).toBeDefined();
-        expect(ID_PATTERN.test(create as string)).toBe(true);
+        expect(BuchReadService.ID_PATTERN.test(create as string)).toBe(true);
     });
 
     // -------------------------------------------------------------------------
@@ -127,7 +127,7 @@ describe('GraphQL Mutations', () => {
                             rabatt: 0.011,
                             lieferbar: true,
                             datum: "2021-01-31",
-                            isbn: "9783663087465",
+                            isbn: "978-3-663-08746-5",
                             homepage: "http://acme.com",
                             schlagwoerter: ["JAVASCRIPT"]
                         }
@@ -181,7 +181,7 @@ describe('GraphQL Mutations', () => {
                             rabatt: 0.099,
                             lieferbar: false,
                             datum: "2021-01-02",
-                            isbn: "9780201633610",
+                            isbn: "978-0-201-63361-0",
                             homepage: "https://acme.com"
                         }
                     )
@@ -221,22 +221,31 @@ describe('GraphQL Mutations', () => {
                     update(
                         input: {
                             id: "00000000-0000-0000-0000-000000000003",
-                            version: 1,
-                            titel: "?!$",
-                            rating: 999,
+                            version: 0,
+                            titel: "?!",
+                            rating: -1,
                             art: KINDLE,
                             verlag: FOO_VERLAG,
-                            preis: -999,
-                            rabatt: 999,
+                            preis: -1,
+                            rabatt: 2,
                             lieferbar: false,
-                            datum: "123",
-                            isbn: "123",
-                            homepage: "?!$",
+                            datum: "12345-123-123",
+                            isbn: "falsche-ISBN",
+                            homepage: "anyHomepage",
                         }
                     )
                 }
             `,
         };
+        const expectedMsg = [
+            expect.stringMatching(/^titel /u),
+            expect.stringMatching(/^rating /u),
+            expect.stringMatching(/^preis /u),
+            expect.stringMatching(/^rabatt /u),
+            expect.stringMatching(/^datum /u),
+            expect.stringMatching(/^isbn /u),
+            expect.stringMatching(/^homepage /u),
+        ];
 
         // when
         const response: AxiosResponse<GraphQLResponseBody> = await client.post(
@@ -257,37 +266,15 @@ describe('GraphQL Mutations', () => {
         expect(errors).toHaveLength(1);
 
         const [error] = errors!;
-        const { message, path, extensions } = error!;
+        const errorResponse: any = error?.extensions?.response;
 
-        expect(message).toEqual(expect.stringContaining(' Buchtitel '));
-        expect(message).toEqual(
-            expect.stringContaining(
-                'Eine Bewertung muss zwischen 0 und 5 liegen.',
-            ),
-        );
-        expect(message).toEqual(
-            expect.stringContaining('Der Preis darf nicht negativ sein.'),
-        );
-        expect(message).toEqual(
-            expect.stringContaining(
-                'Der Rabatt muss ein Wert zwischen 0 und 1 sein.',
-            ),
-        );
-        expect(message).toEqual(
-            expect.stringContaining(
-                'Das Datum muss im Format yyyy-MM-dd sein.',
-            ),
-        );
-        expect(message).toEqual(
-            expect.stringContaining('Die ISBN-Nummer ist nicht korrekt.'),
-        );
-        expect(message).toEqual(
-            expect.stringContaining('Die Homepage ist nicht korrekt.'),
-        );
-        expect(path).toBeDefined();
-        expect(path![0]).toBe('update');
-        expect(extensions).toBeDefined();
-        expect(extensions!.code).toBe('BAD_USER_INPUT');
+        expect(errorResponse).toBeDefined();
+
+        const messages: string[] = errorResponse.message;
+
+        expect(messages).toBeDefined();
+        expect(messages).toHaveLength(expectedMsg.length);
+        expect(messages).toEqual(expect.arrayContaining(expectedMsg));
     });
 
     // -------------------------------------------------------------------------
@@ -311,7 +298,7 @@ describe('GraphQL Mutations', () => {
                             rabatt: 0.099,
                             lieferbar: false,
                             datum: "2021-01-02",
-                            isbn: "9780201633610",
+                            isbn: "978-0-201-63361-0",
                             homepage: "https://acme.com",
                         }
                     )

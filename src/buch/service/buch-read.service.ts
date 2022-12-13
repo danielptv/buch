@@ -21,10 +21,10 @@
  */
 
 import { Buch, type BuchArt, type Verlag } from './../entity/buch.entity.js';
-import { BuchValidationService } from './buch-validation.service.js';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
 import { QueryBuilder } from './query-builder.js';
+import RE2 from 're2';
 import { Repository } from 'typeorm';
 import { getLogger } from '../../logger/logger.js';
 
@@ -49,26 +49,26 @@ export interface Suchkriterien {
  */
 @Injectable()
 export class BuchReadService {
+    static readonly ID_PATTERN = new RE2(
+        '^[\\dA-Fa-f]{8}-[\\dA-Fa-f]{4}-[\\dA-Fa-f]{4}-[\\dA-Fa-f]{4}-[\\dA-Fa-f]{12}$',
+    );
+
     readonly #repo: Repository<Buch>;
 
     readonly #buchProps: string[];
 
     readonly #queryBuilder: QueryBuilder;
 
-    readonly #validationService: BuchValidationService;
-
     readonly #logger = getLogger(BuchReadService.name);
 
     constructor(
         @InjectRepository(Buch) repo: Repository<Buch>,
         queryBuilder: QueryBuilder,
-        validationService: BuchValidationService,
     ) {
         this.#repo = repo;
         const buchDummy = new Buch();
         this.#buchProps = Object.getOwnPropertyNames(buchDummy);
         this.#queryBuilder = queryBuilder;
-        this.#validationService = validationService;
     }
 
     // Rueckgabetyp Promise bei asynchronen Funktionen
@@ -93,7 +93,7 @@ export class BuchReadService {
     async findById(id: string) {
         this.#logger.debug('findById: id=%s', id);
 
-        if (!this.#validationService.validateId(id)) {
+        if (!BuchReadService.ID_PATTERN.test(id)) {
             this.#logger.debug('findById: Ungueltige ID');
             return;
         }

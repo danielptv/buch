@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS buch (
     lieferbar     BOOLEAN NOT NULL DEFAULT FALSE,
     datum         DATE,
     homepage      VARCHAR(40),
-    isbn          VARCHAR(16) UNIQUE NOT NULL,
+    isbn          CHAR(17) UNIQUE NOT NULL,
     erzeugt       DATETIME NOT NULL DEFAULT (CURRENT_TIMESTAMP),
     aktualisiert  DATETIME NOT NULL DEFAULT (CURRENT_TIMESTAMP)
 ) TABLESPACE buchspace ROW_FORMAT=COMPACT;

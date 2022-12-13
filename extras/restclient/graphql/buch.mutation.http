@@ -74,7 +74,7 @@ mutation {
       rabatt: 0.1,
       lieferbar: true,
       datum: "2022-01-31",
-      isbn: "3897225832",
+      isbn: "3-897-22583-2",
       homepage: "http://test.de/",
       schlagwoerter: ["JAVASCRIPT"]
     }
@@ -90,16 +90,16 @@ X-REQUEST-TYPE: GraphQL
 mutation {
   create(
     input: {
-      titel: "?!$",
+      titel: "?!",
       rating: 999,
-      art: KINDLE,
+      art: DRUCKAUSGABE,
       verlag: FOO_VERLAG,
-      preis: -999,
-      rabatt: 999,
+      preis: -1,
+      rabatt: 0,
       lieferbar: true,
-      datum: "123",
-      isbn: "123",
-      homepage: "?!$",
+      datum: "12345-123-123",
+      isbn: "falsche-isbn",
+      homepage: "anyHomepage",
       schlagwoerter: ["JAVASCRIPT"]
     }
   )
@@ -124,7 +124,7 @@ mutation {
       rabatt: 0.099,
       lieferbar: false,
       datum: "2022-02-01",
-      isbn: "9780201633610",
+      isbn: "978-0-201-63361-0",
       homepage: "https://test.graphql/"
     }
   )
@@ -141,16 +141,16 @@ mutation {
     input: {
       id: "00000000-0000-0000-0000-000000000003",
       version: 0,
-      titel: "?!$",
-      rating: 999,
+      titel: "?!",
+      rating: -1,
       art: KINDLE,
       verlag: FOO_VERLAG,
-      preis: -999,
-      rabatt: 999,
+      preis: -1,
+      rabatt: 2,
       lieferbar: false,
-      datum: "123",
-      isbn: "123",
-      homepage: "?!$"
+      datum: "12345-123-123",
+      isbn: "falsche-ISBN",
+      homepage: "anyHomepage"
     }
   )
 }
@@ -174,7 +174,7 @@ mutation {
       rabatt: 0.099,
       lieferbar: false,
       datum: "2022-02-01",
-      isbn: "9780201633610",
+      isbn: "978-0-201-63361-0",
       homepage: "https://test.de/"
     }
   )

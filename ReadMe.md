@@ -540,7 +540,7 @@ z.B.:
 
 ```powershell
     npm exec jest --detectOpenHandles --errorOnDeprecated `
-      --forceExit --runTestsByPath '__tests__\buch\buch-get.controller.test.ts'
+      --forceExit --runTestsByPath '__tests__\buch\buch-GET.controller.test.ts'
 ```
 
 ---

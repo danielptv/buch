@@ -20,7 +20,6 @@ import { BuchGetController } from './rest/buch-get.controller.js';
 import { BuchMutationResolver } from './graphql/buch-mutation.resolver.js';
 import { BuchQueryResolver } from './graphql/buch-query.resolver.js';
 import { BuchReadService } from './service/buch-read.service.js';
-import { BuchValidationService } from './service/buch-validation.service.js';
 import { BuchWriteController } from './rest/buch-write.controller.js';
 import { BuchWriteService } from './service/buch-write.service.js';
 import { MailModule } from '../mail/mail.module.js';
@@ -51,12 +50,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     providers: [
         BuchReadService,
         BuchWriteService,
-        BuchValidationService,
         BuchQueryResolver,
         BuchMutationResolver,
         QueryBuilder,
     ],
     // Export der Provider fuer DI in anderen Modulen
-    exports: [BuchReadService, BuchWriteService, BuchValidationService],
+    exports: [BuchReadService, BuchWriteService],
 })
 export class BuchModule {}

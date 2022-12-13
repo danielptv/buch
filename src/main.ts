@@ -24,9 +24,13 @@ import {
     type SwaggerCustomOptions,
     SwaggerModule,
 } from '@nestjs/swagger';
+import {
+    HttpStatus,
+    type INestApplication,
+    ValidationPipe,
+} from '@nestjs/common';
 // relativer Import
 import { AppModule } from './app.module.js';
-import { type INestApplication } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import compression from 'compression';
 import { corsOptions } from './config/cors.options.js';
@@ -75,12 +79,20 @@ const bootstrap = async () => {
             : await NestFactory.create(AppModule, { httpsOptions }); // "Shorthand Properties" ab ES 2015
 
     // https://docs.nestjs.com/security/helmet
-    app.use(helmetHandlers);
-
-    setupSwagger(app);
     // compression von Express fuer GZip-Komprimierung
     // Default "Chunk Size" ist 16 KB: https://github.com/expressjs/compression#chunksize
-    app.use(compression());
+    app.use(helmetHandlers, compression());
+
+    // https://docs.nestjs.com/techniques/validation
+    // https://docs.nestjs.com/exception-filters
+    app.useGlobalPipes(
+        new ValidationPipe({
+            errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+        }),
+    );
+
+    setupSwagger(app);
+
     // cors von Express fuer CORS (= cross origin resource sharing)
     app.enableCors(corsOptions);
 

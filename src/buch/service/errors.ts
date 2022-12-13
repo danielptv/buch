@@ -21,13 +21,15 @@
  * @packageDocumentation
  */
 
+import { type ValidationError } from 'class-validator';
+
 /**
  * Klasse für fehlerhafte Buchdaten. Die Meldungstexte sind in der Property
  * `msg` gekapselt.
  */
 export interface ConstraintViolations {
     readonly type: 'ConstraintViolations';
-    readonly messages: string[];
+    readonly validationErrors: ValidationError[];
 }
 
 /**
@@ -54,7 +56,7 @@ export interface IsbnExists {
  * - {@linkcode IsbnExists}
  * - {@linkcode TitelExists}
  */
-export type CreateError = ConstraintViolations | IsbnExists | TitelExists;
+export type CreateError = IsbnExists | TitelExists;
 
 /**
  * Klasse für eine ungültige Versionsnummer beim Ändern.
@@ -91,7 +93,6 @@ export interface BuchNotExists {
  */
 export type UpdateError =
     | BuchNotExists
-    | ConstraintViolations
     | TitelExists
     | VersionInvalid
     | VersionOutdated;

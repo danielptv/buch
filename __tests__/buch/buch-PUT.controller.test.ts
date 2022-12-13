@@ -24,57 +24,55 @@ import {
     shutdownServer,
     startServer,
 } from '../testserver.js';
-import { type BuchUpdateDTO } from '../../src/buch/rest/buch-write.controller.js';
+import { type BuchOhneSchlagwoerterDTO } from '../../src/buch/rest/buchDTO.entity.js';
 import { HttpStatus } from '@nestjs/common';
-import { MAX_RATING } from '../../src/buch/service/jsonSchema.js';
 import { loginRest } from '../login.js';
 
 // -----------------------------------------------------------------------------
 // T e s t d a t e n
 // -----------------------------------------------------------------------------
-const geaendertesBuch: BuchUpdateDTO = {
-    // isbn wird nicht geaendet
-    titel: 'Geaendert',
-    rating: 1,
-    art: 'DRUCKAUSGABE',
-    verlag: 'BAR_VERLAG',
-    preis: 44.4,
-    rabatt: 0.044,
+const geaendertesBuch: BuchOhneSchlagwoerterDTO = {
+    titel: 'Geaendertrest',
+    rating: 5,
+    art: 'KINDLE',
+    verlag: 'FOO_VERLAG',
+    preis: 4444,
+    rabatt: 0.44,
     lieferbar: true,
-    datum: '2022-02-03',
-    isbn: '0007097328',
-    homepage: 'https://test.te',
+    datum: '2022-04-04',
+    isbn: '978-0-007-09732-6',
+    homepage: 'https://put.acme.de',
 };
 const idVorhanden = '00000000-0000-0000-0000-000000000040';
 
-const geaendertesBuchIdNichtVorhanden: BuchUpdateDTO = {
+const geaendertesBuchIdNichtVorhanden: BuchOhneSchlagwoerterDTO = {
     titel: 'Nichtvorhanden',
-    rating: 1,
+    rating: 4,
     art: 'DRUCKAUSGABE',
     verlag: 'BAR_VERLAG',
     preis: 44.4,
     rabatt: 0.044,
     lieferbar: true,
     datum: '2022-02-04',
-    isbn: '0007097328',
-    homepage: 'https://test.te',
+    isbn: '978-0-007-09732-6',
+    homepage: 'https://acme.de',
 };
 const idNichtVorhanden = '99999999-9999-9999-9999-999999999999';
 
 const geaendertesBuchInvalid: Record<string, unknown> = {
-    titel: '?!$',
+    titel: '?!',
     rating: -1,
     art: 'UNSICHTBAR',
     verlag: 'NO_VERLAG',
-    preis: 0.01,
+    preis: -1,
     rabatt: 2,
     lieferbar: true,
     datum: '12345-123-123',
     isbn: 'falsche-ISBN',
+    homepage: 'anyHomepage',
 };
 
-// isbn wird nicht geaendet
-const veraltesBuch: BuchUpdateDTO = {
+const veraltesBuch: BuchOhneSchlagwoerterDTO = {
     titel: 'Veraltet',
     rating: 1,
     art: 'DRUCKAUSGABE',
@@ -82,9 +80,9 @@ const veraltesBuch: BuchUpdateDTO = {
     preis: 44.4,
     rabatt: 0.044,
     lieferbar: true,
-    datum: '2022-02-03',
-    isbn: '0007097328',
-    homepage: 'https://test.te',
+    datum: '2022-02-04',
+    isbn: '978-0-007-09732-6',
+    homepage: 'https://acme.de',
 };
 
 // -----------------------------------------------------------------------------
@@ -164,9 +162,20 @@ describe('PUT /rest/:id', () => {
         const token = await loginRest(client);
         headers.Authorization = `Bearer ${token}`;
         headers['If-Match'] = '"0"';
+        const expectedMsg = [
+            expect.stringMatching(/^titel /u),
+            expect.stringMatching(/^rating /u),
+            expect.stringMatching(/^art /u),
+            expect.stringMatching(/^verlag /u),
+            expect.stringMatching(/^preis /u),
+            expect.stringMatching(/^rabatt /u),
+            expect.stringMatching(/^datum /u),
+            expect.stringMatching(/^isbn /u),
+            expect.stringMatching(/^homepage /u),
+        ];
 
         // when
-        const response: AxiosResponse<string> = await client.put(
+        const response: AxiosResponse<Record<string, any>> = await client.put(
             url,
             geaendertesBuchInvalid,
             { headers },
@@ -176,17 +185,13 @@ describe('PUT /rest/:id', () => {
         const { status, data } = response;
 
         expect(status).toBe(HttpStatus.UNPROCESSABLE_ENTITY);
-        expect(data).toEqual(
-            expect.arrayContaining([
-                'Ein Buchtitel muss mit einem Buchstaben, einer Ziffer oder _ beginnen.',
-                `Eine Bewertung muss zwischen 0 und ${MAX_RATING} liegen.`,
-                'Die Art eines Buches muss KINDLE oder DRUCKAUSGABE sein.',
-                'Der Verlag eines Buches muss FOO_VERLAG oder BAR_VERLAG sein.',
-                'Der Rabatt muss ein Wert zwischen 0 und 1 sein.',
-                'Das Datum muss im Format yyyy-MM-dd sein.',
-                'Die ISBN-Nummer ist nicht korrekt.',
-            ]),
-        );
+
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        const messages: string[] = data.message;
+
+        expect(messages).toBeDefined();
+        expect(messages).toHaveLength(expectedMsg.length);
+        expect(messages).toEqual(expect.arrayContaining(expectedMsg));
     });
 
     test('Vorhandenes Buch aendern, aber ohne Versionsnummer', async () => {

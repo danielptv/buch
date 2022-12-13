@@ -1,4 +1,3 @@
-/* eslint-disable max-lines */
 /*
  * Copyright (C) 2016 - present Juergen Zimmermann, Hochschule Karlsruhe
  *
@@ -22,7 +21,6 @@
  * @packageDocumentation
  */
 
-import { Buch, removeIsbnDash } from '../entity/buch.entity.js';
 import {
     type BuchNotExists,
     type CreateError,
@@ -32,8 +30,8 @@ import {
     type VersionOutdated,
 } from './errors.js';
 import { type DeleteResult, Repository } from 'typeorm';
+import { Buch } from '../entity/buch.entity.js';
 import { BuchReadService } from './buch-read.service.js';
-import { BuchValidationService } from './buch-validation.service.js';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
 import { MailService } from '../../mail/mail.service.js';
@@ -54,22 +52,17 @@ export class BuchWriteService {
 
     readonly #readService: BuchReadService;
 
-    readonly #validationService: BuchValidationService;
-
     readonly #mailService: MailService;
 
     readonly #logger = getLogger(BuchWriteService.name);
 
-    // eslint-disable-next-line max-params
     constructor(
         @InjectRepository(Buch) repo: Repository<Buch>,
         readService: BuchReadService,
-        validationService: BuchValidationService,
         mailService: MailService,
     ) {
         this.#repo = repo;
         this.#readService = readService;
-        this.#validationService = validationService;
         this.#mailService = mailService;
     }
 
@@ -92,7 +85,7 @@ export class BuchWriteService {
         });
 
         // implizite Transaktion
-        const buchDb = await this.#repo.save(removeIsbnDash(buch)); // implizite Transaktion
+        const buchDb = await this.#repo.save(buch); // implizite Transaktion
         this.#logger.debug('create: buchDb=%o', buchDb);
 
         await this.#sendmail(buchDb);
@@ -119,7 +112,7 @@ export class BuchWriteService {
             buch,
             version,
         );
-        if (id === undefined || !this.#validationService.validateId(id)) {
+        if (id === undefined || !BuchReadService.ID_PATTERN.test(id)) {
             this.#logger.debug('update: Keine gueltige ID');
             return { type: 'BuchNotExists', id };
         }
@@ -131,7 +124,7 @@ export class BuchWriteService {
         }
 
         const buchNeu = validateResult;
-        const merged = this.#repo.merge(buchNeu, removeIsbnDash(buch));
+        const merged = this.#repo.merge(buchNeu, buch);
         this.#logger.debug('update: merged=%o', merged);
         const updated = await this.#repo.save(merged); // implizite Transaktion
         this.#logger.debug('update: updated=%o', updated);
@@ -147,7 +140,7 @@ export class BuchWriteService {
      */
     async delete(id: string) {
         this.#logger.debug('delete: id=%s', id);
-        if (!this.#validationService.validateId(id)) {
+        if (!BuchReadService.ID_PATTERN.test(id)) {
             this.#logger.debug('delete: Keine gueltige ID');
             return false;
         }
@@ -184,12 +177,7 @@ export class BuchWriteService {
     }
 
     async #validateCreate(buch: Buch): Promise<CreateError | undefined> {
-        const validateResult = this.#validationService.validate(buch);
-        if (validateResult !== undefined) {
-            const messages = validateResult;
-            this.#logger.debug('#validateCreate: messages=%o', messages);
-            return { type: 'ConstraintViolations', messages };
-        }
+        this.#logger.debug('#validateCreate: buch=%o', buch);
 
         const { titel } = buch;
         let buecher = await this.#readService.find({ titel: titel }); // eslint-disable-line object-shorthand
@@ -229,13 +217,6 @@ export class BuchWriteService {
             buch,
             version,
         );
-
-        const validateResult = this.#validationService.validate(buch);
-        if (validateResult !== undefined) {
-            const messages = validateResult;
-            this.#logger.debug('#validateUpdate: messages=%o', messages);
-            return { type: 'ConstraintViolations', messages };
-        }
 
         const resultTitel = await this.#checkTitelExists(buch);
         if (resultTitel !== undefined && resultTitel.id !== id) {
@@ -304,4 +285,3 @@ export class BuchWriteService {
         return buchDb;
     }
 }
-/* eslint-enable max-lines */

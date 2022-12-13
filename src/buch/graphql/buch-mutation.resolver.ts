@@ -14,8 +14,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
+// eslint-disable-next-line max-classes-per-file
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { BuchDTO, BuchOhneSchlagwoerterDTO } from '../rest/buchDTO.entity.js';
 import { type CreateError, type UpdateError } from '../service/errors.js';
+import { IsInt, IsUUID, Min } from 'class-validator';
 import { UseGuards, UseInterceptors } from '@nestjs/common';
 import { type Buch } from '../entity/buch.entity.js';
 import { BuchWriteService } from '../service/buch-write.service.js';
@@ -28,12 +31,6 @@ import { type Schlagwort } from '../entity/schlagwort.entity.js';
 import { UserInputError } from 'apollo-server-express';
 import { getLogger } from '../../logger/logger.js';
 
-type BuchCreateDTO = Omit<
-    Buch,
-    'aktualisiert' | 'erzeugt' | 'id' | 'schlagwoerter' | 'version'
-> & { schlagwoerter: string[] };
-type BuchUpdateDTO = Omit<Buch, 'aktualisiert' | 'erzeugt' | 'schlagwoerter'>;
-
 // Authentifizierung und Autorisierung durch
 //  GraphQL Shield
 //      https://www.graphql-shield.com
@@ -44,6 +41,14 @@ type BuchUpdateDTO = Omit<Buch, 'aktualisiert' | 'erzeugt' | 'schlagwoerter'>;
 //      https://github.com/AstrumU/graphql-authz
 //      https://www.the-guild.dev/blog/graphql-authz
 
+class BuchUpdateDTO extends BuchOhneSchlagwoerterDTO {
+    @IsUUID()
+    readonly id!: string;
+
+    @IsInt()
+    @Min(0)
+    readonly version!: number;
+}
 @Resolver()
 // alternativ: globale Aktivierung der Guards https://docs.nestjs.com/security/authorization#basic-rbac-implementation
 @UseGuards(JwtAuthGraphQlGuard, RolesGraphQlGuard)
@@ -59,7 +64,7 @@ export class BuchMutationResolver {
 
     @Mutation()
     @Roles('admin', 'mitarbeiter')
-    async create(@Args('input') buchDTO: BuchCreateDTO) {
+    async create(@Args('input') buchDTO: BuchDTO) {
         this.#logger.debug('create: buchDTO=%o', buchDTO);
 
         const result = await this.#service.create(this.#dtoToBuch(buchDTO));
@@ -78,7 +83,7 @@ export class BuchMutationResolver {
     @Roles('admin', 'mitarbeiter')
     async update(@Args('input') buch: BuchUpdateDTO) {
         this.#logger.debug('update: buch=%o', buch);
-        const versionStr = `"${buch.version?.toString()}"`;
+        const versionStr = `"${buch.version.toString()}"`;
 
         const result = await this.#service.update(
             buch.id,
@@ -102,7 +107,7 @@ export class BuchMutationResolver {
         return result;
     }
 
-    #dtoToBuch(buchDTO: BuchCreateDTO): Buch {
+    #dtoToBuch(buchDTO: BuchDTO): Buch {
         const buch: Buch = {
             id: undefined,
             version: undefined,
@@ -121,7 +126,7 @@ export class BuchMutationResolver {
             aktualisiert: undefined,
         };
 
-        buchDTO.schlagwoerter.forEach((s) => {
+        buchDTO.schlagwoerter?.forEach((s) => {
             const schlagwort: Schlagwort = {
                 id: undefined,
                 schlagwort: s,
@@ -135,9 +140,6 @@ export class BuchMutationResolver {
 
     #errorMsgCreateBuch(err: CreateError) {
         switch (err.type) {
-            case 'ConstraintViolations': {
-                return err.messages.join(' ');
-            }
             case 'TitelExists': {
                 return `Der Titel "${err.titel}" existiert bereits`;
             }
@@ -152,9 +154,6 @@ export class BuchMutationResolver {
 
     #errorMsgUpdateBuch(err: UpdateError) {
         switch (err.type) {
-            case 'ConstraintViolations': {
-                return err.messages.join(' ');
-            }
             case 'TitelExists': {
                 return `Der Titel "${err.titel}" existiert bereits`;
             }

@@ -149,12 +149,3 @@ export class Buch {
     @UpdateDateColumn({ type: 'timestamp' })
     readonly aktualisiert: Date | undefined = new Date();
 }
-
-export const removeIsbnDash = (buch: Buch) => {
-    // https://www.typescriptlang.org/docs/handbook/2/mapped-types.html#mapping-modifiers
-    const copy = buch as {
-        -readonly [K in keyof Buch]: Buch[K]; // eslint-disable-line no-use-before-define
-    };
-    copy.isbn = buch.isbn.replaceAll('-', '');
-    return copy;
-};

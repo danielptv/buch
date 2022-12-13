@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS buch (
                   -- https://www.postgresql.org/docs/current/datatype-datetime.html
     datum         date,
     homepage      varchar(40),
-    isbn          varchar(16) NOT NULL UNIQUE USING INDEX TABLESPACE buchspace,
+    isbn          varchar(17) NOT NULL UNIQUE USING INDEX TABLESPACE buchspace,
                   -- https://www.postgresql.org/docs/current/datatype-datetime.html
     erzeugt       timestamp NOT NULL DEFAULT NOW(),
     aktualisiert  timestamp NOT NULL DEFAULT NOW()

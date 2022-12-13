@@ -23,6 +23,7 @@
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { Buch } from './buch.entity.js';
+import { Matches } from 'class-validator';
 
 /**
  * Entity-Klasse zu einem relationalen Tabelle
@@ -40,6 +41,7 @@ export class Schlagwort {
     readonly buch: Buch | null | undefined;
 
     @Column({ type: 'char', length: 16 })
+    @Matches(/JAVASCRIPT|TYPESCRIPT/u)
     @ApiProperty({ example: 'Das Schlagwort', type: String })
     readonly schlagwort: string | null | undefined; //NOSONAR
 }

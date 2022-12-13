@@ -20,7 +20,7 @@
  * @packageDocumentation
  */
 
-import { ID_PATTERN } from '../service/buch-validation.service.js';
+import { BuchReadService } from '../service/buch-read.service.js';
 import { type Request } from 'express';
 import { cloud } from '../../config/cloud.js';
 import { nodeConfig } from '../../config/node.js';
@@ -36,7 +36,7 @@ export const getBaseUri = (req: Request) => {
     const indexLastSlash = basePath.lastIndexOf('/');
     if (indexLastSlash > 0) {
         const idStr = basePath.slice(indexLastSlash + 1);
-        if (ID_PATTERN.test(idStr)) {
+        if (BuchReadService.ID_PATTERN.test(idStr)) {
             basePath = basePath.slice(0, indexLastSlash);
         }
     }
