@@ -110,6 +110,72 @@ describe('GraphQL Mutations', () => {
     });
 
     // -------------------------------------------------------------------------
+    // eslint-disable-next-line max-lines-per-function
+    test('Buch mit ungueltigen Werten neu anlegen', async () => {
+        // given
+        const token = await loginGraphQL(client);
+        const authorization = { Authorization: `Bearer ${token}` }; // eslint-disable-line @typescript-eslint/naming-convention
+        const body: GraphQLQuery = {
+            query: `
+                mutation {
+                    create(
+                        input: {
+                            titel: "?!",
+                            rating: -1,
+                            art: KINDLE,
+                            verlag: FOO_VERLAG,
+                            preis: -1,
+                            rabatt: 2,
+                            lieferbar: false,
+                            datum: "12345-123-123",
+                            isbn: "falsche-ISBN",
+                            homepage: "anyHomepage",
+                        }
+                    )
+                }
+            `,
+        };
+        const expectedMsg = [
+            expect.stringMatching(/^titel /u),
+            expect.stringMatching(/^rating /u),
+            expect.stringMatching(/^preis /u),
+            expect.stringMatching(/^rabatt /u),
+            expect.stringMatching(/^datum /u),
+            expect.stringMatching(/^isbn /u),
+            expect.stringMatching(/^homepage /u),
+        ];
+
+        // when
+        const response: AxiosResponse<GraphQLResponseBody> = await client.post(
+            graphqlPath,
+            body,
+            { headers: authorization },
+        );
+
+        // then
+        const { status, headers, data } = response;
+
+        expect(status).toBe(HttpStatus.OK);
+        expect(headers['content-type']).toMatch(/json/iu);
+        expect(data.data!.update).toBeNull();
+
+        const { errors } = data;
+
+        expect(errors).toHaveLength(1);
+
+        const [error] = errors!;
+        const errorResponse: any = error?.extensions?.response;
+
+        expect(errorResponse).toBeDefined();
+
+        const messages: string[] = errorResponse.message;
+
+        expect(messages).toBeDefined();
+        expect(messages).toHaveLength(expectedMsg.length);
+        expect(messages).toEqual(expect.arrayContaining(expectedMsg));
+    });
+
+    // -------------------------------------------------------------------------
     test('Neues Buch nur als "admin"/"mitarbeiter"', async () => {
         // given
         const token = await loginGraphQL(client, 'dirk.delta', 'p');

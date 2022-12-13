@@ -56,6 +56,7 @@ const {
     MAIL_HOST,
     MAIL_PORT,
     MAIL_LOG,
+    START_DB_SERVER,
     USER_PASSWORD_ENCODED,
 } = process.env; // eslint-disable-line n/no-process-env
 
@@ -93,6 +94,7 @@ export const env = {
     MAIL_HOST,
     MAIL_PORT,
     MAIL_LOG,
+    START_DB_SERVER,
     USER_PASSWORD_ENCODED,
 } as const;
 /* eslint-enable @typescript-eslint/naming-convention */

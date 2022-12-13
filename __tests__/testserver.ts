@@ -23,6 +23,7 @@ import { Agent } from 'node:https';
 import { AppModule } from '../src/app.module.js';
 import { NestFactory } from '@nestjs/core';
 import dockerCompose from 'docker-compose';
+import { env } from '../src/config/env.js';
 import isPortReachable from 'is-port-reachable';
 import { nodeConfig } from '../src/config/node.js';
 import path from 'path';
@@ -98,7 +99,10 @@ export const startServer = async () => {
         throw new Error('HTTPS wird nicht konfiguriert.');
     }
 
-    await startDbServer();
+    if (env.START_DB_SERVER === 'true' || env.START_DB_SERVER === 'TRUE') {
+        await startDbServer();
+    }
+
     server = await NestFactory.create(AppModule, {
         httpsOptions,
         logger: ['log'],
