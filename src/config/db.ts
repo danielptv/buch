@@ -78,6 +78,7 @@ export const typeOrmModuleOptions: TypeOrmModuleOptions =
           };
 Object.freeze(typeOrmModuleOptions);
 
+// "rest properties" ab ES 2018: https://github.com/tc39/proposal-object-rest-spread
 const { password, ...typeOrmModuleOptionsLog } = typeOrmModuleOptions;
 console.info('typeOrmModuleOptions: %o', typeOrmModuleOptionsLog);
 

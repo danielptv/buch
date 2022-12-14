@@ -136,7 +136,7 @@
     "@types/nodemailer": "6.4.6",
     "@types/nodemailer-direct-transport": "1.0.32",
     "@types/nodemailer-smtp-transport": "2.7.5",
-    "@types/passport-jwt": "3.0.7",
+    "@types/passport-jwt": "3.0.8",
     "@types/passport-local": "1.0.34",
     "@types/shelljs": "0.8.11",
     "@types/supertest": "2.0.12",

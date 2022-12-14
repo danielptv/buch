@@ -84,7 +84,7 @@ export class AuthService {
             return;
         }
 
-        // "rest properties" ab ES 2018
+        // "rest properties" ab ES 2018: https://github.com/tc39/proposal-object-rest-spread
         const { password, ...result } = user;
         this.#logger.debug('validate: result=%o', result);
         return result;

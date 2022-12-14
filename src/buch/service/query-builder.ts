@@ -85,7 +85,7 @@ export class QueryBuilder {
         );
 
         // z.B. { titel: 'a', rating: 5, javascript: true }
-        // Rest Properties fuer anfaengliche WHERE-Klausel
+        // "rest properties" fuer anfaengliche WHERE-Klausel: ab ES 2018 https://github.com/tc39/proposal-object-rest-spread
         // type-coverage:ignore-next-line
         const { titel, isbn, javascript, typescript, ...props } = suchkriterien;
 
