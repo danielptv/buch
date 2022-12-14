@@ -13,18 +13,26 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
--- (1) PostgreSQL NICHT als user "postgres" starten, sondern implizit als "root"
---     d.h. auskommentieren in docker-compose.yaml
--- (2) docker compose exec postgres bash
--- (3) chown postgres:postgres /var/lib/postgresql/tablespace
--- (4) chown postgres:postgres /var/lib/postgresql/tablespace/buch
--- (5) exit
--- (6) docker compose down
--- (7) in docker-compose.yaml den User "postgres" wieder aktivieren
--- (8) docker compose up
--- (9) docker compose exec postgres bash
--- (10) psql --dbname=postgres --username=postgres --file=/sql/create-db-buch.sql
--- (11) exit
+-- (1) user "postgres" in docker-compose.yaml auskommentieren,
+--     damit der PostgreSQL-Server implizit mit dem Linux-User "root" gestartet wird
+-- (2) PowerShell:
+--     cd <Verzeichnis-mit-docker-compose.yaml>
+--     docker compose up postgres
+-- (3) 2. PowerShell:
+--     cd <Verzeichnis-mit-docker-compose.yaml>
+--     docker compose exec postgres bash
+--         chown postgres:postgres /var/lib/postgresql/tablespace
+--         chown postgres:postgres /var/lib/postgresql/tablespace/buch
+--         exit
+--     docker compose down
+-- (3) in docker-compose.yaml den User "postgres" wieder aktivieren, d.h. Kommentar entfernen
+-- (4) 1. PowerShell:
+--     docker compose up
+-- (5) 2. PowerShell:
+--     docker compose exec postgres bash
+--        psql --dbname=postgres --username=postgres --file=/sql/create-db-buch.sql
+--        exit
+--     docker compose down
 
 -- https://www.postgresql.org/docs/current/sql-createrole.html
 CREATE ROLE buch LOGIN PASSWORD 'p';

@@ -48,6 +48,7 @@ extends:
   # prettier ueberschreibt vorherige Konfigurationseinstellungen
   - plugin:prettier/recommended
   - prettier
+  # https://github.com/eslint-community/eslint-plugin-promise#rules
   - plugin:n/recommended
   # https://github.com/eslint-community/eslint-plugin-promise#rules
   - plugin:promise/recommended
