@@ -91,7 +91,6 @@ const options: pino.TransportMultiOptions | pino.TransportSingleOptions = pretty
 const transports = pino.transport(options); // eslint-disable-line @typescript-eslint/no-unsafe-assignment
 
 // https://github.com/pinojs/pino/issues/1160#issuecomment-944081187
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 export const parentLogger: pino.Logger<SonicBoom> = defaultValue
     ? pino(pino.destination(logFileDefault))
-    : pino({ level: logLevel }, transports);
+    : pino({ level: logLevel }, transports); // eslint-disable-line @typescript-eslint/no-unsafe-argument

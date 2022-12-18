@@ -144,8 +144,8 @@ export class Buch {
 
     // https://typeorm.io/entities#special-columns
     @CreateDateColumn({ type: 'timestamp' })
-    readonly erzeugt: Date | undefined = new Date();
+    readonly erzeugt: Date | undefined;
 
     @UpdateDateColumn({ type: 'timestamp' })
-    readonly aktualisiert: Date | undefined = new Date();
+    readonly aktualisiert: Date | undefined;
 }

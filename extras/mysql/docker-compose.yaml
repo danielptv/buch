@@ -80,7 +80,8 @@ services:
     env_file: [phpMyAdmin.env]
     # kein dedizierter User im Image vorhanden
     container_name: phpmyadmin
-    hostname: phpmyadmin
+    # https://github.com/phpmyadmin/docker/issues/293
+    hostname: phpmyadmin.mysql.docker
     deploy:
       resources:
         limits:

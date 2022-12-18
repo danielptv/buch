@@ -66,6 +66,9 @@ const {
 /* eslint-disable @typescript-eslint/naming-convention */
 // TODO records als "deeply immutable data structure" (Stage 2)
 // https://github.com/tc39/proposal-record-tuple
+/**
+ * Umgebungsvariable zur Konfiguration
+ */
 export const env = {
     // Umgebungsvariable `NODE_ENV` als gleichnamige Konstante, die i.a. einen der
     // folgenden Werte enthält:
