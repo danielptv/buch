@@ -36,11 +36,7 @@ import { resolve } from 'node:path';
  * Die Test-DB wird im Development-Modus neu geladen, nachdem die Module
  * initialisiert sind, was duch `OnApplicationBootstrap` realisiert wird.
  *
- * Werkzeuge zur DB-Migration
- * - db-migrate
- * - east
- * - node-pg-migrate
- * - larvitdbmigration
+ * DB-Migration mit TypeORM: https://typeorm.io/migrations
  */
 @Injectable()
 export class DbPopulateService implements OnApplicationBootstrap {
