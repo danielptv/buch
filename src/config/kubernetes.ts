@@ -26,7 +26,7 @@ import { hostname } from 'node:os';
 // DNS-Name eines Kubernetes-Pod endet z.B. mit -75469ff64b-q3bst
 const kubernetesRegexp = /^\w+-[a-z\d]{8,10}-[a-z\d]{5}$/u;
 const isK8s = kubernetesRegexp.exec(hostname()) !== null;
-const { K8S_TLS } = env;
+const { K8S_TLS, LOG_DEFAULT } = env;
 
 /**
  * Das Konfigurationsobjekt für Kubernetes.
@@ -40,4 +40,6 @@ export const k8sConfig = {
     tls: K8S_TLS === undefined || K8S_TLS.toLowerCase() === 'true',
 } as const;
 
-console.info('k8sConfig: %o', k8sConfig);
+if (LOG_DEFAULT?.toLowerCase() !== 'true') {
+    console.debug('k8sConfig: %o', k8sConfig);
+}

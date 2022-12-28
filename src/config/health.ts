@@ -21,6 +21,7 @@
  */
 
 import { env } from './env.js';
+import { loggerDefaultValue } from './logger.js';
 
 const { HEALTH_PRETTY_PRINT } = env;
 
@@ -35,4 +36,6 @@ export const healthConfig = {
         HEALTH_PRETTY_PRINT.toLowerCase() === 'true',
 } as const;
 
-console.info('healthConfig: %o', healthConfig);
+if (!loggerDefaultValue) {
+    console.debug('healthConfig: %o', healthConfig);
+}

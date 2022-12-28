@@ -35,7 +35,7 @@ const { LOG_LEVEL, LOG_DIR, LOG_PRETTY, LOG_DEFAULT } = env;
 const { nodeEnv } = nodeConfig;
 
 // Default-Einstellung fuer Logging
-export const defaultValue = LOG_DEFAULT?.toLowerCase() === 'true';
+export const loggerDefaultValue = LOG_DEFAULT?.toLowerCase() === 'true';
 
 const logDir = LOG_DIR === undefined ? LOG_DIR : LOG_DIR.trimEnd();
 const logFile =
@@ -53,14 +53,16 @@ if (
     LOG_LEVEL === 'debug' &&
     nodeEnv !== 'production' &&
     nodeEnv !== 'PRODUCTION' &&
-    !defaultValue
+    !loggerDefaultValue
 ) {
     logLevel = 'debug';
 }
 
-console.info(
-    `logger config: logLevel=${logLevel}, logFile=${logFile}, pretty=${pretty}, defaultValue=${defaultValue}`,
-);
+if (!loggerDefaultValue) {
+    console.debug(
+        `logger config: logLevel=${logLevel}, logFile=${logFile}, pretty=${pretty}, loggerDefaultValue=${loggerDefaultValue}`,
+    );
+}
 
 const fileOptions = {
     level: logLevel,
@@ -91,6 +93,6 @@ const options: pino.TransportMultiOptions | pino.TransportSingleOptions = pretty
 const transports = pino.transport(options); // eslint-disable-line @typescript-eslint/no-unsafe-assignment
 
 // https://github.com/pinojs/pino/issues/1160#issuecomment-944081187
-export const parentLogger: pino.Logger<SonicBoom> = defaultValue
+export const parentLogger: pino.Logger<SonicBoom> = loggerDefaultValue
     ? pino(pino.destination(logFileDefault))
     : pino({ level: logLevel }, transports); // eslint-disable-line @typescript-eslint/no-unsafe-argument

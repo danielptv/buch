@@ -28,7 +28,8 @@ import { k8sConfig } from './kubernetes.js';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-const { NODE_ENV, PORT, BUCH_SERVICE_HOST, BUCH_SERVICE_PORT } = env;
+const { NODE_ENV, PORT, BUCH_SERVICE_HOST, BUCH_SERVICE_PORT, LOG_DEFAULT } =
+    env;
 
 const computername = hostname();
 let port = Number.NaN;
@@ -63,9 +64,13 @@ const cert = usePKI
 let httpsOptions: HttpsOptions | undefined;
 if (cloud === undefined) {
     if (k8sConfig.detected && !k8sConfig.tls) {
-        console.debug('HTTP: Lokaler Kubernetes-Cluster');
+        if (LOG_DEFAULT?.toLowerCase() !== 'true') {
+            console.debug('HTTP: Lokaler Kubernetes-Cluster');
+        }
     } else {
-        console.debug('HTTPS: On-Premise oder Kubernetes-Cluster');
+        if (LOG_DEFAULT?.toLowerCase() !== 'true') {
+            console.debug('HTTPS: On-Premise oder Kubernetes-Cluster');
+        }
         if (key === undefined || cert === undefined) {
             console.warn('Key und/oder Zertifikat fehlen');
         } else {

@@ -22,6 +22,7 @@
  */
 
 import RE2 from 're2';
+import { env } from './env.js';
 import { hostname } from 'node:os';
 
 /**
@@ -43,4 +44,6 @@ if (openshiftRegexp.test(computername)) {
     cloud = 'openshift';
 }
 
-console.info('cloud: %s', cloud);
+if (env.LOG_DEFAULT?.toLowerCase() !== 'true') {
+    console.debug('cloud: %s', cloud);
+}

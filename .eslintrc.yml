@@ -79,7 +79,9 @@ overrides:
   - files: ['*.graphql']
     parser: '@graphql-eslint/eslint-plugin'
     plugins: ['@graphql-eslint']
+    # https://github.com/B2o5T/graphql-eslint#config-usage
     extends: 'plugin:@graphql-eslint/schema-all'
+    #extends: 'plugin:@graphql-eslint/schema-recommended'
 
 rules:
   # https://github.com/typescript-eslint/typescript-eslint/tree/main/packages/eslint-plugin#supported-rules

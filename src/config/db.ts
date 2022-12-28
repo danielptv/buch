@@ -25,7 +25,7 @@ import { Schlagwort } from '../buch/entity/schlagwort.entity.js';
 import { type TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { env } from './env.js';
 import { k8sConfig } from './kubernetes.js';
-import { defaultValue as loggerDefaultValue } from './logger.js';
+import { loggerDefaultValue } from './logger.js';
 import { nodeConfig } from './node.js';
 
 const { DB_TYPE, DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWORD, DB_POPULATE } =
@@ -80,6 +80,8 @@ Object.freeze(typeOrmModuleOptions);
 
 // "rest properties" ab ES 2018: https://github.com/tc39/proposal-object-rest-spread
 const { password, ...typeOrmModuleOptionsLog } = typeOrmModuleOptions;
-console.info('typeOrmModuleOptions: %o', typeOrmModuleOptionsLog);
+if (!loggerDefaultValue) {
+    console.debug('typeOrmModuleOptions: %o', typeOrmModuleOptionsLog);
+}
 
 export const dbPopulate = DB_POPULATE?.toLowerCase() === 'true';

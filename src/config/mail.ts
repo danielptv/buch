@@ -22,6 +22,7 @@
 
 import { type Options } from 'nodemailer/lib/smtp-transport';
 import { env } from './env.js';
+import { loggerDefaultValue } from './logger.js';
 
 const { MAIL_HOST, MAIL_PORT, MAIL_LOG } = env;
 
@@ -53,4 +54,6 @@ export const mailConfig: Options = {
     logger,
 } as const;
 Object.freeze(mailConfig);
-console.info('mailConfig: %o', mailConfig);
+if (!loggerDefaultValue) {
+    console.debug('mailConfig: %o', mailConfig);
+}
