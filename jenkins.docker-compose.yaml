@@ -16,7 +16,6 @@
 # Aufruf:   docker compose -f jenkins.docker-compose.yaml up
 #           docker compose -f jenkins.docker-compose.yaml down
 #           docker compose -f jenkins.docker-compose.yaml exec jenkins bash
-
 ---
 # https://github.com/compose-spec/compose-spec/blob/master/spec.md#compose-file
 # https://github.com/compose-spec/compose-spec/blob/master/spec.md#services-top-level-element
@@ -24,7 +23,7 @@
 # https://docs.docker.com/compose/compose-file/compose-file-v3
 services:
   jenkins-certs:
-    image: docker:23.0-rc-dind
+    image: docker:23.0.0-rc.1-dind
     volumes:
       - type: bind
         source: C:/Zimmermann/volumes/jenkins/certs
@@ -36,7 +35,7 @@ services:
     networks:
       jenkins:
         # alternative hostnames
-        aliases: ['docker']
+        aliases: [ 'docker' ]
     environment:
       DOCKER_TLS_CERTDIR: /certs
       TZ: Europe/Berlin
@@ -51,7 +50,7 @@ services:
     ports:
       - published: 7070
         target: 8080
-    depends_on: ['jenkins-certs']
+    depends_on: [ 'jenkins-certs' ]
     volumes:
       - type: bind
         source: C:/Zimmermann/volumes/jenkins/certs
@@ -60,7 +59,7 @@ services:
       - type: bind
         source: C:/Zimmermann/volumes/jenkins/data
         target: /var/jenkins_home
-    networks: ['jenkins']
+    networks: [ 'jenkins' ]
     environment:
       DOCKER_HOST: tcp://docker:2376
       DOCKER_CERT_PATH: /certs/client
