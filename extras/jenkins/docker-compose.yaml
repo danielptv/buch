@@ -13,9 +13,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Aufruf:   docker compose -f jenkins.docker-compose.yaml up
-#           docker compose -f jenkins.docker-compose.yaml down
-#           docker compose -f jenkins.docker-compose.yaml exec jenkins bash
+# Aufruf:   docker compose up
+#           docker compose down
+#           docker compose exec jenkins bash
 ---
 # https://github.com/compose-spec/compose-spec/blob/master/spec.md#compose-file
 # https://github.com/compose-spec/compose-spec/blob/master/spec.md#services-top-level-element
@@ -35,22 +35,20 @@ services:
     networks:
       jenkins:
         # alternative hostnames
-        aliases: [ 'docker' ]
-    environment:
-      DOCKER_TLS_CERTDIR: /certs
-      TZ: Europe/Berlin
+        aliases: [docker]
+    env_file: [jenkins-certs.env]
     container_name: jenkins-cert
     deploy:
       resources:
         limits:
-          cpus: '2'
+          cpus: "1"
           memory: 512M
   jenkins:
     image: juergenzimmermann/jenkins:1.0.0
     ports:
       - published: 7070
         target: 8080
-    depends_on: [ 'jenkins-certs' ]
+    depends_on: [jenkins-certs]
     volumes:
       - type: bind
         source: C:/Zimmermann/volumes/jenkins/certs
@@ -59,12 +57,10 @@ services:
       - type: bind
         source: C:/Zimmermann/volumes/jenkins/data
         target: /var/jenkins_home
-    networks: [ 'jenkins' ]
-    environment:
-      DOCKER_HOST: tcp://docker:2376
-      DOCKER_CERT_PATH: /certs/client
-      DOCKER_TLS_VERIFY: 1
-      TZ: Europe/Berlin
+    networks: [jenkins]
+    env_file: [jenkins.env]
+    # User "jenkins" mit Group "jenkins" ist in "Dockerfile" voreingestellt
+    # user: "jenkins:jenkins"
     container_name: jenkins
     hostname: jenkins
     #deploy:

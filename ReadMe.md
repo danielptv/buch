@@ -706,22 +706,24 @@ im Verzeichnis `extras\doc\html` erstellt:
 Jenkins wird nicht in Kubernetes, sondern direkt mit _Docker Compose_
 genutzt. Dadurch muss Jenkins nicht immer laufen und kann bei Bedarf gestartet
 und wieder heruntergefahren werden. Dazu muss zunächst das Jenkins-Image um eine
-Docker-Installation ergänzt werden, wozu es das Dockerfile `jenkins.dockerfile`
-gibt, um ein solches Image zu erstellen:
+Docker-Installation ergänzt werden, wozu es im Unterverzeichnis `extras\jenkins`
+das `Dockerfile` gibt, um ein solches Image zu erstellen:
 
 ```powershell
-    Get-Content jenkins.dockerfile | docker run --rm --interactive hadolint/hadolint:2.10.0-beta-debian
-    docker buildx build --tag juergenzimmermann/jenkins:1.0.0 . --file jenkins.dockerfile
+    cd extras\jenkins
+    Get-Content Dockerfile | docker run --rm --interactive hadolint/hadolint:2.10.0-beta-debian
+    docker buildx build --tag juergenzimmermann/jenkins:1.0.0 .
 ```
 
-Das neu gebaute Image `juergenzimmermann/jenkins:1.0.0` wird in der
-Konfigurationsdatei wird `jenkins.yaml` für Docker Compose verwendet:
+Das neu gebaute Image `juergenzimmermann/jenkins:1.0.0` wird in
+`docker-compose.yaml` verwendet:
 
 ```powershell
-    docker compose -f jenkins.docker-compose.yaml up
-    ...
+    cd extras\jenkins
+    docker compose up
+
     # In einer 2. PowerShell: Herunterfahren
-    docker compose -f jenkins.docker-compose.yaml down
+    docker compose down
 ```
 
 ### Aufruf mit Webbrowser
@@ -733,7 +735,8 @@ Jenkins-Image zugreifen. Der Benutzername ist `admin` und das Passwort
 ### Bash zur evtl. Fehlersuche im laufenden Jenkins-Container
 
 ```powershell
-    docker compose -f jenkins.yaml exec jenkins bash
+    cd extras\jenkins
+    docker compose exec jenkins bash
 ```
 
 ## Monitoring durch clinic

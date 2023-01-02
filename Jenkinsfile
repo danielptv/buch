@@ -39,7 +39,7 @@ pipeline {
 
     // Umgebungsvariable:
     environment {
-        // Heroku:
+        // Cloud:
         DB_HOST = '?????.amazonaws.com'
         DB_USER = '?????'
         DB_PASS = '?????'
