@@ -66,7 +66,7 @@ services:
           cpus: "2.0"
           memory: 2048M
     healthcheck:
-      test: ["CMD", "mysqladmin", "--user=root", "--password=p", "--host=mysql", "ping"]
+      test: [CMD, mysqladmin, --user=root, --password=p, --host=mysql, ping]
       interval: 5s
       timeout: 2s
       start_period: 5s

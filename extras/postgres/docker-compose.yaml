@@ -16,7 +16,7 @@
 # Aufruf:   docker compose up
 #           docker compose down
 
-# Netzwerk "postgres_default" für die die Container durch den Verzeichnisnamen
+# Netzwerk "postgres_default" für die Container durch den Verzeichnisnamen
 # BEACHTE: Bei "pgadmin" immer Ausloggen. Sonst: Fehlermeldung "The CSRF session token is missing."
 
 # docker compose exec postgres bash
@@ -64,7 +64,7 @@ services:
           cpus: "2.0"
           memory: 2048M
     healthcheck:
-      test: ["CMD", "pg_isready", "--dbname", "postgres", "--username", "postgres"]
+      test: [CMD, pg_isready, --dbname, postgres, --username, postgres]
       interval: 5s
       timeout: 2s
       start_period: 5s
