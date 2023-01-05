@@ -115,6 +115,7 @@
     "reflect-metadata": "0.1.13",
     "rxjs": "7.8.0",
     "sonic-boom": "3.2.1",
+    "sqlite3": "5.1.4",
     "typeorm": "0.3.11",
     "uuid": "9.0.0",
     "xss": "1.0.14"
