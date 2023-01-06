@@ -89,7 +89,7 @@
     "@nestjs/terminus": "9.1.4",
     "@nestjs/typeorm": "9.0.1",
     "apollo-server-express": "3.11.1",
-    "argon2": "0.30.2",
+    "argon2": "0.30.3",
     "axios": "1.2.2",
     "chalk": "5.2.0",
     "class-transformer": "0.5.1",
