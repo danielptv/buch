@@ -85,7 +85,7 @@ export class DbPopulateService implements OnApplicationBootstrap {
             filename,
         );
         // https://nodejs.org/api/fs.html#fs_fs_readfilesync_path_options
-        const sql = readFileSync(createScript, 'utf8');
+        const sql = readFileSync(createScript, 'utf8'); // eslint-disable-line security/detect-non-literal-fs-filename
         await this.#repo.query(sql);
 
         const saved = await this.#repo.save(this.#buecher);
@@ -114,10 +114,10 @@ export class DbPopulateService implements OnApplicationBootstrap {
 
         const scriptDir = resolve(configDir, 'dev', typeOrmModuleOptions.type!); // eslint-disable-line @typescript-eslint/no-non-null-assertion
         let createScript = resolve(scriptDir, 'create-table-buch.sql');
-        let sql = readFileSync(createScript, 'utf8');
+        let sql = readFileSync(createScript, 'utf8'); // eslint-disable-line security/detect-non-literal-fs-filename
         await this.#repo.query(sql);
         createScript = resolve(scriptDir, 'create-table-schlagwort.sql');
-        sql = readFileSync(createScript, 'utf8');
+        sql = readFileSync(createScript, 'utf8'); // eslint-disable-line security/detect-non-literal-fs-filename
         await this.#repo.query(sql);
 
         const saved = await this.#repo.save(this.#buecher);

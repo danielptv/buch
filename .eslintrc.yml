@@ -268,11 +268,14 @@ rules:
 
   eslint-comments/no-unused-disable: error
 
-  # https://github.com/benmosher/eslint-plugin-import/issues/1667
+  import/consistent-type-specifier-style:
+    - error
+    - prefer-inline
   import/no-cycle:
     - error
     - maxDepth: 4
       ignoreExternal: true
+  import/no-empty-named-blocks: error
   import/no-extraneous-dependencies: error
   import/no-unresolved: off
   #import/no-unused-modules:
@@ -337,6 +340,7 @@ rules:
   promise/no-multiple-resolved: error
 
   regexp/no-extra-lookaround-assertions: error
+  regexp/no-misleading-capturing-group: error
   regexp/no-missing-g-flag: error
   regexp/prefer-regexp-exec: error
 

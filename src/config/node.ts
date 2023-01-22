@@ -55,10 +55,10 @@ export const configDir = resolve(srcDir, 'config');
 const tlsDir = resolve(configDir, 'tls');
 
 const key = usePKI
-    ? readFileSync(resolve(tlsDir, 'private-key.pem'))
+    ? readFileSync(resolve(tlsDir, 'private-key.pem')) // eslint-disable-line security/detect-non-literal-fs-filename
     : undefined;
 const cert = usePKI
-    ? readFileSync(resolve(tlsDir, 'certificate.cer'))
+    ? readFileSync(resolve(tlsDir, 'certificate.cer')) // eslint-disable-line security/detect-non-literal-fs-filename
     : undefined;
 
 let httpsOptions: HttpsOptions | undefined;

@@ -44,6 +44,7 @@ const jestConfig: Config.InitialOptions = {
             'ts-jest',
             {
                 useESM: true,
+                isolatedModules: false,
             },
         ],
     },

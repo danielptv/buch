@@ -47,8 +47,8 @@ const algorithm = 'RS256';
 const jwtDir = resolve(configDir, 'jwt');
 const utf8 = 'utf8';
 // PEM-Datei RS256, z.B. durch OpenSSL
-const publicKey = readFileSync(resolve(jwtDir, 'public-key.pem'), utf8);
-const privateKey = readFileSync(resolve(jwtDir, 'private-key.pem'), utf8);
+const publicKey = readFileSync(resolve(jwtDir, 'public-key.pem'), utf8); // eslint-disable-line security/detect-non-literal-fs-filename
+const privateKey = readFileSync(resolve(jwtDir, 'private-key.pem'), utf8); // eslint-disable-line security/detect-non-literal-fs-filename
 
 // Typische Bestandteile der Payload bei JWT:
 //  iat (= issued at)
