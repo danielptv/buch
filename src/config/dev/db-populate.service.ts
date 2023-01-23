@@ -70,22 +70,22 @@ export class DbPopulateService implements OnApplicationBootstrap {
     }
 
     async #populatePostgres() {
-        const schema = Buch.name.toLowerCase();
-        this.#logger.warn(
-            `${typeOrmModuleOptions.type}: Schema ${schema} wird geloescht`,
-        );
-        await this.#repo.query(`DROP SCHEMA IF EXISTS ${schema} CASCADE;`);
-
-        const filename = 'create-table.sql';
-        const createScript = resolve(
+        const basePath = resolve(
             configDir,
             'dev',
             typeOrmModuleOptions.type!, // eslint-disable-line @typescript-eslint/no-non-null-assertion
-            filename,
         );
+        this.#logger.warn(`${typeOrmModuleOptions.type}: DB wird neu geladen`);
+
+        const dropScript = resolve(basePath, 'drop.sql');
         // https://nodejs.org/api/fs.html#fs_fs_readfilesync_path_options
-        const sql = readFileSync(createScript, 'utf8'); // eslint-disable-line security/detect-non-literal-fs-filename
-        await this.#repo.query(sql);
+        const dropSql = readFileSync(dropScript, 'utf8'); // eslint-disable-line security/detect-non-literal-fs-filename
+        await this.#repo.query(dropSql);
+
+        const createScript = resolve(basePath, 'create.sql');
+        // https://nodejs.org/api/fs.html#fs_fs_readfilesync_path_options
+        const createSql = readFileSync(createScript, 'utf8'); // eslint-disable-line security/detect-non-literal-fs-filename
+        await this.#repo.query(createSql);
 
         const saved = await this.#repo.save(this.#buecher);
         this.#logger.warn(
