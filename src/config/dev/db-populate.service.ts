@@ -25,7 +25,6 @@ import { dbPopulate, typeOrmModuleOptions } from '../db.js';
 import { Buch } from '../../buch/entity/buch.entity.js';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Schlagwort } from '../../buch/entity/schlagwort.entity.js';
 import { buecher } from './testdaten.js';
 import { configDir } from '../node.js';
 import { getLogger } from '../../logger/logger.js';
@@ -96,15 +95,7 @@ export class DbPopulateService implements OnApplicationBootstrap {
     }
 
     async #populateMySQL() {
-        let tabelle = Schlagwort.name.toLowerCase();
-        this.#logger.warn(
-            `${typeOrmModuleOptions.type}: Tabelle ${tabelle} wird geloescht`,
-        );
-        await this.#repo.query(
-            `DROP TABLE IF EXISTS ${Schlagwort.name.toLowerCase()};`,
-        );
-
-        tabelle = Buch.name.toLowerCase();
+        const tabelle = Buch.name.toLowerCase();
         this.#logger.warn(
             `${typeOrmModuleOptions.type}: Tabelle ${tabelle} wird geloescht`,
         );
@@ -113,11 +104,8 @@ export class DbPopulateService implements OnApplicationBootstrap {
         );
 
         const scriptDir = resolve(configDir, 'dev', typeOrmModuleOptions.type!); // eslint-disable-line @typescript-eslint/no-non-null-assertion
-        let createScript = resolve(scriptDir, 'create-table-buch.sql');
-        let sql = readFileSync(createScript, 'utf8'); // eslint-disable-line security/detect-non-literal-fs-filename
-        await this.#repo.query(sql);
-        createScript = resolve(scriptDir, 'create-table-schlagwort.sql');
-        sql = readFileSync(createScript, 'utf8'); // eslint-disable-line security/detect-non-literal-fs-filename
+        const createScript = resolve(scriptDir, 'create-table-buch.sql');
+        const sql = readFileSync(createScript, 'utf8'); // eslint-disable-line security/detect-non-literal-fs-filename
         await this.#repo.query(sql);
 
         const saved = await this.#repo.save(this.#buecher);

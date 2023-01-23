@@ -42,14 +42,12 @@ import {
     Column,
     CreateDateColumn,
     Entity,
-    OneToMany,
     PrimaryColumn,
     UpdateDateColumn,
     VersionColumn,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { DecimalTransformer } from './decimal-transformer.js';
-import { Schlagwort } from './schlagwort.entity.js';
 
 /**
  * Alias-Typ für gültige Strings bei Verlagen.
@@ -68,7 +66,7 @@ export type BuchArt = 'DRUCKAUSGABE' | 'KINDLE';
 // https://typeorm.io/entities
 @Entity()
 export class Buch {
-    @Column({ type: 'char', length: 36 })
+    @Column('char', { length: 36 })
     // https://typeorm.io/entities#primary-columns
     // CAVEAT: zuerst @Column() und erst dann @PrimaryColumn()
     @PrimaryColumn('uuid')
@@ -77,7 +75,7 @@ export class Buch {
     @VersionColumn()
     readonly version: number | undefined;
 
-    @Column({ type: 'varchar', unique: true, length: 40 })
+    @Column('varchar', { unique: true, length: 40 })
     @ApiProperty({ example: 'Der Titel', type: String })
     readonly titel!: string; //NOSONAR
 
@@ -85,16 +83,15 @@ export class Buch {
     @ApiProperty({ example: 5, type: Number })
     readonly rating: number | undefined;
 
-    @Column({ type: 'varchar', length: 12 })
+    @Column('varchar', { length: 12 })
     @ApiProperty({ example: 'DRUCKAUSGABE', type: String })
     readonly art: BuchArt | undefined;
 
-    @Column({ type: 'varchar', length: 12 })
+    @Column('varchar', { length: 12 })
     @ApiProperty({ example: 'FOO_VERLAG', type: String })
     readonly verlag!: Verlag;
 
-    @Column({
-        type: 'decimal',
+    @Column('decimal', {
         precision: 8,
         scale: 2,
         transformer: new DecimalTransformer(),
@@ -103,8 +100,7 @@ export class Buch {
     // statt number ggf. Decimal aus decimal.js analog zu BigDecimal von Java
     readonly preis!: number;
 
-    @Column({
-        type: 'decimal',
+    @Column('decimal', {
         precision: 4,
         scale: 3,
         transformer: new DecimalTransformer(),
@@ -117,32 +113,25 @@ export class Buch {
     readonly lieferbar: boolean | undefined;
 
     // das Temporal-API ab ES2022 wird von TypeORM noch nicht unterstuetzt
-    @Column({ type: 'date' })
+    @Column('date')
     @ApiProperty({ example: '2021-01-31' })
     readonly datum: Date | string | undefined;
 
-    @Column({ type: 'varchar', unique: true, length: 16 })
+    @Column('varchar', { unique: true, length: 16 })
     @ApiProperty({ example: '0-0070-0644-6', type: String })
     readonly isbn!: string;
 
-    @Column({ type: 'varchar', length: 40 })
+    @Column('varchar', { length: 40 })
     @ApiProperty({ example: 'https://test.de/', type: String })
     readonly homepage: string | undefined;
 
-    // https://typeorm.io/many-to-one-one-to-many-relations
-    // Bei TypeORM gibt es nur bidirektionale Beziehungen, keine gerichteten
-    @OneToMany(() => Schlagwort, (schlagwort) => schlagwort.buch, {
-        // https://typeorm.io/eager-and-lazy-relations
-        // Join beim Lesen durch find-Methoden des Repositories
-        eager: true,
-        // https://typeorm.io/relations#cascades
-        // kaskadierendes INSERT INTO
-        cascade: ['insert'],
-    })
-    @ApiProperty({ example: ['JAVASCRIPT', 'TYPESCRIPT'] })
-    readonly schlagwoerter!: Schlagwort[];
+    // https://typeorm.io/entities#simple-array-column-type
+    @Column('simple-array')
+    readonly schlagwoerter: string[] | undefined;
 
     // https://typeorm.io/entities#special-columns
+    // https://typeorm.io/entities#column-types-for-postgres
+    // https://typeorm.io/entities#column-types-for-mysql--mariadb
     @CreateDateColumn({ type: 'timestamp' })
     readonly erzeugt: Date | undefined;
 

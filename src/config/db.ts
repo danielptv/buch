@@ -21,7 +21,6 @@
  */
 
 import { Buch } from '../buch/entity/buch.entity.js';
-import { Schlagwort } from '../buch/entity/schlagwort.entity.js';
 import { type TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { env } from './env.js';
 import { k8sConfig } from './kubernetes.js';
@@ -41,7 +40,7 @@ const username = DB_USERNAME ?? Buch.name.toLowerCase();
 const pass = DB_PASSWORD ?? 'p';
 
 // siehe auch src\buch\buch.module.ts
-const entities = [Buch, Schlagwort];
+const entities = [Buch];
 
 // logging durch console.log()
 const logging =

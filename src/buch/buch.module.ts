@@ -25,7 +25,6 @@ import { BuchWriteService } from './service/buch-write.service.js';
 import { MailModule } from '../mail/mail.module.js';
 import { Module } from '@nestjs/common';
 import { QueryBuilder } from './service/query-builder.js';
-import { Schlagwort } from './entity/schlagwort.entity.js';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 /**
@@ -42,7 +41,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     imports: [
         MailModule,
         // siehe auch src\app.module.ts
-        TypeOrmModule.forFeature([Buch, Schlagwort]),
+        TypeOrmModule.forFeature([Buch]),
         AuthModule,
     ],
     controllers: [BuchGetController, BuchWriteController],

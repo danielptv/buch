@@ -27,7 +27,6 @@ import { JwtAuthGraphQlGuard } from '../../security/auth/jwt/jwt-auth-graphql.gu
 import { ResponseTimeInterceptor } from '../../logger/response-time.interceptor.js';
 import { Roles } from '../../security/auth/roles/roles.decorator.js';
 import { RolesGraphQlGuard } from '../../security/auth/roles/roles-graphql.guard.js';
-import { type Schlagwort } from '../entity/schlagwort.entity.js';
 import { UserInputError } from 'apollo-server-express';
 import { getLogger } from '../../logger/logger.js';
 
@@ -108,7 +107,7 @@ export class BuchMutationResolver {
     }
 
     #dtoToBuch(buchDTO: BuchDTO): Buch {
-        const buch: Buch = {
+        return {
             id: undefined,
             version: undefined,
             titel: buchDTO.titel,
@@ -121,21 +120,10 @@ export class BuchMutationResolver {
             datum: buchDTO.datum,
             isbn: buchDTO.isbn,
             homepage: buchDTO.homepage,
-            schlagwoerter: [],
+            schlagwoerter: buchDTO.schlagwoerter,
             erzeugt: undefined,
             aktualisiert: undefined,
         };
-
-        buchDTO.schlagwoerter?.forEach((s) => {
-            const schlagwort: Schlagwort = {
-                id: undefined,
-                schlagwort: s,
-                buch,
-            };
-            buch.schlagwoerter.push(schlagwort);
-        });
-
-        return buch;
     }
 
     #errorMsgCreateBuch(err: CreateError) {

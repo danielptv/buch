@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 /*
  * Copyright (C) 2020 - present Juergen Zimmermann, Hochschule Karlsruhe
  *
@@ -16,7 +15,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { type Buch } from '../../buch/entity/buch.entity.js';
-import { type Schlagwort } from './../../buch/entity/schlagwort.entity.js';
 
 // TypeORM kann keine SQL-Skripte ausfuehren
 
@@ -38,7 +36,7 @@ export const buecher: Buch[] = [
         // "Konzeption und Realisierung eines aktiven Datenbanksystems"
         isbn: '978-3-897-22583-1',
         homepage: 'https://acme.at',
-        schlagwoerter: [],
+        schlagwoerter: ['JAVASCRIPT'],
         erzeugt: new Date('2022-02-01'),
         aktualisiert: new Date('2022-02-01'),
     },
@@ -56,7 +54,7 @@ export const buecher: Buch[] = [
         // "Verteilte Komponenten und Datenbankanbindung"
         isbn: '978-3-827-31552-6',
         homepage: 'https://acme.biz',
-        schlagwoerter: [],
+        schlagwoerter: ['TYPESCRIPT'],
         erzeugt: new Date('2022-02-02'),
         aktualisiert: new Date('2022-02-02'),
     },
@@ -74,7 +72,7 @@ export const buecher: Buch[] = [
         // "Design Patterns"
         isbn: '978-0-201-63361-0',
         homepage: 'https://acme.com',
-        schlagwoerter: [],
+        schlagwoerter: ['JAVASCRIPT', 'TYPESCRIPT'],
         erzeugt: new Date('2022-02-03'),
         aktualisiert: new Date('2022-02-03'),
     },
@@ -95,7 +93,7 @@ export const buecher: Buch[] = [
         // "Freiburger Chorbuch"
         isbn: '978-0-007-09732-6',
         homepage: 'https://acme.de',
-        schlagwoerter: [],
+        schlagwoerter: undefined,
         erzeugt: new Date('2022-02-04'),
         aktualisiert: new Date('2022-02-04'),
     },
@@ -116,7 +114,7 @@ export const buecher: Buch[] = [
         // "Maschinelle Lernverfahren zur Behandlung von Bonitätsrisiken im Mobilfunkgeschäft"
         isbn: '978-3-824-40481-0',
         homepage: 'https://acme.es',
-        schlagwoerter: [],
+        schlagwoerter: ['TYPESCRIPT'],
         erzeugt: new Date('2022-02-05'),
         aktualisiert: new Date('2022-02-05'),
     },
@@ -134,49 +132,8 @@ export const buecher: Buch[] = [
         // "Software pioneers",
         isbn: '978-3-540-43081-0',
         homepage: 'https://acme.it',
-        schlagwoerter: [],
+        schlagwoerter: ['TYPESCRIPT'],
         erzeugt: new Date('2022-02-06'),
         aktualisiert: new Date('2022-02-06'),
     },
 ];
-
-export const schlagwoerter: Schlagwort[] = [
-    {
-        id: '00000000-0000-0000-0000-010000000001',
-        buch: buecher[0],
-        schlagwort: 'JAVASCRIPT',
-    },
-    {
-        id: '00000000-0000-0000-0000-020000000001',
-        buch: buecher[1],
-        schlagwort: 'TYPESCRIPT',
-    },
-    {
-        id: '00000000-0000-0000-0000-030000000001',
-        buch: buecher[2],
-        schlagwort: 'JAVASCRIPT',
-    },
-    {
-        id: '00000000-0000-0000-0000-030000000002',
-        buch: buecher[2],
-        schlagwort: 'TYPESCRIPT',
-    },
-    {
-        id: '00000000-0000-0000-0000-500000000001',
-        buch: buecher[4],
-        schlagwort: 'TYPESCRIPT',
-    },
-    {
-        id: '00000000-0000-0000-0000-600000000001',
-        buch: buecher[5],
-        schlagwort: 'TYPESCRIPT',
-    },
-];
-
-buecher[0]!.schlagwoerter.push(schlagwoerter[0]!);
-buecher[1]!.schlagwoerter.push(schlagwoerter[1]!);
-buecher[2]!.schlagwoerter.push(schlagwoerter[2]!, schlagwoerter[3]!);
-buecher[4]!.schlagwoerter.push(schlagwoerter[4]!);
-buecher[5]!.schlagwoerter.push(schlagwoerter[5]!);
-
-/* eslint-enable @typescript-eslint/no-non-null-assertion */

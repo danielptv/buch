@@ -70,9 +70,8 @@ interface Links {
 // Interface fuer GET-Request mit Links fuer HATEOAS
 export type BuchModel = Omit<
     Buch,
-    'aktualisiert' | 'erzeugt' | 'id' | 'schlagwoerter' | 'version'
+    'aktualisiert' | 'erzeugt' | 'id' | 'version'
 > & {
-    schlagwoerter: string[];
     // eslint-disable-next-line @typescript-eslint/naming-convention
     _links: Links;
 };
@@ -293,10 +292,6 @@ export class BuchGetController {
         const baseUri = getBaseUri(req);
         this.#logger.debug('#toModel: baseUri=%s', baseUri);
         const { id } = buch;
-        const schlagwoerter = buch.schlagwoerter.map(
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            (schlagwort) => schlagwort.schlagwort!,
-        );
         const links = all
             ? {
                   self: { href: `${baseUri}/${id}` },
@@ -320,7 +315,7 @@ export class BuchGetController {
             datum: buch.datum,
             isbn: buch.isbn,
             homepage: buch.homepage,
-            schlagwoerter,
+            schlagwoerter: buch.schlagwoerter,
             _links: links,
         };
         /* eslint-enable unicorn/consistent-destructuring */

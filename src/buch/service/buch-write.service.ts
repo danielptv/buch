@@ -36,7 +36,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
 import { MailService } from '../../mail/mail.service.js';
 import RE2 from 're2';
-import { Schlagwort } from '../entity/schlagwort.entity.js';
 import { getLogger } from '../../logger/logger.js';
 import { v4 as uuid } from 'uuid';
 
@@ -80,9 +79,6 @@ export class BuchWriteService {
         }
 
         buch.id = uuid(); // eslint-disable-line require-atomic-updates
-        buch.schlagwoerter.forEach((schlagwort) => {
-            schlagwort.id = uuid();
-        });
 
         // implizite Transaktion
         const buchDb = await this.#repo.save(buch); // implizite Transaktion
@@ -153,18 +149,6 @@ export class BuchWriteService {
         let deleteResult: DeleteResult | undefined;
         await this.#repo.manager.transaction(async (transactionalMgr) => {
             // Das Buch zur gegebenen ID asynchron loeschen
-            const { schlagwoerter } = buch;
-            const schlagwoerterIds = schlagwoerter.map(
-                (schlagwort) => schlagwort.id,
-            );
-            const deleteResultSchlagwoerter = await transactionalMgr.delete(
-                Schlagwort,
-                schlagwoerterIds,
-            );
-            this.#logger.debug(
-                'delete: deleteResultSchlagwoerter=%o',
-                deleteResultSchlagwoerter,
-            );
             deleteResult = await transactionalMgr.delete(Buch, id);
             this.#logger.debug('delete: deleteResult=%o', deleteResult);
         });

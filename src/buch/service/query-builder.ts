@@ -20,7 +20,7 @@
  * @packageDocumentation
  */
 
-import { FindOptionsUtils, Repository, type SelectQueryBuilder } from 'typeorm';
+import { FindOptionsUtils, Repository } from 'typeorm';
 import { Buch } from '../entity/buch.entity.js';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
@@ -87,13 +87,7 @@ export class QueryBuilder {
         // z.B. { titel: 'a', rating: 5, javascript: true }
         // "rest properties" fuer anfaengliche WHERE-Klausel: ab ES 2018 https://github.com/tc39/proposal-object-rest-spread
         // type-coverage:ignore-next-line
-        const { titel, isbn, javascript, typescript, ...props } = suchkriterien;
-
-        queryBuilder = this.#buildSchlagwoerter(
-            queryBuilder,
-            javascript, // eslint-disable-line @typescript-eslint/no-unsafe-argument
-            typescript, // eslint-disable-line @typescript-eslint/no-unsafe-argument
-        );
+        const { titel, javascript, typescript, ...props } = suchkriterien;
 
         let useWhere = true;
 
@@ -110,19 +104,26 @@ export class QueryBuilder {
             useWhere = false;
         }
 
-        // type-coverage:ignore-next-line
-        if (isbn !== undefined && typeof isbn === 'string') {
-            // "-" aus ISBN-Nummer entfernen, da diese nicht abgespeichert sind
-            const isbnOhne = isbn.replaceAll('-', '');
-            const param = {
-                isbn: isbnOhne,
-            };
+        if (javascript === 'true') {
             queryBuilder = useWhere
-                ? queryBuilder.where(`${this.#buchAlias}.isbn = :isbn`, param)
+                ? queryBuilder.where(
+                      `${this.#buchAlias}.schlagwoerter like '%JAVASCRIPT%'`,
+                  )
                 : queryBuilder.andWhere(
-                      `${this.#buchAlias}.isbn = :isbn`,
-                      param,
+                      `${this.#buchAlias}.schlagwoerter like '%JAVASCRIPT%'`,
                   );
+            useWhere = false;
+        }
+
+        if (typescript === 'true') {
+            queryBuilder = useWhere
+                ? queryBuilder.where(
+                      `${this.#buchAlias}.schlagwoerter like '%TYPESCRIPT%'`,
+                  )
+                : queryBuilder.andWhere(
+                      `${this.#buchAlias}.schlagwoerter like '%TYPESCRIPT%'`,
+                  );
+            useWhere = false;
         }
 
         // Restliche Properties als Key-Value-Paare: Vergleiche auf Gleichheit
@@ -138,37 +139,10 @@ export class QueryBuilder {
                       `${this.#buchAlias}.${key} = :${key}`,
                       param,
                   );
+            useWhere = false;
         });
 
         this.#logger.debug('build: sql=%s', queryBuilder.getSql());
-        return queryBuilder;
-    }
-
-    #buildSchlagwoerter(
-        queryBuilder: SelectQueryBuilder<Buch>,
-        javascript: string | undefined,
-        typescript: string | undefined,
-    ) {
-        // Schlagwort JAVASCRIPT aus der 2. Tabelle
-        if (javascript === 'true') {
-            // https://typeorm.io/select-query-builder#inner-and-left-joins
-            // eslint-disable-next-line no-param-reassign
-            queryBuilder = queryBuilder.innerJoinAndSelect(
-                `${this.#buchAlias}.schlagwoerter`,
-                'swJS',
-                'swJS.schlagwort = :javascript',
-                { javascript: 'JAVASCRIPT' },
-            );
-        }
-        if (typescript === 'true') {
-            // eslint-disable-next-line no-param-reassign
-            queryBuilder = queryBuilder.innerJoinAndSelect(
-                `${this.#buchAlias}.schlagwoerter`,
-                'swTS',
-                'swTS.schlagwort = :typescript',
-                { typescript: 'TYPESCRIPT' },
-            );
-        }
         return queryBuilder;
     }
 }

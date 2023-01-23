@@ -44,7 +44,6 @@ services:
         source: C:/Zimmermann/volumes/mysql/log
         target: /var/log
       - type: bind
-      - type: bind
         source: C:/Zimmermann/volumes/mysql/tmp
         target: /tmp
       - type: bind

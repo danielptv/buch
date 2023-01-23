@@ -13,25 +13,26 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
--- (0) docker compose up
 -- (1) docker compose exec mysql bash
--- (2) mysql --user=root --password=p < /sql/create-db-kunde.sql
--- (3) exit
+-- (2) mysql --user=root --password=p < /scripts/create-db-buch.sql
+-- (3) mysql --user=root --password=p < /scripts/log.sql
+-- (4) exit
 
--- mysqlsh ist *NICHT* im Docker-Image enthalten: https://dev.mysql.com/doc/refman/8.0/en/mysql.html
+-- https://dev.mysql.com/doc/refman/8.0/en/mysql.html
+--   mysqlsh ist *NICHT* im Docker-Image enthalten
 
 -- https://dev.mysql.com/doc/refman/8.0/en/create-user.html
 -- https://dev.mysql.com/doc/refman/8.0/en/role-names.html
-CREATE USER IF NOT EXISTS kunde IDENTIFIED BY 'p';
-GRANT USAGE ON *.* TO kunde;
+CREATE USER IF NOT EXISTS buch IDENTIFIED BY 'p';
+GRANT USAGE ON *.* TO buch;
 
 -- https://dev.mysql.com/doc/refman/8.0/en/create-database.html
 -- https://dev.mysql.com/doc/refman/8.0/en/charset.html
 -- SHOW CHARACTER SET;
-CREATE DATABASE IF NOT EXISTS kunde CHARACTER SET utf8;
+CREATE DATABASE IF NOT EXISTS buch CHARACTER SET utf8;
 
-GRANT ALL PRIVILEGES ON kunde.* to kunde;
+GRANT ALL PRIVILEGES ON buch.* to buch;
 
 -- https://dev.mysql.com/doc/refman/8.0/en/create-tablespace.html
 -- .idb-Datei innerhalb vom "data"-Verzeichnis
--- CREATE TABLESPACE `kundespace` ADD DATAFILE 'kundespace.ibd' ENGINE=INNODB;
+CREATE TABLESPACE `buchspace` ADD DATAFILE 'buchspace.ibd' ENGINE=INNODB;

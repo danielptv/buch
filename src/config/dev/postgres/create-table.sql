@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS buch (
                   -- https://www.postgresql.org/docs/current/datatype-uuid.html
                   -- https://www.postgresql.org/docs/current/ddl-constraints.html#DDL-CONSTRAINTS-PRIMARY-KEYS
                   -- impliziter Index fuer Primary Key
-                  -- TypeORM unterstuetzt nicht BINARY(16) fuer UUID
+                  -- TypeORM unterstuetzt nicht uuid https://typeorm.io/entities#column-types-for-postgres
     id            char(36) PRIMARY KEY USING INDEX TABLESPACE buchspace,
                   -- https://www.postgresql.org/docs/current/datatype-numeric.html#DATATYPE-INT
     version       integer NOT NULL DEFAULT 0,
@@ -52,6 +52,7 @@ CREATE TABLE IF NOT EXISTS buch (
                   -- https://www.postgresql.org/docs/current/datatype-datetime.html
     datum         date,
     homepage      varchar(40),
+    schlagwoerter varchar(64),
     isbn          varchar(17) NOT NULL UNIQUE USING INDEX TABLESPACE buchspace,
                   -- https://www.postgresql.org/docs/current/datatype-datetime.html
     erzeugt       timestamp NOT NULL DEFAULT NOW(),

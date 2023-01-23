@@ -22,10 +22,7 @@ import { UseInterceptors } from '@nestjs/common';
 import { UserInputError } from 'apollo-server-express';
 import { getLogger } from '../../logger/logger.js';
 
-export type BuchDTO = Omit<
-    Buch,
-    'aktualisiert' | 'erzeugt' | 'schlagwoerter'
-> & { schlagwoerter: string[] };
+export type BuchDTO = Omit<Buch, 'aktualisiert' | 'erzeugt'>;
 export interface IdInput {
     id: string;
 }
@@ -78,11 +75,8 @@ export class BuchQueryResolver {
         return buecherDTO;
     }
 
-    #toBuchDTO(buch: Buch) {
-        const schlagwoerter = buch.schlagwoerter.map(
-            (schlagwort) => schlagwort.schlagwort!, // eslint-disable-line @typescript-eslint/no-non-null-assertion
-        );
-        const buchDTO: BuchDTO = {
+    #toBuchDTO(buch: Buch): BuchDTO {
+        return {
             id: buch.id,
             version: buch.version,
             titel: buch.titel,
@@ -95,8 +89,7 @@ export class BuchQueryResolver {
             datum: buch.datum,
             isbn: buch.isbn,
             homepage: buch.homepage,
-            schlagwoerter,
+            schlagwoerter: buch.schlagwoerter,
         };
-        return buchDTO;
     }
 }

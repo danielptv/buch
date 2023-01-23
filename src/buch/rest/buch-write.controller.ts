@@ -55,7 +55,6 @@ import { JwtAuthGuard } from '../../security/auth/jwt/jwt-auth.guard.js';
 import { ResponseTimeInterceptor } from '../../logger/response-time.interceptor.js';
 import { Roles } from '../../security/auth/roles/roles.decorator.js';
 import { RolesGuard } from '../../security/auth/roles/roles.guard.js';
-import { type Schlagwort } from '../entity/schlagwort.entity.js';
 import { getBaseUri } from './getBaseUri.js';
 import { getLogger } from '../../logger/logger.js';
 import { paths } from '../../config/paths.js';
@@ -236,7 +235,7 @@ export class BuchWriteController {
     }
 
     #dtoToBuch(buchDTO: BuchDTO): Buch {
-        const buch: Buch = {
+        return {
             id: undefined,
             version: undefined,
             titel: buchDTO.titel,
@@ -249,22 +248,10 @@ export class BuchWriteController {
             datum: buchDTO.datum,
             isbn: buchDTO.isbn,
             homepage: buchDTO.homepage,
-            schlagwoerter: [],
+            schlagwoerter: buchDTO.schlagwoerter,
             erzeugt: undefined,
             aktualisiert: undefined,
         };
-
-        // Rueckwaertsverweis von Schlagwort zu Buch
-        buchDTO.schlagwoerter?.forEach((s) => {
-            const schlagwort: Schlagwort = {
-                id: undefined,
-                schlagwort: s,
-                buch,
-            };
-            buch.schlagwoerter.push(schlagwort);
-        });
-
-        return buch;
     }
 
     #handleCreateError(err: CreateError, res: Response) {

@@ -66,7 +66,7 @@ query ($id: ID! = "99999999-9999-9999-9999-999999999999") {
   "id": "99999999-9999-9999-9999-999999999999"
 }
 
-### Suche art von Buechern mit vorhandenem Titel
+### Suche art und schlagwoerter von Buechern mit vorhandenem Titel
 POST {{graphQlUrl}}
 Content-Type: application/json
 X-REQUEST-TYPE: GraphQL
