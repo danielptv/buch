@@ -20,10 +20,11 @@
  * @packageDocumentation
  */
 
-import { FindOptionsUtils, Repository } from 'typeorm';
 import { Buch } from '../entity/buch.entity.js';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
+import { Repository } from 'typeorm';
+import { Titel } from '../entity/titel.entity.js';
 import { getLogger } from '../../logger/logger.js';
 import { typeOrmModuleOptions } from '../../config/db.js';
 
@@ -36,6 +37,10 @@ export class QueryBuilder {
     readonly #buchAlias = `${Buch.name
         .charAt(0)
         .toLowerCase()}${Buch.name.slice(1)}`;
+
+    readonly #titelAlias = `${Titel.name
+        .charAt(0)
+        .toLowerCase()}${Titel.name.slice(1)}`;
 
     readonly #repo: Repository<Buch>;
 
@@ -52,16 +57,9 @@ export class QueryBuilder {
      */
     buildId(id: number) {
         const queryBuilder = this.#repo.createQueryBuilder(this.#buchAlias);
-        // Option { eager: true } in der Entity-Klasse wird nur bei find-Methoden des Repositories beruecksichtigt
-        // https://github.com/typeorm/typeorm/issues/8292#issuecomment-1036991980
-        // https://github.com/typeorm/typeorm/issues/7142
-        FindOptionsUtils.joinEagerRelations(
-            queryBuilder,
-            queryBuilder.alias,
-            this.#repo.metadata,
-        );
-
-        queryBuilder.where(`${this.#buchAlias}.id = :id`, { id: id }); // eslint-disable-line object-shorthand
+        queryBuilder
+            .innerJoinAndSelect(`${this.#buchAlias}.titel`, this.#titelAlias)
+            .where(`${this.#buchAlias}.id = :id`, { id: id }); // eslint-disable-line object-shorthand
         return queryBuilder;
     }
 
@@ -75,14 +73,7 @@ export class QueryBuilder {
         this.#logger.debug('build: suchkriterien=%o', suchkriterien);
 
         let queryBuilder = this.#repo.createQueryBuilder(this.#buchAlias);
-        // Option { eager: true } in der Entity-Klasse wird nur bei find-Methoden des Repositories beruecksichtigt
-        // https://github.com/typeorm/typeorm/issues/8292#issuecomment-1036991980
-        // https://github.com/typeorm/typeorm/issues/7142
-        FindOptionsUtils.joinEagerRelations(
-            queryBuilder,
-            queryBuilder.alias,
-            this.#repo.metadata,
-        );
+        queryBuilder.innerJoinAndSelect(`${this.#buchAlias}.titel`, 'titel');
 
         // z.B. { titel: 'a', rating: 5, javascript: true }
         // "rest properties" fuer anfaengliche WHERE-Klausel: ab ES 2018 https://github.com/tc39/proposal-object-rest-spread
@@ -98,7 +89,7 @@ export class QueryBuilder {
             const ilike =
                 typeOrmModuleOptions.type === 'postgres' ? 'ilike' : 'like';
             queryBuilder = queryBuilder.where(
-                `${this.#buchAlias}.titel ${ilike} :titel`,
+                `${this.#titelAlias}.titel ${ilike} :titel`,
                 { titel: `%${titel}%` },
             );
             useWhere = false;

@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-magic-numbers */
+/* eslint-disable max-classes-per-file, @typescript-eslint/no-magic-numbers */
 /*
  * Copyright (C) 2016 - present Juergen Zimmermann, Florian Goebel, Hochschule Karlsruhe
  *
@@ -32,18 +32,20 @@ import {
     IsUrl,
     Matches,
     Max,
-    MaxLength,
     Min,
+    ValidateNested,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { BuchArt } from '../entity/buch.entity.js';
+import { TitelDTO } from './titelDTO.entity.js';
+import { Type } from 'class-transformer';
 
 export const MAX_RATING = 5;
 
 /**
- * Entity-Klasse für Bücher ohne Schlagwoerter.
+ * Entity-Klasse für Bücher ohne TypeORM und ohne Referenzen.
  */
-export class BuchDTO {
+export class BuchDtoOhneRef {
     // https://www.oreilly.com/library/view/regular-expressions-cookbook/9781449327453/ch04s13.html
     @IsISBN(13)
     @ApiProperty({ example: '0-007-00644-6', type: String })
@@ -89,10 +91,15 @@ export class BuchDTO {
     @ArrayUnique()
     @ApiProperty({ example: ['JAVASCRIPT', 'TYPESCRIPT'] })
     readonly schlagwoerter: string[] | undefined;
-
-    @Matches('^\\w.*')
-    @MaxLength(40)
-    @ApiProperty({ example: 'Der Titel', type: String })
-    readonly titel!: string; //NOSONAR
 }
-/* eslint-enable @typescript-eslint/no-magic-numbers */
+
+/**
+ * Entity-Klasse für Bücher ohne TypeORM.
+ */
+export class BuchDTO extends BuchDtoOhneRef {
+    @ValidateNested()
+    @Type(() => TitelDTO)
+    @ApiProperty({ example: 'Der Titel', type: String })
+    readonly titel!: TitelDTO; //NOSONAR
+}
+/* eslint-enable max-classes-per-file, @typescript-eslint/no-magic-numbers */

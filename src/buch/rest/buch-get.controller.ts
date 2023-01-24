@@ -50,6 +50,7 @@ import {
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { ResponseTimeInterceptor } from '../../logger/response-time.interceptor.js';
+import { Titel } from '../entity/titel.entity.js';
 import { getBaseUri } from './getBaseUri.js';
 import { getLogger } from '../../logger/logger.js';
 import { paths } from '../../config/paths.js';
@@ -68,10 +69,12 @@ interface Links {
 }
 
 // Interface fuer GET-Request mit Links fuer HATEOAS
+type TitelModel = Omit<Titel, 'buch' | 'id'>;
 export type BuchModel = Omit<
     Buch,
-    'aktualisiert' | 'erzeugt' | 'id' | 'version'
+    'aktualisiert' | 'erzeugt' | 'id' | 'titel' | 'version'
 > & {
+    titel: TitelModel;
     // eslint-disable-next-line @typescript-eslint/naming-convention
     _links: Links;
 };
@@ -300,6 +303,10 @@ export class BuchGetController {
             : { self: { href: `${baseUri}/${id}` } };
 
         this.#logger.debug('#toModel: buch=%o, links=%o', buch, links);
+        const titelModel: TitelModel = {
+            titel: buch.titel?.titel ?? 'N/A', // eslint-disable-line unicorn/consistent-destructuring
+            untertitel: buch.titel?.untertitel ?? 'N/A', // eslint-disable-line unicorn/consistent-destructuring
+        };
         /* eslint-disable unicorn/consistent-destructuring */
         const buchModel: BuchModel = {
             isbn: buch.isbn,
@@ -311,7 +318,7 @@ export class BuchGetController {
             datum: buch.datum,
             homepage: buch.homepage,
             schlagwoerter: buch.schlagwoerter,
-            titel: buch.titel,
+            titel: titelModel,
             _links: links,
         };
         /* eslint-enable unicorn/consistent-destructuring */

@@ -6,7 +6,6 @@
   "rabatt": 0.33,
   "lieferbar": true,
   "datum": "2022-03-03",
-  "homepage": "https://geaendert.put.rest",
-  "schlagwoerter": ["JAVASCRIPT"],
-  "titel": "Geaendertputrest"
+  "homepage": "https://put.rest",
+  "schlagwoerter": ["JAVASCRIPT"]
 }

@@ -41,7 +41,7 @@ GET {{restUrl}}?titel=a
 GET {{restUrl}}?titel=xxx
 
 ### Suche mit vorhandener ISBN
-GET {{restUrl}}?isbn=978-3-8972-2583-1
+GET {{restUrl}}?isbn=978-3-897-22583-1
 
 ### Suche mit vorhandenem Schlagwort "JAVASCRIPT"
 GET {{restUrl}}?javascript=true

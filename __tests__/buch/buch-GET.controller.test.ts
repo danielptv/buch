@@ -103,8 +103,8 @@ describe('GET /rest', () => {
         // Jedes Buch hat einen Titel mit dem Teilstring 'a'
         buecher
             .map((buch) => buch.titel)
-            .forEach((titel: string) =>
-                expect(titel.toLowerCase()).toEqual(
+            .forEach((titel) =>
+                expect(titel.titel.toLowerCase()).toEqual(
                     expect.stringContaining(titelVorhanden),
                 ),
             );

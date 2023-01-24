@@ -42,12 +42,15 @@ import {
     Column,
     CreateDateColumn,
     Entity,
+    OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
     VersionColumn,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { DecimalTransformer } from './decimal-transformer.js';
+import { Titel } from './titel.entity.js';
+import { dbType } from '../../config/dbtype.js';
 
 /**
  * Alias-Typ für gültige Strings bei der Art eines Buches.
@@ -60,7 +63,7 @@ export type BuchArt = 'DRUCKAUSGABE' | 'KINDLE';
 // https://typeorm.io/entities
 @Entity()
 export class Buch {
-    @Column('char', { length: 36 })
+    @Column('int')
     // https://typeorm.io/entities#primary-columns
     // CAVEAT: zuerst @Column() und erst dann @PrimaryGeneratedColumn()
     @PrimaryGeneratedColumn()
@@ -115,16 +118,23 @@ export class Buch {
     @Column('simple-array')
     readonly schlagwoerter: string[] | undefined;
 
-    @Column('varchar', { unique: true, length: 40 })
-    @ApiProperty({ example: 'Der Titel', type: String })
-    readonly titel!: string; //NOSONAR
+    // undefined wegen Updates
+    @OneToOne(() => Titel, (titel) => titel.buch, {
+        cascade: ['insert', 'remove'],
+    })
+    readonly titel!: Titel | undefined;
 
     // https://typeorm.io/entities#special-columns
     // https://typeorm.io/entities#column-types-for-postgres
     // https://typeorm.io/entities#column-types-for-mysql--mariadb
-    @CreateDateColumn({ type: 'timestamp' })
+    // https://typeorm.io/entities#column-types-for-sqlite--cordova--react-native--expo
+    @CreateDateColumn({ type: dbType === 'sqlite' ? 'datetime' : 'timestamp' })
+    // SQLite:
+    // @CreateDateColumn({ type: 'datetime' })
     readonly erzeugt: Date | undefined;
 
-    @UpdateDateColumn({ type: 'timestamp' })
+    @UpdateDateColumn({ type: dbType === 'sqlite' ? 'datetime' : 'timestamp' })
+    // SQLite:
+    // @UpdateDateColumn({ type: 'datetime' })
     readonly aktualisiert: Date | undefined;
 }

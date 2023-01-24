@@ -36,26 +36,38 @@ type Mutation {
   delete(id: ID!): Boolean
 }
 
+"Daten zum Titel eines Buches"
+type Titel {
+  titel: String!
+  untertitel: String
+}
+
 "Datenschema zu einem Buch, das gelesen wird"
 type Buch {
-  id: ID
-  version: Int
-  isbn: String
+  id: ID!
+  version: Int!
+  isbn: String!
   rating: Int
   art: Art
-  preis: Float
+  preis: Float!
   rabatt: Float
   lieferbar: Boolean
   datum: String
   homepage: String
   schlagwoerter: [String]
-  titel: String
+  titel: Titel!
 }
 
 "Enum-Typ für die Art eines Buches"
 enum Art {
   DRUCKAUSGABE
   KINDLE
+}
+
+"Daten zum Titel eines neuen Buches"
+input TitelInput {
+  titel: String!
+  untertitel: String
 }
 
 "Daten für ein neues Buch"
@@ -69,7 +81,7 @@ input BuchInput {
   datum: String
   homepage: String
   schlagwoerter: [String]
-  titel: String!
+  titel: TitelInput!
 }
 
 "Daten für ein zu änderndes Buch"
@@ -85,5 +97,4 @@ input BuchUpdateInput {
   datum: String
   homepage: String
   schlagwoerter: [String]
-  titel: String!
 }

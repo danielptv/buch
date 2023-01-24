@@ -46,15 +46,16 @@ import {
     UseGuards,
     UseInterceptors,
 } from '@nestjs/common';
+import { BuchDTO, BuchDtoOhneRef } from './buchDTO.entity.js';
 import { type CreateError, type UpdateError } from '../service/errors.js';
 import { Request, Response } from 'express';
 import { type Buch } from '../entity/buch.entity.js';
-import { BuchDTO } from './buchDTO.entity.js';
 import { BuchWriteService } from '../service/buch-write.service.js';
 import { JwtAuthGuard } from '../../security/auth/jwt/jwt-auth.guard.js';
 import { ResponseTimeInterceptor } from '../../logger/response-time.interceptor.js';
 import { Roles } from '../../security/auth/roles/roles.decorator.js';
 import { RolesGuard } from '../../security/auth/roles/roles.guard.js';
+import { type Titel } from '../entity/titel.entity.js';
 import { getBaseUri } from './getBaseUri.js';
 import { getLogger } from '../../logger/logger.js';
 import { paths } from '../../config/paths.js';
@@ -103,7 +104,8 @@ export class BuchWriteController {
     ): Promise<Response> {
         this.#logger.debug('create: buchDTO=%o', buchDTO);
 
-        const result = await this.#service.create(this.#dtoToBuch(buchDTO));
+        const buch = this.#buchDtoToBuch(buchDTO);
+        const result = await this.#service.create(buch);
         if (Object.prototype.hasOwnProperty.call(result, 'type')) {
             return this.#handleCreateError(result as CreateError, res);
         }
@@ -165,7 +167,7 @@ export class BuchWriteController {
         description: 'Header "If-Match" fehlt',
     })
     async update(
-        @Body() buchDTO: BuchDTO,
+        @Body() buchDTO: BuchDtoOhneRef,
         @Param('id') id: number,
         @Headers('If-Match') version: string | undefined,
         @Res() res: Response,
@@ -186,11 +188,8 @@ export class BuchWriteController {
                 .send(msg);
         }
 
-        const result = await this.#service.update(
-            id,
-            this.#updateDtoToBuch(buchDTO),
-            version,
-        );
+        const buch = this.#buchDtoOhneRefToBuch(buchDTO);
+        const result = await this.#service.update(id, buch, version);
         if (typeof result === 'object') {
             return this.#handleUpdateError(result, res);
         }
@@ -234,8 +233,15 @@ export class BuchWriteController {
         return res.sendStatus(HttpStatus.NO_CONTENT);
     }
 
-    #dtoToBuch(buchDTO: BuchDTO): Buch {
-        return {
+    #buchDtoToBuch(buchDTO: BuchDTO): Buch {
+        const titelDTO = buchDTO.titel;
+        const titel: Titel = {
+            id: undefined,
+            titel: titelDTO.titel,
+            untertitel: titelDTO.untertitel,
+            buch: undefined,
+        };
+        const buch = {
             id: undefined,
             version: undefined,
             isbn: buchDTO.isbn,
@@ -247,10 +253,14 @@ export class BuchWriteController {
             datum: buchDTO.datum,
             homepage: buchDTO.homepage,
             schlagwoerter: buchDTO.schlagwoerter,
-            titel: buchDTO.titel,
+            titel,
             erzeugt: undefined,
             aktualisiert: undefined,
         };
+
+        // Rueckwaertsverweis
+        buch.titel.buch = buch;
+        return buch;
     }
 
     #handleCreateError(err: CreateError, res: Response) {
@@ -277,8 +287,8 @@ export class BuchWriteController {
             .send(msg);
     }
 
-    #updateDtoToBuch(buchDTO: BuchDTO): Buch {
-        const buch: Buch = {
+    #buchDtoOhneRefToBuch(buchDTO: BuchDtoOhneRef): Buch {
+        return {
             id: undefined,
             version: undefined,
             isbn: buchDTO.isbn,
@@ -290,12 +300,10 @@ export class BuchWriteController {
             datum: buchDTO.datum,
             homepage: buchDTO.homepage,
             schlagwoerter: buchDTO.schlagwoerter,
-            titel: buchDTO.titel,
+            titel: undefined,
             erzeugt: undefined,
             aktualisiert: undefined,
         };
-
-        return buch;
     }
 
     #handleUpdateError(err: UpdateError, res: Response): Response {

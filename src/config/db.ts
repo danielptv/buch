@@ -21,26 +21,26 @@
  */
 
 import { Buch } from '../buch/entity/buch.entity.js';
+import { Titel } from '../buch/entity/titel.entity.js';
 import { type TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { dbType } from './dbtype.js';
 import { env } from './env.js';
 import { k8sConfig } from './kubernetes.js';
 import { loggerDefaultValue } from './logger.js';
 import { nodeConfig } from './node.js';
 
-const { DB_TYPE, DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWORD, DB_POPULATE } =
-    env;
+const { DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWORD, DB_POPULATE } = env;
 
 // nullish coalescing
 const database = DB_NAME ?? Buch.name.toLowerCase();
 const { detected } = k8sConfig;
-const dbType =
-    DB_TYPE === undefined || DB_TYPE === 'postgres' ? 'postgres' : 'mysql';
+
 const host = detected ? dbType : DB_HOST ?? 'localhost';
 const username = DB_USERNAME ?? Buch.name.toLowerCase();
 const pass = DB_PASSWORD ?? 'p';
 
 // siehe auch src\buch\buch.module.ts
-const entities = [Buch];
+const entities = [Buch, Titel];
 
 // logging durch console.log()
 const logging =
@@ -50,37 +50,75 @@ const logger = 'advanced-console';
 
 // TODO records als "deeply immutable data structure" (Stage 2)
 // https://github.com/tc39/proposal-record-tuple
-export const typeOrmModuleOptions: TypeOrmModuleOptions =
-    dbType === 'postgres'
-        ? {
-              type: 'postgres',
-              host,
-              port: 5432,
-              username,
-              password: pass,
-              database,
-              entities,
-              logging,
-              logger,
-          }
-        : {
-              type: 'mysql',
-              host,
-              port: 3306,
-              username,
-              password: pass,
-              database,
-              entities,
-              supportBigNumbers: true,
-              logging,
-              logger,
-          };
-Object.freeze(typeOrmModuleOptions);
-
-// "rest properties" ab ES 2018: https://github.com/tc39/proposal-object-rest-spread
-const { password, ...typeOrmModuleOptionsLog } = typeOrmModuleOptions;
-if (!loggerDefaultValue) {
-    console.debug('typeOrmModuleOptions: %o', typeOrmModuleOptionsLog);
+export let typeOrmModuleOptions: TypeOrmModuleOptions;
+switch (dbType) {
+    case 'postgres': {
+        typeOrmModuleOptions = {
+            type: 'postgres',
+            host,
+            port: 5432,
+            username,
+            password: pass,
+            database,
+            entities,
+            logging,
+            logger,
+        };
+        // "rest properties" ab ES 2018: https://github.com/tc39/proposal-object-rest-spread
+        const { password, ...typeOrmModuleOptionsLog } = typeOrmModuleOptions;
+        if (!loggerDefaultValue) {
+            console.debug('typeOrmModuleOptions: %o', typeOrmModuleOptionsLog);
+        }
+        break;
+    }
+    case 'mysql': {
+        typeOrmModuleOptions = {
+            type: 'mysql',
+            host,
+            port: 3306,
+            username,
+            password: pass,
+            database,
+            entities,
+            supportBigNumbers: true,
+            logging,
+            logger,
+        };
+        // "rest properties" ab ES 2018: https://github.com/tc39/proposal-object-rest-spread
+        const { password, ...typeOrmModuleOptionsLog } = typeOrmModuleOptions;
+        if (!loggerDefaultValue) {
+            console.debug('typeOrmModuleOptions: %o', typeOrmModuleOptionsLog);
+        }
+        break;
+    }
+    case 'sqlite': {
+        typeOrmModuleOptions = {
+            type: 'sqlite',
+            database: `${database}.sqlite`,
+            entities,
+            logging,
+            logger,
+        };
+        if (!loggerDefaultValue) {
+            console.debug('typeOrmModuleOptions: %o', typeOrmModuleOptions);
+        }
+        break;
+    }
+    default: {
+        typeOrmModuleOptions = {
+            type: 'postgres',
+            host,
+            port: 5432,
+            username,
+            password: pass,
+            database,
+            entities,
+            logging,
+            logger,
+        };
+        break;
+    }
 }
+Object.freeze(typeOrmModuleOptions);
 
 export const dbPopulate = DB_POPULATE?.toLowerCase() === 'true';

@@ -21,11 +21,9 @@
  */
 
 import { Buch, type BuchArt } from './../entity/buch.entity.js';
-import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
 import { QueryBuilder } from './query-builder.js';
 import RE2 from 're2';
-import { Repository } from 'typeorm';
 import { getLogger } from '../../logger/logger.js';
 
 export interface Suchkriterien {
@@ -50,19 +48,13 @@ export interface Suchkriterien {
 export class BuchReadService {
     static readonly ID_PATTERN = new RE2('^[1-9][\\d]*$');
 
-    readonly #repo: Repository<Buch>;
-
     readonly #buchProps: string[];
 
     readonly #queryBuilder: QueryBuilder;
 
     readonly #logger = getLogger(BuchReadService.name);
 
-    constructor(
-        @InjectRepository(Buch) repo: Repository<Buch>,
-        queryBuilder: QueryBuilder,
-    ) {
-        this.#repo = repo;
+    constructor(queryBuilder: QueryBuilder) {
         const buchDummy = new Buch();
         this.#buchProps = Object.getOwnPropertyNames(buchDummy);
         this.#queryBuilder = queryBuilder;
@@ -113,11 +105,15 @@ export class BuchReadService {
 
         // Keine Suchkriterien?
         if (suchkriterien === undefined) {
-            return this.#findAll();
+            const buecher = await this.#queryBuilder.build({}).getMany();
+            return buecher;
         }
         const keys = Object.keys(suchkriterien);
         if (keys.length === 0) {
-            return this.#findAll();
+            const buecher = await this.#queryBuilder
+                .build(suchkriterien)
+                .getMany();
+            return buecher;
         }
 
         // Falsche Namen fuer Suchkriterien?
@@ -131,12 +127,6 @@ export class BuchReadService {
         const buecher = await this.#queryBuilder.build(suchkriterien).getMany();
         this.#logger.debug('find: buecher=%o', buecher);
 
-        return buecher;
-    }
-
-    async #findAll() {
-        const buecher = await this.#repo.find();
-        this.#logger.debug('#findAll: alle buecher=%o', buecher);
         return buecher;
     }
 

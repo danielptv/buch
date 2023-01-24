@@ -19,7 +19,7 @@ import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { type CreateError, type UpdateError } from '../service/errors.js';
 import { IsInt, IsNumberString, Min } from 'class-validator';
 import { UseGuards, UseInterceptors } from '@nestjs/common';
-import { type Buch } from '../entity/buch.entity.js';
+import { Buch } from '../entity/buch.entity.js';
 import { BuchDTO } from '../rest/buchDTO.entity.js';
 import { BuchWriteService } from '../service/buch-write.service.js';
 import { type IdInput } from './buch-query.resolver.js';
@@ -27,6 +27,7 @@ import { JwtAuthGraphQlGuard } from '../../security/auth/jwt/jwt-auth-graphql.gu
 import { ResponseTimeInterceptor } from '../../logger/response-time.interceptor.js';
 import { Roles } from '../../security/auth/roles/roles.decorator.js';
 import { RolesGraphQlGuard } from '../../security/auth/roles/roles-graphql.guard.js';
+import { type Titel } from '../entity/titel.entity.js';
 import { UserInputError } from 'apollo-server-express';
 import { getLogger } from '../../logger/logger.js';
 
@@ -66,7 +67,8 @@ export class BuchMutationResolver {
     async create(@Args('input') buchDTO: BuchDTO) {
         this.#logger.debug('create: buchDTO=%o', buchDTO);
 
-        const result = await this.#service.create(this.#dtoToBuch(buchDTO));
+        const buch = this.#buchDtoToBuch(buchDTO);
+        const result = await this.#service.create(buch);
         this.#logger.debug('createBuch: result=%o', result);
 
         if (Object.prototype.hasOwnProperty.call(result, 'type')) {
@@ -80,13 +82,14 @@ export class BuchMutationResolver {
 
     @Mutation()
     @Roles('admin', 'mitarbeiter')
-    async update(@Args('input') buch: BuchUpdateDTO) {
-        this.#logger.debug('update: buch=%o', buch);
-        const versionStr = `"${buch.version.toString()}"`;
+    async update(@Args('input') buchDTO: BuchUpdateDTO) {
+        this.#logger.debug('update: buch=%o', buchDTO);
+        const versionStr = `"${buchDTO.version.toString()}"`;
 
+        const buch = this.#buchUpdateDtoToBuch(buchDTO);
         const result = await this.#service.update(
-            Number.parseInt(buch.id, 10),
-            this.#updateDtoToBuch(buch),
+            Number.parseInt(buchDTO.id, 10),
+            buch,
             versionStr,
         );
         if (typeof result === 'object') {
@@ -106,8 +109,15 @@ export class BuchMutationResolver {
         return result;
     }
 
-    #dtoToBuch(buchDTO: BuchDTO): Buch {
-        return {
+    #buchDtoToBuch(buchDTO: BuchDTO): Buch {
+        const titelDTO = buchDTO.titel;
+        const titel: Titel = {
+            id: undefined,
+            titel: titelDTO.titel,
+            untertitel: titelDTO.untertitel,
+            buch: undefined,
+        };
+        const buch = {
             id: undefined,
             version: undefined,
             isbn: buchDTO.isbn,
@@ -119,13 +129,17 @@ export class BuchMutationResolver {
             datum: buchDTO.datum,
             homepage: buchDTO.homepage,
             schlagwoerter: buchDTO.schlagwoerter,
-            titel: buchDTO.titel,
+            titel,
             erzeugt: undefined,
             aktualisiert: undefined,
         };
+
+        // Rueckwaertsverweis
+        buch.titel.buch = buch;
+        return buch;
     }
 
-    #updateDtoToBuch(buchDTO: BuchUpdateDTO): Buch {
+    #buchUpdateDtoToBuch(buchDTO: BuchUpdateDTO): Buch {
         return {
             id: undefined,
             version: undefined,
@@ -138,7 +152,7 @@ export class BuchMutationResolver {
             datum: buchDTO.datum,
             homepage: buchDTO.homepage,
             schlagwoerter: buchDTO.schlagwoerter,
-            titel: buchDTO.titel,
+            titel: undefined,
             erzeugt: undefined,
             aktualisiert: undefined,
         };

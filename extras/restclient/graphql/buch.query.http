@@ -19,7 +19,7 @@
 
 // siehe auch https://studio.apollographql.com/sandbox/explorer
 
-### Suche id, art, version und titel von allen Buechern
+### Suche id, version und titel von allen Buechern
 POST {{graphQlUrl}}
 Content-Type: application/json
 X-REQUEST-TYPE: GraphQL
@@ -29,11 +29,13 @@ X-REQUEST-TYPE: GraphQL
     id
     version
     art
-    titel
+    titel {
+      titel
+    }
   }
 }
 
-### Suche isbn, art, version und titel von einem Buch mit vorhandener Buch-ID
+### Suche isbn, version, art und titel von einem Buch mit vorhandener Buch-ID
 POST {{graphQlUrl}}
 Content-Type: application/json
 X-REQUEST-TYPE: GraphQL
@@ -43,7 +45,9 @@ query ($id: ID! = "1") {
     isbn
     version
     art
-    titel
+    titel {
+      titel
+    }
   }
 }
 
@@ -58,7 +62,9 @@ X-REQUEST-TYPE: GraphQL
 
 query ($id: ID! = "999999") {
   buch(id: $id) {
-    titel
+    titel {
+      titel
+    }
   }
 }
 
@@ -90,7 +96,9 @@ query ($titel: String = "a") {
   buecher(titel: $titel) {
     art
     schlagwoerter
-    titel
+    titel {
+      titel
+    }
   }
 }
 

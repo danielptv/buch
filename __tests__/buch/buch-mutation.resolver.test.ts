@@ -78,9 +78,12 @@ describe('GraphQL Mutations', () => {
                             rabatt: 0.099,
                             lieferbar: true,
                             datum: "2022-02-28",
-                            homepage: "http://test.de",
+                            homepage: "http://create.mutation",
                             schlagwoerter: ["JAVASCRIPT"],
-                            titel: "Mutationtest"
+                            titel: {
+                                titel: "Titelcreatemutation",
+                                untertitel: "untertitelcreatemutation"
+                            }
                         }
                     )
                 }
@@ -127,7 +130,9 @@ describe('GraphQL Mutations', () => {
                             lieferbar: false,
                             datum: "12345-123-123",
                             homepage: "anyHomepage",
-                            titel: "?!"
+                            titel: {
+                                titel: "?!"
+                            }
                         }
                     )
                 }
@@ -140,7 +145,7 @@ describe('GraphQL Mutations', () => {
             expect.stringMatching(/^rabatt /u),
             expect.stringMatching(/^datum /u),
             expect.stringMatching(/^homepage /u),
-            expect.stringMatching(/^titel /u),
+            expect.stringMatching(/^titel.titel /u),
         ];
 
         // when
@@ -192,7 +197,10 @@ describe('GraphQL Mutations', () => {
                             datum: "2021-01-31",
                             homepage: "http://acme.com",
                             schlagwoerter: ["JAVASCRIPT"]
-                            titel: "Mutationnichtadmin"
+                            titel: {
+                                titel: "Titelcreatemutation",
+                                untertitel: "untertitelcreatemutation"
+                            }
                         }
                     )
                 }
@@ -243,9 +251,8 @@ describe('GraphQL Mutations', () => {
                             rabatt: 0.099,
                             lieferbar: false,
                             datum: "2021-04-04",
-                            homepage: "https://geaendert.mutation.graphql"
+                            homepage: "https://update.mutation"
                             schlagwoerter: ["JAVASCRIPT", "TYPESCRIPT"],
-                            titel: "Geaendertmutationgraphql"
                         }
                     )
                 }
@@ -294,8 +301,7 @@ describe('GraphQL Mutations', () => {
                             lieferbar: false,
                             datum: "12345-123-123",
                             homepage: "anyHomepage",
-                            schlagwoerter: ["JAVASCRIPT", "TYPESCRIPT"],
-                            titel: "?!"
+                            schlagwoerter: ["JAVASCRIPT", "TYPESCRIPT"]
                         }
                     )
                 }
@@ -308,7 +314,6 @@ describe('GraphQL Mutations', () => {
             expect.stringMatching(/^rabatt /u),
             expect.stringMatching(/^datum /u),
             expect.stringMatching(/^homepage /u),
-            expect.stringMatching(/^titel /u),
         ];
 
         // when
@@ -362,8 +367,7 @@ describe('GraphQL Mutations', () => {
                             lieferbar: false,
                             datum: "2021-01-02",
                             homepage: "https://acme.com",
-                            schlagwoerter: ["JAVASCRIPT", "TYPESCRIPT"],
-                            titel: "Nichtvorhandenmutation"
+                            schlagwoerter: ["JAVASCRIPT", "TYPESCRIPT"]
                         }
                     )
                 }

@@ -28,17 +28,31 @@ CREATE TABLE IF NOT EXISTS buch (
     id             INTEGER PRIMARY KEY AUTOINCREMENT,
     version        INTEGER NOT NULL DEFAULT 0,
     isbn           TEXT NOT NULL UNIQUE,
-    rating         INTEGER NOT NULL CHECK (kategorie >= 0 AND kategorie <= 5),
+    rating         INTEGER NOT NULL CHECK (rating >= 0 AND rating <= 5),
     art            TEXT,
     preis          REAL,
     rabatt         REAL,
-    lieferbar      INTEGER NOT NULL CHECK (has_newsletter = 0 OR has_newsletter = 1) DEFAULT 0,
+    lieferbar      INTEGER NOT NULL CHECK (lieferbar = 0 OR lieferbar = 1) DEFAULT 0,
     datum          TEXT,
     homepage       TEXT,
     schlagwoerter  TEXT,
-    titel          TEXT NOT NULL,
     erzeugt        TEXT NOT NULL,
     aktualisiert   TEXT NOT NULL
-) STRICT;
+);
+CREATE INDEX IF NOT EXISTS buch_isbn_idx ON buch(isbn);
 
-CREATE INDEX IF NOT EXISTS buch_titel_idx ON buch(titel);
+CREATE TABLE IF NOT EXISTS titel (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    titel       TEXT NOT NULL,
+    untertitel  TEXT,
+    buch_id     INTEGER NOT NULL UNIQUE REFERENCES buch
+);
+
+
+CREATE TABLE IF NOT EXISTS abbildung (
+    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    beschriftung    TEXT NOT NULL,
+    content_type    TEXT NOT NULL,
+    buch_id         INTEGER NOT NULL REFERENCES buch
+);
+CREATE INDEX IF NOT EXISTS abbildung_buch_id_idx ON abbildung(buch_id);

@@ -6,7 +6,10 @@
   "rabatt": 0.1,
   "lieferbar": true,
   "datum": "2022-01-31",
-  "homepage": "https://test.de",
+  "homepage": "https://post.isbn",
   "schlagwoerter": ["JAVASCRIPT", "TYPESCRIPT"],
-  "titel": "Testisbn"
+  "titel": {
+    "titel": "Titelpostisbn",
+    "untertitel": "Untertitelpostisbn"
+  }
 }

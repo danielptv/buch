@@ -35,6 +35,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
 import { MailService } from '../../mail/mail.service.js';
 import RE2 from 're2';
+import { Titel } from '../entity/titel.entity.js';
 import { getLogger } from '../../logger/logger.js';
 
 /**
@@ -139,7 +140,12 @@ export class BuchWriteService {
 
         let deleteResult: DeleteResult | undefined;
         await this.#repo.manager.transaction(async (transactionalMgr) => {
-            // Das Buch zur gegebenen ID asynchron loeschen
+            // Das Buch zur gegebenen ID einschl. Titel asynchron loeschen
+            // TODO "cascade" funktioniert nicht beim Loeschen
+            const titelId = buch.titel?.id;
+            if (titelId !== undefined) {
+                await transactionalMgr.delete(Titel, titelId);
+            }
             deleteResult = await transactionalMgr.delete(Buch, id);
             this.#logger.debug('delete: deleteResult=%o', deleteResult);
         });
@@ -166,7 +172,8 @@ export class BuchWriteService {
 
     async #sendmail(buch: Buch) {
         const subject = `Neues Buch ${buch.id}`;
-        const body = `Das Buch mit dem Titel <strong>${buch.titel}</strong> ist angelegt`;
+        const titel = buch.titel?.titel ?? 'N/A';
+        const body = `Das Buch mit dem Titel <strong>${titel}</strong> ist angelegt`;
         await this.#mailService.sendmail(subject, body);
     }
 

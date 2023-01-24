@@ -74,10 +74,12 @@ describe('GraphQL Queries', () => {
             query: `
                 {
                     buch(id: "${idVorhanden}") {
-                        titel
-                        art
-                        isbn
                         version
+                        isbn
+                        art
+                        titel {
+                            titel
+                        }
                     }
                 }
             `,
@@ -100,7 +102,7 @@ describe('GraphQL Queries', () => {
         const { buch } = data.data!;
         const result: BuchDTO = buch;
 
-        expect(result.titel).toMatch(/^\w/u);
+        expect(result.titel?.titel).toMatch(/^\w/u);
         expect(result.version).toBeGreaterThan(-1);
         expect(result.id).toBeUndefined();
     });
@@ -112,7 +114,9 @@ describe('GraphQL Queries', () => {
             query: `
                 {
                     buch(id: "${id}") {
-                        titel
+                        titel {
+                            titel
+                        }
                     }
                 }
             `,
@@ -151,8 +155,10 @@ describe('GraphQL Queries', () => {
             query: `
                 {
                     buecher(titel: "${titelVorhanden}") {
-                        titel
                         art
+                        titel {
+                            titel
+                        }
                     }
                 }
             `,
@@ -183,7 +189,7 @@ describe('GraphQL Queries', () => {
 
         const [buch] = buecherArray;
 
-        expect(buch!.titel).toBe(titelVorhanden);
+        expect(buch!.titel?.titel).toBe(titelVorhanden);
     });
 
     test('Buch zu vorhandenem Teil-Titel', async () => {
@@ -192,8 +198,10 @@ describe('GraphQL Queries', () => {
             query: `
                 {
                     buecher(titel: "${teilTitelVorhanden}") {
-                        titel
                         art
+                        titel {
+                            titel
+                        }
                     }
                 }
             `,
@@ -220,8 +228,8 @@ describe('GraphQL Queries', () => {
         const buecherArray: BuchDTO[] = buecher;
         buecherArray
             .map((buch) => buch.titel)
-            .forEach((titel: string) =>
-                expect(titel.toLowerCase()).toEqual(
+            .forEach((titel) =>
+                expect(titel?.titel.toLowerCase()).toEqual(
                     expect.stringContaining(teilTitelVorhanden),
                 ),
             );
@@ -233,8 +241,10 @@ describe('GraphQL Queries', () => {
             query: `
                 {
                     buecher(titel: "${teilTitelNichtVorhanden}") {
-                        titel
                         art
+                        titel {
+                            titel
+                        }
                     }
                 }
             `,

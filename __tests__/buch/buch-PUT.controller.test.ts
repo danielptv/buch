@@ -24,14 +24,14 @@ import {
     shutdownServer,
     startServer,
 } from '../testserver.js';
-import { type BuchDTO } from '../../src/buch/rest/buchDTO.entity.js';
+import { type BuchDtoOhneRef } from '../../src/buch/rest/buchDTO.entity.js';
 import { HttpStatus } from '@nestjs/common';
 import { loginRest } from '../login.js';
 
 // -----------------------------------------------------------------------------
 // T e s t d a t e n
 // -----------------------------------------------------------------------------
-const geaendertesBuch: BuchDTO = {
+const geaendertesBuch: BuchDtoOhneRef = {
     isbn: '978-0-201-63361-0',
     rating: 5,
     art: 'KINDLE',
@@ -41,11 +41,10 @@ const geaendertesBuch: BuchDTO = {
     datum: '2022-03-03',
     homepage: 'https://geaendert.put.rest',
     schlagwoerter: ['JAVASCRIPT'],
-    titel: 'Geaendertputrest',
 };
 const idVorhanden = '30';
 
-const geaendertesBuchIdNichtVorhanden: BuchDTO = {
+const geaendertesBuchIdNichtVorhanden: BuchDtoOhneRef = {
     isbn: '978-0-007-09732-6',
     rating: 4,
     art: 'DRUCKAUSGABE',
@@ -55,7 +54,6 @@ const geaendertesBuchIdNichtVorhanden: BuchDTO = {
     datum: '2022-02-04',
     homepage: 'https://acme.de',
     schlagwoerter: ['JAVASCRIPT'],
-    titel: 'Nichtvorhanden',
 };
 const idNichtVorhanden = '999999';
 
@@ -71,7 +69,7 @@ const geaendertesBuchInvalid: Record<string, unknown> = {
     homepage: 'anyHomepage',
 };
 
-const veraltesBuch: BuchDTO = {
+const veraltesBuch: BuchDtoOhneRef = {
     isbn: '978-0-007-09732-6',
     rating: 1,
     art: 'DRUCKAUSGABE',
@@ -81,7 +79,6 @@ const veraltesBuch: BuchDTO = {
     datum: '2022-02-04',
     homepage: 'https://acme.de',
     schlagwoerter: ['JAVASCRIPT'],
-    titel: 'Veraltetput',
 };
 
 // -----------------------------------------------------------------------------
@@ -169,7 +166,6 @@ describe('PUT /rest/:id', () => {
             expect.stringMatching(/^rabatt /u),
             expect.stringMatching(/^datum /u),
             expect.stringMatching(/^homepage /u),
-            expect.stringMatching(/^titel /u),
         ];
 
         // when

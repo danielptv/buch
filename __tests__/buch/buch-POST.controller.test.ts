@@ -42,7 +42,10 @@ const neuesBuch: BuchDTO = {
     datum: '2022-02-28',
     homepage: 'https://test.de/',
     schlagwoerter: ['JAVASCRIPT', 'TYPESCRIPT'],
-    titel: 'Neuresttest',
+    titel: {
+        titel: 'Titelpost',
+        untertitel: 'untertitelpos',
+    },
 };
 const neuesBuchInvalid: Record<string, unknown> = {
     isbn: 'falsche-ISBN',
@@ -53,7 +56,10 @@ const neuesBuchInvalid: Record<string, unknown> = {
     lieferbar: true,
     datum: '12345-123-123',
     homepage: 'anyHomepage',
-    titel: '!?',
+    titel: {
+        titel: '?!',
+        untertitel: 'Untertitelinvalid',
+    },
 };
 const neuesBuchIsbnExistiert: BuchDTO = {
     isbn: '978-3-897-22583-1',
@@ -63,9 +69,12 @@ const neuesBuchIsbnExistiert: BuchDTO = {
     rabatt: 0.099,
     lieferbar: true,
     datum: '2022-02-28',
-    homepage: 'https://test.de/',
+    homepage: 'https://post.isbn/',
     schlagwoerter: ['JAVASCRIPT', 'TYPESCRIPT'],
-    titel: 'Isbnexistiert',
+    titel: {
+        titel: 'Titelpostisbn',
+        untertitel: 'Untertitelpostisbn',
+    },
 };
 
 // -----------------------------------------------------------------------------
@@ -140,7 +149,7 @@ describe('POST /rest', () => {
             expect.stringMatching(/^rabatt /u),
             expect.stringMatching(/^datum /u),
             expect.stringMatching(/^homepage /u),
-            expect.stringMatching(/^titel /u),
+            expect.stringMatching(/^titel.titel /u),
         ];
 
         // when
