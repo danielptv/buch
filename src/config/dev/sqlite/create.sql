@@ -27,17 +27,16 @@
 CREATE TABLE IF NOT EXISTS buch (
     id             INTEGER PRIMARY KEY AUTOINCREMENT,
     version        INTEGER NOT NULL DEFAULT 0,
-    titel          TEXT NOT NULL,
+    isbn           TEXT NOT NULL UNIQUE,
     rating         INTEGER NOT NULL CHECK (kategorie >= 0 AND kategorie <= 5),
     art            TEXT,
-    verlag         TEXT,
     preis          REAL,
     rabatt         REAL,
     lieferbar      INTEGER NOT NULL CHECK (has_newsletter = 0 OR has_newsletter = 1) DEFAULT 0,
     datum          TEXT,
     homepage       TEXT,
     schlagwoerter  TEXT,
-    isbn           TEXT NOT NULL UNIQUE,
+    titel          TEXT NOT NULL,
     erzeugt        TEXT NOT NULL,
     aktualisiert   TEXT NOT NULL
 ) STRICT;

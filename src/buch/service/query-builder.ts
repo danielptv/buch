@@ -50,7 +50,7 @@ export class QueryBuilder {
      * @param id ID des gesuchten Buches
      * @returns QueryBuilder
      */
-    buildId(id: string) {
+    buildId(id: number) {
         const queryBuilder = this.#repo.createQueryBuilder(this.#buchAlias);
         // Option { eager: true } in der Entity-Klasse wird nur bei find-Methoden des Repositories beruecksichtigt
         // https://github.com/typeorm/typeorm/issues/8292#issuecomment-1036991980

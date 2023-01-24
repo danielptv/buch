@@ -42,18 +42,12 @@ import {
     Column,
     CreateDateColumn,
     Entity,
-    PrimaryColumn,
+    PrimaryGeneratedColumn,
     UpdateDateColumn,
     VersionColumn,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { DecimalTransformer } from './decimal-transformer.js';
-
-/**
- * Alias-Typ für gültige Strings bei Verlagen.
- * "Enums get compiled in a big monster of JavaScript".
- */
-export type Verlag = 'BAR_VERLAG' | 'FOO_VERLAG';
 
 /**
  * Alias-Typ für gültige Strings bei der Art eines Buches.
@@ -68,16 +62,16 @@ export type BuchArt = 'DRUCKAUSGABE' | 'KINDLE';
 export class Buch {
     @Column('char', { length: 36 })
     // https://typeorm.io/entities#primary-columns
-    // CAVEAT: zuerst @Column() und erst dann @PrimaryColumn()
-    @PrimaryColumn('uuid')
-    id: string | undefined;
+    // CAVEAT: zuerst @Column() und erst dann @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn()
+    id: number | undefined;
 
     @VersionColumn()
     readonly version: number | undefined;
 
-    @Column('varchar', { unique: true, length: 40 })
-    @ApiProperty({ example: 'Der Titel', type: String })
-    readonly titel!: string; //NOSONAR
+    @Column('varchar', { unique: true, length: 16 })
+    @ApiProperty({ example: '0-0070-0644-6', type: String })
+    readonly isbn!: string;
 
     @Column('int')
     @ApiProperty({ example: 5, type: Number })
@@ -86,10 +80,6 @@ export class Buch {
     @Column('varchar', { length: 12 })
     @ApiProperty({ example: 'DRUCKAUSGABE', type: String })
     readonly art: BuchArt | undefined;
-
-    @Column('varchar', { length: 12 })
-    @ApiProperty({ example: 'FOO_VERLAG', type: String })
-    readonly verlag!: Verlag;
 
     @Column('decimal', {
         precision: 8,
@@ -117,10 +107,6 @@ export class Buch {
     @ApiProperty({ example: '2021-01-31' })
     readonly datum: Date | string | undefined;
 
-    @Column('varchar', { unique: true, length: 16 })
-    @ApiProperty({ example: '0-0070-0644-6', type: String })
-    readonly isbn!: string;
-
     @Column('varchar', { length: 40 })
     @ApiProperty({ example: 'https://test.de/', type: String })
     readonly homepage: string | undefined;
@@ -128,6 +114,10 @@ export class Buch {
     // https://typeorm.io/entities#simple-array-column-type
     @Column('simple-array')
     readonly schlagwoerter: string[] | undefined;
+
+    @Column('varchar', { unique: true, length: 40 })
+    @ApiProperty({ example: 'Der Titel', type: String })
+    readonly titel!: string; //NOSONAR
 
     // https://typeorm.io/entities#special-columns
     // https://typeorm.io/entities#column-types-for-postgres

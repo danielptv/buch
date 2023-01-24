@@ -33,30 +33,20 @@ export interface ConstraintViolations {
 }
 
 /**
- * Klasse für einen bereits existierenden Titel.
- */
-export interface TitelExists {
-    readonly type: 'TitelExists';
-    readonly titel: string | null | undefined;
-    readonly id?: string;
-}
-
-/**
  * Klasse für eine bereits existierende ISBN-Nummer.
  */
 export interface IsbnExists {
     readonly type: 'IsbnExists';
     readonly isbn: string | null | undefined;
-    readonly id?: string;
+    readonly id?: number;
 }
 
 /**
  * Union-Type für Fehler beim Neuanlegen eines Buches:
  * - {@linkcode ConstraintViolations}
  * - {@linkcode IsbnExists}
- * - {@linkcode TitelExists}
  */
-export type CreateError = IsbnExists | TitelExists;
+export type CreateError = ConstraintViolations | IsbnExists;
 
 /**
  * Klasse für eine ungültige Versionsnummer beim Ändern.
@@ -71,7 +61,7 @@ export interface VersionInvalid {
  */
 export interface VersionOutdated {
     readonly type: 'VersionOutdated';
-    readonly id: string;
+    readonly id: number;
     readonly version: number;
 }
 
@@ -80,22 +70,17 @@ export interface VersionOutdated {
  */
 export interface BuchNotExists {
     readonly type: 'BuchNotExists';
-    readonly id: string | undefined;
+    readonly id: number | undefined;
 }
 
 /**
  * Union-Type für Fehler beim Ändern eines Buches:
  * - {@linkcode BuchNotExists}
  * - {@linkcode ConstraintViolations}
- * - {@linkcode TitelExists}
  * - {@linkcode VersionInvalid}
  * - {@linkcode VersionOutdated}
  */
-export type UpdateError =
-    | BuchNotExists
-    | TitelExists
-    | VersionInvalid
-    | VersionOutdated;
+export type UpdateError = BuchNotExists | VersionInvalid | VersionOutdated;
 
 /**
  * Klasse für eine nicht-vorhandene Binärdatei.

@@ -15,7 +15,6 @@
 
 -- https://dev.mysql.com/doc/refman/8.0/en/create-table.html
 -- https://dev.mysql.com/doc/refman/8.0/en/data-types.html
--- TypeORM unterstuetzt nicht BINARY(16) fuer UUID
 -- https://dev.mysql.com/doc/refman/8.0/en/integer-types.html
 -- BOOLEAN = TINYINT(1) mit TRUE, true, FALSE, false
 -- https://dev.mysql.com/doc/refman/8.0/en/boolean-literals.html
@@ -24,22 +23,38 @@
 -- https://dev.mysql.com/doc/refman/8.0/en/date-and-time-types.html
 -- https://dev.mysql.com/doc/refman/8.0/en/create-table-check-constraints.html
 -- https://dev.mysql.com/blog-archive/mysql-8-0-16-introducing-check-constraint
--- impliziter Index als B-Baum durch UNIQUE
+-- UNIQUE: impliziter Index als B+ Baum
 
 CREATE TABLE IF NOT EXISTS buch (
-    id            CHAR(36) NOT NULL PRIMARY KEY,
+    id            INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     version       INT NOT NULL DEFAULT 0,
-    titel         VARCHAR(40) UNIQUE NOT NULL,
+    isbn          CHAR(17) UNIQUE NOT NULL,
     rating        INT NOT NULL CHECK (rating >= 0 AND rating <= 5),
-    art           VARCHAR(12) NOT NULL CHECK (art = 'DRUCKAUSGABE' OR art = 'KINDLE'),
-    verlag        VARCHAR(12) NOT NULL CHECK (verlag = 'FOO_VERLAG' OR verlag = 'BAR_VERLAG'),
+    art           ENUM('DRUCKAUSGABE', 'KINDLE'),
     preis         DECIMAL(8,2) NOT NULL,
     rabatt        DECIMAL(4,3) NOT NULL,
     lieferbar     BOOLEAN NOT NULL DEFAULT FALSE,
     datum         DATE,
     homepage      VARCHAR(40),
     schlagwoerter VARCHAR(64),
-    isbn          CHAR(17) UNIQUE NOT NULL,
+    titel         VARCHAR(40) UNIQUE NOT NULL,
     erzeugt       DATETIME NOT NULL DEFAULT (CURRENT_TIMESTAMP),
     aktualisiert  DATETIME NOT NULL DEFAULT (CURRENT_TIMESTAMP)
 ) TABLESPACE buchspace ROW_FORMAT=COMPACT;
+ALTER TABLE buch AUTO_INCREMENT=1000;
+
+CREATE TABLE IF NOT EXISTS titel (
+    id          INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    titel       VARCHAR(40) NOT NULL,
+    untertitel  VARCHAR(40),
+    buch_id     CHAR(36) NOT NULL references buch(id)
+) TABLESPACE buchspace ROW_FORMAT=COMPACT;
+ALTER TABLE titel AUTO_INCREMENT=1000;
+
+CREATE TABLE IF NOT EXISTS abbildung (
+    id              INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    beschriftung    VARCHAR(32) NOT NULL,
+    content_type    VARCHAR(16) NOT NULL,
+    buch_id         CHAR(36) NOT NULL references buch(id)
+) TABLESPACE buchspace ROW_FORMAT=COMPACT;
+ALTER TABLE abbildung AUTO_INCREMENT=1000;

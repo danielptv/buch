@@ -20,7 +20,7 @@
  * @packageDocumentation
  */
 
-import { Buch, type BuchArt, type Verlag } from './../entity/buch.entity.js';
+import { Buch, type BuchArt } from './../entity/buch.entity.js';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
 import { QueryBuilder } from './query-builder.js';
@@ -29,18 +29,17 @@ import { Repository } from 'typeorm';
 import { getLogger } from '../../logger/logger.js';
 
 export interface Suchkriterien {
-    readonly titel?: string;
+    readonly isbn?: string;
     readonly rating?: number;
     readonly art?: BuchArt;
-    readonly verlag?: Verlag;
     readonly preis?: number;
     readonly rabatt?: number;
     readonly lieferbar?: boolean;
     readonly datum?: string;
-    readonly isbn?: string;
     readonly homepage?: string;
     readonly javascript?: boolean;
     readonly typescript?: boolean;
+    readonly titel?: string;
 }
 
 /**
@@ -49,9 +48,7 @@ export interface Suchkriterien {
  */
 @Injectable()
 export class BuchReadService {
-    static readonly ID_PATTERN = new RE2(
-        '^[\\dA-Fa-f]{8}-[\\dA-Fa-f]{4}-[\\dA-Fa-f]{4}-[\\dA-Fa-f]{4}-[\\dA-Fa-f]{12}$',
-    );
+    static readonly ID_PATTERN = new RE2('^[1-9][\\d]*$');
 
     readonly #repo: Repository<Buch>;
 
@@ -90,13 +87,8 @@ export class BuchReadService {
      *          in einem Promise aus ES2015 (vgl.: Mono aus Project Reactor oder
      *          Future aus Java)
      */
-    async findById(id: string) {
-        this.#logger.debug('findById: id=%s', id);
-
-        if (!BuchReadService.ID_PATTERN.test(id)) {
-            this.#logger.debug('findById: Ungueltige ID');
-            return;
-        }
+    async findById(id: number) {
+        this.#logger.debug('findById: id=%d', id);
 
         // https://typeorm.io/working-with-repository
         // Das Resultat ist undefined, falls kein Datensatz gefunden

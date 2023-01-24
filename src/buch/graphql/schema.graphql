@@ -40,17 +40,16 @@ type Mutation {
 type Buch {
   id: ID
   version: Int
-  titel: String
+  isbn: String
   rating: Int
   art: Art
-  verlag: Verlag
   preis: Float
   rabatt: Float
   lieferbar: Boolean
   datum: String
-  isbn: String
   homepage: String
   schlagwoerter: [String]
+  titel: String
 }
 
 "Enum-Typ für die Art eines Buches"
@@ -59,40 +58,32 @@ enum Art {
   KINDLE
 }
 
-"Enum-Typ für den Verlag eines Buches"
-enum Verlag {
-  FOO_VERLAG
-  BAR_VERLAG
-}
-
 "Daten für ein neues Buch"
 input BuchInput {
-  titel: String!
+  isbn: String
   rating: Int
   art: Art
-  verlag: Verlag!
   preis: Float
   rabatt: Float
   lieferbar: Boolean
   datum: String
-  isbn: String
   homepage: String
   schlagwoerter: [String]
+  titel: String!
 }
 
 "Daten für ein zu änderndes Buch"
 input BuchUpdateInput {
   id: ID
   version: Int
-  titel: String!
+  isbn: String
   rating: Int
   art: Art
-  verlag: Verlag!
   preis: Float
   rabatt: Float
   lieferbar: Boolean
   datum: String
-  isbn: String
   homepage: String
   schlagwoerter: [String]
+  titel: String!
 }

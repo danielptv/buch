@@ -52,13 +52,6 @@ Authorization: Bearer {{login.response.body.$.token}}
 
 < .\json\buch-neu-invalid.json
 
-### Neues Buch anlegen, aber der Titel existiert bereits
-POST {{restUrl}}
-Content-Type: application/json
-Authorization: Bearer {{login.response.body.$.token}}
-
-< .\json\buch-neu.titel-exists.json
-
 ### Neues Buch anlegen, aber die ISBN-Nummer existiert bereits
 POST {{restUrl}}
 Content-Type: application/json

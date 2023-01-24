@@ -24,7 +24,7 @@ import { getLogger } from '../../logger/logger.js';
 
 export type BuchDTO = Omit<Buch, 'aktualisiert' | 'erzeugt'>;
 export interface IdInput {
-    id: string;
+    id: number;
 }
 
 @Resolver()
@@ -39,11 +39,11 @@ export class BuchQueryResolver {
     }
 
     @Query()
-    async buch(@Args() id: IdInput) {
-        const idStr = id.id;
-        this.#logger.debug('findById: id=%s', idStr);
+    async buch(@Args() idInput: IdInput) {
+        const { id } = idInput;
+        this.#logger.debug('findById: id=%d', id);
 
-        const buch = await this.#service.findById(idStr);
+        const buch = await this.#service.findById(id);
         if (buch === undefined) {
             // UserInputError liefert Statuscode 200
             // Weitere Error-Klassen in apollo-server-errors:
@@ -51,7 +51,7 @@ export class BuchQueryResolver {
             // PersistedQuery, PersistedQuery
             // https://www.apollographql.com/blog/graphql/error-handling/full-stack-error-handling-with-graphql-apollo
             throw new UserInputError(
-                `Es wurde kein Buch mit der ID ${idStr} gefunden.`,
+                `Es wurde kein Buch mit der ID ${id} gefunden.`,
             );
         }
         const buchDTO = this.#toBuchDTO(buch);
@@ -79,17 +79,16 @@ export class BuchQueryResolver {
         return {
             id: buch.id,
             version: buch.version,
-            titel: buch.titel,
+            isbn: buch.isbn,
             rating: buch.rating,
             art: buch.art,
-            verlag: buch.verlag,
             preis: buch.preis,
             rabatt: buch.rabatt,
             lieferbar: buch.lieferbar,
             datum: buch.datum,
-            isbn: buch.isbn,
             homepage: buch.homepage,
             schlagwoerter: buch.schlagwoerter,
+            titel: buch.titel,
         };
     }
 }

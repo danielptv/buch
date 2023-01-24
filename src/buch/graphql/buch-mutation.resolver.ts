@@ -16,11 +16,11 @@
  */
 // eslint-disable-next-line max-classes-per-file
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
-import { BuchDTO, BuchOhneSchlagwoerterDTO } from '../rest/buchDTO.entity.js';
 import { type CreateError, type UpdateError } from '../service/errors.js';
-import { IsInt, IsUUID, Min } from 'class-validator';
+import { IsInt, IsNumberString, Min } from 'class-validator';
 import { UseGuards, UseInterceptors } from '@nestjs/common';
 import { type Buch } from '../entity/buch.entity.js';
+import { BuchDTO } from '../rest/buchDTO.entity.js';
 import { BuchWriteService } from '../service/buch-write.service.js';
 import { type IdInput } from './buch-query.resolver.js';
 import { JwtAuthGraphQlGuard } from '../../security/auth/jwt/jwt-auth-graphql.guard.js';
@@ -40,8 +40,8 @@ import { getLogger } from '../../logger/logger.js';
 //      https://github.com/AstrumU/graphql-authz
 //      https://www.the-guild.dev/blog/graphql-authz
 
-class BuchUpdateDTO extends BuchOhneSchlagwoerterDTO {
-    @IsUUID()
+class BuchUpdateDTO extends BuchDTO {
+    @IsNumberString()
     readonly id!: string;
 
     @IsInt()
@@ -85,8 +85,8 @@ export class BuchMutationResolver {
         const versionStr = `"${buch.version.toString()}"`;
 
         const result = await this.#service.update(
-            buch.id,
-            buch as Buch,
+            Number.parseInt(buch.id, 10),
+            this.#updateDtoToBuch(buch),
             versionStr,
         );
         if (typeof result === 'object') {
@@ -110,17 +110,35 @@ export class BuchMutationResolver {
         return {
             id: undefined,
             version: undefined,
-            titel: buchDTO.titel,
+            isbn: buchDTO.isbn,
             rating: buchDTO.rating,
             art: buchDTO.art,
-            verlag: buchDTO.verlag,
             preis: buchDTO.preis,
             rabatt: buchDTO.rabatt,
             lieferbar: buchDTO.lieferbar,
             datum: buchDTO.datum,
-            isbn: buchDTO.isbn,
             homepage: buchDTO.homepage,
             schlagwoerter: buchDTO.schlagwoerter,
+            titel: buchDTO.titel,
+            erzeugt: undefined,
+            aktualisiert: undefined,
+        };
+    }
+
+    #updateDtoToBuch(buchDTO: BuchUpdateDTO): Buch {
+        return {
+            id: undefined,
+            version: undefined,
+            isbn: buchDTO.isbn,
+            rating: buchDTO.rating,
+            art: buchDTO.art,
+            preis: buchDTO.preis,
+            rabatt: buchDTO.rabatt,
+            lieferbar: buchDTO.lieferbar,
+            datum: buchDTO.datum,
+            homepage: buchDTO.homepage,
+            schlagwoerter: buchDTO.schlagwoerter,
+            titel: buchDTO.titel,
             erzeugt: undefined,
             aktualisiert: undefined,
         };
@@ -128,9 +146,6 @@ export class BuchMutationResolver {
 
     #errorMsgCreateBuch(err: CreateError) {
         switch (err.type) {
-            case 'TitelExists': {
-                return `Der Titel "${err.titel}" existiert bereits`;
-            }
             case 'IsbnExists': {
                 return `Die ISBN ${err.isbn} existiert bereits`;
             }
@@ -142,9 +157,6 @@ export class BuchMutationResolver {
 
     #errorMsgUpdateBuch(err: UpdateError) {
         switch (err.type) {
-            case 'TitelExists': {
-                return `Der Titel "${err.titel}" existiert bereits`;
-            }
             case 'BuchNotExists': {
                 return `Es gibt kein Buch mit der ID ${err.id}`;
             }

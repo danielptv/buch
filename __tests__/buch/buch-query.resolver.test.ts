@@ -37,7 +37,7 @@ export type GraphQLResponseBody = Pick<GraphQLResponse, 'data' | 'errors'>;
 // -----------------------------------------------------------------------------
 // T e s t d a t e n
 // -----------------------------------------------------------------------------
-const idVorhanden = '00000000-0000-0000-0000-000000000001';
+const idVorhanden = '1';
 
 const titelVorhanden = 'Alpha';
 
@@ -107,7 +107,7 @@ describe('GraphQL Queries', () => {
 
     test('Buch zu nicht-vorhandener ID', async () => {
         // given
-        const id = '999999999999999999999999';
+        const id = '999999';
         const body: GraphQLRequest = {
             query: `
                 {

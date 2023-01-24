@@ -13,11 +13,8 @@
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
--- https://www.postgresql.org/docs/current/sql-droptable.html
+-- https://dev.mysql.com/doc/refman/8.0/en/drop-table.html
 
-DROP TABLE IF EXISTS buch CASCADE;
-DROP TABLE IF EXISTS titel CASCADE;
-DROP TABLE IF EXISTS abbildung CASCADE;
-
--- https://www.postgresql.org/docs/current/sql-droptype.html
-DROP TYPE IF EXISTS buchart;
+DROP TABLE IF EXISTS buch;
+DROP TABLE IF EXISTS titel;
+DROP TABLE IF EXISTS abbildung;

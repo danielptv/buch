@@ -33,42 +33,39 @@ import { loginRest } from '../login.js';
 // T e s t d a t e n
 // -----------------------------------------------------------------------------
 const neuesBuch: BuchDTO = {
-    titel: 'Neuresttest',
+    isbn: '978-0-007-00644-1',
     rating: 1,
     art: 'DRUCKAUSGABE',
-    verlag: 'FOO_VERLAG',
     preis: 99.99,
     rabatt: 0.099,
     lieferbar: true,
     datum: '2022-02-28',
-    isbn: '978-0-007-00644-1',
     homepage: 'https://test.de/',
     schlagwoerter: ['JAVASCRIPT', 'TYPESCRIPT'],
+    titel: 'Neuresttest',
 };
 const neuesBuchInvalid: Record<string, unknown> = {
-    titel: '!?',
+    isbn: 'falsche-ISBN',
     rating: -1,
     art: 'UNSICHTBAR',
-    verlag: 'NO_VERLAG',
     preis: -1,
     rabatt: 2,
     lieferbar: true,
     datum: '12345-123-123',
-    isbn: 'falsche-ISBN',
     homepage: 'anyHomepage',
+    titel: '!?',
 };
-const neuesBuchTitelExistiert: BuchDTO = {
-    titel: 'Alpha',
+const neuesBuchIsbnExistiert: BuchDTO = {
+    isbn: '978-3-897-22583-1',
     rating: 1,
     art: 'DRUCKAUSGABE',
-    verlag: 'FOO_VERLAG',
     preis: 99.99,
     rabatt: 0.099,
     lieferbar: true,
     datum: '2022-02-28',
-    isbn: '978-0-007-09732-6',
     homepage: 'https://test.de/',
     schlagwoerter: ['JAVASCRIPT', 'TYPESCRIPT'],
+    titel: 'Isbnexistiert',
 };
 
 // -----------------------------------------------------------------------------
@@ -136,15 +133,14 @@ describe('POST /rest', () => {
         const token = await loginRest(client);
         headers.Authorization = `Bearer ${token}`;
         const expectedMsg = [
-            expect.stringMatching(/^titel /u),
+            expect.stringMatching(/^isbn /u),
             expect.stringMatching(/^rating /u),
             expect.stringMatching(/^art /u),
-            expect.stringMatching(/^verlag /u),
             expect.stringMatching(/^preis /u),
             expect.stringMatching(/^rabatt /u),
             expect.stringMatching(/^datum /u),
-            expect.stringMatching(/^isbn /u),
             expect.stringMatching(/^homepage /u),
+            expect.stringMatching(/^titel /u),
         ];
 
         // when
@@ -167,7 +163,7 @@ describe('POST /rest', () => {
         expect(messages).toEqual(expect.arrayContaining(expectedMsg));
     });
 
-    test('Neues Buch, aber der Titel existiert bereits', async () => {
+    test('Neues Buch, aber die ISBN existiert bereits', async () => {
         // given
         const token = await loginRest(client);
         headers.Authorization = `Bearer ${token}`;
@@ -175,7 +171,7 @@ describe('POST /rest', () => {
         // when
         const response: AxiosResponse<string> = await client.post(
             '/rest',
-            neuesBuchTitelExistiert,
+            neuesBuchIsbnExistiert,
             { headers },
         );
 
@@ -183,7 +179,7 @@ describe('POST /rest', () => {
         const { status, data } = response;
 
         expect(status).toBe(HttpStatus.UNPROCESSABLE_ENTITY);
-        expect(data).toEqual(expect.stringContaining('Titel'));
+        expect(data).toEqual(expect.stringContaining('ISBN'));
     });
 
     test('Neues Buch, aber ohne Token', async () => {

@@ -21,7 +21,6 @@
  * @packageDocumentation
  */
 
-// eslint-disable-next-line max-classes-per-file
 import {
     ArrayUnique,
     IsBoolean,
@@ -36,19 +35,19 @@ import {
     MaxLength,
     Min,
 } from 'class-validator';
-import { BuchArt, Verlag } from '../entity/buch.entity.js';
 import { ApiProperty } from '@nestjs/swagger';
+import { BuchArt } from '../entity/buch.entity.js';
 
 export const MAX_RATING = 5;
 
 /**
  * Entity-Klasse für Bücher ohne Schlagwoerter.
  */
-export class BuchOhneSchlagwoerterDTO {
-    @Matches('^\\w.*')
-    @MaxLength(40)
-    @ApiProperty({ example: 'Der Titel', type: String })
-    readonly titel!: string; //NOSONAR
+export class BuchDTO {
+    // https://www.oreilly.com/library/view/regular-expressions-cookbook/9781449327453/ch04s13.html
+    @IsISBN(13)
+    @ApiProperty({ example: '0-007-00644-6', type: String })
+    readonly isbn!: string;
 
     @IsInt()
     @Min(0)
@@ -60,10 +59,6 @@ export class BuchOhneSchlagwoerterDTO {
     @IsOptional()
     @ApiProperty({ example: 'DRUCKAUSGABE', type: String })
     readonly art: BuchArt | undefined;
-
-    @Matches(/^BAR_VERLAG$|^FOO_VERLAG$/u)
-    @ApiProperty({ example: 'FOO_VERLAG', type: String })
-    readonly verlag!: Verlag;
 
     @IsPositive()
     @ApiProperty({ example: 1, type: Number })
@@ -85,24 +80,19 @@ export class BuchOhneSchlagwoerterDTO {
     @ApiProperty({ example: '2021-01-31' })
     readonly datum: Date | string | undefined;
 
-    // https://www.oreilly.com/library/view/regular-expressions-cookbook/9781449327453/ch04s13.html
-    @IsISBN(13)
-    @ApiProperty({ example: '0-007-00644-6', type: String })
-    readonly isbn!: string;
-
     @IsUrl()
     @IsOptional()
     @ApiProperty({ example: 'https://test.de/', type: String })
     readonly homepage: string | undefined;
-}
 
-/**
- * Entity-Klasse für Bücher ohne Schlagwoerter.
- */
-export class BuchDTO extends BuchOhneSchlagwoerterDTO {
     @IsOptional()
     @ArrayUnique()
     @ApiProperty({ example: ['JAVASCRIPT', 'TYPESCRIPT'] })
     readonly schlagwoerter: string[] | undefined;
+
+    @Matches('^\\w.*')
+    @MaxLength(40)
+    @ApiProperty({ example: 'Der Titel', type: String })
+    readonly titel!: string; //NOSONAR
 }
 /* eslint-enable @typescript-eslint/no-magic-numbers */

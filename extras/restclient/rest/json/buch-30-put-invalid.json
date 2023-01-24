@@ -1,12 +1,12 @@
 {
-  "titel": "?!",
+  "isbn": "falsche-ISBN",
   "rating": -1,
   "art": "UNSICHTBAR",
-  "verlag": "NO_VERLAG",
   "preis": -1,
   "rabatt": 2,
   "lieferbar": true,
   "datum": "12345-123-123",
-  "isbn": "falsche-ISBN",
-  "homepage": "anyHomepage"
+  "homepage": "anyHomepage",
+  "schlagwoerter": ["JAVASCRIPT"],
+  "titel": "?!"
 }

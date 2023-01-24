@@ -32,7 +32,7 @@ import {
     ApiResponse,
     ApiTags,
 } from '@nestjs/swagger';
-import { type Buch, type BuchArt, type Verlag } from '../entity/buch.entity.js';
+import { type Buch, type BuchArt } from '../entity/buch.entity.js';
 import {
     BuchReadService,
     type Suchkriterien,
@@ -95,16 +95,13 @@ export interface BuecherModel {
  */
 export class BuchQuery implements Suchkriterien {
     @ApiProperty({ required: false })
-    declare readonly titel: string;
+    declare readonly isbn: string;
 
     @ApiProperty({ required: false })
     declare readonly rating: number;
 
     @ApiProperty({ required: false })
     declare readonly art: BuchArt;
-
-    @ApiProperty({ required: false })
-    declare readonly verlag: Verlag;
 
     @ApiProperty({ required: false })
     declare readonly preis: number;
@@ -119,9 +116,6 @@ export class BuchQuery implements Suchkriterien {
     declare readonly datum: string;
 
     @ApiProperty({ required: false })
-    declare readonly isbn: string;
-
-    @ApiProperty({ required: false })
     declare readonly homepage: string;
 
     @ApiProperty({ required: false })
@@ -129,6 +123,9 @@ export class BuchQuery implements Suchkriterien {
 
     @ApiProperty({ required: false })
     declare readonly typescript: boolean;
+
+    @ApiProperty({ required: false })
+    declare readonly titel: string;
 }
 
 /**
@@ -195,7 +192,7 @@ export class BuchGetController {
         description: 'Das Buch wurde bereits heruntergeladen',
     })
     async findById(
-        @Param('id') id: string,
+        @Param('id') id: number,
         @Req() req: Request,
         @Headers('If-None-Match') version: string | undefined,
         @Res() res: Response,
@@ -305,17 +302,16 @@ export class BuchGetController {
         this.#logger.debug('#toModel: buch=%o, links=%o', buch, links);
         /* eslint-disable unicorn/consistent-destructuring */
         const buchModel: BuchModel = {
-            titel: buch.titel,
+            isbn: buch.isbn,
             rating: buch.rating,
             art: buch.art,
-            verlag: buch.verlag,
             preis: buch.preis,
             rabatt: buch.rabatt,
             lieferbar: buch.lieferbar,
             datum: buch.datum,
-            isbn: buch.isbn,
             homepage: buch.homepage,
             schlagwoerter: buch.schlagwoerter,
+            titel: buch.titel,
             _links: links,
         };
         /* eslint-enable unicorn/consistent-destructuring */

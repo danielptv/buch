@@ -24,65 +24,64 @@ import {
     shutdownServer,
     startServer,
 } from '../testserver.js';
-import { type BuchOhneSchlagwoerterDTO } from '../../src/buch/rest/buchDTO.entity.js';
+import { type BuchDTO } from '../../src/buch/rest/buchDTO.entity.js';
 import { HttpStatus } from '@nestjs/common';
 import { loginRest } from '../login.js';
 
 // -----------------------------------------------------------------------------
 // T e s t d a t e n
 // -----------------------------------------------------------------------------
-const geaendertesBuch: BuchOhneSchlagwoerterDTO = {
-    titel: 'Geaendertresttest',
+const geaendertesBuch: BuchDTO = {
+    isbn: '978-0-201-63361-0',
     rating: 5,
     art: 'KINDLE',
-    verlag: 'FOO_VERLAG',
-    preis: 4444,
-    rabatt: 0.44,
+    preis: 3333,
+    rabatt: 0.33,
     lieferbar: true,
-    datum: '2022-04-04',
-    isbn: '978-0-007-09732-6',
-    homepage: 'https://put.acme.de',
+    datum: '2022-03-03',
+    homepage: 'https://geaendert.put.rest',
+    schlagwoerter: ['JAVASCRIPT'],
+    titel: 'Geaendertputrest',
 };
-const idVorhanden = '00000000-0000-0000-0000-000000000040';
+const idVorhanden = '30';
 
-const geaendertesBuchIdNichtVorhanden: BuchOhneSchlagwoerterDTO = {
-    titel: 'Nichtvorhanden',
+const geaendertesBuchIdNichtVorhanden: BuchDTO = {
+    isbn: '978-0-007-09732-6',
     rating: 4,
     art: 'DRUCKAUSGABE',
-    verlag: 'BAR_VERLAG',
     preis: 44.4,
     rabatt: 0.044,
     lieferbar: true,
     datum: '2022-02-04',
-    isbn: '978-0-007-09732-6',
     homepage: 'https://acme.de',
+    schlagwoerter: ['JAVASCRIPT'],
+    titel: 'Nichtvorhanden',
 };
-const idNichtVorhanden = '99999999-9999-9999-9999-999999999999';
+const idNichtVorhanden = '999999';
 
 const geaendertesBuchInvalid: Record<string, unknown> = {
-    titel: '?!',
+    isbn: 'falsche-ISBN',
     rating: -1,
     art: 'UNSICHTBAR',
-    verlag: 'NO_VERLAG',
     preis: -1,
     rabatt: 2,
     lieferbar: true,
     datum: '12345-123-123',
-    isbn: 'falsche-ISBN',
+    titel: '?!',
     homepage: 'anyHomepage',
 };
 
-const veraltesBuch: BuchOhneSchlagwoerterDTO = {
-    titel: 'Veraltetput',
+const veraltesBuch: BuchDTO = {
+    isbn: '978-0-007-09732-6',
     rating: 1,
     art: 'DRUCKAUSGABE',
-    verlag: 'BAR_VERLAG',
     preis: 44.4,
     rabatt: 0.044,
     lieferbar: true,
     datum: '2022-02-04',
-    isbn: '978-0-007-09732-6',
     homepage: 'https://acme.de',
+    schlagwoerter: ['JAVASCRIPT'],
+    titel: 'Veraltetput',
 };
 
 // -----------------------------------------------------------------------------
@@ -163,15 +162,14 @@ describe('PUT /rest/:id', () => {
         headers.Authorization = `Bearer ${token}`;
         headers['If-Match'] = '"0"';
         const expectedMsg = [
-            expect.stringMatching(/^titel /u),
+            expect.stringMatching(/^isbn /u),
             expect.stringMatching(/^rating /u),
             expect.stringMatching(/^art /u),
-            expect.stringMatching(/^verlag /u),
             expect.stringMatching(/^preis /u),
             expect.stringMatching(/^rabatt /u),
             expect.stringMatching(/^datum /u),
-            expect.stringMatching(/^isbn /u),
             expect.stringMatching(/^homepage /u),
+            expect.stringMatching(/^titel /u),
         ];
 
         // when

@@ -24,7 +24,6 @@
 import {
     type BuchNotExists,
     type CreateError,
-    type TitelExists,
     type UpdateError,
     type VersionInvalid,
     type VersionOutdated,
@@ -37,7 +36,6 @@ import { Injectable } from '@nestjs/common';
 import { MailService } from '../../mail/mail.service.js';
 import RE2 from 're2';
 import { getLogger } from '../../logger/logger.js';
-import { v4 as uuid } from 'uuid';
 
 /**
  * Die Klasse `BuchWriteService` implementiert den Anwendungskern für das
@@ -71,14 +69,12 @@ export class BuchWriteService {
      * @returns Die ID des neu angelegten Buches oder im Fehlerfall
      * [CreateError](../types/buch_service_errors.CreateError.html)
      */
-    async create(buch: Buch): Promise<CreateError | string> {
+    async create(buch: Buch): Promise<CreateError | number> {
         this.#logger.debug('create: buch=%o', buch);
         const validateResult = await this.#validateCreate(buch);
         if (validateResult !== undefined) {
             return validateResult;
         }
-
-        buch.id = uuid(); // eslint-disable-line require-atomic-updates
 
         // implizite Transaktion
         const buchDb = await this.#repo.save(buch); // implizite Transaktion
@@ -98,17 +94,17 @@ export class BuchWriteService {
      *  oder im Fehlerfall [UpdateError](../types/buch_service_errors.UpdateError.html)
      */
     async update(
-        id: string | undefined,
+        id: number | undefined,
         buch: Buch,
         version: string,
     ): Promise<UpdateError | number> {
         this.#logger.debug(
-            'update: id=%s, buch=%o, version=%s',
+            'update: id=%d, buch=%o, version=%s',
             id,
             buch,
             version,
         );
-        if (id === undefined || !BuchReadService.ID_PATTERN.test(id)) {
+        if (id === undefined) {
             this.#logger.debug('update: Keine gueltige ID');
             return { type: 'BuchNotExists', id };
         }
@@ -134,13 +130,8 @@ export class BuchWriteService {
      * @param id ID des zu löschenden Buches
      * @returns true, falls das Buch vorhanden war und gelöscht wurde. Sonst false.
      */
-    async delete(id: string) {
-        this.#logger.debug('delete: id=%s', id);
-        if (!BuchReadService.ID_PATTERN.test(id)) {
-            this.#logger.debug('delete: Keine gueltige ID');
-            return false;
-        }
-
+    async delete(id: number) {
+        this.#logger.debug('delete: id=%d', id);
         const buch = await this.#readService.findById(id);
         if (buch === undefined) {
             return false;
@@ -163,14 +154,8 @@ export class BuchWriteService {
     async #validateCreate(buch: Buch): Promise<CreateError | undefined> {
         this.#logger.debug('#validateCreate: buch=%o', buch);
 
-        const { titel } = buch;
-        let buecher = await this.#readService.find({ titel: titel }); // eslint-disable-line object-shorthand
-        if (buecher.length > 0) {
-            return { type: 'TitelExists', titel };
-        }
-
         const { isbn } = buch;
-        buecher = await this.#readService.find({ isbn: isbn }); // eslint-disable-line object-shorthand
+        const buecher = await this.#readService.find({ isbn: isbn }); // eslint-disable-line object-shorthand
         if (buecher.length > 0) {
             return { type: 'IsbnExists', isbn };
         }
@@ -187,7 +172,7 @@ export class BuchWriteService {
 
     async #validateUpdate(
         buch: Buch,
-        id: string,
+        id: number,
         versionStr: string,
     ): Promise<Buch | UpdateError> {
         const result = this.#validateVersion(versionStr);
@@ -201,11 +186,6 @@ export class BuchWriteService {
             buch,
             version,
         );
-
-        const resultTitel = await this.#checkTitelExists(buch);
-        if (resultTitel !== undefined && resultTitel.id !== id) {
-            return resultTitel;
-        }
 
         const resultFindById = await this.#findByIdAndCheckVersion(id, version);
         this.#logger.debug('#validateUpdate: %o', resultFindById);
@@ -225,23 +205,8 @@ export class BuchWriteService {
         return Number.parseInt(version.slice(1, -1), 10);
     }
 
-    async #checkTitelExists(buch: Buch): Promise<TitelExists | undefined> {
-        const { titel } = buch;
-
-        const buecher = await this.#readService.find({ titel: titel }); // eslint-disable-line object-shorthand
-        if (buecher.length > 0) {
-            const [gefundenesBuch] = buecher;
-            const { id } = gefundenesBuch!; // eslint-disable-line @typescript-eslint/no-non-null-assertion
-            this.#logger.debug('#checkTitelExists: id=%s', id);
-            return { type: 'TitelExists', titel, id: id! }; // eslint-disable-line @typescript-eslint/no-non-null-assertion
-        }
-
-        this.#logger.debug('#checkTitelExists: ok');
-        return undefined;
-    }
-
     async #findByIdAndCheckVersion(
-        id: string,
+        id: number,
         version: number,
     ): Promise<Buch | BuchNotExists | VersionOutdated> {
         const buchDb = await this.#readService.findById(id);

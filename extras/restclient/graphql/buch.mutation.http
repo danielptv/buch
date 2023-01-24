@@ -66,17 +66,16 @@ X-REQUEST-TYPE: GraphQL
 mutation {
   create(
     input: {
-      titel: "Testgraphql",
+      isbn: "978-0-321-19368-1",
       rating: 1,
       art: KINDLE,
-      verlag: FOO_VERLAG,
-      preis: 99.9,
-      rabatt: 0.1,
+      preis: 99.99,
+      rabatt: 0.123,
       lieferbar: true,
       datum: "2022-01-31",
-      isbn: "978-0-321-19368-1",
-      homepage: "http://test.de/",
-      schlagwoerter: ["JAVASCRIPT"]
+      homepage: "http://neu.mutation.graphql/",
+      schlagwoerter: ["JAVASCRIPT"],
+      titel: "Neumutationgraphql"
     }
   )
 }
@@ -90,17 +89,16 @@ X-REQUEST-TYPE: GraphQL
 mutation {
   create(
     input: {
-      titel: "?!",
+      isbn: "falsche-isbn",
       rating: 999,
       art: DRUCKAUSGABE,
-      verlag: FOO_VERLAG,
       preis: -1,
       rabatt: 0,
       lieferbar: true,
       datum: "12345-123-123",
-      isbn: "falsche-isbn",
       homepage: "anyHomepage",
-      schlagwoerter: ["JAVASCRIPT"]
+      schlagwoerter: ["JAVASCRIPT"],
+      titel: "?!"
     }
   )
 }
@@ -114,18 +112,18 @@ X-REQUEST-TYPE: GraphQL
 mutation {
   update(
     input: {
-      id: "00000000-0000-0000-0000-000000000003",
+      id: "40",
       version: 0,
-      titel: "Geaendertgraphql",
+      isbn: "978-0-007-09732-6",
       rating: 5,
-      art: DRUCKAUSGABE,
-      verlag: FOO_VERLAG,
-      preis: 99.99,
+      art: KINDLE,
+      preis: 444.44,
       rabatt: 0.099,
       lieferbar: false,
-      datum: "2022-02-01",
-      isbn: "978-0-201-63361-0",
-      homepage: "https://test.graphql/"
+      datum: "2022-04-04",
+      homepage: "https://geaendert.mutation.graphql",
+      schlagwoerter: ["JAVASCRIPT", "TYPESCRIPT"],
+      titel: "Geaendertmutationgraphql"
     }
   )
 }
@@ -139,18 +137,17 @@ X-REQUEST-TYPE: GraphQL
 mutation {
   update(
     input: {
-      id: "00000000-0000-0000-0000-000000000003",
+      id: 40,
       version: 0,
-      titel: "?!",
+      isbn: "falsche-ISBN",
       rating: -1,
       art: KINDLE,
-      verlag: FOO_VERLAG,
       preis: -1,
       rabatt: 2,
       lieferbar: false,
       datum: "12345-123-123",
-      isbn: "falsche-ISBN",
-      homepage: "anyHomepage"
+      homepage: "anyHomepage",
+      titel: "?!"
     }
   )
 }
@@ -164,18 +161,18 @@ X-REQUEST-TYPE: GraphQL
 mutation {
   update(
     input: {
-      id: "99999999-9999-9999-9999-999999999999",
+      id: "999999",
       version: 0,
-      titel: "Nichtvorhanden",
+      isbn: "978-0-007-09732-6",
       rating: 5,
       art: DRUCKAUSGABE,
-      verlag: FOO_VERLAG,
       preis: 99.99,
       rabatt: 0.099,
       lieferbar: false,
       datum: "2022-02-01",
-      isbn: "978-0-201-63361-0",
-      homepage: "https://test.de/"
+      schlagwoerter: ["JAVASCRIPT", "TYPESCRIPT"],
+      homepage: "https://nicht.vorhanden.de/",
+      titel: "Nichtvorhanden"
     }
   )
 }
@@ -187,5 +184,5 @@ Authorization: Bearer {{login.response.body.$.data.login.token}}
 X-REQUEST-TYPE: GraphQL
 
 mutation {
-  delete(id: "00000000-0000-0000-0000-000000000060")
+  delete(id: "60")
 }

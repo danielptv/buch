@@ -25,7 +25,6 @@ import { dbPopulate, typeOrmModuleOptions } from '../db.js';
 import { Buch } from '../../buch/entity/buch.entity.js';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { buecher } from './testdaten.js';
 import { configDir } from '../node.js';
 import { getLogger } from '../../logger/logger.js';
 import { readFileSync } from 'node:fs';
@@ -42,8 +41,6 @@ export class DbPopulateService implements OnApplicationBootstrap {
     readonly #repo: Repository<Buch>;
 
     readonly #logger = getLogger(DbPopulateService.name);
-
-    readonly #buecher = buecher;
 
     /**
      * Initialisierung durch DI mit `Repository<Buch>` gemäß _TypeORM_.
@@ -64,54 +61,68 @@ export class DbPopulateService implements OnApplicationBootstrap {
             return;
         }
 
-        await (typeOrmModuleOptions.type === 'postgres'
-            ? this.#populatePostgres()
-            : this.#populateMySQL());
-    }
-
-    async #populatePostgres() {
         const basePath = resolve(
             configDir,
             'dev',
             typeOrmModuleOptions.type!, // eslint-disable-line @typescript-eslint/no-non-null-assertion
         );
         this.#logger.warn(`${typeOrmModuleOptions.type}: DB wird neu geladen`);
+        await (typeOrmModuleOptions.type === 'postgres'
+            ? this.#populatePostgres(basePath)
+            : this.#populatePerStatement(basePath));
+    }
 
+    async #populatePostgres(basePath: string) {
         const dropScript = resolve(basePath, 'drop.sql');
         // https://nodejs.org/api/fs.html#fs_fs_readfilesync_path_options
-        const dropSql = readFileSync(dropScript, 'utf8'); // eslint-disable-line security/detect-non-literal-fs-filename
-        await this.#repo.query(dropSql);
+        const dropStatements = readFileSync(dropScript, 'utf8'); // eslint-disable-line security/detect-non-literal-fs-filename
+        await this.#repo.query(dropStatements);
 
         const createScript = resolve(basePath, 'create.sql');
         // https://nodejs.org/api/fs.html#fs_fs_readfilesync_path_options
-        const createSql = readFileSync(createScript, 'utf8'); // eslint-disable-line security/detect-non-literal-fs-filename
-        await this.#repo.query(createSql);
+        const createStatements = readFileSync(createScript, 'utf8'); // eslint-disable-line security/detect-non-literal-fs-filename
+        await this.#repo.query(createStatements);
 
-        const saved = await this.#repo.save(this.#buecher);
-        this.#logger.warn(
-            '#populatePostgres: %d Datensaetze eingefuegt',
-            saved.length,
-        );
+        const insertScript = resolve(basePath, 'insert.sql');
+        // https://nodejs.org/api/fs.html#fs_fs_readfilesync_path_options
+        const insertStatements = readFileSync(insertScript, 'utf8'); // eslint-disable-line security/detect-non-literal-fs-filename
+        await this.#repo.query(insertStatements);
     }
 
-    async #populateMySQL() {
-        const tabelle = Buch.name.toLowerCase();
-        this.#logger.warn(
-            `${typeOrmModuleOptions.type}: Tabelle ${tabelle} wird geloescht`,
-        );
-        await this.#repo.query(
-            `DROP TABLE IF EXISTS ${Buch.name.toLowerCase()};`,
-        );
+    // repo.query() kann bei MySQL und SQLite nur 1 Anweisung mit "raw SQL" ausfuehren
+    async #populatePerStatement(basePath: string) {
+        const dropScript = resolve(basePath, 'drop.sql');
+        await this.#executeStatements(dropScript);
 
-        const scriptDir = resolve(configDir, 'dev', typeOrmModuleOptions.type!); // eslint-disable-line @typescript-eslint/no-non-null-assertion
-        const createScript = resolve(scriptDir, 'create-table-buch.sql');
-        const sql = readFileSync(createScript, 'utf8'); // eslint-disable-line security/detect-non-literal-fs-filename
-        await this.#repo.query(sql);
+        const createScript = resolve(basePath, 'create.sql');
+        await this.#executeStatements(createScript);
 
-        const saved = await this.#repo.save(this.#buecher);
-        this.#logger.warn(
-            '#populateMySQL: %d Datensaetze eingefuegt',
-            saved.length,
-        );
+        const insertScript = resolve(basePath, 'insert.sql');
+        await this.#executeStatements(insertScript);
+    }
+
+    async #executeStatements(script: string) {
+        // https://stackoverflow.com/questions/6156501/read-a-file-one-line-at-a-time-in-node-js#answer-17332534
+        // alternativ: https://nodejs.org/api/fs.html#fspromisesopenpath-flags-mode
+        const statements: string[] = [];
+        let statement = '';
+        readFileSync(script, 'utf8') // eslint-disable-line security/detect-non-literal-fs-filename
+            // bei Zeilenumbruch einen neuen String erstellen
+            .split(/\r?\n/u)
+            // Kommentarzeilen entfernen
+            .filter((line) => !line.includes('--'))
+            // Eine Anweisung aus mehreren Zeilen bis zum Semikolon zusammenfuegen
+            .forEach((line) => {
+                statement += line;
+                if (line.endsWith(';')) {
+                    statements.push(statement);
+                    statement = '';
+                }
+            });
+
+        for (statement of statements) {
+            // "await" nicht innerhalb von Arrow-Functions
+            await this.#repo.query(statement);
+        }
     }
 }

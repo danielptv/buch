@@ -19,7 +19,7 @@
 
 // siehe auch https://studio.apollographql.com/sandbox/explorer
 
-### Suche id, titel, art und version von allen Buechern
+### Suche id, art, version und titel von allen Buechern
 POST {{graphQlUrl}}
 Content-Type: application/json
 X-REQUEST-TYPE: GraphQL
@@ -27,28 +27,28 @@ X-REQUEST-TYPE: GraphQL
 {
   buecher {
     id
-    titel
-    art
     version
+    art
+    titel
   }
 }
 
-### Suche titel, art, isbn und version von einem Buch mit vorhandener Buch-ID
+### Suche isbn, art, version und titel von einem Buch mit vorhandener Buch-ID
 POST {{graphQlUrl}}
 Content-Type: application/json
 X-REQUEST-TYPE: GraphQL
 
-query ($id: ID! = "00000000-0000-0000-0000-000000000001") {
+query ($id: ID! = "1") {
   buch(id: $id) {
-    titel
-    art
     isbn
     version
+    art
+    titel
   }
 }
 
 {
-  "id": "00000000-0000-0000-0000-000000000001"
+  "id": "1"
 }
 
 ### Suche titel von einem Buch mit nicht-vorhandener Buch-ID
@@ -56,17 +56,17 @@ POST {{graphQlUrl}}
 Content-Type: application/json
 X-REQUEST-TYPE: GraphQL
 
-query ($id: ID! = "99999999-9999-9999-9999-999999999999") {
+query ($id: ID! = "999999") {
   buch(id: $id) {
     titel
   }
 }
 
 {
-  "id": "99999999-9999-9999-9999-999999999999"
+  "id": "999999"
 }
 
-### Suche art und schlagwoerter von Buechern mit vorhandenem Titel
+### Suche art von Buechern mit vorhandenem Titel
 POST {{graphQlUrl}}
 Content-Type: application/json
 X-REQUEST-TYPE: GraphQL
@@ -81,16 +81,16 @@ query ($titel: String = "Alpha") {
   "titel": "Alpha"
 }
 
-### Suche titel, art und schlagwoerter von Buechern mit vorhandenem Titel
+### Suche art, schlagwoerter und titel von Buechern mit vorhandenem Titel
 POST {{graphQlUrl}}
 Content-Type: application/json
 X-REQUEST-TYPE: GraphQL
 
 query ($titel: String = "a") {
   buecher(titel: $titel) {
-    titel
     art
     schlagwoerter
+    titel
   }
 }
 

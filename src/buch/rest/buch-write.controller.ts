@@ -46,10 +46,10 @@ import {
     UseGuards,
     UseInterceptors,
 } from '@nestjs/common';
-import { BuchDTO, BuchOhneSchlagwoerterDTO } from './buchDTO.entity.js';
 import { type CreateError, type UpdateError } from '../service/errors.js';
 import { Request, Response } from 'express';
 import { type Buch } from '../entity/buch.entity.js';
+import { BuchDTO } from './buchDTO.entity.js';
 import { BuchWriteService } from '../service/buch-write.service.js';
 import { JwtAuthGuard } from '../../security/auth/jwt/jwt-auth.guard.js';
 import { ResponseTimeInterceptor } from '../../logger/response-time.interceptor.js';
@@ -108,7 +108,7 @@ export class BuchWriteController {
             return this.#handleCreateError(result as CreateError, res);
         }
 
-        const location = `${getBaseUri(req)}/${result as string}`;
+        const location = `${getBaseUri(req)}/${result as number}`;
         this.#logger.debug('create: location=%s', location);
         return res.location(location).send();
     }
@@ -165,8 +165,8 @@ export class BuchWriteController {
         description: 'Header "If-Match" fehlt',
     })
     async update(
-        @Body() buchDTO: BuchOhneSchlagwoerterDTO,
-        @Param('id') id: string,
+        @Body() buchDTO: BuchDTO,
+        @Param('id') id: number,
         @Headers('If-Match') version: string | undefined,
         @Res() res: Response,
     ): Promise<Response> {
@@ -219,7 +219,7 @@ export class BuchWriteController {
         description: 'Das Buch wurde gelöscht oder war nicht vorhanden',
     })
     async delete(
-        @Param('id') id: string,
+        @Param('id') id: number,
         @Res() res: Response,
     ): Promise<Response<undefined>> {
         this.#logger.debug('delete: id=%s', id);
@@ -238,17 +238,16 @@ export class BuchWriteController {
         return {
             id: undefined,
             version: undefined,
-            titel: buchDTO.titel,
+            isbn: buchDTO.isbn,
             rating: buchDTO.rating,
             art: buchDTO.art,
-            verlag: buchDTO.verlag,
             preis: buchDTO.preis,
             rabatt: buchDTO.rabatt,
             lieferbar: buchDTO.lieferbar,
             datum: buchDTO.datum,
-            isbn: buchDTO.isbn,
             homepage: buchDTO.homepage,
             schlagwoerter: buchDTO.schlagwoerter,
+            titel: buchDTO.titel,
             erzeugt: undefined,
             aktualisiert: undefined,
         };
@@ -256,10 +255,6 @@ export class BuchWriteController {
 
     #handleCreateError(err: CreateError, res: Response) {
         switch (err.type) {
-            case 'TitelExists': {
-                return this.#handleTitelExists(err.titel, res);
-            }
-
             case 'IsbnExists': {
                 return this.#handleIsbnExists(err.isbn, res);
             }
@@ -268,18 +263,6 @@ export class BuchWriteController {
                 return res.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
-    }
-
-    #handleTitelExists(
-        titel: string | null | undefined,
-        res: Response,
-    ): Response {
-        const msg = `Der Titel "${titel}" existiert bereits.`;
-        this.#logger.debug('#handleTitelExists(): msg=%s', msg);
-        return res
-            .status(HttpStatus.UNPROCESSABLE_ENTITY)
-            .set('Content-Type', 'text/plain')
-            .send(msg);
     }
 
     #handleIsbnExists(
@@ -294,21 +277,20 @@ export class BuchWriteController {
             .send(msg);
     }
 
-    #updateDtoToBuch(buchDTO: BuchOhneSchlagwoerterDTO): Buch {
+    #updateDtoToBuch(buchDTO: BuchDTO): Buch {
         const buch: Buch = {
             id: undefined,
             version: undefined,
-            titel: buchDTO.titel,
+            isbn: buchDTO.isbn,
             rating: buchDTO.rating,
             art: buchDTO.art,
-            verlag: buchDTO.verlag,
             preis: buchDTO.preis,
             rabatt: buchDTO.rabatt,
             lieferbar: buchDTO.lieferbar,
             datum: buchDTO.datum,
-            isbn: buchDTO.isbn,
             homepage: buchDTO.homepage,
-            schlagwoerter: [],
+            schlagwoerter: buchDTO.schlagwoerter,
+            titel: buchDTO.titel,
             erzeugt: undefined,
             aktualisiert: undefined,
         };
@@ -326,10 +308,6 @@ export class BuchWriteController {
                     .status(HttpStatus.PRECONDITION_FAILED)
                     .set('Content-Type', 'text/plain')
                     .send(msg);
-            }
-
-            case 'TitelExists': {
-                return this.#handleTitelExists(err.titel, res);
             }
 
             case 'VersionInvalid': {

@@ -36,7 +36,7 @@ import { loginGraphQL } from '../login.js';
 // -----------------------------------------------------------------------------
 // T e s t d a t e n
 // -----------------------------------------------------------------------------
-const idLoeschen = '00000000-0000-0000-0000-000000000003';
+const idLoeschen = '60';
 
 // -----------------------------------------------------------------------------
 // T e s t s
@@ -71,17 +71,16 @@ describe('GraphQL Mutations', () => {
                 mutation {
                     create(
                         input: {
-                            titel: "Mutationtest",
+                            isbn: "978-0-321-19368-1",
                             rating: 1,
                             art: KINDLE,
-                            verlag: FOO_VERLAG,
                             preis: 99.99,
                             rabatt: 0.099,
                             lieferbar: true,
                             datum: "2022-02-28",
-                            isbn: "978-0-321-19368-1",
                             homepage: "http://test.de",
-                            schlagwoerter: ["JAVASCRIPT"]
+                            schlagwoerter: ["JAVASCRIPT"],
+                            titel: "Mutationtest"
                         }
                     )
                 }
@@ -120,29 +119,28 @@ describe('GraphQL Mutations', () => {
                 mutation {
                     create(
                         input: {
-                            titel: "?!",
+                            isbn: "falsche-ISBN",
                             rating: -1,
                             art: KINDLE,
-                            verlag: FOO_VERLAG,
                             preis: -1,
                             rabatt: 2,
                             lieferbar: false,
                             datum: "12345-123-123",
-                            isbn: "falsche-ISBN",
                             homepage: "anyHomepage",
+                            titel: "?!"
                         }
                     )
                 }
             `,
         };
         const expectedMsg = [
-            expect.stringMatching(/^titel /u),
+            expect.stringMatching(/^isbn /u),
             expect.stringMatching(/^rating /u),
             expect.stringMatching(/^preis /u),
             expect.stringMatching(/^rabatt /u),
             expect.stringMatching(/^datum /u),
-            expect.stringMatching(/^isbn /u),
             expect.stringMatching(/^homepage /u),
+            expect.stringMatching(/^titel /u),
         ];
 
         // when
@@ -185,17 +183,16 @@ describe('GraphQL Mutations', () => {
                 mutation {
                     create(
                         input: {
-                            titel: "Mutationnichtadmin",
+                            isbn: "978-3-663-08746-5",
                             rating: 1,
                             art: KINDLE,
-                            verlag: FOO_VERLAG,
                             preis: 11.1,
                             rabatt: 0.011,
                             lieferbar: true,
                             datum: "2021-01-31",
-                            isbn: "978-3-663-08746-5",
                             homepage: "http://acme.com",
                             schlagwoerter: ["JAVASCRIPT"]
+                            titel: "Mutationnichtadmin"
                         }
                     )
                 }
@@ -237,18 +234,18 @@ describe('GraphQL Mutations', () => {
                 mutation {
                     update(
                         input: {
-                            id: "00000000-0000-0000-0000-000000000003",
+                            id: "40",
                             version: 0,
-                            titel: "Geaendertmutation",
+                            isbn: "978-0-007-09732-6",
                             rating: 5,
-                            art: DRUCKAUSGABE,
-                            verlag: FOO_VERLAG,
-                            preis: 99.99,
+                            art: KINDLE,
+                            preis: 444.44,
                             rabatt: 0.099,
                             lieferbar: false,
-                            datum: "2021-01-02",
-                            isbn: "978-0-201-63361-0",
-                            homepage: "https://acme.com"
+                            datum: "2021-04-04",
+                            homepage: "https://geaendert.mutation.graphql"
+                            schlagwoerter: ["JAVASCRIPT", "TYPESCRIPT"],
+                            titel: "Geaendertmutationgraphql"
                         }
                     )
                 }
@@ -281,36 +278,37 @@ describe('GraphQL Mutations', () => {
         // given
         const token = await loginGraphQL(client);
         const authorization = { Authorization: `Bearer ${token}` }; // eslint-disable-line @typescript-eslint/naming-convention
+        const id = '40';
         const body: GraphQLQuery = {
             query: `
                 mutation {
                     update(
                         input: {
-                            id: "00000000-0000-0000-0000-000000000003",
+                            id: "${id}",
                             version: 0,
-                            titel: "?!",
+                            isbn: "falsche-ISBN",
                             rating: -1,
                             art: KINDLE,
-                            verlag: FOO_VERLAG,
                             preis: -1,
                             rabatt: 2,
                             lieferbar: false,
                             datum: "12345-123-123",
-                            isbn: "falsche-ISBN",
                             homepage: "anyHomepage",
+                            schlagwoerter: ["JAVASCRIPT", "TYPESCRIPT"],
+                            titel: "?!"
                         }
                     )
                 }
             `,
         };
         const expectedMsg = [
-            expect.stringMatching(/^titel /u),
+            expect.stringMatching(/^isbn /u),
             expect.stringMatching(/^rating /u),
             expect.stringMatching(/^preis /u),
             expect.stringMatching(/^rabatt /u),
             expect.stringMatching(/^datum /u),
-            expect.stringMatching(/^isbn /u),
             expect.stringMatching(/^homepage /u),
+            expect.stringMatching(/^titel /u),
         ];
 
         // when
@@ -348,7 +346,7 @@ describe('GraphQL Mutations', () => {
         // given
         const token = await loginGraphQL(client);
         const authorization = { Authorization: `Bearer ${token}` }; // eslint-disable-line @typescript-eslint/naming-convention
-        const id = '99999999-9999-9999-9999-999999999999';
+        const id = '999999';
         const body: GraphQLQuery = {
             query: `
                 mutation {
@@ -356,16 +354,16 @@ describe('GraphQL Mutations', () => {
                         input: {
                             id: "${id}",
                             version: 0,
-                            titel: "Nichtvorhandenmutation",
+                            isbn: "978-0-007-09732-6",
                             rating: 5,
                             art: DRUCKAUSGABE,
-                            verlag: FOO_VERLAG,
                             preis: 99.99,
                             rabatt: 0.099,
                             lieferbar: false,
                             datum: "2021-01-02",
-                            isbn: "978-0-201-63361-0",
                             homepage: "https://acme.com",
+                            schlagwoerter: ["JAVASCRIPT", "TYPESCRIPT"],
+                            titel: "Nichtvorhandenmutation"
                         }
                     )
                 }

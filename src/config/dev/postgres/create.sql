@@ -24,25 +24,26 @@ CREATE SCHEMA IF NOT EXISTS AUTHORIZATION buch;
 
 ALTER ROLE buch SET search_path = 'buch';
 
+-- https://www.postgresql.org/docs/current/sql-createtype.html
+-- https://www.postgresql.org/docs/current/datatype-enum.html
+CREATE TYPE buchart AS ENUM ('DRUCKAUSGABE', 'KINDLE');
+
 -- https://www.postgresql.org/docs/current/sql-createtable.html
 -- https://www.postgresql.org/docs/current/datatype.html
 CREATE TABLE IF NOT EXISTS buch (
-                  -- https://www.postgresql.org/docs/current/datatype-uuid.html
+                  -- https://www.postgresql.org/docs/current/datatype-numeric.html#DATATYPE-INT
                   -- https://www.postgresql.org/docs/current/ddl-constraints.html#DDL-CONSTRAINTS-PRIMARY-KEYS
                   -- impliziter Index fuer Primary Key
-                  -- TypeORM unterstuetzt nicht uuid https://typeorm.io/entities#column-types-for-postgres
-    id            char(36) PRIMARY KEY USING INDEX TABLESPACE buchspace,
-                  -- https://www.postgresql.org/docs/current/datatype-numeric.html#DATATYPE-INT
+    id            integer GENERATED ALWAYS AS IDENTITY(START WITH 1000) PRIMARY KEY USING INDEX TABLESPACE buchspace,
+                  -- https://www.postgresql.org/docs/current/ddl-constraints.html#id-1.5.4.6.6
     version       integer NOT NULL DEFAULT 0,
                   -- impliziter Index als B-Baum durch UNIQUE
                   -- https://www.postgresql.org/docs/current/ddl-constraints.html#DDL-CONSTRAINTS-UNIQUE-CONSTRAINTS
-    titel         varchar(40) NOT NULL UNIQUE USING INDEX TABLESPACE buchspace,
-                  -- https://www.postgresql.org/docs/current/ddl-constraints.html#id-1.5.4.6.6
+    isbn          varchar(17) NOT NULL UNIQUE USING INDEX TABLESPACE buchspace,
                   -- https://www.postgresql.org/docs/current/ddl-constraints.html#DDL-CONSTRAINTS-CHECK-CONSTRAINTS
-    rating        integer NOT NULL CHECK (rating >= 0 AND rating <= 5),
                   -- https://www.postgresql.org/docs/current/functions-matching.html#FUNCTIONS-POSIX-REGEXP
-    art           varchar(12) NOT NULL CHECK (art ~ 'DRUCKAUSGABE|KINDLE'),
-    verlag        varchar(12) NOT NULL CHECK (verlag ~ 'FOO_VERLAG|BAR_VERLAG'),
+    rating        integer NOT NULL CHECK (rating >= 0 AND rating <= 5),
+    art           buchart,
                   -- https://www.postgresql.org/docs/current/datatype-numeric.html#DATATYPE-NUMERIC-DECIMAL
                   -- 10 Stellen, davon 2 Nachkommastellen
     preis         decimal(8,2) NOT NULL,
@@ -53,17 +54,23 @@ CREATE TABLE IF NOT EXISTS buch (
     datum         date,
     homepage      varchar(40),
     schlagwoerter varchar(64),
-    isbn          varchar(17) NOT NULL UNIQUE USING INDEX TABLESPACE buchspace,
+    titel         varchar(40) NOT NULL UNIQUE USING INDEX TABLESPACE buchspace,
                   -- https://www.postgresql.org/docs/current/datatype-datetime.html
     erzeugt       timestamp NOT NULL DEFAULT NOW(),
     aktualisiert  timestamp NOT NULL DEFAULT NOW()
 ) TABLESPACE buchspace;
 
-CREATE TABLE IF NOT EXISTS schlagwort (
-    id         char(36) PRIMARY KEY USING INDEX TABLESPACE buchspace,
-    buch_id    char(36) NOT NULL REFERENCES buch,
-    schlagwort varchar(16) NOT NULL CHECK (schlagwort ~ 'JAVASCRIPT|TYPESCRIPT')
+CREATE TABLE IF NOT EXISTS titel (
+    id          integer GENERATED ALWAYS AS IDENTITY(START WITH 1000) PRIMARY KEY USING INDEX TABLESPACE buchspace,
+    titel       varchar(40) NOT NULL,
+    untertitel  varchar(40),
+    buch_id     integer NOT NULL UNIQUE REFERENCES buch(id)
 ) TABLESPACE buchspace;
 
--- default: btree
-CREATE INDEX IF NOT EXISTS schlagwort_buch_idx ON schlagwort(buch_id) TABLESPACE buchspace;
+
+CREATE TABLE IF NOT EXISTS abbildung (
+    id              integer GENERATED ALWAYS AS IDENTITY(START WITH 1000) PRIMARY KEY USING INDEX TABLESPACE buchspace,
+    beschriftung    varchar(32) NOT NULL,
+    content_type    varchar(16) NOT NULL,
+    buch_id         integer NOT NULL REFERENCES buch(id)
+) TABLESPACE buchspace;
