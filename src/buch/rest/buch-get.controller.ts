@@ -72,7 +72,7 @@ interface Links {
 type TitelModel = Omit<Titel, 'buch' | 'id'>;
 export type BuchModel = Omit<
     Buch,
-    'aktualisiert' | 'erzeugt' | 'id' | 'titel' | 'version'
+    'abbildungen' | 'aktualisiert' | 'erzeugt' | 'id' | 'titel' | 'version'
 > & {
     titel: TitelModel;
     // eslint-disable-next-line @typescript-eslint/naming-convention

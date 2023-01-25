@@ -19,6 +19,7 @@ import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { type CreateError, type UpdateError } from '../service/errors.js';
 import { IsInt, IsNumberString, Min } from 'class-validator';
 import { UseGuards, UseInterceptors } from '@nestjs/common';
+import { Abbildung } from '../entity/abbildung.entity.js';
 import { Buch } from '../entity/buch.entity.js';
 import { BuchDTO } from '../rest/buchDTO.entity.js';
 import { BuchWriteService } from '../service/buch-write.service.js';
@@ -117,6 +118,15 @@ export class BuchMutationResolver {
             untertitel: titelDTO.untertitel,
             buch: undefined,
         };
+        const abbildungen = buchDTO.abbildungen?.map((abbildungDTO) => {
+            const abbildung: Abbildung = {
+                id: undefined,
+                beschriftung: abbildungDTO.beschriftung,
+                contentType: abbildungDTO.contentType,
+                buch: undefined,
+            };
+            return abbildung;
+        });
         const buch = {
             id: undefined,
             version: undefined,
@@ -130,6 +140,7 @@ export class BuchMutationResolver {
             homepage: buchDTO.homepage,
             schlagwoerter: buchDTO.schlagwoerter,
             titel,
+            abbildungen,
             erzeugt: undefined,
             aktualisiert: undefined,
         };
@@ -153,6 +164,7 @@ export class BuchMutationResolver {
             homepage: buchDTO.homepage,
             schlagwoerter: buchDTO.schlagwoerter,
             titel: undefined,
+            abbildungen: undefined,
             erzeugt: undefined,
             aktualisiert: undefined,
         };

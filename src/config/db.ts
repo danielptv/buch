@@ -19,11 +19,11 @@
  * Das Modul enthält die Konfiguration für den Zugriff auf die DB.
  * @packageDocumentation
  */
-
 import { Buch } from '../buch/entity/buch.entity.js';
-import { Titel } from '../buch/entity/titel.entity.js';
+import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { type TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { dbType } from './dbtype.js';
+import { entities } from '../buch/entity/entities.js';
 import { env } from './env.js';
 import { k8sConfig } from './kubernetes.js';
 import { loggerDefaultValue } from './logger.js';
@@ -39,8 +39,7 @@ const host = detected ? dbType : DB_HOST ?? 'localhost';
 const username = DB_USERNAME ?? Buch.name.toLowerCase();
 const pass = DB_PASSWORD ?? 'p';
 
-// siehe auch src\buch\buch.module.ts
-const entities = [Buch, Titel];
+const namingStrategy = new SnakeNamingStrategy();
 
 // logging durch console.log()
 const logging =
@@ -61,6 +60,7 @@ switch (dbType) {
             password: pass,
             database,
             entities,
+            namingStrategy,
             logging,
             logger,
         };
@@ -80,6 +80,7 @@ switch (dbType) {
             password: pass,
             database,
             entities,
+            namingStrategy,
             supportBigNumbers: true,
             logging,
             logger,
@@ -96,6 +97,7 @@ switch (dbType) {
             type: 'sqlite',
             database: `${database}.sqlite`,
             entities,
+            namingStrategy,
             logging,
             logger,
         };

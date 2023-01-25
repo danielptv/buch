@@ -75,15 +75,19 @@ describe('GraphQL Mutations', () => {
                             rating: 1,
                             art: KINDLE,
                             preis: 99.99,
-                            rabatt: 0.099,
+                            rabatt: 0.123,
                             lieferbar: true,
                             datum: "2022-02-28",
-                            homepage: "http://create.mutation",
-                            schlagwoerter: ["JAVASCRIPT"],
+                            homepage: "https://create.mutation",
+                            schlagwoerter: ["JAVASCRIPT", "TYPESCRIPT"],
                             titel: {
                                 titel: "Titelcreatemutation",
                                 untertitel: "untertitelcreatemutation"
-                            }
+                            },
+                            abbildungen: [{
+                                beschriftung: "Abb. 1",
+                                contentType: "img/png"
+                            }]
                         }
                     )
                 }

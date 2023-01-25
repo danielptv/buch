@@ -22,6 +22,7 @@
 
 import { Injectable, type OnApplicationBootstrap } from '@nestjs/common';
 import { release, type, userInfo } from 'node:os';
+import { dbType } from '../config/dbtype.js';
 import figlet from 'figlet';
 import { getLogger } from './logger.js';
 import { hash } from 'argon2';
@@ -30,12 +31,11 @@ import { nodeConfig } from '../config/node.js';
 import process from 'node:process';
 
 /**
- * Die Test-DB wird im Development-Modus neu geladen, nachdem die Module
- * initialisiert sind, was duch `OnApplicationBootstrap` realisiert wird.
+ * Beim Start ein Banner ausgeben durch `onApplicationBootstrap()`.
  */
 @Injectable()
-export class InfoService implements OnApplicationBootstrap {
-    readonly #logger = getLogger(InfoService.name);
+export class BannerService implements OnApplicationBootstrap {
+    readonly #logger = getLogger(BannerService.name);
 
     /**
      * Die Test-DB wird im Development-Modus neu geladen.
@@ -62,6 +62,7 @@ export class InfoService implements OnApplicationBootstrap {
             '%s',
             httpsOptions === undefined ? 'HTTP (ohne TLS)' : 'HTTPS',
         );
+        this.#logger.info('DB-System: %s', dbType);
         this.#logger.info('Betriebssystem: %s (%s)', type(), release());
         this.#logger.info('Username: %s', userInfo().username);
         this.#logger.info('GraphQL playground: %s', '/graphql');

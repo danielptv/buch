@@ -22,7 +22,7 @@ import { UseInterceptors } from '@nestjs/common';
 import { UserInputError } from 'apollo-server-express';
 import { getLogger } from '../../logger/logger.js';
 
-export type BuchDTO = Omit<Buch, 'aktualisiert' | 'erzeugt'>;
+export type BuchDTO = Omit<Buch, 'abbildungen' | 'aktualisiert' | 'erzeugt'>;
 export interface IdInput {
     id: number;
 }

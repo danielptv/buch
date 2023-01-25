@@ -17,7 +17,7 @@
 #           skaffold dev
 #           skaffold delete
 
-apiVersion: skaffold/v3alpha1
+apiVersion: skaffold/v4beta2
 kind: Config
 metadata:
   name: mailserver

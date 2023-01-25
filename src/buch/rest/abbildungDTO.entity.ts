@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-magic-numbers */
 /*
- * Copyright (C) 2021 - present Juergen Zimmermann, Hochschule Karlsruhe
+ * Copyright (C) 2023 - present Juergen Zimmermann, Florian Goebel, Hochschule Karlsruhe
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,21 +15,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-import { Global, Module } from '@nestjs/common';
-import { BannerService } from './banner.service.js';
-import { ResponseTimeInterceptor } from './response-time.interceptor.js';
 
 /**
- * Das Modul besteht aus allgemeinen Services, z.B. MailService.
+ * Das Modul besteht aus der Entity-Klasse.
  * @packageDocumentation
  */
 
+import { MaxLength } from 'class-validator';
+
 /**
- * Die dekorierte Modul-Klasse mit den Service-Klassen.
+ * Entity-Klasse für Abbildung ohne TypeORM.
  */
-@Global()
-@Module({
-    providers: [BannerService, ResponseTimeInterceptor],
-    exports: [BannerService, ResponseTimeInterceptor],
-})
-export class LoggerModule {}
+export class AbbildungDTO {
+    @MaxLength(32)
+    readonly beschriftung!: string;
+
+    @MaxLength(16)
+    readonly contentType!: string;
+}
+/* eslint-enable @typescript-eslint/no-magic-numbers */

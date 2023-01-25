@@ -42,11 +42,13 @@ import {
     Column,
     CreateDateColumn,
     Entity,
+    OneToMany,
     OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
     VersionColumn,
 } from 'typeorm';
+import { Abbildung } from './abbildung.entity.js';
 import { ApiProperty } from '@nestjs/swagger';
 import { DecimalTransformer } from './decimal-transformer.js';
 import { Titel } from './titel.entity.js';
@@ -122,7 +124,13 @@ export class Buch {
     @OneToOne(() => Titel, (titel) => titel.buch, {
         cascade: ['insert', 'remove'],
     })
-    readonly titel!: Titel | undefined;
+    readonly titel: Titel | undefined;
+
+    // undefined wegen Updates
+    @OneToMany(() => Abbildung, (abbildung) => abbildung.buch, {
+        cascade: ['insert', 'remove'],
+    })
+    readonly abbildungen: Abbildung[] | undefined;
 
     // https://typeorm.io/entities#special-columns
     // https://typeorm.io/entities#column-types-for-postgres

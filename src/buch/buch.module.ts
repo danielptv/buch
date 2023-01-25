@@ -15,7 +15,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { AuthModule } from '../security/auth/auth.module.js';
-import { Buch } from './entity/buch.entity.js';
 import { BuchGetController } from './rest/buch-get.controller.js';
 import { BuchMutationResolver } from './graphql/buch-mutation.resolver.js';
 import { BuchQueryResolver } from './graphql/buch-query.resolver.js';
@@ -25,8 +24,8 @@ import { BuchWriteService } from './service/buch-write.service.js';
 import { MailModule } from '../mail/mail.module.js';
 import { Module } from '@nestjs/common';
 import { QueryBuilder } from './service/query-builder.js';
-import { Titel } from './entity/titel.entity.js';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { entities } from './entity/entities.js';
 
 /**
  * Das Modul besteht aus Controller- und Service-Klassen für die Verwaltung von
@@ -39,12 +38,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
  * Funktionalität für TypeORM.
  */
 @Module({
-    imports: [
-        MailModule,
-        // siehe auch src\config\db.ts: "const entities = ...""
-        TypeOrmModule.forFeature([Buch, Titel]),
-        AuthModule,
-    ],
+    imports: [MailModule, TypeOrmModule.forFeature(entities), AuthModule],
     controllers: [BuchGetController, BuchWriteController],
     // Provider sind z.B. Service-Klassen fuer DI
     providers: [

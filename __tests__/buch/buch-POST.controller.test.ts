@@ -37,15 +37,21 @@ const neuesBuch: BuchDTO = {
     rating: 1,
     art: 'DRUCKAUSGABE',
     preis: 99.99,
-    rabatt: 0.099,
+    rabatt: 0.123,
     lieferbar: true,
     datum: '2022-02-28',
-    homepage: 'https://test.de/',
+    homepage: 'https://post.rest',
     schlagwoerter: ['JAVASCRIPT', 'TYPESCRIPT'],
     titel: {
         titel: 'Titelpost',
         untertitel: 'untertitelpos',
     },
+    abbildungen: [
+        {
+            beschriftung: 'Abb. 1',
+            contentType: 'img/png',
+        },
+    ],
 };
 const neuesBuchInvalid: Record<string, unknown> = {
     isbn: 'falsche-ISBN',
@@ -75,6 +81,7 @@ const neuesBuchIsbnExistiert: BuchDTO = {
         titel: 'Titelpostisbn',
         untertitel: 'Untertitelpostisbn',
     },
+    abbildungen: undefined,
 };
 
 // -----------------------------------------------------------------------------

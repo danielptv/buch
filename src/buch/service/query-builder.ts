@@ -20,6 +20,7 @@
  * @packageDocumentation
  */
 
+import { Abbildung } from '../entity/abbildung.entity.js';
 import { Buch } from '../entity/buch.entity.js';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
@@ -42,6 +43,10 @@ export class QueryBuilder {
         .charAt(0)
         .toLowerCase()}${Titel.name.slice(1)}`;
 
+    readonly #abbildungAlias = `${Abbildung.name
+        .charAt(0)
+        .toLowerCase()}${Abbildung.name.slice(1)}`;
+
     readonly #repo: Repository<Buch>;
 
     readonly #logger = getLogger(QueryBuilder.name);
@@ -55,11 +60,19 @@ export class QueryBuilder {
      * @param id ID des gesuchten Buches
      * @returns QueryBuilder
      */
-    buildId(id: number) {
+    buildId(id: number, mitAbbildungen = false) {
         const queryBuilder = this.#repo.createQueryBuilder(this.#buchAlias);
-        queryBuilder
-            .innerJoinAndSelect(`${this.#buchAlias}.titel`, this.#titelAlias)
-            .where(`${this.#buchAlias}.id = :id`, { id: id }); // eslint-disable-line object-shorthand
+        queryBuilder.innerJoinAndSelect(
+            `${this.#buchAlias}.titel`,
+            this.#titelAlias,
+        );
+        if (mitAbbildungen) {
+            queryBuilder.leftJoinAndSelect(
+                `${this.#buchAlias}.abbildungen`,
+                this.#abbildungAlias,
+            );
+        }
+        queryBuilder.where(`${this.#buchAlias}.id = :id`, { id: id }); // eslint-disable-line object-shorthand
         return queryBuilder;
     }
 

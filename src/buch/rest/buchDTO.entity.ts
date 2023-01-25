@@ -23,6 +23,7 @@
 
 import {
     ArrayUnique,
+    IsArray,
     IsBoolean,
     IsISBN,
     IsISO8601,
@@ -35,6 +36,7 @@ import {
     Min,
     ValidateNested,
 } from 'class-validator';
+import { AbbildungDTO } from './abbildungDTO.entity.js';
 import { ApiProperty } from '@nestjs/swagger';
 import { BuchArt } from '../entity/buch.entity.js';
 import { TitelDTO } from './titelDTO.entity.js';
@@ -101,5 +103,14 @@ export class BuchDTO extends BuchDtoOhneRef {
     @Type(() => TitelDTO)
     @ApiProperty({ example: 'Der Titel', type: String })
     readonly titel!: TitelDTO; //NOSONAR
+
+    @IsOptional()
+    @IsArray()
+    @ValidateNested({ each: true })
+    @Type(() => AbbildungDTO)
+    @ApiProperty({ example: 'Die Abbildungen', type: String })
+    readonly abbildungen: AbbildungDTO[] | undefined;
+
+    // AbbildungDTO
 }
 /* eslint-enable max-classes-per-file, @typescript-eslint/no-magic-numbers */

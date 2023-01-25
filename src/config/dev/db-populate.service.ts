@@ -32,7 +32,7 @@ import { resolve } from 'node:path';
 
 /**
  * Die Test-DB wird im Development-Modus neu geladen, nachdem die Module
- * initialisiert sind, was duch `OnApplicationBootstrap` realisiert wird.
+ * initialisiert sind, was durch `OnApplicationBootstrap` realisiert wird.
  *
  * DB-Migration mit TypeORM (ohne Nest): https://typeorm.io/migrations
  */
@@ -121,7 +121,6 @@ export class DbPopulateService implements OnApplicationBootstrap {
             });
 
         for (statement of statements) {
-            // "await" nicht innerhalb von Arrow-Functions
             await this.#repo.query(statement);
         }
     }

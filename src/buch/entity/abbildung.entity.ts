@@ -19,26 +19,26 @@ import {
     Column,
     Entity,
     JoinColumn,
-    OneToOne,
+    ManyToOne,
     PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Buch } from './buch.entity.js';
 
 @Entity()
-export class Titel {
+export class Abbildung {
     @Column('int')
     // https://typeorm.io/entities#primary-columns
     // CAVEAT: zuerst @Column() und erst dann @PrimaryGeneratedColumn()
     @PrimaryGeneratedColumn()
     id: number | undefined;
 
-    @Column('varchar', { unique: true, length: 40 })
-    readonly titel!: string;
+    @Column('varchar', { unique: true, length: 32 })
+    readonly beschriftung!: string;
 
-    @Column('varchar', { length: 40 })
-    readonly untertitel: string | undefined;
+    @Column('varchar', { length: 16 })
+    readonly contentType: string | undefined;
 
-    @OneToOne(() => Buch, (buch) => buch.titel)
+    @ManyToOne(() => Buch, (buch) => buch.abbildungen)
     @JoinColumn({ name: 'buch_id' })
     buch: Buch | undefined;
 }

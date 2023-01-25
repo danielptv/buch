@@ -29,6 +29,7 @@ import {
     type VersionOutdated,
 } from './errors.js';
 import { type DeleteResult, Repository } from 'typeorm';
+import { Abbildung } from '../entity/abbildung.entity.js';
 import { Buch } from '../entity/buch.entity.js';
 import { BuchReadService } from './buch-read.service.js';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -133,19 +134,25 @@ export class BuchWriteService {
      */
     async delete(id: number) {
         this.#logger.debug('delete: id=%d', id);
-        const buch = await this.#readService.findById(id);
+        const buch = await this.#readService.findById(id, true);
         if (buch === undefined) {
             return false;
         }
 
         let deleteResult: DeleteResult | undefined;
         await this.#repo.manager.transaction(async (transactionalMgr) => {
-            // Das Buch zur gegebenen ID einschl. Titel asynchron loeschen
+            // Das Buch zur gegebenen ID mit Titel und Abb. asynchron loeschen
+
             // TODO "cascade" funktioniert nicht beim Loeschen
             const titelId = buch.titel?.id;
             if (titelId !== undefined) {
                 await transactionalMgr.delete(Titel, titelId);
             }
+            const abbildungen = buch.abbildungen ?? [];
+            for (const abbildung of abbildungen) {
+                await transactionalMgr.delete(Abbildung, abbildung.id);
+            }
+
             deleteResult = await transactionalMgr.delete(Buch, id);
             this.#logger.debug('delete: deleteResult=%o', deleteResult);
         });

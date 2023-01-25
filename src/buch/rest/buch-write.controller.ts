@@ -49,6 +49,7 @@ import {
 import { BuchDTO, BuchDtoOhneRef } from './buchDTO.entity.js';
 import { type CreateError, type UpdateError } from '../service/errors.js';
 import { Request, Response } from 'express';
+import { type Abbildung } from '../entity/abbildung.entity.js';
 import { type Buch } from '../entity/buch.entity.js';
 import { BuchWriteService } from '../service/buch-write.service.js';
 import { JwtAuthGuard } from '../../security/auth/jwt/jwt-auth.guard.js';
@@ -241,6 +242,15 @@ export class BuchWriteController {
             untertitel: titelDTO.untertitel,
             buch: undefined,
         };
+        const abbildungen = buchDTO.abbildungen?.map((abbildungDTO) => {
+            const abbildung: Abbildung = {
+                id: undefined,
+                beschriftung: abbildungDTO.beschriftung,
+                contentType: abbildungDTO.contentType,
+                buch: undefined,
+            };
+            return abbildung;
+        });
         const buch = {
             id: undefined,
             version: undefined,
@@ -254,12 +264,16 @@ export class BuchWriteController {
             homepage: buchDTO.homepage,
             schlagwoerter: buchDTO.schlagwoerter,
             titel,
+            abbildungen,
             erzeugt: undefined,
             aktualisiert: undefined,
         };
 
-        // Rueckwaertsverweis
+        // Rueckwaertsverweise
         buch.titel.buch = buch;
+        buch.abbildungen?.forEach((abbildung) => {
+            abbildung.buch = buch;
+        });
         return buch;
     }
 
@@ -301,6 +315,7 @@ export class BuchWriteController {
             homepage: buchDTO.homepage,
             schlagwoerter: buchDTO.schlagwoerter,
             titel: undefined,
+            abbildungen: undefined,
             erzeugt: undefined,
             aktualisiert: undefined,
         };

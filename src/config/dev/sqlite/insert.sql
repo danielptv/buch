@@ -23,7 +23,7 @@
 INSERT INTO buch(id, version, isbn, rating, art, preis, rabatt, lieferbar, datum, homepage, schlagwoerter, erzeugt, aktualisiert) VALUES
     (1,0,'978-3-897-22583-1',4,'DRUCKAUSGABE',11.1,0.011,true,'2022-02-01','https://acme.at','JAVASCRIPT','2022-02-01 00:00:00','2022-02-01 00:00:00');
 INSERT INTO buch(id, version, isbn, rating, art, preis, rabatt, lieferbar, datum, homepage, schlagwoerter, erzeugt, aktualisiert) VALUES
-    (2,0,'978-3-827-31552-6',2,'KINDLE',22.2,0.022,true,'2022-02-02','https://acme.biz','TYPESCRIPT','2022-02-02 00:00:00','2022-02-02 00:00:00');
+    (20,0,'978-3-827-31552-6',2,'KINDLE',22.2,0.022,true,'2022-02-02','https://acme.biz','TYPESCRIPT','2022-02-02 00:00:00','2022-02-02 00:00:00');
 INSERT INTO buch(id, version, isbn, rating, art, preis, rabatt, lieferbar, datum, homepage, schlagwoerter, erzeugt, aktualisiert) VALUES
     (30,0,'978-0-201-63361-0',3,'DRUCKAUSGABE',33.3,0.033,true,'2022-02-03','https://acme.com','JAVASCRIPT,TYPESCRIPT','2022-02-03 00:00:00','2022-02-03 00:00:00');
 INSERT INTO buch(id, version, isbn, rating, art, preis, rabatt, lieferbar, datum, homepage, schlagwoerter, erzeugt, aktualisiert) VALUES
@@ -36,7 +36,7 @@ INSERT INTO buch(id, version, isbn, rating, art, preis, rabatt, lieferbar, datum
 INSERT INTO titel(id, titel, untertitel, buch_id) VALUES
     (1,'Alpha','alpha',1);
 INSERT INTO titel(id, titel, untertitel, buch_id) VALUES
-    (2,'Beta',null,2);
+    (20,'Beta',null,20);
 INSERT INTO titel(id, titel, untertitel, buch_id) VALUES
     (30,'Gamma','gamma',30);
 INSERT INTO titel(id, titel, untertitel, buch_id) VALUES
@@ -45,3 +45,20 @@ INSERT INTO titel(id, titel, untertitel, buch_id) VALUES
     (50,'Epsilon','epsilon',50);
 INSERT INTO titel(id, titel, untertitel, buch_id) VALUES
     (60,'Phi','phi',60);
+
+INSERT INTO abbildung(id, beschriftung, content_type, buch_id) VALUES
+    (1,'Abb. 1','img/png',1);
+INSERT INTO abbildung(id, beschriftung, content_type, buch_id) VALUES
+    (20,'Abb. 1','img/png',20);
+INSERT INTO abbildung(id, beschriftung, content_type, buch_id) VALUES
+    (21,'Abb. 2','img/png',20);
+INSERT INTO abbildung(id, beschriftung, content_type, buch_id) VALUES
+    (30,'Abb. 1','img/png',30);
+INSERT INTO abbildung(id, beschriftung, content_type, buch_id) VALUES
+    (31,'Abb. 2','img/png',30);
+INSERT INTO abbildung(id, beschriftung, content_type, buch_id) VALUES
+    (40,'Abb. 1','img/png',40);
+INSERT INTO abbildung(id, beschriftung, content_type, buch_id) VALUES
+    (50,'Abb. 1','img/png',50);
+INSERT INTO abbildung(id, beschriftung, content_type, buch_id) VALUES
+    (60,'Abb. 1','img/png',60);

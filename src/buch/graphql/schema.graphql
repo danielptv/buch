@@ -70,6 +70,12 @@ input TitelInput {
   untertitel: String
 }
 
+"Daten zu den Abbildungen eines Buches"
+input AbbildungInput {
+  beschriftung: String!
+  contentType: String!
+}
+
 "Daten für ein neues Buch"
 input BuchInput {
   isbn: String
@@ -82,6 +88,7 @@ input BuchInput {
   homepage: String
   schlagwoerter: [String]
   titel: TitelInput!
+  abbildungen: [AbbildungInput!]
 }
 
 "Daten für ein zu änderndes Buch"

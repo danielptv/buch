@@ -79,13 +79,15 @@ export class BuchReadService {
      *          in einem Promise aus ES2015 (vgl.: Mono aus Project Reactor oder
      *          Future aus Java)
      */
-    async findById(id: number) {
+    async findById(id: number, mitAbbildungen = false) {
         this.#logger.debug('findById: id=%d', id);
 
         // https://typeorm.io/working-with-repository
         // Das Resultat ist undefined, falls kein Datensatz gefunden
         // Lesen: Keine Transaktion erforderlich
-        const buch = await this.#queryBuilder.buildId(id).getOne();
+        const buch = await this.#queryBuilder
+            .buildId(id, mitAbbildungen)
+            .getOne();
         if (buch === null) {
             this.#logger.debug('findById: Kein Buch gefunden');
             return;
