@@ -135,6 +135,7 @@ export class BuchQuery implements Suchkriterien {
  * Die Controller-Klasse für die Verwaltung von Bücher.
  */
 // Decorator in TypeScript, zur Standardisierung in ES vorgeschlagen (stage 3)
+// https://devblogs.microsoft.com/typescript/announcing-typescript-5-0-beta/#decorators
 // https://github.com/tc39/proposal-decorators
 @Controller(paths.rest)
 // @UseGuards(JwtAuthGuard, RolesGuard)

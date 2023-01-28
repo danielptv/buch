@@ -1,0 +1,4 @@
+root = true
+
+[*.sql]
+generated_code = true
