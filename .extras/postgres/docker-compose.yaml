@@ -27,6 +27,7 @@
 ---
 # https://docs.docker.com/compose/compose-file
 # https://docs.docker.com/compose/compose-file/compose-file-v3
+# # https://wiki.debian.org/DebianReleases
 services:
   postgres:
     image: postgres:15.1-bullseye
