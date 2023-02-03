@@ -50,6 +50,10 @@ services:
         source: C:/Zimmermann/volumes/mysql/sql
         target: /sql
         read_only: true
+      # ggf. log_bin=OFF setzen
+      #- type: bind
+      #  source: C:/Zimmermann/volumes/mysql/my.cnf
+      #  target: /etc/my.cnf
     env_file: [mysql.env]
 #    user: "mysql:mysql"
     # docker inspect mysql --format '{{ .Id }}: SecurityOpt={{ .HostConfig.SecurityOpt }}'
@@ -76,7 +80,7 @@ services:
     ports:
       - published: 8889
         target: 80
-    env_file: [phpMyAdmin.env]
+    env_file: [mysql.env]
     # kein dedizierter User im Image vorhanden
     container_name: phpmyadmin
     # https://github.com/phpmyadmin/docker/issues/293
@@ -86,3 +90,71 @@ services:
         limits:
           cpus: "0.5"
           memory: 768M
+
+# dbeaver/cloudbeaver hat 5 Mio Downloads bei https://hub.docker.com.
+# https://cloudbeaver.io https://github.com/dbeaver/cloudbeaver
+# als User "cbadmin" muss man einen "normalen" User einrichten
+# UUIDs werden binaer angezeigt
+#  dbeaver:
+#    image: dbeaver/cloudbeaver:22.3.3
+#    links: [mysql]
+#    ports:
+#      - published: 8978
+#        target: 8978
+#    volumes:
+#      - type: bind
+#        source: C:/Zimmermann/volumes/mysql/dbeaver-workspace
+#        target: /opt/cloudbeaver/workspace
+#    env_file: [dbeaver.env]
+#    environment:
+#      TZ: Europe/Berlin
+#    container_name: dbeaver
+#    hostname: dbeaver
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: "0.5"
+#          memory: 768M
+
+# adminer hat ueber 100 Mio Downloads und ist ein einfaches PHP-Skript.
+# Letztes Release ist von Mai 2021 https://github.com/vrana/adminer https://www.adminer.org
+#  adminer:
+#    image: adminer:4.8.1-standalone
+#    links: [mysql]
+#    ports:
+#      - published: 8889
+#        target: 8080
+#    environment:
+#      ADMINER_DEFAULT_SERVER: mysql
+#      TZ: Europe/Berlin
+#    #user: "adminer:adminer"
+#    container_name: adminer
+#    hostname: adminer
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: "0.5"
+#          memory: 768M
+
+# !!! GUI ist SEHR instabil bei Windows
+#  workbench:
+#    image: linuxserver/mysql-workbench:8.0.32
+#    links: [mysql]
+#    ports:
+#      - published: 8889
+#        target: 3000
+#    volumes:
+#      - type: bind
+#        source: C:/Zimmermann/volumes/mysql/workbench-config
+#        target: /config
+#    env_file: [mysql-workbench.env]
+#    #user: 1000:1000
+#    cap_add: [IPC_LOCK]
+#    restart: unless-stopped
+#    container_name: workbench
+#    hostname: workbench
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: "1"
+#          memory: 768M

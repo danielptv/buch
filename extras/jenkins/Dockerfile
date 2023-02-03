@@ -22,7 +22,7 @@
 # https://www.jenkins.io/doc/book/installing/docker
 # https://manpages.debian.org/bullseye/apt/apt-get.8.en.html
 
-FROM jenkins/jenkins:2.388-jdk17
+FROM jenkins/jenkins:2.389-jdk17
 USER root
 RUN <<EOF
 # https://packages.debian.org/bullseye/lsb-release

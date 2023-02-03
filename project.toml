@@ -75,12 +75,12 @@ include = [
 # https://registry.buildpacks.io/buildpacks/paketo-buildpacks/nodejs
 # https://github.com/paketo-buildpacks/nodejs/releases
 # https://console.cloud.google.com/gcr/images/paketo-buildpacks/GLOBAL/nodejs
-uri = "urn:cnb:registry:paketo-buildpacks/nodejs@1.0.0"
+uri = "urn:cnb:registry:paketo-buildpacks/nodejs@1.1.0"
 
 [[build.env]]
 name = "BP_NODE_VERSION"
-value = "19.4.0"
-# value = "18.12.1"
+value = "19.5.0"
+# value = "18.13.0"
 
 # https://paketo.io/docs/howto/nodejs/#compile-native-extensions-with-node-gyp
 
