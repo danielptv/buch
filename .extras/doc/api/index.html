@@ -1,0 +1,799 @@
+<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>buch</title><meta name="description" content="Documentation for buch"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><script async src="assets/search.js" id="search-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os"</script><header class="tsd-page-toolbar">
+<div class="tsd-toolbar-contents container">
+<div class="table-cell" id="tsd-search" data-base=".">
+<div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M15.7824 13.833L12.6666 10.7177C12.5259 10.5771 12.3353 10.499 12.1353 10.499H11.6259C12.4884 9.39596 13.001 8.00859 13.001 6.49937C13.001 2.90909 10.0914 0 6.50048 0C2.90959 0 0 2.90909 0 6.49937C0 10.0896 2.90959 12.9987 6.50048 12.9987C8.00996 12.9987 9.39756 12.4863 10.5008 11.6239V12.1332C10.5008 12.3332 10.5789 12.5238 10.7195 12.6644L13.8354 15.7797C14.1292 16.0734 14.6042 16.0734 14.8948 15.7797L15.7793 14.8954C16.0731 14.6017 16.0731 14.1267 15.7824 13.833ZM6.50048 10.499C4.29094 10.499 2.50018 8.71165 2.50018 6.49937C2.50018 4.29021 4.28781 2.49976 6.50048 2.49976C8.71001 2.49976 10.5008 4.28708 10.5008 6.49937C10.5008 8.70852 8.71314 10.499 6.50048 10.499Z" fill="var(--color-text)"></path></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div>
+<div class="field">
+<div id="tsd-toolbar-links"></div></div>
+<ul class="results">
+<li class="state loading">Preparing search index...</li>
+<li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">buch</a></div>
+<div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget tsd-toolbar-icon menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="2" fill="var(--color-text)"></rect><rect x="1" y="7" width="14" height="2" fill="var(--color-text)"></rect><rect x="1" y="11" width="14" height="2" fill="var(--color-text)"></rect></svg></a></div></div></header>
+<div class="container container-main">
+<div class="col-8 col-content">
+<div class="tsd-page-title">
+<h2>buch</h2></div>
+<div class="tsd-panel tsd-typography">
+<a href="#hinweise-zum-programmierbeispiel" id="hinweise-zum-programmierbeispiel" style="color: inherit; text-decoration: none;">
+  <h1>Hinweise zum Programmierbeispiel</h1>
+</a>
+<!--
+  Copyright (C) 2020 - present Juergen Zimmermann, Hochschule Karlsruhe
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<p><a href="mailto:Juergen.Zimmermann@h-ka.de">Juergen Zimmermann</a></p>
+<blockquote>
+<p>Diese Datei ist in Markdown geschrieben und kann mit <code>&lt;Strg&gt;&lt;Shift&gt;v</code> in
+Visual Studio Code leicht gelesen werden. Dazu wird die Extension
+<em>Markdown Preview Mermaid Support</em> empfohlen, um UML-Diagramme in der Syntax
+von <em>Mermaid</em> (wie bei PlantUML) visualisieren zu können.</p>
+<p>Näheres zu Markdown gibt es z.B. bei <a href="https://www.markdownguide.org/">Markdown Guide</a></p>
+<p>Nur in den ersten beiden Vorlesungswochen kann es Unterstützung bei
+Installationsproblemen geben.</p>
+</blockquote>
+
+<a href="#inhalt" id="inhalt" style="color: inherit; text-decoration: none;">
+  <h2>Inhalt</h2>
+</a>
+<ul>
+<li><a href="#download--und-ggf-upload-geschwindigkeit">Download- und ggf. Upload-Geschwindigkeit</a></li>
+<li><a href="#vorbereitung-der-installation">Vorbereitung der Installation</a></li>
+<li><a href="#es-modules-(esm)">ES Modules (ESM)</a></li>
+<li><a href="#eigener-namespace-in-kubernetes">Eigener Namespace in Kubernetes</a></li>
+<li><a href="#relationale-datenbanksysteme">Relationale Datenbanksysteme</a><ul>
+<li><a href="#postgresql">PostgreSQL</a></li>
+<li><a href="#mysql">MySQL</a></li>
+</ul>
+</li>
+<li><a href="#administration-des-kubernetes-clusters">Administration des Kubernetes-Clusters</a></li>
+<li><a href="#node-best-practices">Node Best Practices</a></li>
+<li><a href="#lokaler-appserver-mit-nest">Lokaler Appserver (mit Nest)</a><ul>
+<li><a href="#entwicklung-in-einer-powershell">Entwicklung in einer Powershell</a></li>
+<li><a href="#openapi">OpenAPI</a></li>
+<li><a href="#apollo-sandbox">Apollo Sandbox</a></li>
+<li><a href="#rest-client-f%C3%BCr-eine-rest--und-eine-graphql-schnittstelle">REST Client für eine REST- und eine GraphQL-Schnittstelle</a></li>
+<li><a href="#postman">Postman</a></li>
+</ul>
+</li>
+<li><a href="#tests-aufrufen">Tests aufrufen</a></li>
+<li><a href="#deployment-in-kubernetes">Deployment in Kubernetes</a><ul>
+<li><a href="#db-server-als-voraussetzung">DB-Server als Voraussetzung</a></li>
+<li><a href="#docker-image-durch-buildpacks">Docker-Image durch Buildpacks</a></li>
+<li><a href="#deployment-mit-helm">Deployment mit Helm</a></li>
+</ul>
+</li>
+<li><a href="#statische-codeanalyse">Statische Codeanalyse</a><ul>
+<li><a href="#eslint">ESLint</a></li>
+<li><a href="#sonarqube">SonarQube</a></li>
+<li><a href="#type-coverage">type-coverage</a></li>
+</ul>
+</li>
+<li><a href="#sicherheitsanalyse-durch-snyk">Sicherheitsanalyse durch snyk</a></li>
+<li><a href="#asciidoctor-und-plantuml">AsciiDoctor und PlantUML</a><ul>
+<li><a href="#preview-von-plantuml-dateien">Preview von PlantUML-Dateien</a></li>
+<li><a href="#einstellungen-f%C3%BCr-preview-von-asciidoctor-dateien">Einstellungen für Preview von AsciiDoctor-Dateien</a></li>
+<li><a href="#preview-von-asciidoctor-dateien">Preview von AsciiDoctor-Dateien</a></li>
+<li><a href="#dokumentation-im-format-html">Dokumentation im Format HTML</a></li>
+</ul>
+</li>
+<li><a href="#continuous-integration-mit-jenkins">Continuous Integration mit Jenkins</a><ul>
+<li><a href="#aufruf-mit-webbrowser">Aufruf mit Webbrowser</a></li>
+<li><a href="#bash-zur-evtl-fehlersuche-im-laufenden-jenkins-container">Bash zur evtl. Fehlersuche im laufenden Jenkins-Container</a></li>
+</ul>
+</li>
+<li><a href="#monitoring-durch-clinic">Monitoring durch clinic</a></li>
+<li><a href="#visual-studio-code">Visual Studio Code</a></li>
+<li><a href="#empfohlene-code-konventionen">Empfohlene Code-Konventionen</a></li>
+</ul>
+<hr>
+
+<a href="#download--und-ggf-upload-geschwindigkeit" id="download--und-ggf-upload-geschwindigkeit" style="color: inherit; text-decoration: none;">
+  <h2>Download- und ggf. Upload Geschwindigkeit</h2>
+</a>
+<p>In einem Webbrowser kann man z.B. mit der URL <code>https://speed.cloudflare.com</code> die
+Download- und die Upload-Geschwindigkeit testen.</p>
+<p>Alternativ kann man durch das Kommando <code>fast</code> in einer Powershell die aktuelle
+Download-Geschwindigkeit ermitteln.</p>
+<p>Mit der zusätzlichen Option <code>--upload</code> kann zusätzlich die aktuelle
+Upload-Geschwindigkeit ermittelt werden.</p>
+<hr>
+
+<a href="#vorbereitung-der-installation" id="vorbereitung-der-installation" style="color: inherit; text-decoration: none;">
+  <h2>Vorbereitung der Installation</h2>
+</a>
+<ul>
+<li><p>Das Beispiel <em>nicht</em> in einem Pfad mit <em>Leerzeichen</em> installieren.
+Viele Javascript-Bibliotheken werden unter Linux entwickelt und dort benutzt
+man <strong>keine</strong> Leerzeichen in Pfaden. Ebenso würde ich das Beispiel nicht auf
+dem  <em>Desktop</em> auspacken bzw. installieren.</p>
+</li>
+<li><p>Bei <a href="https://github.com">GitHub</a> oder <a href="https://gitlab.com">GitLab</a>
+registrieren, falls man dort noch nicht registriert ist.</p>
+</li>
+</ul>
+<hr>
+
+<a href="#es-modules-esm" id="es-modules-esm" style="color: inherit; text-decoration: none;">
+  <h2>ES Modules (ESM)</h2>
+</a>
+<p>ESM ist die gängige Abkürzung für <em>ES Modules</em>, so dass man <code>import</code> und
+<code>export</code> statt <code>require()</code> aus <em>CommonJS</em> verwenden kann. Die Unterstützung von
+ESM wurde in Node ab Version 12 begonnen. Außerdem ist es wichtig, das man beim
+Umstieg auf ESM auch die Unterstützung in <em>ts-node</em> und <em>ts-jest</em> beachtet.</p>
+<p>Wenn man ESM verwendet, muss man die eigenen Module z.B. folgendermaßen
+importieren:</p>
+<pre><code class="language-JavaScript"><span class="hl-0">    </span><span class="hl-1">import</span><span class="hl-0"> { </span><span class="hl-2">myFunc</span><span class="hl-0"> } </span><span class="hl-1">from</span><span class="hl-0"> </span><span class="hl-3">&#39;./foo.js&#39;</span><span class="hl-0">;</span><br/><span class="hl-0">    </span><span class="hl-1">import</span><span class="hl-0"> { </span><span class="hl-2">myClass</span><span class="hl-0"> } </span><span class="hl-1">from</span><span class="hl-0"> </span><span class="hl-3">&#39;./bar/index.js&#39;</span><span class="hl-0">;</span>
+</code></pre>
+<p>Außerdem gibt es ab Node 17.1 das <em>Node Protocol</em> für den Import von
+<em>Builtin Modules</em>, z.B.:</p>
+<pre><code class="language-JavaScript"><span class="hl-0">    </span><span class="hl-1">import</span><span class="hl-0"> { </span><span class="hl-2">resolve</span><span class="hl-0"> } </span><span class="hl-1">from</span><span class="hl-0"> </span><span class="hl-3">&#39;node:path&#39;</span><span class="hl-0">;</span>
+</code></pre>
+<p>Gute Literatur zu ESM gibt es bei:</p>
+<ul>
+<li><a href="https://nodejs.org/api/esm.html#esm_node_imports">https://nodejs.org/api/esm.html#esm_node_imports</a></li>
+<li><a href="https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c">https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c</a></li>
+<li><a href="https://docs.joshuatz.com/cheatsheets/node-and-npm/node-esm">https://docs.joshuatz.com/cheatsheets/node-and-npm/node-esm</a></li>
+<li><a href="https://www.typescriptlang.org/docs/handbook/esm-node.html">https://www.typescriptlang.org/docs/handbook/esm-node.html</a></li>
+<li><a href="https://github.com/TypeStrong/ts-node/issues/1007">https://github.com/TypeStrong/ts-node/issues/1007</a></li>
+</ul>
+<p>Unterstützung für ESM ist notwendig in:</p>
+<ul>
+<li>Node</li>
+<li>TypeScript</li>
+<li>ts-node</li>
+<li>ts-jest: versteht noch nicht die Datei-Endung <code>.mts</code> und beim Import <code>.mjs</code></li>
+<li>VS Code</li>
+<li>Node innerhalb von Jenkins</li>
+</ul>
+
+<a href="#eigener-namespace-in-kubernetes" id="eigener-namespace-in-kubernetes" style="color: inherit; text-decoration: none;">
+  <h2>Eigener Namespace in Kubernetes</h2>
+</a>
+<p>Genauso wie in Datenbanksystemen gibt es in Kubernetes <em>keine</em> untergeordneten
+Namespaces. Vor allem ist es in Kubernetes empfehlenswert für die eigene
+Software einen <em>neuen</em> Namespace anzulegen und <strong>NICHT</strong> den Default-Namespace
+zu benutzen. Das wurde bei der Installation von Kubernetes durch den eigenen
+Namespace <code>acme</code> bereits erledigt. Außerdem wurde aus Sicherheitsgründen beim
+defaultmäßigen Service-Account das Feature <em>Automounting</em> deaktiviert und der
+Kubernetes-Cluster wurde intern defaultmäßig so abgesichert, dass</p>
+<ul>
+<li>über das Ingress-Gateway keine Requests von anderen Kubernetes-Services
+zulässig sind</li>
+<li>über das Egress-Gateway keine Requests an andere Kubernetes-Services zulässig sind.</li>
+</ul>
+<hr>
+
+<a href="#relationale-datenbanksysteme" id="relationale-datenbanksysteme" style="color: inherit; text-decoration: none;">
+  <h2>Relationale Datenbanksysteme</h2>
+</a>
+
+<a href="#postgresql" id="postgresql" style="color: inherit; text-decoration: none;">
+  <h3>PostgreSQL</h3>
+</a>
+
+<a href="#docker-compose-für-postgresql-und-pgadmin" id="docker-compose-für-postgresql-und-pgadmin" style="color: inherit; text-decoration: none;">
+  <h4>Docker Compose für PostgreSQL und pgadmin</h4>
+</a>
+<p>Wenn man den eigenen Microservice direkt mit Windows laufen lässt, kann man
+PostgreSQL und das Administrationswerkzeug pgadmin einfach mit <em>Docker Compose</em>
+starten und später auch herunterfahren.</p>
+<blockquote>
+<p>❗ Vor dem 1. Start von PostgreSQL muss man in <code>docker-compose.yaml</code> im
+Verzeichnis extras\postgres die Zeile mit dem (eingeschränkten) Linux-User
+&quot;postgres:postgres&quot; auskommentieren, damit die Initialisierung von PostgreSQL
+als Linux-User <code>root</code> ausgeführt werden kann. Danach kopiert man die Skripte
+<code>create-db-buch.sh</code> und <code>create-db-buch.sql</code> aus dem Verzeichnis
+<code>extras\postgres\sql</code> nach <code>C:\Zimmermann\volumes\postgres\sql</code>.
+Für die Windows-Verzeichnisse <code>C:\Zimmermann\volumes\postgres\data</code>,
+<code>C:\Zimmermann\volumes\postgres\tablespace</code> und
+<code>C:\Zimmermann\volumes\postgres\tablespace\buch</code> muss außerdem Vollzugriff
+gewährt werden, was über das Kontextmenü mit <em>Eigenschaften</em> und den
+Karteireiter <em>Sicherheit</em> für die Windows-Gruppe <em>Benutzer</em> eingerichtet
+werden kann. Nun kann man das Auskommentieren des eingeschränkten Linux-Users
+in <code>docker-compose.yaml</code> wieder rückgängig machen, damit der DB-Server fortan
+nicht als Superuser &quot;root&quot; läuft.
+Übrigens ist das Emoji für das Ausrufezeichen von <a href="https://emojipedia.org">https://emojipedia.org</a>.</p>
+</blockquote>
+<pre><code class="language-powershell"><span class="hl-0">    cd extras\postgres</span><br/><span class="hl-0">    docker compose up</span><br/><br/><span class="hl-0">    </span><span class="hl-4"># Herunterfahren in einer 2. Shell:</span><br/><span class="hl-0">    cd extras\postgres</span><br/><span class="hl-0">    docker compose down</span>
+</code></pre>
+<p>Der Name des Docker-Containers lautet <code>postgres</code> und ebenso lautet der
+<em>virtuelle Rechnername</em> <code>postgres</code>. Der virtuelle Rechnername <code>postgres</code>
+wird später auch als Service-Name für PostgreSQL in Kubernetes verwendet.</p>
+<blockquote>
+<p>❗ Nach dem 1. Start des PostgreSQL-Servers muss man einmalig den
+Datenbank-User <code>buch</code> und dessen Datenbank <code>buch</code> anlegen, d.h. der neue
+Datenbank-User <code>buch</code> wird zum Owner der Datenbank <code>buch</code>. Dazu muss man
+sich mit dem Docker-Container mit Namen <code>postgres</code> verbinden und im
+Docker-Container das <code>bash</code>-Skript ausführen:</p>
+</blockquote>
+<pre><code class="language-powershell"><span class="hl-0">    docker compose exec postgres sh</span><br/><span class="hl-0">       psql --dbname=postgres --username=postgres --file=/sql/create-db-kunde.sql</span>
+</code></pre>
+<p>Außerdem kann <em>pgadmin</em> zur Administration verwendet werden. pgadmin läuft
+ebenfalls als Docker-Container und ist über ein virtuelles Netzwerk mit dem
+Docker-Container des DB-Servers verbunden. Deshalb muss beim Verbinden mit dem
+DB-Server auch der virtuelle Rechnername <code>postgres</code> verwendet werden. Man ruft
+also pgadmin mit Chrome und der URL <code>http://localhost:8888</code> auf.
+Die Emailadresse <code>pgadmin@acme.com</code> und das Passwort <code>p</code> sind voreingestellt.
+Da pgadmin mit Chromium implementiert ist, empfiehlt es sich, Chrome als
+Webbrowser zu verwenden.</p>
+<p>Beim 1. Einloggen konfiguriert man einen Server-Eintrag mit z.B. dem Namen
+<code>postgres-container</code> und verwendet folgende Werte:</p>
+<ul>
+<li>Host: <code>postgres</code> (virtueller Rechnername des DB-Servers im Docker-Netzwerk.
+<strong>BEACHTE</strong>: <code>localhost</code> ist im virtuellen Netzwerk der Name des
+pgadmin-Containers selbst !!!)</li>
+<li>Port: <code>5432</code> (Defaultwert)</li>
+<li>Username: <code>postgres</code> (Superuser beim DB-Server)</li>
+<li>Password: <code>p</code></li>
+</ul>
+<p>Es empfiehlt sich, das Passwort abzuspeichern, damit man es künftig nicht jedes
+Mal beim Einloggen eingeben muss.</p>
+
+<a href="#helmfile-für-postgresql-und-pgadmin" id="helmfile-für-postgresql-und-pgadmin" style="color: inherit; text-decoration: none;">
+  <h4>helmfile für PostgreSQL und pgadmin</h4>
+</a>
+<p>Wenn der eigene Server in Kubernetes gestartet werden soll (s.u.), muss
+<em>PostgreSQL</em> zuvor in Kubernetes gestartet werden, was mit <em>helmfile</em> und
+manuellem Port-Forwarding für <em>pgadmin</em> gemacht werden kann:</p>
+<pre><code class="language-powershell"><span class="hl-0">    cd extras\postgres</span><br/><span class="hl-0">    helmfile apply</span><br/><span class="hl-0">    .\port-forward.ps1</span><br/><br/><span class="hl-0">    </span><span class="hl-4"># Deinstallieren</span><br/><span class="hl-0">    helmfile destroy</span><br/><span class="hl-0">    .\delete-pvc.ps1</span>
+</code></pre>
+<p>Das Administrationswerkzeug <em>pgadmin</em> wurde innerhalb von Kubernetes gestartet
+und kann wegen Port-Forwarding mit <code>http://localhost:8888</code> aufgerufen werden.</p>
+<p>Beim Deinstallieren muss man manuell die 4 <em>PersistentVolumeClaim</em> mit den Namen
+<code>postgres-data-volume-postgres-0</code>, <code>postgres-conf-volume-postgres-0</code>,
+<code>pgadmin-pgadmin-volume-pgadmin-0</code> und <code>pgadmin-pgadmin4-volume-pgadmin-0</code>
+löschen, die durch die <em>StatefulSet</em> <code>postgres</code> und <code>pgadmin</code> erstellt wurden.
+Dazu gibt es das PowerShell-Skript <code>delete-pvc.ps1</code>.</p>
+
+<a href="#skaffold-für-postgresql-und-pgadmin" id="skaffold-für-postgresql-und-pgadmin" style="color: inherit; text-decoration: none;">
+  <h4>Skaffold für PostgreSQL und pgadmin</h4>
+</a>
+<p>Statt <em>helmfile</em> kann man auch <em>Skaffold</em> verwenden. Wenn die Umgebungsvariable
+<code>SKAFFOLD_PROFILE</code> auf den Wert <code>dev</code> gesetzt ist, wird das Profile <code>dev</code>
+verwendet, welches bei Helm zusätzlich die Datei <code>dev.yaml</code> verwendet. Bis das
+Port-Forwarding aktiviert ist, das in <code>skaffold.yaml</code> konfiguriert ist, muss man
+warten, bis der <em>Endpoint</em> in Kubernetes nicht mehr <code>none</code> ist.</p>
+<pre><code class="language-powershell"><span class="hl-0">    cd extras\postgres</span><br/><span class="hl-0">    skaffold dev --no-prune=false --cache-artifacts=false</span><br/><span class="hl-0">    &lt;Strg&gt;C</span><br/><span class="hl-0">    skaffold delete</span>
+</code></pre>
+<p>Mit <code>&lt;Strg&gt;C</code> kann das Deployment wieder zurückgerollt werden. Ohne die beiden
+Optionen muss man das PowerShell-Skript <code>delete-pvc.ps1</code> aufrufen.</p>
+
+<a href="#mysql" id="mysql" style="color: inherit; text-decoration: none;">
+  <h3>MySQL</h3>
+</a>
+
+<a href="#docker-compose-für-mysql-und-phpmyadmin" id="docker-compose-für-mysql-und-phpmyadmin" style="color: inherit; text-decoration: none;">
+  <h4>Docker Compose für MySQL und phpMyAdmin</h4>
+</a>
+<p>Wenn man den eigenen Microservice direkt mit Windows - nicht mit Kubernetes -
+laufen lässt, kann man MySQL und das Administrationswerkzeug phpMyAdmin einfach
+mit <em>Docker Compose</em> starten und später auch herunterfahren.</p>
+<blockquote>
+<p>❗ Vor dem 1. Start von MySQL muss man die Skripte <code>create-db-buch.sh</code> und
+<code>create-db-buch.sql</code> aus dem Projektverzeichnis
+<code>extras\mysql\sql</code> nach <code>C:\Zimmermann\volumes\mysql\sql</code> kopieren.</p>
+</blockquote>
+<pre><code class="language-powershell"><span class="hl-0">    cd extras\mysql</span><br/><span class="hl-0">    docker compose up</span><br/><br/><span class="hl-0">    </span><span class="hl-4"># Herunterfahren in einer 2. Shell:</span><br/><span class="hl-0">    cd extras\mysql</span><br/><span class="hl-0">    docker compose down</span>
+</code></pre>
+<p>Der Name des Docker-Containers und des <em>virtuellen Rechners</em> lautet <code>mysql</code>.
+Der virtuelle Rechnername wird später auch als Service-Name für MySQL in
+Kubernetes verwendet.</p>
+<blockquote>
+<p>❗ Nach dem 1. Start des DB-Servers muss man einmalig den Datenbank-User
+<code>buch</code> und dessen Datenbank <code>buch</code> anlegen, d.h. der neue Datenbank-User
+<code>buch</code> wird zum Owner der Datenbank <code>buch</code>. Dazu muss man sich mit dem
+Docker-Container mit Namen <code>mysql</code> verbinden und im Docker-Container das
+<code>bash</code>-Skript ausführen:</p>
+</blockquote>
+<pre><code class="language-powershell"><span class="hl-0">    docker compose exec mysql sh</span><br/><span class="hl-0">        mysql --user=root --password=p &lt; /sql/create-db-kunde.sql</span>
+</code></pre>
+<p>Jetzt läuft der DB-Server. Außerdem kann <em>phpMyAdmin</em> zur Administration
+verwendet werden. phpMyAdmin läuft ebenfalls als Docker-Container und ist über
+ein virtuelles Netzwerk mit dem Docker-Container des DB-Servers verbunden.
+Deshalb muss beim Verbinden mit dem DB-Server auch der virtuelle Rechnername
+<code>mysql</code> verwendet werden. Man ruft also phpMyAdmin mit einem Webbrowser und der
+URL <code>http://localhost:8889</code> auf. Zum Einloggen verwendet folgende Werte:</p>
+<ul>
+<li>Server: <code>mysql</code> (virtueller Rechnername des DB-Servers im Docker-Netzwerk.
+<strong>BEACHTE</strong>: <code>localhost</code> ist im virtuellen Netzwerk der Name des
+phpMyAdmin-Containers selbst !!!)</li>
+<li>Benutzername: <code>root</code> (Superuser beim DB-Server)</li>
+<li>Password: <code>p</code></li>
+</ul>
+
+<a href="#helmfile-für-mysql-und-phpmyadmin" id="helmfile-für-mysql-und-phpmyadmin" style="color: inherit; text-decoration: none;">
+  <h4>helmfile für MySQL und phpMyAdmin</h4>
+</a>
+<p>Wenn der eigene Server in Kubernetes gestartet werden soll (s.u.), muss
+<em>MySQL</em> zuvor in Kubernetes gestartet werden, was mit <em>helmfile</em> gemacht werden
+kann.</p>
+<pre><code class="language-powershell"><span class="hl-0">    cd extras\mysql</span><br/><span class="hl-0">    helmfile apply</span><br/><span class="hl-0">    .\port-forward.ps1</span><br/><br/><span class="hl-0">    </span><span class="hl-4"># Deinstallieren</span><br/><span class="hl-0">    helmfile destroy</span><br/><span class="hl-0">    .\delete-pvc.ps1</span>
+</code></pre>
+<p>Das Administrationswerkzeug <em>phpMyAdmin</em> wurde innerhalb von Kubernetes gestartet
+und kann wegen Port-Forwarding mit <code>http://localhost:8889</code> aufgerufen werden.</p>
+<p>Beim Deinstallieren muss man manuell das <em>PersistentVolumeClaim</em> mit den Namen
+<code>mysql-db-volume-mysql-0</code> löschen, das durch das <em>StatefulSet</em> <code>mysql</code> erstellt
+wurde. Dazu gibt es das PowerShell-Skript <code>delete-pvc.ps1</code>.</p>
+
+<a href="#skaffold-für-mysql-und-phpmyadmin" id="skaffold-für-mysql-und-phpmyadmin" style="color: inherit; text-decoration: none;">
+  <h4>Skaffold für MySQL und phpMyAdmin</h4>
+</a>
+<p>Statt <em>helmfile</em> kann man auch <em>Skaffold</em> verwenden. Wenn die Umgebungsvariable
+<code>SKAFFOLD_PROFILE</code> auf den Wert <code>dev</code> gesetzt ist, dann wird das Profile <code>dev</code>
+verwendet, welches bei Helm zusätzlich die Datei <code>dev.yaml</code> verwendet. Bis das
+Port-Forwarding aktiviert ist, das in <code>skaffold.yaml</code> konfiguriert ist, muss man
+warten, bis der <em>Endpoint</em> in Kubernetes nicht mehr <code>none</code> ist.</p>
+<pre><code class="language-powershell"><span class="hl-0">    cd extras\mysql</span><br/><span class="hl-0">    skaffold dev --no-prune=false --cache-artifacts=false</span>
+</code></pre>
+<p>Mit <code>&lt;Strg&gt;C</code> kann das Deployment wieder zurückgerollt werden. Ohne die beiden
+Optionen muss man das PowerShell-Skript <code>delete-pvc.ps1</code> aufrufen.</p>
+
+<a href="#administration-des-kubernetes-clusters" id="administration-des-kubernetes-clusters" style="color: inherit; text-decoration: none;">
+  <h2>Administration des Kubernetes-Clusters</h2>
+</a>
+<p>Zur Administration des Kubernetes-Clusters ist für Entwickler*innen m.E. <em>Lens</em>
+von Mirantis oder <em>Octant</em> von VMware Tanzu oder <em>Kui</em> von IBM gut geeignet.</p>
+<hr>
+
+<a href="#node-best-practices" id="node-best-practices" style="color: inherit; text-decoration: none;">
+  <h2>Node Best Practices</h2>
+</a>
+<p>Sehr empfehlenswert ist <a href="https://github.com/goldbergyoni/nodebestpractices">https://github.com/goldbergyoni/nodebestpractices</a></p>
+<hr>
+
+<a href="#lokaler-appserver-mit-nest" id="lokaler-appserver-mit-nest" style="color: inherit; text-decoration: none;">
+  <h2>Lokaler Appserver (mit Nest)</h2>
+</a>
+
+<a href="#entwicklung-in-einer-powershell" id="entwicklung-in-einer-powershell" style="color: inherit; text-decoration: none;">
+  <h3>Entwicklung in einer Powershell</h3>
+</a>
+<p>Durch <code>npm run start:dev</code> wird der Appserver im <em>Watch</em>-Modus für die
+Entwicklung gestartet, d.h. bei Code-Änderungen wird der Server automatisch
+neu gestartet.</p>
+<p>Beim Starten des Appservers wird außerdem mit <em>TypeORM</em> auf die Datenbank
+zugegriffen. Der Benutzername und das Passwort sind in der Datei
+<code>src\config\db.ts</code> auf <code>admin</code> und <code>p</code> voreingestellt. Bei Kubernetes muss
+<em>Port-Forwarding</em> (s.o.) aktiviert sein. Dazu muss die Umgebungsvariable
+<code>DB_HOST</code> in <code>.env</code> auskommentiert sein oder auf den Defaultwert <code>localhost</code>
+gesetzt sein. Durch die Umgebungsvariable <code>DB_POPULATE</code> wird festgelegt, ob die
+(Test-) DB <code>buch</code> neu geladen wird.</p>
+
+<a href="#openapi" id="openapi" style="color: inherit; text-decoration: none;">
+  <h3>OpenAPI</h3>
+</a>
+<p>Duch Decorators <code>@Api...()</code> kann man <em>OpenAPI</em> (früher: Swagger) in den
+Controller-Klassen und -Methoden konfigurieren und dann in einem Webbrowser mit
+<code>https://localhost:3000/swagger</code> aufrufen. Die <em>Swagger JSON Datei</em> kann man mit
+<code>https://localhost:3000/swagger-json</code> aufrufen.</p>
+
+<a href="#apollo-sandbox" id="apollo-sandbox" style="color: inherit; text-decoration: none;">
+  <h3>Apollo Sandbox</h3>
+</a>
+<p>Ab <em>Apollo 3</em>, das auch intern in Nest verwendet wird, gibt es <em>Apollo Sandbox</em>,
+das man z.B. mit Chrome nutzen kann. Dabei empfiehlt es sich die
+Chrome-Erweiterung <em>Apollo Client DevTools</em> von
+<a href="https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm">https://chrome.google.com/webstore/detail/apollo-client-developer-t/jdkknkkbebbapilgoeccciglkfbmbnfm</a>
+zu installieren. Apollo Sandbox kann man dann mit der URL
+<code>https://studio.apollographql.com/sandbox/explorer</code> aufrufen.</p>
+<p>Um effizient mit Apollo Sandbox zu arbeiten, empfiehlt es sich, dass man sich
+dort registriert, damit man z.B. Autovervollständigen nutzen kann. Für das
+Programmierbeispiel kann man beim Registrieren z.B. folgende Daten eingegeben:</p>
+<ul>
+<li><em>Graph title</em>: <code>Buch</code></li>
+<li><em>Graph type</em>: <code>Development</code> angeklickt</li>
+<li><em>Endpoint</em>: <a href="https://localhost:3000/graphql">https://localhost:3000/graphql</a></li>
+</ul>
+<p>Abschließend klickt man dann den Button <em>Create Graph</em> an.</p>
+<p>Beispielhafte <em>Queries</em> und <em>Mutations</em> für GraphQL gibt es in den Dateien
+<code>extras\restclient\graphql\buch.query.http</code> und
+<code>extras\restclient\graphql\buch.mutation.http</code>.</p>
+<p>In der Sandbox kann man z.B. folgende Query absetzen:</p>
+<p>...
+{
+  buch(id: &quot;000000000000000000000001&quot;) {
+    titel
+    art
+    isbn
+    version
+  }
+}
+...</p>
+<p>Oder unter Verwendung von einer Variablen (hier: <code>buchId</code>):</p>
+<p>...
+query ($buchId: ID!) {
+  buch(id: $buchId) {
+    titel
+    art
+    isbn
+    version
+  }
+}
+...</p>
+<p>Dazu muss man im unteren Abschnitt <em>Variables</em> folgendes eintragen:</p>
+<p>...
+{
+  &quot;buchId&quot;: &quot;000000000000000000000001&quot;
+}
+...</p>
+<p>Außerdem bietet Nest für eine GraphQL-Schnittstelle in einem Webbrowser die URL
+<code>https://localhost:3000/graphql</code> an, mit der man auf <em>Playground</em> zugreifen kann,
+der allerdings ab <em>Apollo 3</em> deprecated ist.</p>
+
+<a href="#rest-client-für-eine-rest--und-eine-graphql-schnittstelle" id="rest-client-für-eine-rest--und-eine-graphql-schnittstelle" style="color: inherit; text-decoration: none;">
+  <h3>REST Client für eine REST- und eine GraphQL-Schnittstelle</h3>
+</a>
+<p>Im Unterverzeichnis <code>extras\restclient</code> befinden sich in den Unterverzeichnissen
+<code>rest</code> und <code>graphql</code> mehrere Dateien mit der Extension <code>.rest</code> oder <code>.http</code>.
+In diesen Dateien sind Interaktionsmöglichkeiten für die REST- und die
+GraphQL-Schnittstelle.</p>
+<p>Wenn man eine dieser Dateien in VS Code öffnet, dann sieht man bei jedem
+Beispiel bzw. Abschnitt, der mit <code>###</code> beginnt, eine künstliche Zeile mit
+<em>Send Request</em> (keine Zeilennummer!). Auf <em>Send Request</em> kann man klicken und
+der Request wird ausgeführt, wozu natürlich der Server erfolgreich gestartet
+sein sollte.</p>
+<p>Für den REST-Client benötigt man unterschiedliche Umgebungen (<em>Environment</em>) je
+nachdem, ob der Server lokal oder in einem (lokalen) Kubernetes-Cluster läuft.
+Verschiedene Umgebungen können prinzipiell die gleichen Eigenschaften, aber mit
+verschiedenen Werten haben. Beispielsweise lautet die URL für die
+REST-Schnittstelle beim lokalen Server <code>https://localhost:3000/...</code>
+aber im Kubernetes-Cluster <code>http://localhost:3000/...</code>. Dazu kann man im
+Unterverzeichnis <code>.vscode</code> die Datei <code>settings.json</code> bearbeiten.</p>
+<p>Wenn man von nun an eine <code>.rest</code>-Datei öffnet, dann sieht man rechts unten in
+der Statusleiste die aktuelle Umgebung. Sobald man rechts unten auf den Namen
+der aktuellen Umgebung (oder <em>No Environment</em>) klickt, erscheinen die möglichen
+Umgebungen in der Auswahl am oberen Fensterrand.</p>
+<p>Wenn für die Interaktion mit dem Server Zugriffsberechtigungen erforderlich sind,
+muss man sich zunächst einloggen und erhält dabei einen (Access-) Token, und
+zwar einen <em>JWT</em> (= JSON Web Token), so dass &quot;stateless sessions&quot; möglich sind.
+Nach dem Einloggen kann man den JWT wiederholt verwenden, ohne jedes Mal den
+Benutzernamen und vor allem das Passwort mitschicken zu müssen - bis zum
+Ablaufen des Tokens. In der <em>Payload</em> (&quot;Nutzdaten&quot;) eines Tokens (siehe
+<a href="https://jwt.io">https://jwt.io</a>) sind Informationen zum jeweiligen User, so dass dessen Rollen
+ermittelt werden können, um damit auf der Serverseite die Zugriffsberechtigungen
+anhand der Rollen zu ermitteln (<em>RBAC</em> = &quot;Role-Based Access Controll&quot;).</p>
+<!-- https://github.com/kamiazya/typedoc-plugin-mermaid/issues/616 -->
+
+<pre><code class="language-mermaid"><span class="hl-1">stateDiagram</span><br/><span class="hl-0">  </span><span class="hl-1">state</span><span class="hl-0"> Gast</span><br/><span class="hl-0">  </span><span class="hl-1">state</span><span class="hl-0"> &quot;JWT = JSON Web Token&quot; as jwt</span><br/><span class="hl-0">  </span><span class="hl-1">state</span><span class="hl-0"> </span><span class="hl-3">&quot;REST-Schnittstelle&quot;</span><span class="hl-0"> </span><span class="hl-1">as</span><span class="hl-0"> </span><span class="hl-2">rest</span><br/><span class="hl-0">  </span><span class="hl-1">state</span><span class="hl-0"> </span><span class="hl-3">&quot;GraphQL-Schnittstelle&quot;</span><span class="hl-0"> </span><span class="hl-1">as</span><span class="hl-0"> </span><span class="hl-2">graphql</span><br/><span class="hl-0">  </span><span class="hl-1">state</span><span class="hl-0"> &quot;RBAC = Role-Based Access Control&quot; as rbac</span><br/><br/><br/><span class="hl-0">  </span><span class="hl-1">[*]</span><span class="hl-0"> </span><span class="hl-1">--&gt;</span><span class="hl-0"> </span><span class="hl-2">Gast</span><br/><span class="hl-0">  </span><span class="hl-2">Gast</span><span class="hl-0"> </span><span class="hl-1">--&gt;</span><span class="hl-0"> </span><span class="hl-2">jwt</span><span class="hl-0"> </span><span class="hl-1">:</span><span class="hl-0"> </span><span class="hl-3">Login, z.B. application/x-www-form-urlencoded</span><br/><span class="hl-0">  </span><span class="hl-2">jwt</span><span class="hl-0"> </span><span class="hl-1">--&gt;</span><span class="hl-0"> </span><span class="hl-2">rest</span><span class="hl-0"> </span><span class="hl-1">:</span><span class="hl-0"> </span><span class="hl-3">HTTP-Header &quot;Authorization&quot;</span><br/><span class="hl-0">  </span><span class="hl-2">jwt</span><span class="hl-0"> </span><span class="hl-1">--&gt;</span><span class="hl-0"> </span><span class="hl-2">graphql</span><span class="hl-0"> </span><span class="hl-1">:</span><span class="hl-0"> </span><span class="hl-3">HTTP-Header &quot;Authorization&quot;</span><br/><br/><span class="hl-0">  </span><span class="hl-2">rest</span><span class="hl-0"> </span><span class="hl-1">--&gt;</span><span class="hl-0"> </span><span class="hl-2">rbac</span><span class="hl-0"> </span><span class="hl-1">:</span><span class="hl-0"> </span><span class="hl-3">Authorisierung</span><br/><span class="hl-0">  </span><span class="hl-2">graphql</span><span class="hl-0"> </span><span class="hl-1">--&gt;</span><span class="hl-0"> </span><span class="hl-2">rbac</span><span class="hl-0"> </span><span class="hl-1">:</span><span class="hl-0"> </span><span class="hl-3">Authorisierung</span><br/>
+</code></pre>
+<p>Für die Query-Sprache von GraphQL bietet der REST Client allerdings <strong>KEIN</strong>
+Autovervollständigen an, wie man es von <em>Apollo Sandbox</em> und <em>Playground</em> (s.o.)
+gewohnt ist.</p>
+
+<a href="#postman" id="postman" style="color: inherit; text-decoration: none;">
+  <h3>Postman</h3>
+</a>
+<p>Als Alternative zu <em>REST Client</em> als Plugin für VS Code kann man auch die
+Desktop-Applikation <em>Postman</em> nutzen: <a href="https://www.postman.com">https://www.postman.com</a>.</p>
+<hr>
+
+<a href="#tests-aufrufen" id="tests-aufrufen" style="color: inherit; text-decoration: none;">
+  <h2>Tests aufrufen</h2>
+</a>
+<p>Folgende Voraussetzungen müssen oder sollten erfüllt sein:</p>
+<ul>
+<li>Der DB-Server muss gestartet sein.</li>
+<li>Port-Forwarding muss für den DB-Server aktiviert sein, falls dieser in
+Kubernetes läuft.</li>
+<li>Der Appserver muss <em>nicht gestartet</em> sein.</li>
+</ul>
+<p>Nun kann man die Tests folgendermaßen in einer Powershell aufrufen. Dabei wird
+die Umgebungsvariable <code>LOG_DEFAULT</code> auf <code>true</code> gesetzt, um nicht zu detailliert
+zu protokollieren bzw. damit die Log-Ausgabe übersichtlich bleibt.</p>
+<pre><code class="language-powershell"><span class="hl-0">    npm t</span>
+</code></pre>
+<p>Bei der Fehlersuche ist es ratsam, nur eine einzelnen Testdatei aufzurufen,
+z.B.:</p>
+<pre><code class="language-powershell"><span class="hl-0">    npm exec jest --detectOpenHandles --errorOnDeprecated `</span><br/><span class="hl-0">      --forceExit --runTestsByPath </span><span class="hl-3">&#39;__tests__\buch\buch-GET.controller.test.ts&#39;</span>
+</code></pre>
+<hr>
+
+<a href="#deployment-in-kubernetes" id="deployment-in-kubernetes" style="color: inherit; text-decoration: none;">
+  <h2>Deployment in Kubernetes</h2>
+</a>
+
+<a href="#db-server-als-voraussetzung" id="db-server-als-voraussetzung" style="color: inherit; text-decoration: none;">
+  <h3>DB-Server als Voraussetzung</h3>
+</a>
+<p>Voraussetzung für das Deployment des Microservice ist, dass der DB-Server
+erfolgreich gestartet ist (s.o.).</p>
+
+<a href="#docker-image-durch-buildpacks" id="docker-image-durch-buildpacks" style="color: inherit; text-decoration: none;">
+  <h3>Docker-Image durch Buildpacks</h3>
+</a>
+<p>Mittels <em>(Cloud Native) Buildpacks</em> und der Konfigurationsdatei <code>project.toml</code>
+kann man ein Docker Image erstellen, ohne dass ein Dockerfile erforderlich ist.
+Das resultierende Image basiert auf <em>Ubuntu</em> und erfordert, dass die
+TypeScript-Dateien in JavaScript übersetzt sind. Durch das npm-Skript <code>pack</code>
+wird das Docker-Image <code>docker.io/juergenzimmermann/buch:1.0.0</code> mit dem implizit
+übersetzten JavaScript-Code gebaut:</p>
+<pre><code class="language-powershell"><span class="hl-0">    </span><span class="hl-4"># In der 2. PowerShell</span><br/><span class="hl-0">    npm run pack</span>
+</code></pre>
+<p>Wie das Docker-Image gebaut wurde, kann man anschließend mit folgendem Kommando
+inspizieren:</p>
+<pre><code class="language-powershell"><span class="hl-0">    pack inspect juergenzimmermann/buch:</span><span class="hl-5">1.0</span><span class="hl-0">.</span><span class="hl-5">0</span>
+</code></pre>
+
+<a href="#deployment-mit-helm" id="deployment-mit-helm" style="color: inherit; text-decoration: none;">
+  <h3>Deployment mit Helm</h3>
+</a>
+<p>Im Verzeichnis <code>extras\buch</code> ist ein Helm-Chart für die Entwicklung des
+Appservers. Wenn das Docker-Image erstellt ist (s.o.), kann die Installation in
+Kubernetes durchgeführt werden mit</p>
+<ul>
+<li><code>helm install buch . -f values.yaml -f dev.yaml</code> in <code>extras\buch</code></li>
+<li><code>helmfile apply</code> mittels <code>helmfile.yaml</code> im Wurzelverzeichnis</li>
+<li><code>skaffold dev</code> mittels <code>skaffold.yaml</code> im Wurzelverzeichnis</li>
+</ul>
+<p>Mit <em>Lens</em> kann man anschließend die Installation inspizieren.
+Dabei wird die Logdatei im internen Verzeichnis <code>/var/log/node</code> angelegt,
+welches durch <em>Mounting</em> dem Windows-Verzeichnis <code>C:\Zimmermann\volumes\buch</code>
+entspricht und mit <em>Schreibberechtigung</em> existieren muss.</p>
+<p>Außerdem kann man in <code>extras\buch</code> eine Datei <code>README.md</code> generieren, die
+die Default-Konfigurationswerte für die Helm-basierte Installation enthält.
+Dazu ruft man in <code>extras\buch</code> das Kommando <code>helm-docs</code> auf.</p>
+<p>Die Installation kann entsprechend der oben gewählten Installationsvariante
+wieder aus Kubernetes entfernt werden:</p>
+<ul>
+<li><code>helm uninstall buch</code> in <code>extras\buch</code></li>
+<li><code>helmfile destroy</code> im Wurzelverzeichnis</li>
+<li><code>skaffold delete</code> bei <code>skaffold dev</code></li>
+</ul>
+<hr>
+
+<a href="#statische-codeanalyse" id="statische-codeanalyse" style="color: inherit; text-decoration: none;">
+  <h2>Statische Codeanalyse</h2>
+</a>
+
+<a href="#eslint" id="eslint" style="color: inherit; text-decoration: none;">
+  <h3>ESLint</h3>
+</a>
+<p><em>ESLint</em> wird durch folgendes npm-Skript ausgeführt:</p>
+<pre><code class="language-powershell"><span class="hl-0">    npm run eslint</span>
+</code></pre>
+
+<a href="#sonarqube" id="sonarqube" style="color: inherit; text-decoration: none;">
+  <h3>SonarQube</h3>
+</a>
+<p>Für eine statische Codeanalyse durch <em>SonarQube</em> muss zunächst der
+SonarQube-Server mit <em>Docker Compose</em> als Docker-Container gestartet werden:</p>
+<pre><code class="language-powershell"><span class="hl-0">    cd extras\sonarqube</span><br/><span class="hl-0">    docker compose up</span>
+</code></pre>
+<p>Wenn der Server zum ersten Mal gestartet wird, ruft man in einem Webbrowser die
+URL <code>http://localhost:9000</code> auf. In der Startseite muss man sich einloggen und
+verwendet dazu als Loginname <code>admin</code> und ebenso als Password <code>admin</code>. Danach
+wird man weitergeleitet, um das initiale Passwort zu ändern. Das neue Passwort
+trägt man dann in das Skript <code>sonar-scanner.ps1</code> im Wurzelverzeichnis ein.
+Zur Konfiguration für künftige Aufrufe des <em>SonarQube-Scanners</em> trägt man jetzt
+noch in der Konfigurationsdatei <code>sonar-project.properties</code> den Projektnamen beim
+der Property <code>sonar.projectKey</code> ein.</p>
+<p>Nachdem der Server gestartet ist, wird der SonarQube-Scanner in einer zweiten
+PowerShell mit dem Skript <code>sonar-scanner.ps1</code> gestartet. Das Resultat kann dann
+in der Webseite des zuvor gestarteten Servers über die URL <code>http://localhost:9000</code>
+inspiziert werden.</p>
+<p>Abschließend wird der oben gestartete Server heruntergefahren.</p>
+<pre><code class="language-powershell"><span class="hl-0">    cd extras\sonarqube</span><br/><span class="hl-0">    docker compose down</span>
+</code></pre>
+
+<a href="#type-coverage" id="type-coverage" style="color: inherit; text-decoration: none;">
+  <h3>type-coverage</h3>
+</a>
+<p>Mit <code>type-coverage</code> kann man ermitteln, wo im TypeScript-Code <code>any</code> verwendet
+wurde:</p>
+<pre><code class="language-powershell"><span class="hl-0">    npm run type-coverage</span>
+</code></pre>
+<hr>
+
+<a href="#sicherheitsanalyse-durch-snyk" id="sicherheitsanalyse-durch-snyk" style="color: inherit; text-decoration: none;">
+  <h2>Sicherheitsanalyse durch snyk</h2>
+</a>
+<p>Zunächst muss man sich bei <a href="https://app.snyk.io/account">https://app.snyk.io/account</a> registrieren und dort
+auch einen Token besorgen. Danach kann man sich folgendermaßen authentifizieren
+und das Projekt auf Sicherheitslücken überprüfen</p>
+<pre><code class="language-powershell"><span class="hl-0">    synk auth &lt;MEIN_TOKEN&gt;</span><br/><span class="hl-0">    snyk test</span>
+</code></pre>
+
+<a href="#asciidoctor-und-plantuml" id="asciidoctor-und-plantuml" style="color: inherit; text-decoration: none;">
+  <h2>AsciiDoctor und PlantUML</h2>
+</a>
+<p>Mit AsciiDoctor und PlantUML ist die Dokumentation geschrieben.</p>
+
+<a href="#preview-von-plantuml-dateien" id="preview-von-plantuml-dateien" style="color: inherit; text-decoration: none;">
+  <h3>Preview von PlantUML-Dateien</h3>
+</a>
+<p>Durch das Tastaturkürzel <code>&lt;Alt&gt;d</code>. Dazu ist eine Internet-Verbindung notwendig.
+Beispiele für PlantUML und AsciiDoctor sind im Unterverzeichnis <code>extras\doc</code>.</p>
+
+<a href="#einstellungen-für-preview-von-asciidoctor-dateien" id="einstellungen-für-preview-von-asciidoctor-dateien" style="color: inherit; text-decoration: none;">
+  <h3>Einstellungen für Preview von AsciiDoctor-Dateien</h3>
+</a>
+<p>Zunächst müssen einmalig die Einstellungen (<em>Settings</em>) von VS Code geändert
+werden. Dazu geht man über zum Menüpunkt <em>Datei &gt; Einstellungen &gt; Einstellungen</em>
+und gibt im Suchfeld <code>asciidoc.use_kroki</code> ein. Nun setzt man den Haken bei
+<em>Enable kroki integration to generate diagrams</em>.</p>
+<p>Wenn man zum ersten Mal eine <code>.adoc</code>-Datei im Editor öffnet, muss man noch
+die Verbindung zum PlantUML-Server zulassen, damit die eingebundenen
+<code>.puml</code>-Dateien in <code>.svg</code>-Dateien konvertiert werden. Dazu gibt man zunächst
+das <code>&lt;F1&gt;</code> ein und schickt im Eingabefeld das Kommando
+<em>AsciiDoc: Change Preview Security Settings</em> durch <code>&lt;Enter&gt;</code> ab.
+Danach wählt man den Unterpunkt <em>Allow insecure content</em> aus.</p>
+
+<a href="#preview-von-asciidoctor-dateien" id="preview-von-asciidoctor-dateien" style="color: inherit; text-decoration: none;">
+  <h3>Preview von AsciiDoctor-Dateien</h3>
+</a>
+<p>Durch das Tastaturkürzel <code>&lt;Strg&gt;&lt;Shift&gt;v</code>. Dazu ist eine Internet-Verbindung
+notwendig.</p>
+
+<a href="#dokumentation-im-format-html" id="dokumentation-im-format-html" style="color: inherit; text-decoration: none;">
+  <h3>Dokumentation im Format HTML</h3>
+</a>
+<p>Die Dokumentation im Format HTML wird in einer Powershell folgendermaßen
+im Verzeichnis <code>extras\doc\html</code> erstellt:</p>
+<pre><code class="language-powershell"><span class="hl-0">    npm run asciidoc</span>
+</code></pre>
+
+<a href="#continuous-integration-mit-jenkins" id="continuous-integration-mit-jenkins" style="color: inherit; text-decoration: none;">
+  <h2>Continuous Integration mit Jenkins</h2>
+</a>
+<p>Jenkins wird nicht in Kubernetes, sondern direkt mit <em>Docker Compose</em>
+genutzt. Dadurch muss Jenkins nicht immer laufen und kann bei Bedarf gestartet
+und wieder heruntergefahren werden. Dazu muss zunächst das Jenkins-Image um eine
+Docker-Installation ergänzt werden, wozu es im Unterverzeichnis <code>extras\jenkins</code>
+das <code>Dockerfile</code> gibt, um ein solches Image zu erstellen:</p>
+<pre><code class="language-powershell"><span class="hl-0">    cd extras\jenkins</span><br/><span class="hl-0">    </span><span class="hl-6">Get-Content</span><span class="hl-0"> Dockerfile | docker run --rm --interactive hadolint/hadolint:</span><span class="hl-5">2.10</span><span class="hl-0">.</span><span class="hl-5">0</span><span class="hl-0">-beta-debian</span><br/><span class="hl-0">    docker buildx build --tag juergenzimmermann/jenkins:</span><span class="hl-5">1.0</span><span class="hl-0">.</span><span class="hl-5">0</span><span class="hl-0"> .</span>
+</code></pre>
+<p>Das neu gebaute Image <code>juergenzimmermann/jenkins:1.0.0</code> wird in
+<code>docker-compose.yaml</code> verwendet:</p>
+<pre><code class="language-powershell"><span class="hl-0">    cd extras\jenkins</span><br/><span class="hl-0">    docker compose up</span><br/><br/><span class="hl-0">    </span><span class="hl-4"># In einer 2. PowerShell: Herunterfahren</span><br/><span class="hl-0">    docker compose down</span>
+</code></pre>
+
+<a href="#aufruf-mit-webbrowser" id="aufruf-mit-webbrowser" style="color: inherit; text-decoration: none;">
+  <h3>Aufruf mit Webbrowser</h3>
+</a>
+<p>Mit der URL <a href="https://localhost:7070">https://localhost:7070</a> kann man von einem Webbrowser auf das
+Jenkins-Image zugreifen. Der Benutzername ist <code>admin</code> und das Passwort
+<code>Inf und WI.</code>.</p>
+
+<a href="#bash-zur-evtl-fehlersuche-im-laufenden-jenkins-container" id="bash-zur-evtl-fehlersuche-im-laufenden-jenkins-container" style="color: inherit; text-decoration: none;">
+  <h3>Bash zur evtl. Fehlersuche im laufenden Jenkins-Container</h3>
+</a>
+<pre><code class="language-powershell"><span class="hl-0">    cd extras\jenkins</span><br/><span class="hl-0">    docker compose exec jenkins bash</span>
+</code></pre>
+
+<a href="#monitoring-durch-clinic" id="monitoring-durch-clinic" style="color: inherit; text-decoration: none;">
+  <h2>Monitoring durch clinic</h2>
+</a>
+<p>Für Monitoring kann man z.B. <code>clinic</code> nutzen, indem man zunächst dem TypeScript-Compiler
+durch <code>npm run tsc</code> aufruft und danach <code>npm run clinic</code>.</p>
+<p>Allerdings gibt es noch das offene Ticket
+<a href="https://github.com/clinicjs/node-clinic-doctor/issues/304">https://github.com/clinicjs/node-clinic-doctor/issues/304</a></p>
+
+<a href="#visual-studio-code" id="visual-studio-code" style="color: inherit; text-decoration: none;">
+  <h2>Visual Studio Code</h2>
+</a>
+<p><a href="https://code.visualstudio.com/Download">Visual Studio Code</a> kann man
+kostenfrei herunterladen.</p>
+<p>Tipps:</p>
+<ul>
+<li><code>&lt;Strg&gt;#</code> : Kommentare setzen und entfernen</li>
+<li><code>&lt;F1&gt;</code>: Die Kommandopalette erscheint</li>
+<li><code>&lt;Strg&gt;&lt;Shift&gt;v</code>: Vorschau für MarkDown und AsciiDoctor</li>
+<li><code>&lt;Alt&gt;d</code>: Vorschau für PlantUml</li>
+<li><em><a href="https://vscodecandothat.com">https://vscodecandothat.com</a></em>: Kurze Videos zu VS Code</li>
+<li><em><a href="https://www.youtube.com/watch?v=beNIDKgdzwQ">https://www.youtube.com/watch?v=beNIDKgdzwQ</a></em>: Video für Debugging</li>
+</ul>
+
+<a href="#empfohlene-code-konventionen" id="empfohlene-code-konventionen" style="color: inherit; text-decoration: none;">
+  <h2>Empfohlene Code-Konventionen</h2>
+</a>
+<p>In Anlehnung an die
+<a href="https://github.com/Microsoft/TypeScript/wiki/Coding-guidelines">Guidelines von TypeScript</a></p>
+<ul>
+<li>&quot;Feature Filenames&quot;, z.B. buch.service.ts</li>
+<li>Klassennamen mit PascalCase</li>
+<li>Union-Types (mit Strings) statt Enums</li>
+<li>Attribute und Funktionen mit camelCase</li>
+<li><code>#</code> für private Properties</li>
+<li>private Properties <em>nicht</em> mit vorangestelltem <strong>_</strong></li>
+<li>Interfaces <em>nicht</em> mit vorangestelltem <strong>I</strong></li>
+<li>Higher-Order Functions: [...].<code>forEach</code>(), [...].<code>filter</code>() und [...].<code>map</code>()</li>
+<li>Arrow-Functions statt function()</li>
+<li><code>undefined</code> verwenden und nicht <code>null</code></li>
+<li>Geschweifte Klammern bei if-Anweisungen</li>
+<li>Maximale Dateigröße: 400 Zeilen</li>
+<li>Maximale Funktionsgröße: 75 Zeilen</li>
+</ul>
+</div></div>
+<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+<div class="tsd-navigation settings">
+<details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
+<h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4.93896 8.531L12 15.591L19.061 8.531L16.939 6.409L12 11.349L7.06098 6.409L4.93896 8.531Z" fill="var(--color-text)"></path></svg> Settings</h3></summary>
+<div class="tsd-accordion-details">
+<div class="tsd-filter-visibility">
+<h4 class="uppercase">Member Visibility</h4><form>
+<ul id="tsd-filter-options">
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></form></div>
+<div class="tsd-theme-toggle">
+<h4 class="uppercase">Theme</h4><select id="theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div>
+<nav class="tsd-navigation primary">
+<details class="tsd-index-accordion" open><summary class="tsd-accordion-summary">
+<h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4.93896 8.531L12 15.591L19.061 8.531L16.939 6.409L12 11.349L7.06098 6.409L4.93896 8.531Z" fill="var(--color-text)"></path></svg> Modules</h3></summary>
+<div class="tsd-accordion-details">
+<ul>
+<li class="current selected"><a href="modules.html">buch</a>
+<ul>
+<li class="tsd-kind-module"><a href="modules/app_module.html">app.module</a></li>
+<li class="tsd-kind-module"><a href="modules/buch_buch_module.html">buch/buch.module</a></li>
+<li class="tsd-kind-module"><a href="modules/buch_entity_buch_entity.html">buch/entity/buch.entity</a></li>
+<li class="tsd-kind-module"><a href="modules/buch_entity_decimal_transformer.html">buch/entity/decimal-<wbr/>transformer</a></li>
+<li class="tsd-kind-module"><a href="modules/buch_entity_schlagwort_entity.html">buch/entity/schlagwort.entity</a></li>
+<li class="tsd-kind-module"><a href="modules/buch_graphql_buch_mutation_resolver.html">buch/graphql/buch-<wbr/>mutation.resolver</a></li>
+<li class="tsd-kind-module"><a href="modules/buch_graphql_buch_query_resolver.html">buch/graphql/buch-<wbr/>query.resolver</a></li>
+<li class="tsd-kind-module"><a href="modules/buch_rest_buch_get_controller.html">buch/rest/buch-<wbr/>get.controller</a></li>
+<li class="tsd-kind-module"><a href="modules/buch_rest_buch_write_controller.html">buch/rest/buch-<wbr/>write.controller</a></li>
+<li class="tsd-kind-module"><a href="modules/buch_rest_buchDTO_entity.html">buch/rest/buchDTO.entity</a></li>
+<li class="tsd-kind-module"><a href="modules/buch_rest_getBaseUri.html">buch/rest/get<wbr/>Base<wbr/>Uri</a></li>
+<li class="tsd-kind-module"><a href="modules/buch_service_buch_read_service.html">buch/service/buch-<wbr/>read.service</a></li>
+<li class="tsd-kind-module"><a href="modules/buch_service_buch_write_service.html">buch/service/buch-<wbr/>write.service</a></li>
+<li class="tsd-kind-module"><a href="modules/buch_service_errors.html">buch/service/errors</a></li>
+<li class="tsd-kind-module"><a href="modules/buch_service_query_builder.html">buch/service/query-<wbr/>builder</a></li>
+<li class="tsd-kind-module"><a href="modules/config_cloud.html">config/cloud</a></li>
+<li class="tsd-kind-module"><a href="modules/config_cors_options.html">config/cors.options</a></li>
+<li class="tsd-kind-module"><a href="modules/config_db.html">config/db</a></li>
+<li class="tsd-kind-module"><a href="modules/config_dev_db_populate_controller.html">config/dev/db-<wbr/>populate.controller</a></li>
+<li class="tsd-kind-module"><a href="modules/config_dev_db_populate_service.html">config/dev/db-<wbr/>populate.service</a></li>
+<li class="tsd-kind-module"><a href="modules/config_dev_dev_module.html">config/dev/dev.module</a></li>
+<li class="tsd-kind-module"><a href="modules/config_dev_testdaten.html">config/dev/testdaten</a></li>
+<li class="tsd-kind-module"><a href="modules/config_dev_users.html">config/dev/users</a></li>
+<li class="tsd-kind-module"><a href="modules/config_env.html">config/env</a></li>
+<li class="tsd-kind-module"><a href="modules/config_graphql.html">config/graphql</a></li>
+<li class="tsd-kind-module"><a href="modules/config_health.html">config/health</a></li>
+<li class="tsd-kind-module"><a href="modules/config_jwt.html">config/jwt</a></li>
+<li class="tsd-kind-module"><a href="modules/config_kubernetes.html">config/kubernetes</a></li>
+<li class="tsd-kind-module"><a href="modules/config_logger.html">config/logger</a></li>
+<li class="tsd-kind-module"><a href="modules/config_mail.html">config/mail</a></li>
+<li class="tsd-kind-module"><a href="modules/config_node.html">config/node</a></li>
+<li class="tsd-kind-module"><a href="modules/config_paths.html">config/paths</a></li>
+<li class="tsd-kind-module"><a href="modules/health_health_controller.html">health/health.controller</a></li>
+<li class="tsd-kind-module"><a href="modules/health_health_module.html">health/health.module</a></li>
+<li class="tsd-kind-module"><a href="modules/logger_info_service.html">logger/info.service</a></li>
+<li class="tsd-kind-module"><a href="modules/logger_logger.html">logger/logger</a></li>
+<li class="tsd-kind-module"><a href="modules/logger_logger_module.html">logger/logger.module</a></li>
+<li class="tsd-kind-module"><a href="modules/logger_request_logger_middleware.html">logger/request-<wbr/>logger.middleware</a></li>
+<li class="tsd-kind-module"><a href="modules/logger_response_time_interceptor.html">logger/response-<wbr/>time.interceptor</a></li>
+<li class="tsd-kind-module"><a href="modules/mail_mail_module.html">mail/mail.module</a></li>
+<li class="tsd-kind-module"><a href="modules/mail_mail_service.html">mail/mail.service</a></li>
+<li class="tsd-kind-module"><a href="modules/main.html">main</a></li>
+<li class="tsd-kind-module"><a href="modules/security_auth_auth_controller.html">security/auth/auth.controller</a></li>
+<li class="tsd-kind-module"><a href="modules/security_auth_auth_module.html">security/auth/auth.module</a></li>
+<li class="tsd-kind-module"><a href="modules/security_auth_jwt_jwt_auth_graphql_guard.html">security/auth/jwt/jwt-<wbr/>auth-<wbr/>graphql.guard</a></li>
+<li class="tsd-kind-module"><a href="modules/security_auth_jwt_jwt_auth_guard.html">security/auth/jwt/jwt-<wbr/>auth.guard</a></li>
+<li class="tsd-kind-module"><a href="modules/security_auth_jwt_jwt_strategy.html">security/auth/jwt/jwt.strategy</a></li>
+<li class="tsd-kind-module"><a href="modules/security_auth_local_local_auth_guard.html">security/auth/local/local-<wbr/>auth.guard</a></li>
+<li class="tsd-kind-module"><a href="modules/security_auth_local_local_strategy.html">security/auth/local/local.strategy</a></li>
+<li class="tsd-kind-module"><a href="modules/security_auth_login_resolver.html">security/auth/login.resolver</a></li>
+<li class="tsd-kind-module"><a href="modules/security_auth_roles_roles_graphql_guard.html">security/auth/roles/roles-<wbr/>graphql.guard</a></li>
+<li class="tsd-kind-module"><a href="modules/security_auth_roles_roles_decorator.html">security/auth/roles/roles.decorator</a></li>
+<li class="tsd-kind-module"><a href="modules/security_auth_roles_roles_guard.html">security/auth/roles/roles.guard</a></li>
+<li class="tsd-kind-module"><a href="modules/security_auth_service_auth_service.html">security/auth/service/auth.service</a></li>
+<li class="tsd-kind-module"><a href="modules/security_auth_service_errors.html">security/auth/service/errors</a></li>
+<li class="tsd-kind-module"><a href="modules/security_auth_service_role.html">security/auth/service/role</a></li>
+<li class="tsd-kind-module"><a href="modules/security_auth_service_user_service.html">security/auth/service/user.service</a></li>
+<li class="tsd-kind-module"><a href="modules/security_http_helmet_handler.html">security/http/helmet.handler</a></li></ul></li></ul></div></details></nav></div></div>
+<div class="container tsd-generator">
+<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div>
+<div class="overlay"></div><script src="assets/main.js"></script></body></html>
