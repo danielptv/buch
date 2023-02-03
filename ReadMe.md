@@ -161,11 +161,11 @@ PostgreSQL und das Administrationswerkzeug pgadmin einfach mit _Docker Compose_
 starten und später auch herunterfahren.
 
 > ❗ Vor dem 1. Start von PostgreSQL muss man in `docker-compose.yaml` im
-> Verzeichnis extras\postgres die Zeile mit dem (eingeschränkten) Linux-User
+> Verzeichnis .extras\postgres die Zeile mit dem (eingeschränkten) Linux-User
 > "postgres:postgres" auskommentieren, damit die Initialisierung von PostgreSQL
 > als Linux-User `root` ausgeführt werden kann. Danach kopiert man die Skripte
 > `create-db-buch.sh` und `create-db-buch.sql` aus dem Verzeichnis
-> `extras\postgres\sql` nach `C:\Zimmermann\volumes\postgres\sql`.
+> `.extras\postgres\sql` nach `C:\Zimmermann\volumes\postgres\sql`.
 > Für die Windows-Verzeichnisse `C:\Zimmermann\volumes\postgres\data`,
 > `C:\Zimmermann\volumes\postgres\tablespace` und
 > `C:\Zimmermann\volumes\postgres\tablespace\buch` muss außerdem Vollzugriff
@@ -177,11 +177,11 @@ starten und später auch herunterfahren.
 > Übrigens ist das Emoji für das Ausrufezeichen von https://emojipedia.org.
 
 ```powershell
-    cd extras\postgres
+    cd .extras\postgres
     docker compose up
 
     # Herunterfahren in einer 2. Shell:
-    cd extras\postgres
+    cd .extras\postgres
     docker compose down
 ```
 
@@ -229,7 +229,7 @@ _PostgreSQL_ zuvor in Kubernetes gestartet werden, was mit _helmfile_ und
 manuellem Port-Forwarding für _pgadmin_ gemacht werden kann:
 
 ```powershell
-    cd extras\postgres
+    cd .extras\postgres
     helmfile apply
     .\port-forward.ps1
 
@@ -256,7 +256,7 @@ Port-Forwarding aktiviert ist, das in `skaffold.yaml` konfiguriert ist, muss man
 warten, bis der _Endpoint_ in Kubernetes nicht mehr `none` ist.
 
 ```powershell
-    cd extras\postgres
+    cd .extras\postgres
     skaffold dev --no-prune=false --cache-artifacts=false
     <Strg>C
     skaffold delete
@@ -275,14 +275,14 @@ mit _Docker Compose_ starten und später auch herunterfahren.
 
 > ❗ Vor dem 1. Start von MySQL muss man die Skripte `create-db-buch.sh` und
 > `create-db-buch.sql` aus dem Projektverzeichnis
-> `extras\mysql\sql` nach `C:\Zimmermann\volumes\mysql\sql` kopieren.
+> `.extras\mysql\sql` nach `C:\Zimmermann\volumes\mysql\sql` kopieren.
 
 ```powershell
-    cd extras\mysql
+    cd .extras\mysql
     docker compose up
 
     # Herunterfahren in einer 2. Shell:
-    cd extras\mysql
+    cd .extras\mysql
     docker compose down
 ```
 
@@ -321,7 +321,7 @@ _MySQL_ zuvor in Kubernetes gestartet werden, was mit _helmfile_ gemacht werden
 kann.
 
 ```powershell
-    cd extras\mysql
+    cd .extras\mysql
     helmfile apply
     .\port-forward.ps1
 
@@ -346,7 +346,7 @@ Port-Forwarding aktiviert ist, das in `skaffold.yaml` konfiguriert ist, muss man
 warten, bis der _Endpoint_ in Kubernetes nicht mehr `none` ist.
 
 ```powershell
-    cd extras\mysql
+    cd .extras\mysql
     skaffold dev --no-prune=false --cache-artifacts=false
 ```
 
@@ -409,8 +409,8 @@ Programmierbeispiel kann man beim Registrieren z.B. folgende Daten eingegeben:
 Abschließend klickt man dann den Button _Create Graph_ an.
 
 Beispielhafte _Queries_ und _Mutations_ für GraphQL gibt es in den Dateien
-`extras\restclient\graphql\buch.query.http` und
-`extras\restclient\graphql\buch.mutation.http`.
+`.extras\restclient\graphql\buch.query.http` und
+`.extras\restclient\graphql\buch.mutation.http`.
 
 In der Sandbox kann man z.B. folgende Query absetzen:
 
@@ -452,7 +452,7 @@ der allerdings ab _Apollo 3_ deprecated ist.
 
 ### REST Client für eine REST- und eine GraphQL-Schnittstelle
 
-Im Unterverzeichnis `extras\restclient` befinden sich in den Unterverzeichnissen
+Im Unterverzeichnis `.extras\restclient` befinden sich in den Unterverzeichnissen
 `rest` und `graphql` mehrere Dateien mit der Extension `.rest` oder `.http`.
 In diesen Dateien sind Interaktionsmöglichkeiten für die REST- und die
 GraphQL-Schnittstelle.
@@ -575,11 +575,11 @@ inspizieren:
 
 ### Deployment mit Helm
 
-Im Verzeichnis `extras\buch` ist ein Helm-Chart für die Entwicklung des
+Im Verzeichnis `.extras\buch` ist ein Helm-Chart für die Entwicklung des
 Appservers. Wenn das Docker-Image erstellt ist (s.o.), kann die Installation in
 Kubernetes durchgeführt werden mit
 
-- `helm install buch . -f values.yaml -f dev.yaml` in `extras\buch`
+- `helm install buch . -f values.yaml -f dev.yaml` in `.extras\buch`
 - `helmfile apply` mittels `helmfile.yaml` im Wurzelverzeichnis
 - `skaffold dev` mittels `skaffold.yaml` im Wurzelverzeichnis
 
@@ -588,14 +588,14 @@ Dabei wird die Logdatei im internen Verzeichnis `/var/log/node` angelegt,
 welches durch _Mounting_ dem Windows-Verzeichnis `C:\Zimmermann\volumes\buch`
 entspricht und mit _Schreibberechtigung_ existieren muss.
 
-Außerdem kann man in `extras\buch` eine Datei `README.md` generieren, die
+Außerdem kann man in `.extras\buch` eine Datei `README.md` generieren, die
 die Default-Konfigurationswerte für die Helm-basierte Installation enthält.
-Dazu ruft man in `extras\buch` das Kommando `helm-docs` auf.
+Dazu ruft man in `.extras\buch` das Kommando `helm-docs` auf.
 
 Die Installation kann entsprechend der oben gewählten Installationsvariante
 wieder aus Kubernetes entfernt werden:
 
-- `helm uninstall buch` in `extras\buch`
+- `helm uninstall buch` in `.extras\buch`
 - `helmfile destroy` im Wurzelverzeichnis
 - `skaffold delete` bei `skaffold dev`
 
@@ -617,7 +617,7 @@ Für eine statische Codeanalyse durch _SonarQube_ muss zunächst der
 SonarQube-Server mit _Docker Compose_ als Docker-Container gestartet werden:
 
 ```powershell
-    cd extras\sonarqube
+    cd .extras\sonarqube
     docker compose up
 ```
 
@@ -638,7 +638,7 @@ inspiziert werden.
 Abschließend wird der oben gestartete Server heruntergefahren.
 
 ```powershell
-    cd extras\sonarqube
+    cd .extras\sonarqube
     docker compose down
 ```
 
@@ -671,7 +671,7 @@ Mit AsciiDoctor und PlantUML ist die Dokumentation geschrieben.
 ### Preview von PlantUML-Dateien
 
 Durch das Tastaturkürzel `<Alt>d`. Dazu ist eine Internet-Verbindung notwendig.
-Beispiele für PlantUML und AsciiDoctor sind im Unterverzeichnis `extras\doc`.
+Beispiele für PlantUML und AsciiDoctor sind im Unterverzeichnis `.extras\doc`.
 
 ### Einstellungen für Preview von AsciiDoctor-Dateien
 
@@ -695,7 +695,7 @@ notwendig.
 ### Dokumentation im Format HTML
 
 Die Dokumentation im Format HTML wird in einer Powershell folgendermaßen
-im Verzeichnis `extras\doc\html` erstellt:
+im Verzeichnis `.extras\doc\html` erstellt:
 
 ```powershell
     npm run asciidoc
@@ -706,11 +706,11 @@ im Verzeichnis `extras\doc\html` erstellt:
 Jenkins wird nicht in Kubernetes, sondern direkt mit _Docker Compose_
 genutzt. Dadurch muss Jenkins nicht immer laufen und kann bei Bedarf gestartet
 und wieder heruntergefahren werden. Dazu muss zunächst das Jenkins-Image um eine
-Docker-Installation ergänzt werden, wozu es im Unterverzeichnis `extras\jenkins`
+Docker-Installation ergänzt werden, wozu es im Unterverzeichnis `.extras\jenkins`
 das `Dockerfile` gibt, um ein solches Image zu erstellen:
 
 ```powershell
-    cd extras\jenkins
+    cd .extras\jenkins
     Get-Content Dockerfile | docker run --rm --interactive hadolint/hadolint:2.10.0-beta-debian
     docker buildx build --tag juergenzimmermann/jenkins:1.0.0 .
 ```
@@ -719,7 +719,7 @@ Das neu gebaute Image `juergenzimmermann/jenkins:1.0.0` wird in
 `docker-compose.yaml` verwendet:
 
 ```powershell
-    cd extras\jenkins
+    cd .extras\jenkins
     docker compose up
 
     # In einer 2. PowerShell: Herunterfahren
@@ -735,7 +735,7 @@ Jenkins-Image zugreifen. Der Benutzername ist `admin` und das Passwort
 ### Bash zur evtl. Fehlersuche im laufenden Jenkins-Container
 
 ```powershell
-    cd extras\jenkins
+    cd .extras\jenkins
     docker compose exec jenkins bash
 ```
 
