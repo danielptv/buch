@@ -80,7 +80,7 @@ services:
     ports:
       - published: 8889
         target: 80
-    env_file: [mysql.env]
+    env_file: [phpMyAdmin.env]
     # kein dedizierter User im Image vorhanden
     container_name: phpmyadmin
     # https://github.com/phpmyadmin/docker/issues/293
