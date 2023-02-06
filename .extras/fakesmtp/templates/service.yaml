@@ -22,20 +22,20 @@ metadata:
   # https://helm.sh/docs/chart_template_guide/functions_and_pipelines
   # https://godoc.org/text/template
   # https://masterminds.github.io/sprig
-  name: {{ include "mailserver.fullname" . }}
+  name: {{ include "fakesmtp.fullname" . }}
   labels:
     # https://helm.sh/docs/chart_template_guide/function_list
     # nindent rueckt um eine bestimmte Anzahl ("n") Zeichen ein
-    {{- include "mailserver.labels" . | nindent 4 }}
+    {{- include "fakesmtp.labels" . | nindent 4 }}
 spec:
   # Selektion der Pods fuer eingehende Requests
   selector:
-    {{- include "mailserver.selectorLabels" . | nindent 4 }}
+    {{- include "fakesmtp.selectorLabels" . | nindent 4 }}
   ports:
     - port: 5025
       name: smtp
     - port: 5080
-      name: {{ include "mailserver.name" . }}-http
+      name: {{ include "fakesmtp.name" . }}-http
     - port: 5081
       name: actuator
       # https://kubernetes.io/docs/concepts/services-networking/service/#protocol-support

@@ -20,20 +20,25 @@
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
-  name: {{ include "mailserver.fullname" . }}
+  name: {{ include "fakesmtp.fullname" . }}
 spec:
   # Spezifikation, auf welche Pods die NetworkPolicy angewendet wird
   podSelector:
     matchLabels:
-      {{- include "mailserver.selectorLabels" . | nindent 6 }}
+      {{- include "fakesmtp.selectorLabels" . | nindent 6 }}
   policyTypes: [Ingress, Egress]
   ingress:
     - from:
         - podSelector:
             matchLabels:
-              app: buch
-              app.kubernetes.io/name: buch
-              app.kubernetes.io/instance: buch
+              app: kunde
+              app.kubernetes.io/name: kunde
+              app.kubernetes.io/instance: kunde
+        - podSelector:
+            matchLabels:
+              app: bestellung
+              app.kubernetes.io/name: bestellung
+              app.kubernetes.io/instance: bestellung
       ports:
         - port: smtp
           protocol: TCP

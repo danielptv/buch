@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# Default values for mailserver.
+# Default values for fakesmtp.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 

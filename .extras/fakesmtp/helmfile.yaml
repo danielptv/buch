@@ -18,8 +18,8 @@
 #           helmfile destroy
 
 releases:
-  - name: mailserver
+  - name: fakesmtp
     namespace: acme
-    chart: mailserver
-    values: [mailserver/dev.yaml]
+    chart: .
+    values: [dev.yaml]
     wait: true

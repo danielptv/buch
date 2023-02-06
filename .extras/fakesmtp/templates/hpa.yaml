@@ -20,14 +20,14 @@ apiVersion: autoscaling/v2beta1
 # Anwendung bereitgestellt werden
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "mailserver.fullname" . }}
+  name: {{ include "fakesmtp.fullname" . }}
   labels:
-    {{- include "mailserver.labels" . | nindent 4 }}
+    {{- include "fakesmtp.labels" . | nindent 4 }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "mailserver.fullname" . }}
+    name: {{ include "fakesmtp.fullname" . }}
   minReplicas: {{ .Values.autoscaling.minReplicas }}
   maxReplicas: {{ .Values.autoscaling.maxReplicas }}
   metrics:

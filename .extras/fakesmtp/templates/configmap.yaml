@@ -13,18 +13,17 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-# disruption = Störung
+# "." am Anfang bezeichnet den Top-Level Namensraum bei Helm
 
-apiVersion: policy/v1
-# https://kubernetes.io/docs/tasks/run-application/configure-pdb
-kind: PodDisruptionBudget
+apiVersion: v1
+# https://kubernetes.io/docs/concepts/configuration/configmap
+kind: ConfigMap
 metadata:
-  name: {{ include "mailserver.fullname" . }}
-  labels:
-    {{- include "mailserver.labels" . | nindent 4 }}
-spec:
-  # minAvailable: 1
-  maxUnavailable: 1
-  selector:
-    matchLabels:
-      {{- include "mailserver.selectorLabels" . | nindent 6 }}
+  name: {{ include "fakesmtp.fullname" . }}
+data:
+  # Key-Value-Paare (hier: fuer die Umgebungsvariable)
+  TZ: Europe/Berlin
+  SPRING_OUTPUT_ANSI_ENABLED: {{ .Values.outputAnsiEnabled }}
+  SPRING_MAIN_BANNER-MODE: {{ .Values.bannerMode }}
+  SPRING_LAZY-INITIALIZATION: "true"
+  SPRING_JPA_OPEN-IN-VIEW: "true"

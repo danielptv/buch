@@ -16,10 +16,10 @@
 # "." am Anfang bezeichnet den Top-Level Namensraum bei Helm
 
 apiVersion: apps/v1
-# https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.24/#deployment-v1-apps
+# https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.25/#deployment-v1-apps
 kind: Deployment
 metadata:
-  name: {{ include "mailserver.fullname" . }}
+  name: {{ include "fakesmtp.fullname" . }}
   # Kennzeichen bzw. Markierung
   # https://kubernetes.io/docs/concepts/overview/working-with-objects/labels
   # https://kubernetes.io/docs/concepts/overview/working-with-objects/common-labels
@@ -27,7 +27,7 @@ metadata:
   labels:
     # https://helm.sh/docs/chart_template_guide/function_list
     # nindent rueckt um eine bestimmte Anzahl ("n") Zeichen ein
-    {{- include "mailserver.labels" . | nindent 4 }}
+    {{- include "fakesmtp.labels" . | nindent 4 }}
 spec:
   # https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#selector
   selector:
@@ -35,7 +35,7 @@ spec:
     # z.B. fuer:   kubectl delete deployment --selector app=kunde,version=2.0.0 --namespace acme
     # i.a. gleicher Wert wie in template.metadata.labels
     matchLabels:
-      {{- include "mailserver.selectorLabels" . | nindent 6 }}
+      {{- include "fakesmtp.selectorLabels" . | nindent 6 }}
   # Anzahl laufender Pods fuer das Template zu diesem Deployment (s.u.) -> ReplicaSet
   replicas: {{ .Values.replicaCount }}
   # https://kubernetes.io/docs/concepts/workloads/pods/#pod-templates
@@ -44,7 +44,7 @@ spec:
     metadata:
       # Labels fuer einen Pod (NICHT fuer dieses Deployment), der durch dieses Deployment installiert wurde
       labels:
-        {{- include "mailserver.labels" . | nindent 8 }}
+        {{- include "fakesmtp.labels" . | nindent 8 }}
     # Spezifikation fuer jeden Pod
     spec:
       containers:
@@ -58,7 +58,7 @@ spec:
           envFrom:
             # https://kubernetes.io/docs/concepts/configuration/configmap
             - configMapRef:
-                name: {{ include "mailserver.fullname" . }}
+                name: {{ include "fakesmtp.fullname" . }}
           ports:
             - containerPort: 5025
               name: smtp
@@ -137,14 +137,14 @@ spec:
             failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
           volumeMounts:
             - mountPath: /tmp
-              name: log-{{ include "mailserver.name" . }}
+              name: log-{{ include "fakesmtp.name" . }}
       volumes:
-        - name: log-{{ include "mailserver.name" . }}
+        - name: log-{{ include "fakesmtp.name" . }}
           # https://kubernetes.io/docs/concepts/storage/volumes/#hostpath
           hostPath:
             path: /run/desktop/mnt/host/c/Zimmermann/volumes/fakesmtp
             type: Directory
           # https://kubernetes.io/docs/concepts/storage/volumes/#emptydir
           #emptyDir: {}
-      serviceAccountName: {{ include "mailserver.fullname" . }}
+      serviceAccountName: {{ include "fakesmtp.fullname" . }}
       automountServiceAccountToken: false

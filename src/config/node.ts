@@ -20,12 +20,12 @@
  * @packageDocumentation
  */
 
+import { existsSync, readFileSync } from 'node:fs';
 import { type HttpsOptions } from '@nestjs/common/interfaces/external/https-options.interface.js';
 import { cloud } from './cloud.js';
 import { env } from './env.js';
 import { hostname } from 'node:os';
 import { k8sConfig } from './kubernetes.js';
-import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const { NODE_ENV, PORT, BUCH_SERVICE_HOST, BUCH_SERVICE_PORT, LOG_DEFAULT } =
@@ -48,7 +48,7 @@ if (Number.isNaN(port)) {
 const usePKI = cloud === undefined && (!k8sConfig.detected || k8sConfig.tls);
 
 // fuer z.B. PEM-Dateien fuer TLS
-const srcDir = k8sConfig.detected ? resolve('dist', 'src') : 'src';
+const srcDir = existsSync('src') ? 'src' : 'dist';
 
 // fuer public/private keys: TLS und JWT
 export const configDir = resolve(srcDir, 'config');
