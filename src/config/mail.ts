@@ -24,14 +24,15 @@ import { type Options } from 'nodemailer/lib/smtp-transport';
 import { env } from './env.js';
 import { loggerDefaultValue } from './logger.js';
 
-const { MAIL_HOST, MAIL_PORT, MAIL_LOG } = env;
+const { SMTP_DEACTIVATED, SMTP_HOST, SMTP_PORT, SMTP_LOG } = env;
 
+export const mailDeactivated = SMTP_DEACTIVATED?.toLowerCase() === 'true';
 // Hochschule Karlsruhe:   smtp.h-ka.de
 // nullish coalescing
-const host = MAIL_HOST ?? 'mailserver';
+const host = SMTP_HOST ?? 'smtp';
 // Hochschule Karlsruhe:   25
-const port = Number.parseInt(MAIL_PORT ?? '5025', 10);
-const logger = MAIL_LOG?.toLowerCase() === 'true';
+const port = Number.parseInt(SMTP_PORT ?? '25', 10);
+const logger = SMTP_LOG?.toLowerCase() === 'true';
 
 /**
  * Konfiguration für den Mail-Client mit _nodemailer_.

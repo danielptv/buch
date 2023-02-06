@@ -252,15 +252,8 @@ services:
       - type: bind
         source: C:\Zimmermann\volumes\buch
         target: /opt/app/log
+    env_file: ["docker-compose.env"]
     environment:
-      TZ: Europe/Berlin
-      NODE_ENV: development
-      DB_HOST: postgres
-      DB_POPULATE: "true"
-      APOLLO_DEBUG: "true"
-      LOG_LEVEL: debug
-      LOG_PRETTY: "true"
-      HEALTH_PRETTY_PRINT: "true"
       # https://docs.docker.com/compose/compose-file/compose-file-v3/#variable-substitution
       USER_PASSWORD_ENCODED: "$$argon2i$$v=19$$m=4096,t=3,p=1$$aaxA2v/9rRSPGkwYN+NQog$$27Huii1XtD3iEd62fog+04G26LRPZMHoYCI6AGKTL8M"
     container_name: buch

@@ -21,18 +21,21 @@
  * @packageDocumentation
  */
 
+import { mailConfig, mailDeactivated } from '../config/mail.js';
 import { Injectable } from '@nestjs/common';
 import { type SendMailOptions } from 'nodemailer';
 import { cloud } from '../config/cloud.js';
 import { getLogger } from '../logger/logger.js';
-import { mailConfig } from '../config/mail.js';
 
 @Injectable()
 export class MailService {
     readonly #logger = getLogger(MailService.name);
 
     async sendmail(subject: string, body: string) {
-        if (cloud !== undefined || mailConfig.host === 'skip') {
+        if (mailDeactivated) {
+            this.#logger.warn('#sendmail: Mail deaktiviert');
+        }
+        if (cloud !== undefined) {
             // In der Cloud kann man z.B. "@sendgrid/mail" statt
             // "nodemailer" mit lokalem Mailserver verwenden
             return;

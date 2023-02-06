@@ -34,5 +34,6 @@ data:
   DB_USER: {{ .Values.dbUser }}
   DB_PASS: {{ .Values.dbPassword }}
   DB_POPULATE: {{ quote .Values.dbPopulate }}
+  SMTP_HOST: {{ .Values.mailhost }}
   K8S_TLS: 'false'
   USER_PASSWORD_ENCODED: {{ .Values.userPasswordEncoded }}

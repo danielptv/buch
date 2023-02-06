@@ -52,6 +52,9 @@ dbPassword: "Change Me!!!"
 # -- Neuladen der DB beim Start des Appservers
 dbPopulate: "false"
 
+# -- Rechnername des Mailservers als Umgebungsvariable
+mailhost: smtp
+
 # -- Verschlüsseltes Passwort in `users.ts``
 userPasswordEncoded: 'Unused in Production'
 
