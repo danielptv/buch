@@ -28,6 +28,7 @@
 // TypeORM unterstützt u.a. die DB-Systeme
 //  * Postgres
 //  * MySQL
+//  * SQLite durch sqlite3 und better-sqlite3
 //  * Oracle
 //  * Microsoft SQL Server
 //  * SAP Hana
@@ -136,12 +137,16 @@ export class Buch {
     // https://typeorm.io/entities#column-types-for-postgres
     // https://typeorm.io/entities#column-types-for-mysql--mariadb
     // https://typeorm.io/entities#column-types-for-sqlite--cordova--react-native--expo
-    @CreateDateColumn({ type: dbType === 'sqlite' ? 'datetime' : 'timestamp' })
+    @CreateDateColumn({
+        type: dbType === 'better-sqlite3' ? 'datetime' : 'timestamp',
+    })
     // SQLite:
     // @CreateDateColumn({ type: 'datetime' })
     readonly erzeugt: Date | undefined;
 
-    @UpdateDateColumn({ type: dbType === 'sqlite' ? 'datetime' : 'timestamp' })
+    @UpdateDateColumn({
+        type: dbType === 'better-sqlite3' ? 'datetime' : 'timestamp',
+    })
     // SQLite:
     // @UpdateDateColumn({ type: 'datetime' })
     readonly aktualisiert: Date | undefined;

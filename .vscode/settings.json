@@ -2,14 +2,14 @@
   "files.eol": "\n",
   "typescript.tsdk": "node_modules/typescript/lib",
   "rest-client.environmentVariables": {
-    "localHTTPS": {
+    "https-3000": {
       "restUrl": "https://localhost:3000/rest",
       "authUrl": "https://localhost:3000/auth",
       "graphQlUrl": "https://localhost:3000/graphql",
       "healthUrl": "https://localhost:3000/health",
       "dbPopulateUrl": "https://localhost:3000/dbPopulate"
     },
-    "kubernetesHTTP": {
+    "http-3000": {
       "restUrl": "http://localhost:3000/rest",
       "authUrl": "http://localhost:3000/auth",
       "graphQlUrl": "http://localhost:3000/graphql",
