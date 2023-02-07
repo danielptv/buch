@@ -55,7 +55,7 @@ COPY --from=builder /app/src/buch/graphql/schema.graphql ./dist/buch/graphql/
 COPY --from=builder /app/src/security/auth/login.graphql ./dist/security/auth/
 COPY --from=builder /app/src/config/dev/mysql ./dist/config/dev/mysql
 COPY --from=builder /app/src/config/dev/postgres ./dist/config/dev/postgres
-COPY --from=builder /app/src/config/dev/sqlite ./dist/config/dev/sqlite
+COPY --from=builder /app/src/config/dev/better-sqlite3 ./dist/config/dev/better-sqlite3
 COPY --from=builder /app/src/config/jwt ./dist/config/jwt
 COPY --from=builder /app/src/config/tls ./dist/config/tls
 
