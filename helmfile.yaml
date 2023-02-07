@@ -20,6 +20,6 @@
 releases:
   - name: buch
     namespace: acme
-    chart: extras/buch
-    values: [extras/buch/dev.yaml]
+    chart: .extras/buch
+    values: [.extras/buch/dev.yaml]
     #wait: true

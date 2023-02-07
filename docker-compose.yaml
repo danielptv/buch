@@ -191,7 +191,7 @@ services:
   # ------------------------------------------------------------------------------------
   # als User "cbadmin" muss man eine DB-Verbindung und einen User einrichten
   dbeaver:
-    image: dbeaver/cloudbeaver:22.3.3
+    image: dbeaver/cloudbeaver:22.3.4
     links: [ mysql ]
     ports:
       - published: 8978

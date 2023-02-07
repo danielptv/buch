@@ -114,7 +114,8 @@ rules:
   '@typescript-eslint/explicit-module-boundary-types': off
   '@typescript-eslint/func-call-spacing': error
   '@typescript-eslint/interface-name-prefix': off
-  #'@typescript-eslint/keyword-spacing': error
+  # '@typescript-eslint/key-spacing': error
+  # '@typescript-eslint/keyword-spacing': error
   '@typescript-eslint/lines-between-class-members': error
   '@typescript-eslint/member-ordering': error
   '@typescript-eslint/method-signature-style': error
@@ -435,7 +436,8 @@ rules:
   func-style: error
   getter-return: error
   grouped-accessor-pairs: error
-  key-spacing: error
+  # siehe @typescript-eslint/key-spacing
+  key-spacing: 0
   keyword-spacing: error
   # wegen //NOSONAR
   #line-comment-position: error
