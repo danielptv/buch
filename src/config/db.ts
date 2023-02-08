@@ -92,9 +92,10 @@ switch (dbType) {
         }
         break;
     }
-    case 'better-sqlite3': {
+    // 'better-sqlite3' erfordert Python zum Uebersetzen, wenn das Docker-Image gebaut wird
+    case 'sqlite': {
         typeOrmModuleOptions = {
-            type: 'better-sqlite3',
+            type: 'sqlite',
             database: `${database}.sqlite`,
             entities,
             namingStrategy,

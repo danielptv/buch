@@ -52,7 +52,8 @@ switch (dbType) {
         dbHealthCheck = 'until ping ; do sleep 1; done';
         break;
     }
-    case 'better-sqlite3': {
+    // 'better-sqlite3' erfordert Python zum Uebersetzen, wenn das Docker-Image gebaut wird
+    case 'sqlite': {
         dbHealthCheck = '';
         break;
     }
@@ -65,7 +66,8 @@ switch (dbType) {
 // D B - S e r v e r   m i t   D o c k e r   C o m p o s e
 // -----------------------------------------------------------------------------
 const startDbServer = async () => {
-    if (dbType === 'better-sqlite3') {
+    // 'better-sqlite3' erfordert Python zum Uebersetzen, wenn das Docker-Image gebaut wird
+    if (dbType === 'sqlite') {
         return;
     }
     const isDBReachable = await isPortReachable(dbPort, { host: 'localhost' });
@@ -93,7 +95,8 @@ const startDbServer = async () => {
 };
 
 const shutdownDbServer = async () => {
-    if (dbType === 'better-sqlite3') {
+    // 'better-sqlite3' erfordert Python zum Uebersetzen, wenn das Docker-Image gebaut wird
+    if (dbType === 'sqlite') {
         return;
     }
     await dockerCompose.down({

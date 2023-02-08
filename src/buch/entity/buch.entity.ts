@@ -137,15 +137,16 @@ export class Buch {
     // https://typeorm.io/entities#column-types-for-postgres
     // https://typeorm.io/entities#column-types-for-mysql--mariadb
     // https://typeorm.io/entities#column-types-for-sqlite--cordova--react-native--expo
+    // 'better-sqlite3' erfordert Python zum Uebersetzen, wenn das Docker-Image gebaut wird
     @CreateDateColumn({
-        type: dbType === 'better-sqlite3' ? 'datetime' : 'timestamp',
+        type: dbType === 'sqlite' ? 'datetime' : 'timestamp',
     })
     // SQLite:
     // @CreateDateColumn({ type: 'datetime' })
     readonly erzeugt: Date | undefined;
 
     @UpdateDateColumn({
-        type: dbType === 'better-sqlite3' ? 'datetime' : 'timestamp',
+        type: dbType === 'sqlite' ? 'datetime' : 'timestamp',
     })
     // SQLite:
     // @UpdateDateColumn({ type: 'datetime' })
