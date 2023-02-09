@@ -89,4 +89,4 @@ phpMyAdmin:
   # -- Name des Image für phpMyAdmin
   imageName: phpmyadmin/phpmyadmin
   # -- Versionsnummer bzw. Tag von phpMyAdmin
-  version: 5.2.0
+  version: 5.2.1

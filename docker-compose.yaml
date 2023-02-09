@@ -82,7 +82,7 @@ services:
   # ------------------------------------------------------------------------------------
   # http://localhost:8888 mit Emailadresse "pgadmin@acme.com" und Passwort "p"
   pgadmin:
-    image: dpage/pgadmin4:6.19
+    image: dpage/pgadmin4:6.20
     ports:
       - published: 8888
         target: 80
@@ -166,7 +166,7 @@ services:
   # p h p M y A d m i n
   # ------------------------------------------------------------------------------------
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin:5.2.0
+    image: phpmyadmin/phpmyadmin:5.2.1
     links: [ mysql ]
     ports:
       - published: 8889
