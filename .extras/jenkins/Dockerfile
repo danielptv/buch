@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1.4.3
+# syntax=docker/dockerfile:1.5.1
 
 # Copyright (C) 2022 - present Juergen Zimmermann, Hochschule Karlsruhe
 #
@@ -22,7 +22,7 @@
 # https://www.jenkins.io/doc/book/installing/docker
 # https://manpages.debian.org/bullseye/apt/apt-get.8.en.html
 
-FROM jenkins/jenkins:2.389-jdk17
+FROM jenkins/jenkins:2.391-jdk17
 USER root
 RUN <<EOF
 # https://packages.debian.org/bullseye/lsb-release

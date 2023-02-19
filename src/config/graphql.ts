@@ -16,18 +16,19 @@
  */
 
 import { ApolloDriver, type ApolloDriverConfig } from '@nestjs/apollo';
-import { env } from './env.js';
 
-const { APOLLO_DEBUG } = env;
+const SRC_PATH = 'src/';
 
 /**
  * Das Konfigurationsobjekt für GraphQL.
  */
 export const graphQlModuleOptions: ApolloDriverConfig = {
-    typePaths: ['./**/*.graphql'],
+    typePaths: [
+        `./${SRC_PATH}buch/graphql/schema.graphql`,
+        `./${SRC_PATH}security/auth/login.graphql`,
+    ],
     // alternativ: Mercurius (statt Apollo) fuer Fastify (statt Express)
     driver: ApolloDriver,
-    debug: APOLLO_DEBUG?.toLowerCase() === 'true',
     playground: true,
     // TODO formatError und logger konfigurieren, damit UserInputError nicht in der Konsole protokolliert wird
 };

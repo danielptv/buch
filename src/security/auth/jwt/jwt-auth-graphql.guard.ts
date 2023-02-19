@@ -22,8 +22,8 @@ import { type Request } from 'express';
 import { getLogger } from '../../../logger/logger.js';
 
 /**
- * Das Guard stellt sicher, dass bei einem Request an der REST-Schnittstelle ein
- * gültiger JWT verwendet wird, d.h. dass der/die Endbenutzer/in sich in der
+ * Das Guard stellt sicher, dass bei einem Request an der GraphQL-Schnittstelle
+ * ein gültiger JWT verwendet wird, d.h. dass der/die Endbenutzer/in sich in der
  * Vergangenheit eingeloggt und einen Token erhalten hat, der jetzt im Header
  * "Authorization" mitgeschickt wird. Der Token wird mit der konfigurierten
  * Strategie verifiziert und das zugehoerige User-Objekt wird im Request-Objekt
@@ -47,6 +47,9 @@ export class JwtAuthGraphQlGuard extends AuthGuard('jwt') {
      */
     getRequest(context: ExecutionContext): Request {
         this.#logger.debug('getRequest');
+        // const request = GqlExecutionContext.create(context).getContext().req;
+        // this.#logger.debug(`request: ${request === undefined}`);
+        // return request as Request;
         return GqlExecutionContext.create(context).getContext().req as Request; // type-coverage:ignore-line
     }
 

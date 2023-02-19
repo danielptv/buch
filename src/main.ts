@@ -100,6 +100,7 @@ const bootstrap = async () => {
 
     // https://stackoverflow.com/questions/58255000/how-can-i-get-all-the-routes-from-all-the-modules-and-controllers-available-on#answer-63333671
     /* eslint-disable @typescript-eslint/no-unsafe-assignment, no-underscore-dangle */
+    // @nestjs/apollo@next: app.getHttpServer()._events.request._router === undefined
     const availableRoutes: Route[] = app
         .getHttpServer()
         // type-coverage:ignore-next-line

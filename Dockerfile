@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1.5.1
+# syntax=docker/dockerfile:1.5.2
 
 # Copyright (C) 2023 -  Juergen Zimmermann, Hochschule Karlsruhe
 #
@@ -19,7 +19,7 @@
 #           ggf. --no-cache
 #           Get-Content Dockerfile | docker run --rm --interactive hadolint/hadolint:2.12.1-beta-debian
 
-ARG NODE_VERSION=19.6.0
+ARG NODE_VERSION=19.6.1
 FROM node:${NODE_VERSION}-bullseye AS builder
 
 WORKDIR /app
