@@ -26,6 +26,10 @@ import { QueryBuilder } from './query-builder.js';
 import RE2 from 're2';
 import { getLogger } from '../../logger/logger.js';
 
+interface FindByIdParams {
+    id: number;
+    mitAbbildungen?: boolean;
+}
 export interface Suchkriterien {
     readonly isbn?: string;
     readonly rating?: number;
@@ -79,14 +83,15 @@ export class BuchReadService {
      *          in einem Promise aus ES2015 (vgl.: Mono aus Project Reactor oder
      *          Future aus Java)
      */
-    async findById(id: number, mitAbbildungen = false) {
+    // https://2ality.com/2015/01/es6-destructuring.html#simulating-named-parameters-in-javascript
+    async findById({ id, mitAbbildungen = false }: FindByIdParams) {
         this.#logger.debug('findById: id=%d', id);
 
         // https://typeorm.io/working-with-repository
         // Das Resultat ist undefined, falls kein Datensatz gefunden
         // Lesen: Keine Transaktion erforderlich
         const buch = await this.#queryBuilder
-            .buildId(id, mitAbbildungen)
+            .buildId({ id, mitAbbildungen })
             .getOne();
         if (buch === null) {
             this.#logger.debug('findById: Kein Buch gefunden');

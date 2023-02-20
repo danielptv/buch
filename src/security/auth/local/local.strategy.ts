@@ -59,7 +59,10 @@ export class LocalStrategy extends PassportStrategy(Strategy) {
      */
     async validate(username: string, password: string): Promise<any> {
         this.#logger.debug('validate: username=%s, password=*****', username); //NOSONAR
-        const user = await this.#authService.validate(username, password);
+        const user = await this.#authService.validate({
+            username,
+            pass: password,
+        });
         if (user === undefined) {
             this.#logger.debug('validate: user=undefined');
             // Zur userid in der Payload des Tokens gibt es keinen User

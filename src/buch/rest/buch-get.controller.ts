@@ -211,7 +211,7 @@ export class BuchGetController {
         let buch: Buch | undefined;
         try {
             // vgl. Kotlin: Aufruf einer suspend-Function
-            buch = await this.#service.findById(id);
+            buch = await this.#service.findById({ id });
         } catch (err) {
             // err ist implizit vom Typ "unknown", d.h. keine Operationen koennen ausgefuehrt werden
             // Exception einer export async function bei der Ausfuehrung fangen:

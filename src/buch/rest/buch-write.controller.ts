@@ -190,7 +190,7 @@ export class BuchWriteController {
         }
 
         const buch = this.#buchDtoOhneRefToBuch(buchDTO);
-        const result = await this.#service.update(id, buch, version);
+        const result = await this.#service.update({ id, buch, version });
         if (typeof result === 'object') {
             return this.#handleUpdateError(result, res);
         }

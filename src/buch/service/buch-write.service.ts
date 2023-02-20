@@ -39,6 +39,12 @@ import RE2 from 're2';
 import { Titel } from '../entity/titel.entity.js';
 import { getLogger } from '../../logger/logger.js';
 
+interface UpdateParams {
+    id: number | undefined;
+    buch: Buch;
+    version: string;
+}
+
 /**
  * Die Klasse `BuchWriteService` implementiert den Anwendungskern für das
  * Schreiben von Bücher und greift mit _TypeORM_ auf die DB zu.
@@ -95,11 +101,12 @@ export class BuchWriteService {
      * @returns Die neue Versionsnummer gemäß optimistischer Synchronisation
      *  oder im Fehlerfall [UpdateError](../types/buch_service_errors.UpdateError.html)
      */
-    async update(
-        id: number | undefined,
-        buch: Buch,
-        version: string,
-    ): Promise<UpdateError | number> {
+    // https://2ality.com/2015/01/es6-destructuring.html#simulating-named-parameters-in-javascript
+    async update({
+        id,
+        buch,
+        version,
+    }: UpdateParams): Promise<UpdateError | number> {
         this.#logger.debug(
             'update: id=%d, buch=%o, version=%s',
             id,
@@ -134,7 +141,10 @@ export class BuchWriteService {
      */
     async delete(id: number) {
         this.#logger.debug('delete: id=%d', id);
-        const buch = await this.#readService.findById(id, true);
+        const buch = await this.#readService.findById({
+            id,
+            mitAbbildungen: true,
+        });
         if (buch === undefined) {
             return false;
         }
@@ -181,7 +191,7 @@ export class BuchWriteService {
         const subject = `Neues Buch ${buch.id}`;
         const titel = buch.titel?.titel ?? 'N/A';
         const body = `Das Buch mit dem Titel <strong>${titel}</strong> ist angelegt`;
-        await this.#mailService.sendmail(subject, body);
+        await this.#mailService.sendmail({ subject, body });
     }
 
     async #validateUpdate(
@@ -223,7 +233,7 @@ export class BuchWriteService {
         id: number,
         version: number,
     ): Promise<Buch | BuchNotExists | VersionOutdated> {
-        const buchDb = await this.#readService.findById(id);
+        const buchDb = await this.#readService.findById({ id });
         if (buchDb === undefined) {
             const result: BuchNotExists = { type: 'BuchNotExists', id };
             this.#logger.debug('#checkIdAndVersion: BuchNotExists=%o', result);

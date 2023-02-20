@@ -31,6 +31,11 @@ import { getLogger } from '../../../logger/logger.js';
 import { jwtConfig } from '../../../config/jwt.js';
 import { verify } from 'argon2';
 
+interface ValidateParams {
+    username: string | undefined;
+    pass: string | undefined;
+}
+
 export interface LoginResult {
     token: string;
     expiresIn: number | string | undefined;
@@ -63,7 +68,7 @@ export class AuthService {
      * @param pass Passwort.
      * @return Das User-Objekt ohne Passwort oder undefined.
      */
-    async validate(username: string | undefined, pass: string | undefined) {
+    async validate({ username, pass }: ValidateParams) {
         this.#logger.debug('validate: username=%s', username);
         if (username === undefined || pass === undefined) {
             this.#logger.debug('validate: username oder password fehlen.');

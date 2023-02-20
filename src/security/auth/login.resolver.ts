@@ -42,7 +42,7 @@ export class LoginResolver {
     async login(@Args() input: LoginInput) {
         this.#logger.debug('login: input=%o', input);
         const { username, password } = input;
-        const user = await this.#service.validate(username, password);
+        const user = await this.#service.validate({ username, pass: password });
         if (user === undefined) {
             throw new UserInputError(
                 'Falscher Benutzername oder falsches Passwort',

@@ -43,7 +43,7 @@ export class BuchQueryResolver {
         const { id } = idInput;
         this.#logger.debug('findById: id=%d', id);
 
-        const buch = await this.#service.findById(id);
+        const buch = await this.#service.findById({ id });
         if (buch === undefined) {
             // UserInputError liefert Statuscode 200
             // Weitere Error-Klassen in apollo-server-errors:

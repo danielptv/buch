@@ -29,6 +29,10 @@ import { Titel } from '../entity/titel.entity.js';
 import { getLogger } from '../../logger/logger.js';
 import { typeOrmModuleOptions } from '../../config/db.js';
 
+interface BuildIdParams {
+    id: number;
+    mitAbbildungen?: boolean;
+}
 /**
  * Die Klasse `QueryBuilder` implementiert das Lesen für Bücher und greift
  * mit _TypeORM_ auf eine relationale DB zu.
@@ -60,7 +64,7 @@ export class QueryBuilder {
      * @param id ID des gesuchten Buches
      * @returns QueryBuilder
      */
-    buildId(id: number, mitAbbildungen = false) {
+    buildId({ id, mitAbbildungen = false }: BuildIdParams) {
         const queryBuilder = this.#repo.createQueryBuilder(this.#buchAlias);
         queryBuilder.innerJoinAndSelect(
             `${this.#buchAlias}.titel`,

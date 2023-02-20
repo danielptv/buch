@@ -27,11 +27,15 @@ import { type SendMailOptions } from 'nodemailer';
 import { cloud } from '../config/cloud.js';
 import { getLogger } from '../logger/logger.js';
 
+interface SendMailParams {
+    subject: string;
+    body: string;
+}
 @Injectable()
 export class MailService {
     readonly #logger = getLogger(MailService.name);
 
-    async sendmail(subject: string, body: string) {
+    async sendmail({ subject, body }: SendMailParams) {
         if (mailDeactivated) {
             this.#logger.warn('#sendmail: Mail deaktiviert');
         }

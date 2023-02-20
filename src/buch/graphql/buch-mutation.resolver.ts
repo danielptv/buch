@@ -85,14 +85,15 @@ export class BuchMutationResolver {
     @Roles('admin', 'mitarbeiter')
     async update(@Args('input') buchDTO: BuchUpdateDTO) {
         this.#logger.debug('update: buch=%o', buchDTO);
-        const versionStr = `"${buchDTO.version.toString()}"`;
 
         const buch = this.#buchUpdateDtoToBuch(buchDTO);
-        const result = await this.#service.update(
-            Number.parseInt(buchDTO.id, 10),
+        const versionStr = `"${buchDTO.version.toString()}"`;
+
+        const result = await this.#service.update({
+            id: Number.parseInt(buchDTO.id, 10),
             buch,
-            versionStr,
-        );
+            version: versionStr,
+        });
         if (typeof result === 'object') {
             throw new UserInputError(this.#errorMsgUpdateBuch(result));
         }
