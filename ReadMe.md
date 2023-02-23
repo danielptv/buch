@@ -229,7 +229,7 @@ _PostgreSQL_ zuvor in Kubernetes gestartet werden, was mit _helmfile_ und
 manuellem Port-Forwarding für _pgadmin_ gemacht werden kann:
 
 ```powershell
-    cd .extras\postgres
+    cd .extras\kubernetes\postgres
     helmfile apply
     .\port-forward.ps1
 
@@ -246,24 +246,6 @@ Beim Deinstallieren muss man manuell die 4 _PersistentVolumeClaim_ mit den Namen
 `pgadmin-pgadmin-volume-pgadmin-0` und `pgadmin-pgadmin4-volume-pgadmin-0`
 löschen, die durch die _StatefulSet_ `postgres` und `pgadmin` erstellt wurden.
 Dazu gibt es das PowerShell-Skript `delete-pvc.ps1`.
-
-#### Skaffold für PostgreSQL und pgadmin
-
-Statt _helmfile_ kann man auch _Skaffold_ verwenden. Wenn die Umgebungsvariable
-`SKAFFOLD_PROFILE` auf den Wert `dev` gesetzt ist, wird das Profile `dev`
-verwendet, welches bei Helm zusätzlich die Datei `dev.yaml` verwendet. Bis das
-Port-Forwarding aktiviert ist, das in `skaffold.yaml` konfiguriert ist, muss man
-warten, bis der _Endpoint_ in Kubernetes nicht mehr `none` ist.
-
-```powershell
-    cd .extras\postgres
-    skaffold dev --no-prune=false --cache-artifacts=false
-    <Strg>C
-    skaffold delete
-```
-
-Mit `<Strg>C` kann das Deployment wieder zurückgerollt werden. Ohne die beiden
-Optionen muss man das PowerShell-Skript `delete-pvc.ps1` aufrufen.
 
 ### MySQL
 
@@ -321,7 +303,7 @@ _MySQL_ zuvor in Kubernetes gestartet werden, was mit _helmfile_ gemacht werden
 kann.
 
 ```powershell
-    cd .extras\mysql
+    cd .extras\kubernetes\mysql
     helmfile apply
     .\port-forward.ps1
 
@@ -336,22 +318,6 @@ und kann wegen Port-Forwarding mit `http://localhost:8889` aufgerufen werden.
 Beim Deinstallieren muss man manuell das _PersistentVolumeClaim_ mit den Namen
 `mysql-db-volume-mysql-0` löschen, das durch das _StatefulSet_ `mysql` erstellt
 wurde. Dazu gibt es das PowerShell-Skript `delete-pvc.ps1`.
-
-#### Skaffold für MySQL und phpMyAdmin
-
-Statt _helmfile_ kann man auch _Skaffold_ verwenden. Wenn die Umgebungsvariable
-`SKAFFOLD_PROFILE` auf den Wert `dev` gesetzt ist, dann wird das Profile `dev`
-verwendet, welches bei Helm zusätzlich die Datei `dev.yaml` verwendet. Bis das
-Port-Forwarding aktiviert ist, das in `skaffold.yaml` konfiguriert ist, muss man
-warten, bis der _Endpoint_ in Kubernetes nicht mehr `none` ist.
-
-```powershell
-    cd .extras\mysql
-    skaffold dev --no-prune=false --cache-artifacts=false
-```
-
-Mit `<Strg>C` kann das Deployment wieder zurückgerollt werden. Ohne die beiden
-Optionen muss man das PowerShell-Skript `delete-pvc.ps1` aufrufen.
 
 ## Administration des Kubernetes-Clusters
 
@@ -577,11 +543,8 @@ inspizieren:
 
 Im Verzeichnis `.extras\buch` ist ein Helm-Chart für die Entwicklung des
 Appservers. Wenn das Docker-Image erstellt ist (s.o.), kann die Installation in
-Kubernetes durchgeführt werden mit
-
-- `helm install buch . -f values.yaml -f dev.yaml` in `.extras\buch`
-- `helmfile apply` mittels `helmfile.yaml` im Wurzelverzeichnis
-- `skaffold dev` mittels `skaffold.yaml` im Wurzelverzeichnis
+Kubernetes mit `helmfile apply` mittels im Wurzelverzeichnis durchgeführt
+werden. Dabei wird `helmfile.yaml` verwendet.
 
 Mit _Lens_ kann man anschließend die Installation inspizieren.
 Dabei wird die Logdatei im internen Verzeichnis `/var/log/node` angelegt,
@@ -592,12 +555,8 @@ Außerdem kann man in `.extras\buch` eine Datei `README.md` generieren, die
 die Default-Konfigurationswerte für die Helm-basierte Installation enthält.
 Dazu ruft man in `.extras\buch` das Kommando `helm-docs` auf.
 
-Die Installation kann entsprechend der oben gewählten Installationsvariante
-wieder aus Kubernetes entfernt werden:
-
-- `helm uninstall buch` in `.extras\buch`
-- `helmfile destroy` im Wurzelverzeichnis
-- `skaffold delete` bei `skaffold dev`
+Die Installation kann entsprechend mit `helmfile destroy` wieder aus Kubernetes
+entfernt werden.
 
 ---
 
