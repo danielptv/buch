@@ -20,6 +20,7 @@
  * @packageDocumentation
  */
 import { Buch } from '../buch/entity/buch.entity.js';
+import { type DataSourceOptions } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { type TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { dbType } from './dbtype.js';
@@ -29,7 +30,14 @@ import { k8sConfig } from './kubernetes.js';
 import { loggerDefaultValue } from './logger.js';
 import { nodeConfig } from './node.js';
 
-const { DB_NAME, DB_HOST, DB_USERNAME, DB_PASSWORD, DB_POPULATE } = env;
+const {
+    DB_NAME,
+    DB_HOST,
+    DB_USERNAME,
+    DB_PASSWORD,
+    DB_PASSWORD_ADMIN,
+    DB_POPULATE,
+} = env;
 
 // nullish coalescing
 const database = DB_NAME ?? Buch.name.toLowerCase();
@@ -38,6 +46,7 @@ const { detected } = k8sConfig;
 const host = detected ? dbType : DB_HOST ?? 'localhost';
 const username = DB_USERNAME ?? Buch.name.toLowerCase();
 const pass = DB_PASSWORD ?? 'p';
+const passAdmin = DB_PASSWORD_ADMIN ?? 'p';
 
 const namingStrategy = new SnakeNamingStrategy();
 
@@ -125,3 +134,29 @@ switch (dbType) {
 Object.freeze(typeOrmModuleOptions);
 
 export const dbPopulate = DB_POPULATE?.toLowerCase() === 'true';
+export const adminDataSourceOptions: DataSourceOptions =
+    dbType === 'mysql'
+        ? {
+              type: 'mysql',
+              host,
+              port: 3306,
+              username: 'root',
+              password: passAdmin,
+              database,
+              namingStrategy,
+              supportBigNumbers: true,
+              logging,
+              logger,
+          }
+        : {
+              type: 'postgres',
+              host,
+              port: 5432,
+              username: 'postgres',
+              password: passAdmin,
+              database,
+              schema: database,
+              namingStrategy,
+              logging,
+              logger,
+          };

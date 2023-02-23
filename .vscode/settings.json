@@ -1,6 +1,4 @@
 {
-  "files.eol": "\n",
-  "typescript.tsdk": "node_modules/typescript/lib",
   "rest-client.environmentVariables": {
     "https-3000": {
       "restUrl": "https://localhost:3000/rest",
@@ -23,5 +21,8 @@
       "healthUrl": "https://kubernetes.docker.internal/health",
       "dbPopulateUrl": "https://kubernetes.docker.internal/dbPopulate"
     }
-  }
+  },
+  "csv-preview.separator": "\\;",
+  "files.eol": "\n",
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

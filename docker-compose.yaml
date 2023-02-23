@@ -42,6 +42,10 @@ services:
         source: C:/Zimmermann/volumes/postgres/tablespace
         target: /var/lib/postgresql/tablespace
       - type: bind
+        source: C:/Zimmermann/volumes/postgres/csv/buch
+        target: /csv
+        read_only: true
+      - type: bind
         source: C:/Zimmermann/volumes/postgres/sql
         target: /sql
         read_only: true
@@ -130,6 +134,11 @@ services:
       - type: bind
         source: C:/Zimmermann/volumes/mysql/tmp
         target: /tmp
+      - type: bind
+        source: C:/Zimmermann/volumes/mysql/csv/buch
+        # https://dev.mysql.com/doc/refman/8.0/en/server-system-variables.html#sysvar_secure_file_priv
+        # SHOW VARIABLES LIKE "secure_file_priv";
+        target: /var/lib/mysql-files
       - type: bind
         source: C:/Zimmermann/volumes/mysql/sql
         target: /sql

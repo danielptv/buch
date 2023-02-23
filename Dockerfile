@@ -19,7 +19,7 @@
 #           ggf. --no-cache
 #           Get-Content Dockerfile | docker run --rm --interactive hadolint/hadolint:2.12.1-beta-debian
 
-ARG NODE_VERSION=19.6.1
+ARG NODE_VERSION=19.7.0
 FROM node:${NODE_VERSION}-bullseye AS builder
 
 WORKDIR /app
