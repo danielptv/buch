@@ -22,9 +22,8 @@
 
 import { Injectable, type OnApplicationBootstrap } from '@nestjs/common';
 import { dbPopulate, typeOrmModuleOptions } from '../db.js';
-import { Buch } from '../../buch/entity/buch.entity.js';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DataSource } from 'typeorm';
+import { InjectDataSource } from '@nestjs/typeorm';
 import { configDir } from '../node.js';
 import { getLogger } from '../../logger/logger.js';
 import { readFileSync } from 'node:fs';
@@ -38,15 +37,15 @@ import { resolve } from 'node:path';
  */
 @Injectable()
 export class DbPopulateService implements OnApplicationBootstrap {
-    readonly #repo: Repository<Buch>;
+    readonly #datasource: DataSource;
 
     readonly #logger = getLogger(DbPopulateService.name);
 
     /**
-     * Initialisierung durch DI mit `Repository<Buch>` gemäß _TypeORM_.
+     * Initialisierung durch DI mit `DataSource` für SQL-Queries.
      */
-    constructor(@InjectRepository(Buch) repo: Repository<Buch>) {
-        this.#repo = repo;
+    constructor(@InjectDataSource() dataSource: DataSource) {
+        this.#datasource = dataSource;
     }
 
     /**
@@ -76,17 +75,17 @@ export class DbPopulateService implements OnApplicationBootstrap {
         const dropScript = resolve(basePath, 'drop.sql');
         // https://nodejs.org/api/fs.html#fs_fs_readfilesync_path_options
         const dropStatements = readFileSync(dropScript, 'utf8'); // eslint-disable-line security/detect-non-literal-fs-filename
-        await this.#repo.query(dropStatements);
+        await this.#datasource.query(dropStatements);
 
         const createScript = resolve(basePath, 'create.sql');
         // https://nodejs.org/api/fs.html#fs_fs_readfilesync_path_options
         const createStatements = readFileSync(createScript, 'utf8'); // eslint-disable-line security/detect-non-literal-fs-filename
-        await this.#repo.query(createStatements);
+        await this.#datasource.query(createStatements);
 
         const insertScript = resolve(basePath, 'insert.sql');
         // https://nodejs.org/api/fs.html#fs_fs_readfilesync_path_options
         const insertStatements = readFileSync(insertScript, 'utf8'); // eslint-disable-line security/detect-non-literal-fs-filename
-        await this.#repo.query(insertStatements);
+        await this.#datasource.query(insertStatements);
     }
 
     // repo.query() kann bei MySQL und SQLite nur 1 Anweisung mit "raw SQL" ausfuehren
@@ -121,7 +120,7 @@ export class DbPopulateService implements OnApplicationBootstrap {
             });
 
         for (statement of statements) {
-            await this.#repo.query(statement);
+            await this.#datasource.query(statement);
         }
     }
 }

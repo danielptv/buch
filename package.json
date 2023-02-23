@@ -143,7 +143,6 @@
     "@types/passport-local": "1.0.35",
     "@types/shelljs": "0.8.11",
     "@types/supertest": "2.0.12",
-    "@types/uuid": "9.0.0",
     "@typescript-eslint/eslint-plugin": "5.53.0",
     "@typescript-eslint/parser": "5.53.0",
     "apollo-server-types": "3.7.1",
