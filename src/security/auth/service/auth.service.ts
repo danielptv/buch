@@ -29,6 +29,7 @@ import { JwtService } from '@nestjs/jwt';
 // bcrypt als Alternative
 import { getLogger } from '../../../logger/logger.js';
 import { jwtConfig } from '../../../config/jwt.js';
+import { v4 as uuidv4 } from 'uuid';
 import { verify } from 'argon2';
 
 interface ValidateParams {
@@ -111,6 +112,8 @@ export class AuthService {
         const payload = {
             username: userObj.username,
             sub: userObj.userId,
+            type: 'access',
+            jti: uuidv4(), // eslint-disable-line @typescript-eslint/no-unsafe-assignment
         };
         // Der JWT (JSON Web Token) wird von Passport mit dem npm-Package
         // "jsonwebtoken" erstellt https://github.com/auth0/node-jsonwebtoken
