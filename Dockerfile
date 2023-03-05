@@ -18,13 +18,15 @@
 # Aufruf:   docker buildx build --tag juergenzimmermann/buch:2023.1.0 .
 #           ggf. --no-cache
 #           Get-Content Dockerfile | docker run --rm --interactive hadolint/hadolint:2.12.1-beta-debian
+#           docker network ls
 
 ARG NODE_VERSION=19.7.0
 FROM node:${NODE_VERSION}-bullseye AS builder
 
 WORKDIR /app
 
-COPY package*.json .env .npmrc nest-cli.json tsconfig*.json ./
+COPY package.json ./package.json.ORIG
+COPY .env .npmrc nest-cli.json tsconfig*.json ./
 COPY src ./src
 
 # npm ci liest "dependencies" aus package-lock.json
@@ -32,9 +34,10 @@ COPY src ./src
 # "here document" wie in einem Shellscipt
 RUN <<EOF
 set -ex
-npm i -g npm
-npm i -g @nestjs/cli rimraf
-npm i
+npm i -g --no-audit npm
+npm i -g --no-audit @nestjs/cli rimraf
+grep -v \"ts-jest\": package.json.ORIG | grep -v \"ts-node\": - | grep -v \"typedoc\": - > package.json
+npm i --no-audit
 npm run build
 EOF
 
@@ -43,7 +46,9 @@ CMD ["npm", "start"]
 # ------------------------------------------------------------------------------
 # S t a g e   2
 # ------------------------------------------------------------------------------
-FROM node:${NODE_VERSION}-bullseye-slim
+# "slim" enthaelt NICHT Python, was fuer node-gyp aber erforderlich ist
+# FROM node:${NODE_VERSION}-bullseye-slim
+FROM node:${NODE_VERSION}-bullseye
 
 WORKDIR /opt/app
 
@@ -64,19 +69,21 @@ COPY --from=builder /app/src/config/tls ./dist/config/tls
 RUN set -ex \
     && apt-get update \
     && rm -rf /var/lib/apt/lists/* \
-    && npm i -g npm \
-    && npm i -g @nestjs/cli rimraf
+    && npm i -g --no-audit npm \
+    && npm i -g --no-audit @nestjs/cli rimraf
 
+# https://packages.debian.org/bullseye/python3
+# node-gyp rebuild
 RUN <<EOF
 set -ex
-npm i -D node-gyp
-npm i --omit dev
-#node-gyp rebuild
+npm i -g --no-audit node-gyp
+npm i --no-audit --omit dev
 npm prune
 groupadd --gid 10000 app
 useradd --uid 10000 --gid app --create-home --shell /bin/bash app
 chown -R app:app ./
 EOF
+# TODO npm r -D node-gyp
 
 USER app
 EXPOSE 3000

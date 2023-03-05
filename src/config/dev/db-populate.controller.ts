@@ -32,7 +32,7 @@ import { DbPopulateService } from './db-populate.service.js';
 import { JwtAuthGuard } from '../../security/auth/jwt/jwt-auth.guard.js';
 import { Response } from 'express';
 import { ResponseTimeInterceptor } from '../../logger/response-time.interceptor.js';
-import { Roles } from '../../security/auth/roles/roles.decorator.js';
+import { RolesAllowed } from '../../security/auth/roles/roles-allowed.decorator.js';
 import { RolesGuard } from '../../security/auth/roles/roles.guard.js';
 
 /**
@@ -40,7 +40,7 @@ import { RolesGuard } from '../../security/auth/roles/roles.guard.js';
  */
 @Controller('dbPopulate')
 @UseGuards(JwtAuthGuard, RolesGuard)
-@Roles('admin')
+@RolesAllowed('admin')
 @UseInterceptors(ResponseTimeInterceptor)
 export class DbPopulateController {
     readonly #service: DbPopulateService;

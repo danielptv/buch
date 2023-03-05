@@ -20,7 +20,7 @@ import {
     Injectable,
 } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { ROLES_KEY } from './roles.decorator.js';
+import { ROLES_KEY } from './roles-allowed.decorator.js';
 import { Reflector } from '@nestjs/core';
 import { type RequestWithUser } from '../jwt/jwt-auth.guard.js';
 import { type Role } from '../service/role.js';
@@ -28,8 +28,8 @@ import { UserService } from '../service/user.service.js';
 import { getLogger } from '../../../logger/logger.js';
 
 /**
- * Guard für RBAC (= role-based access control), so dass der Decorater `@Role()`
- * verwendet werden kann.
+ * Guard für RBAC (= role-based access control), so dass der Decorater
+ * `@RolesAllowed()` verwendet werden kann.
  */
 @Injectable()
 export class RolesGraphQlGuard implements CanActivate {
@@ -45,7 +45,7 @@ export class RolesGraphQlGuard implements CanActivate {
     }
 
     /**
-     * Die Rollen im Argument des Decorators `@Role()` ermitteln.
+     * Die Rollen im Argument des Decorators `@RolesAllowed()` ermitteln.
      * @param context Der Ausführungskontext zur Ermittlung der Metadaten bzw.
      * des Decorators.
      * @return true, falls die Rollen beim Controller oder bei der dekorierten
@@ -59,7 +59,6 @@ export class RolesGraphQlGuard implements CanActivate {
                 context.getClass(),
             ]);
         this.#logger.debug('canActivate: requiredRoles=%o', requiredRoles);
-
         if (requiredRoles === undefined || requiredRoles.length === 0) {
             return true;
         }
@@ -70,9 +69,11 @@ export class RolesGraphQlGuard implements CanActivate {
         if (requestUser === undefined) {
             return false;
         }
+
         const { userId } = requestUser;
         const user = await this.#userService.findById(userId);
         this.#logger.debug('canActivate: user=%o', user);
+
         if (user === undefined) {
             return false;
         }

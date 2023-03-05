@@ -22,7 +22,7 @@ Jürgen Zimmermann <Juergen.Zimmermann@h-ka.de>
 :sectanchors:
 :sectlinks:
 :sectnums:
-:source-highlighter: coderay
+:source-highlighter: highlight.js
 :icons: font
 // :kroki-server-url: https://kroki.io
 

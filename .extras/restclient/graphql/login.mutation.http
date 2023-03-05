@@ -22,17 +22,12 @@ POST {{graphQlUrl}}
 Content-Type: application/json
 X-REQUEST-TYPE: GraphQL
 
-mutation ($username: String = "admin", $password: String = "p") {
-  login(username: $username, password: $password) {
+mutation {
+  login(username: "admin", password: "p") {
     token
     expiresIn
     roles
   }
-}
-
-{
-  "username": "admin"
-  "password": "p"
 }
 
 ### Einloggen mit falschem Passwort
@@ -40,15 +35,10 @@ POST {{graphQlUrl}}
 Content-Type: application/json
 X-REQUEST-TYPE: GraphQL
 
-mutation ($username: String = "admin", $password: String = "FALSCH") {
-  login(username: $username, password: $password) {
+mutation {
+  login(username: "admin", password: "FALSCH") {
     token
     expiresIn
     roles
   }
-}
-
-{
-  "username": "admin"
-  "password": "FALSCH"
 }

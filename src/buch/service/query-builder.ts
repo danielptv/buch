@@ -29,8 +29,11 @@ import { Titel } from '../entity/titel.entity.js';
 import { getLogger } from '../../logger/logger.js';
 import { typeOrmModuleOptions } from '../../config/db.js';
 
-interface BuildIdParams {
+/** Typdefinitionen für die Suche mit der Buch-ID. */
+export interface BuildIdParams {
+    /** ID des gesuchten Buchs. */
     id: number;
+    /** Sollen die Abbildungen mitgeladen werden? */
     mitAbbildungen?: boolean;
 }
 /**

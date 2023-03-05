@@ -27,8 +27,11 @@ import { type SendMailOptions } from 'nodemailer';
 import { cloud } from '../config/cloud.js';
 import { getLogger } from '../logger/logger.js';
 
-interface SendMailParams {
+/** Typdefinition für das Senden einer Email. */
+export interface SendMailParams {
+    /** Subject für die Email. */
     subject: string;
+    /** Body für die Email. */
     body: string;
 }
 @Injectable()

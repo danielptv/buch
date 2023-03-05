@@ -26,9 +26,10 @@ import { BuchWriteService } from '../service/buch-write.service.js';
 import { type IdInput } from './buch-query.resolver.js';
 import { JwtAuthGraphQlGuard } from '../../security/auth/jwt/jwt-auth-graphql.guard.js';
 import { ResponseTimeInterceptor } from '../../logger/response-time.interceptor.js';
-import { Roles } from '../../security/auth/roles/roles.decorator.js';
+import { RolesAllowed } from '../../security/auth/roles/roles-allowed.decorator.js';
 import { RolesGraphQlGuard } from '../../security/auth/roles/roles-graphql.guard.js';
 import { type Titel } from '../entity/titel.entity.js';
+// TODO @nestjs/graphql@11 import { UserInputError } from '@nestjs/apollo';
 import { UserInputError } from 'apollo-server-express';
 import { getLogger } from '../../logger/logger.js';
 
@@ -42,7 +43,7 @@ import { getLogger } from '../../logger/logger.js';
 //      https://github.com/AstrumU/graphql-authz
 //      https://www.the-guild.dev/blog/graphql-authz
 
-class BuchUpdateDTO extends BuchDTO {
+export class BuchUpdateDTO extends BuchDTO {
     @IsNumberString()
     readonly id!: string;
 
@@ -64,7 +65,7 @@ export class BuchMutationResolver {
     }
 
     @Mutation()
-    @Roles('admin', 'mitarbeiter')
+    @RolesAllowed('admin', 'mitarbeiter')
     async create(@Args('input') buchDTO: BuchDTO) {
         this.#logger.debug('create: buchDTO=%o', buchDTO);
 
@@ -82,7 +83,7 @@ export class BuchMutationResolver {
     }
 
     @Mutation()
-    @Roles('admin', 'mitarbeiter')
+    @RolesAllowed('admin', 'mitarbeiter')
     async update(@Args('input') buchDTO: BuchUpdateDTO) {
         this.#logger.debug('update: buch=%o', buchDTO);
 
@@ -102,7 +103,7 @@ export class BuchMutationResolver {
     }
 
     @Mutation()
-    @Roles('admin')
+    @RolesAllowed('admin')
     async delete(@Args() id: IdInput) {
         const idStr = id.id;
         this.#logger.debug('delete: id=%s', idStr);

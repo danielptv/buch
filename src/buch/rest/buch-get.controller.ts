@@ -55,21 +55,30 @@ import { getBaseUri } from './getBaseUri.js';
 import { getLogger } from '../../logger/logger.js';
 import { paths } from '../../config/paths.js';
 
-// TypeScript
-interface Link {
+/** href-Link für HATEOAS */
+export interface Link {
+    /** href-Link für HATEOAS-Links */
     href: string;
 }
-interface Links {
+
+/** Links für HATEOAS */
+export interface Links {
+    /** self-Link */
     self: Link;
-    // optional
+    /** Optionaler Linke für list */
     list?: Link;
+    /** Optionaler Linke für add */
     add?: Link;
+    /** Optionaler Linke für update */
     update?: Link;
+    /** Optionaler Linke für remove */
     remove?: Link;
 }
 
-// Interface fuer GET-Request mit Links fuer HATEOAS
-type TitelModel = Omit<Titel, 'buch' | 'id'>;
+/** Typedefinition für ein Titel-Objekt ohne Rückwärtsverweis zum Buch */
+export type TitelModel = Omit<Titel, 'buch' | 'id'>;
+
+/** Buch-Objekt mit HATEOAS-Links */
 export type BuchModel = Omit<
     Buch,
     'abbildungen' | 'aktualisiert' | 'erzeugt' | 'id' | 'titel' | 'version'
@@ -79,6 +88,7 @@ export type BuchModel = Omit<
     _links: Links;
 };
 
+/** Buch-Objekte mit HATEOAS-Links in einem JSON-Array. */
 export interface BuecherModel {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     _embedded: {

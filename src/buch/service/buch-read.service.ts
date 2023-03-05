@@ -26,8 +26,13 @@ import { QueryBuilder } from './query-builder.js';
 import RE2 from 're2';
 import { getLogger } from '../../logger/logger.js';
 
-interface FindByIdParams {
+/**
+ * Typdefinition für `findById`
+ */
+export interface FindByIdParams {
+    /** ID des gesuchten Buchs */
     id: number;
+    /** Sollen die Abbildungen mitgeladen werden? */
     mitAbbildungen?: boolean;
 }
 export interface Suchkriterien {

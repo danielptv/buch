@@ -53,11 +53,14 @@ import { UserService } from './service/user.service.js';
 import { getLogger } from '../../logger/logger.js';
 import { paths } from '../../config/paths.js';
 
-class Login {
+/** Entity-Klasse für Login-Daten. */
+export class Login {
+    /** Benutzername */
     // https://docs.nestjs.com/openapi/types-and-parameters
     @ApiProperty({ example: 'admin', type: String })
     username: string | undefined;
 
+    /** Passwort */
     @ApiProperty({ example: 'p', type: String })
     password: string | undefined;
 }

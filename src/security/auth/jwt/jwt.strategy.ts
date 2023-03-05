@@ -26,7 +26,7 @@ const { algorithm, publicKey } = jwtConfig;
 /**
  * Payload für einen JWT.
  */
-interface Payload {
+export interface Payload {
     sub: number;
     username: string;
 }

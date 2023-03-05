@@ -18,12 +18,16 @@ import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { AuthService } from './service/auth.service.js';
 import { ResponseTimeInterceptor } from '../../logger/response-time.interceptor.js';
 import { UseInterceptors } from '@nestjs/common';
+// TODO @nestjs/graphql@11 import { UserInputError } from '@nestjs/apollo';
 import { UserInputError } from 'apollo-server-express';
 import { getLogger } from '../../logger/logger.js';
 
 // @nestjs/graphql fasst die Input-Daten zu einem Typ zusammen
-interface LoginInput {
+/** Typdefinition für Login-Daten bei GraphQL */
+export interface LoginInput {
+    /** Benutzername */
     readonly username: string;
+    /** Passwort */
     readonly password: string;
 }
 

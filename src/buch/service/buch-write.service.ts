@@ -39,9 +39,13 @@ import RE2 from 're2';
 import { Titel } from '../entity/titel.entity.js';
 import { getLogger } from '../../logger/logger.js';
 
-interface UpdateParams {
+/** Typdefinitionen zum Aktualisieren eines Buches mit `update`. */
+export interface UpdateParams {
+    /** ID des zu aktualisierenden Buches. */
     id: number | undefined;
+    /** Buch-Objekt mit den aktualisierten Werten. */
     buch: Buch;
+    /** Versionsnummer für die aktualisierenden Werte. */
     version: string;
 }
 

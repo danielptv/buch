@@ -54,7 +54,7 @@ import { type Buch } from '../entity/buch.entity.js';
 import { BuchWriteService } from '../service/buch-write.service.js';
 import { JwtAuthGuard } from '../../security/auth/jwt/jwt-auth.guard.js';
 import { ResponseTimeInterceptor } from '../../logger/response-time.interceptor.js';
-import { Roles } from '../../security/auth/roles/roles.decorator.js';
+import { RolesAllowed } from '../../security/auth/roles/roles-allowed.decorator.js';
 import { RolesGuard } from '../../security/auth/roles/roles.guard.js';
 import { type Titel } from '../entity/titel.entity.js';
 import { getBaseUri } from './getBaseUri.js';
@@ -94,7 +94,7 @@ export class BuchWriteController {
      * @returns Leeres Promise-Objekt.
      */
     @Post()
-    @Roles('admin', 'mitarbeiter')
+    @RolesAllowed('admin', 'mitarbeiter')
     @ApiOperation({ summary: 'Ein neues Buch anlegen' })
     @ApiCreatedResponse({ description: 'Erfolgreich neu angelegt' })
     @ApiBadRequestResponse({ description: 'Fehlerhafte Buchdaten' })
@@ -143,7 +143,7 @@ export class BuchWriteController {
      */
     // eslint-disable-next-line max-params
     @Put(':id')
-    @Roles('admin', 'mitarbeiter')
+    @RolesAllowed('admin', 'mitarbeiter')
     @ApiOperation({
         summary: 'Ein vorhandenes Buch aktualisieren',
         tags: ['Aktualisieren'],
@@ -208,7 +208,7 @@ export class BuchWriteController {
      * @returns Leeres Promise-Objekt.
      */
     @Delete(':id')
-    @Roles('admin')
+    @RolesAllowed('admin')
     @ApiOperation({ summary: 'Buch mit der ID löschen', tags: ['Loeschen'] })
     @ApiHeader({
         name: 'Authorization',

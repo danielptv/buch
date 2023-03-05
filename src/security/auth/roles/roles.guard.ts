@@ -19,7 +19,7 @@ import {
     type ExecutionContext,
     Injectable,
 } from '@nestjs/common';
-import { ROLES_KEY } from './roles.decorator.js';
+import { ROLES_KEY } from './roles-allowed.decorator.js';
 import { Reflector } from '@nestjs/core';
 import { type RequestWithUser } from '../jwt/jwt-auth.guard.js';
 import { type Role } from '../service/role.js';
@@ -27,8 +27,8 @@ import { UserService } from '../service/user.service.js';
 import { getLogger } from '../../../logger/logger.js';
 
 /**
- * Guard für RBAC (= role-based access control), so dass der Decorater `@Role()`
- * verwendet werden kann.
+ * Guard für RBAC (= role-based access control), so dass der Decorater
+ * `@RolesAllowed()` verwendet werden kann.
  */
 @Injectable()
 export class RolesGuard implements CanActivate {
@@ -44,7 +44,7 @@ export class RolesGuard implements CanActivate {
     }
 
     /**
-     * Die Rollen im Argument des Decorators `@Role()` ermitteln.
+     * Die Rollen im Argument des Decorators `@RolesAllowed()` ermitteln.
      * @param context Der Ausführungskontext zur Ermittlung der Metadaten bzw.
      * des Decorators.
      * @return true, falls die Rollen beim Controller oder bei der dekorierten
@@ -63,21 +63,19 @@ export class RolesGuard implements CanActivate {
         }
 
         const request: RequestWithUser = context.switchToHttp().getRequest();
-        const basicUser = request.user;
-        if (basicUser === undefined) {
-            this.#logger.debug('canActivate: basicUser=undefined');
+        const requestUser = request.user;
+        this.#logger.debug('canActivate: requestUser=%o', requestUser);
+        if (requestUser === undefined) {
             return false;
         }
-        this.#logger.debug('canActivate: basicUser=%o', basicUser);
 
-        const { userId } = basicUser;
+        const { userId } = requestUser;
         const user = await this.#userService.findById(userId);
+        this.#logger.debug('canActivate: user=%o', user);
+
         if (user === undefined) {
-            this.#logger.debug('canActivate: user=undefined');
             return false;
         }
-
-        this.#logger.debug('canActivate: user=%o', user);
         return requiredRoles.some((role) => user.roles.includes(role));
     }
 }

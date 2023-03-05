@@ -28,7 +28,7 @@ import { getLogger } from '../../../logger/logger.js';
  * "Authorization" mitgeschickt wird. Der Token wird mit der konfigurierten
  * Strategie verifiziert und das zugehoerige User-Objekt wird im Request-Objekt
  * gespeichert, damit in `RolesGuard` die Rollen bzw. Zugriffsrechte überprüft
- * werden, wenn in einem Controller @Roles() verwendet wird.
+ * werden, wenn in einem Controller @RolesAllowed() verwendet wird.
  *
  * https://github.com/nestjs/passport/blob/master/lib/auth.guard.ts
  * https://docs.nestjs.com/security/authentication#graphql

@@ -19,6 +19,7 @@ import { type Buch } from '../entity/buch.entity.js';
 import { BuchReadService } from '../service/buch-read.service.js';
 import { ResponseTimeInterceptor } from '../../logger/response-time.interceptor.js';
 import { UseInterceptors } from '@nestjs/common';
+// TODO @nestjs/graphql@11 import { UserInputError } from '@nestjs/apollo';
 import { UserInputError } from 'apollo-server-express';
 import { getLogger } from '../../logger/logger.js';
 
