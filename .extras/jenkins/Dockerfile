@@ -1,4 +1,4 @@
-# syntax=docker/dockerfile:1.5.1
+# syntax=docker/dockerfile:1.5.2
 
 # Copyright (C) 2022 - present Juergen Zimmermann, Hochschule Karlsruhe
 #
@@ -28,9 +28,9 @@ USER root
 RUN <<EOF
 # https://packages.debian.org/bullseye/lsb-release
 # https://unix.stackexchange.com/questions/217369/clear-apt-get-list
-apt-get update
-apt-get install --no-install-recommends --yes --show-progress lsb-release=11.1.0
-apt-get clean
+apt update --yes
+apt install --no-install-recommends --yes --show-progress lsb-release
+apt clean
 rm -rf /var/lib/apt/lists/*
 # GPG-Schluessel fuer Docker hinzufuegen
 # https://www.howtoforge.de/anleitung/so-installierst-du-docker-unter-debian-11
@@ -42,9 +42,9 @@ echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docke
 # https://download.docker.com/linux/debian/dists/bullseye/pool/stable/amd64
 # https://debian.pkgs.org/11/docker-ce-amd64
 # apt-cache policy docker-ce-cli
-apt-get update
-apt-get install --no-install-recommends --yes --show-progress docker-ce-cli=5:20.10.22~3-0~debian-bullseye
-apt-get clean
+apt update --yes
+apt install --no-install-recommends --yes --show-progress docker-ce-cli
+apt clean
 rm -rf /var/lib/apt/lists/*
 EOF
 

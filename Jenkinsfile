@@ -107,7 +107,7 @@ pipeline {
                 // https://packages.debian.org/bullseye/python3
                 // https://computingforgeeks.com/how-to-install-python-on-debian-linux
                 // https://cloudcone.com/docs/article/how-to-install-python-3-10-on-debian-11
-                sh 'apt-get install --no-install-recommends --yes --show-progress python3=3.9.2-3'
+                sh 'apt install --no-install-recommends --yes --show-progress python3-minimal'
                 sh 'python3 --version'
 
                 script {
@@ -118,7 +118,7 @@ pipeline {
 
                 // "clean install", Dauer: ca. 5 Minuten
                 sh 'npm ci --omit=dev --no-package-lock --force'
-                sh 'npm i -D typescript --no-package-lock --force'
+                sh 'npm i -D typescript@rc --no-package-lock --force'
                 //sh 'npm audit fix'
             }
         }

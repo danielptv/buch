@@ -38,7 +38,7 @@ const options = {
     mkdirs: true,
 };
 adoc.convertFile(
-    join('extras', 'doc', 'entwicklerhandbuch', 'entwicklerhandbuch.adoc'),
+    join('.extras', 'doc', 'entwicklerhandbuch', 'entwicklerhandbuch.adoc'),
     options,
 );
 
@@ -47,7 +47,7 @@ console.log(
     `HTML-Datei ${join(
         __dirname,
         '..',
-        'extras',
+        '.extras',
         'doc',
         'entwicklerhandbuch',
         'html',
