@@ -20,6 +20,9 @@
 #           Get-Content Dockerfile | docker run --rm --interactive hadolint/hadolint:2.12.1-beta-debian
 #           docker network ls
 
+# ---------------------------------------------------------------------------------------
+# S t a g e :   b u i l d e r
+# ---------------------------------------------------------------------------------------
 ARG NODE_VERSION=19.7.0
 FROM node:${NODE_VERSION}-bullseye AS builder
 
@@ -30,7 +33,6 @@ COPY .env .npmrc nest-cli.json tsconfig*.json ./
 COPY src ./src
 
 # npm ci liest "dependencies" aus package-lock.json
-# ggf.: apt-get update && apt-get upgrade -y
 # "here document" wie in einem Shellscipt
 RUN <<EOF
 set -ex
@@ -46,9 +48,7 @@ CMD ["npm", "start"]
 # ------------------------------------------------------------------------------
 # S t a g e   2
 # ------------------------------------------------------------------------------
-# "slim" enthaelt NICHT Python, was fuer node-gyp aber erforderlich ist
-# FROM node:${NODE_VERSION}-bullseye-slim
-FROM node:${NODE_VERSION}-bullseye
+FROM node:${NODE_VERSION}-bullseye-slim
 
 WORKDIR /opt/app
 
@@ -66,14 +66,14 @@ COPY --from=builder /app/src/config/jwt ./dist/config/jwt
 COPY --from=builder /app/src/config/tls ./dist/config/tls
 
 # https://unix.stackexchange.com/questions/217369/clear-apt-get-list
+# https://packages.debian.org/bullseye/python3
 RUN set -ex \
-    && apt-get update \
+    && apt update \
+    && apt install --no-install-recommends --yes python3-minimal \
     && rm -rf /var/lib/apt/lists/* \
     && npm i -g --no-audit npm \
     && npm i -g --no-audit @nestjs/cli rimraf
 
-# https://packages.debian.org/bullseye/python3
-# node-gyp rebuild
 RUN <<EOF
 set -ex
 npm i -g --no-audit node-gyp
