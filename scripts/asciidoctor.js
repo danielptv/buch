@@ -33,7 +33,7 @@ kroki.register(adoc.Extensions);
 const options = {
     safe: 'safe',
     attributes: { linkcss: true },
-    base_dir: 'extras/doc/entwicklerhandbuch',
+    base_dir: '.extras/doc/entwicklerhandbuch',
     to_dir: 'html',
     mkdirs: true,
 };
