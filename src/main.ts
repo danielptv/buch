@@ -56,20 +56,6 @@ const setupSwagger = (app: INestApplication) => {
     SwaggerModule.setup(paths.swagger, app, document, options);
 };
 
-interface Route {
-    path: string;
-    method: string;
-}
-
-interface Layer {
-    route:
-        | {
-              path: string;
-              stack: [{ method: string }];
-          }
-        | undefined;
-}
-
 // Promise ab ES 2015, vgl: Future in Java
 // async/await ab ES 2017, vgl: C#
 const bootstrap = async () => {
@@ -97,28 +83,6 @@ const bootstrap = async () => {
     app.enableCors(corsOptions);
 
     await app.listen(port);
-
-    // https://stackoverflow.com/questions/58255000/how-can-i-get-all-the-routes-from-all-the-modules-and-controllers-available-on#answer-63333671
-    /* eslint-disable @typescript-eslint/no-unsafe-assignment, no-underscore-dangle */
-    // TODO @nestjs/graphql@11 @nestjs/apollo@11: app.getHttpServer()._events.request._router === undefined
-    const availableRoutes: Route[] = app
-        .getHttpServer()
-        // type-coverage:ignore-next-line
-        ._events.request._router.stack.filter(
-            (layer: Layer) => layer.route !== undefined,
-        )
-        // type-coverage:ignore-next-line
-        .map((layer: Layer) => {
-            const { route } = layer;
-            return {
-                path: route?.path,
-                method: route?.stack[0].method,
-            };
-        })
-        // type-coverage:ignore-next-line
-        .sort((a: Route, b: Route) => a.path.localeCompare(b.path));
-    console.info('Endpoints:', availableRoutes);
-    /* eslint-enable @typescript-eslint/no-unsafe-assignment, no-underscore-dangle */
 };
 
 // Top-level await ab ES 2020

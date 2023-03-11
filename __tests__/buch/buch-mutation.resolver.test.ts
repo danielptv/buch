@@ -171,11 +171,11 @@ describe('GraphQL Mutations', () => {
         expect(errors).toHaveLength(1);
 
         const [error] = errors!;
-        const errorResponse: any = error?.extensions?.response;
+        const extensions: any = error?.extensions;
 
-        expect(errorResponse).toBeDefined();
+        expect(extensions).toBeDefined();
 
-        const messages: string[] = errorResponse.message;
+        const messages: string[] = extensions?.originalError?.message;
 
         expect(messages).toBeDefined();
         expect(messages).toHaveLength(expectedMsg.length);
@@ -339,11 +339,11 @@ describe('GraphQL Mutations', () => {
         expect(errors).toHaveLength(1);
 
         const [error] = errors!;
-        const errorResponse: any = error?.extensions?.response;
+        const extensions: any = error?.extensions;
 
-        expect(errorResponse).toBeDefined();
+        expect(extensions).toBeDefined();
 
-        const messages: string[] = errorResponse.message;
+        const messages: string[] = extensions.originalError.message;
 
         expect(messages).toBeDefined();
         expect(messages).toHaveLength(expectedMsg.length);

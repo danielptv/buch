@@ -29,8 +29,7 @@ import { ResponseTimeInterceptor } from '../../logger/response-time.interceptor.
 import { RolesAllowed } from '../../security/auth/roles/roles-allowed.decorator.js';
 import { RolesGraphQlGuard } from '../../security/auth/roles/roles-graphql.guard.js';
 import { type Titel } from '../entity/titel.entity.js';
-// TODO @nestjs/graphql@11 import { UserInputError } from '@nestjs/apollo';
-import { UserInputError } from 'apollo-server-express';
+import { UserInputError } from '@nestjs/apollo';
 import { getLogger } from '../../logger/logger.js';
 
 // Authentifizierung und Autorisierung durch
