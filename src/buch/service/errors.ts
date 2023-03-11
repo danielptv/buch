@@ -21,17 +21,6 @@
  * @packageDocumentation
  */
 
-import { type ValidationError } from 'class-validator';
-
-/**
- * Klasse für fehlerhafte Buchdaten. Die Meldungstexte sind in der Property
- * `msg` gekapselt.
- */
-export interface ConstraintViolations {
-    readonly type: 'ConstraintViolations';
-    readonly validationErrors: ValidationError[];
-}
-
 /**
  * Klasse für eine bereits existierende ISBN-Nummer.
  */
@@ -42,11 +31,10 @@ export interface IsbnExists {
 }
 
 /**
- * Union-Type für Fehler beim Neuanlegen eines Buches:
- * - {@linkcode ConstraintViolations}
+ * ggf. Union-Type für diverse Fehler beim Neuanlegen eines Buches:
  * - {@linkcode IsbnExists}
  */
-export type CreateError = ConstraintViolations | IsbnExists;
+export type CreateError = IsbnExists;
 
 /**
  * Klasse für eine ungültige Versionsnummer beim Ändern.
@@ -81,39 +69,3 @@ export interface BuchNotExists {
  * - {@linkcode VersionOutdated}
  */
 export type UpdateError = BuchNotExists | VersionInvalid | VersionOutdated;
-
-/**
- * Klasse für eine nicht-vorhandene Binärdatei.
- */
-export interface FileNotFound {
-    readonly type: 'FileNotFound';
-    readonly filename: string;
-}
-
-/**
- * Klasse, falls es mehrere Binärdateien zu einem Buch gibt.
- */
-export interface MultipleFiles {
-    readonly type: 'MultipleFiles';
-    readonly filename: string;
-}
-
-/**
- * Klasse, falls der ContentType nicht korrekt ist.
- */
-export interface InvalidContentType {
-    readonly type: 'InvalidContentType';
-}
-
-/**
- * Union-Type für Fehler beim Lesen einer Binärdatei zu einem Buch:
- * - {@linkcode BuchNotExists}
- * - {@linkcode FileNotFound}
- * - {@linkcode InvalidContentType}
- * - {@linkcode MultipleFiles}
- */
-export type FileFindError =
-    | BuchNotExists
-    | FileNotFound
-    | InvalidContentType
-    | MultipleFiles;

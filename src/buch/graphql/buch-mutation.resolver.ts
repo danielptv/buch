@@ -23,13 +23,13 @@ import { Abbildung } from '../entity/abbildung.entity.js';
 import { Buch } from '../entity/buch.entity.js';
 import { BuchDTO } from '../rest/buchDTO.entity.js';
 import { BuchWriteService } from '../service/buch-write.service.js';
+import { GraphQLError } from 'graphql';
 import { type IdInput } from './buch-query.resolver.js';
 import { JwtAuthGraphQlGuard } from '../../security/auth/jwt/jwt-auth-graphql.guard.js';
 import { ResponseTimeInterceptor } from '../../logger/response-time.interceptor.js';
 import { RolesAllowed } from '../../security/auth/roles/roles-allowed.decorator.js';
 import { RolesGraphQlGuard } from '../../security/auth/roles/roles-graphql.guard.js';
 import { type Titel } from '../entity/titel.entity.js';
-import { UserInputError } from '@nestjs/apollo';
 import { getLogger } from '../../logger/logger.js';
 
 // Authentifizierung und Autorisierung durch
@@ -73,10 +73,10 @@ export class BuchMutationResolver {
         this.#logger.debug('createBuch: result=%o', result);
 
         if (Object.prototype.hasOwnProperty.call(result, 'type')) {
-            // UserInputError liefert Statuscode 200
-            throw new UserInputError(
-                this.#errorMsgCreateBuch(result as CreateError),
-            );
+            // https://www.apollographql.com/docs/apollo-server/data/errors
+            throw new GraphQLError(this.#errorMsgCreateBuch(result as CreateError), {
+                extensions: { code: 'BAD_REQUEST' },
+            });
         }
         return result;
     }
@@ -95,7 +95,9 @@ export class BuchMutationResolver {
             version: versionStr,
         });
         if (typeof result === 'object') {
-            throw new UserInputError(this.#errorMsgUpdateBuch(result));
+            throw new GraphQLError(this.#errorMsgUpdateBuch(result), {
+                extensions: { code: 'BAD_REQUEST' },
+            });
         }
         this.#logger.debug('updateBuch: result=%d', result);
         return result;

@@ -24,11 +24,7 @@ import {
     type SwaggerCustomOptions,
     SwaggerModule,
 } from '@nestjs/swagger';
-import {
-    HttpStatus,
-    type INestApplication,
-    ValidationPipe,
-} from '@nestjs/common';
+import { type INestApplication, ValidationPipe } from '@nestjs/common';
 // relativer Import
 import { AppModule } from './app.module.js';
 import { NestFactory } from '@nestjs/core';
@@ -71,11 +67,7 @@ const bootstrap = async () => {
 
     // https://docs.nestjs.com/techniques/validation
     // https://docs.nestjs.com/exception-filters
-    app.useGlobalPipes(
-        new ValidationPipe({
-            errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
-        }),
-    );
+    app.useGlobalPipes(new ValidationPipe());
 
     setupSwagger(app);
 

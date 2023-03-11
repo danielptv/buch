@@ -17,9 +17,9 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
 import { type Buch } from '../entity/buch.entity.js';
 import { BuchReadService } from '../service/buch-read.service.js';
+import { GraphQLError } from 'graphql';
 import { ResponseTimeInterceptor } from '../../logger/response-time.interceptor.js';
 import { UseInterceptors } from '@nestjs/common';
-import { UserInputError } from '@nestjs/apollo';
 import { getLogger } from '../../logger/logger.js';
 
 export type BuchDTO = Omit<Buch, 'abbildungen' | 'aktualisiert' | 'erzeugt'>;
@@ -45,14 +45,12 @@ export class BuchQueryResolver {
 
         const buch = await this.#service.findById({ id });
         if (buch === undefined) {
-            // UserInputError liefert Statuscode 200
-            // Weitere Error-Klassen in apollo-server-errors:
-            // SyntaxError, ValidationError, AuthenticationError, ForbiddenError,
-            // PersistedQuery, PersistedQuery
-            // https://www.apollographql.com/blog/graphql/error-handling/full-stack-error-handling-with-graphql-apollo
-            throw new UserInputError(
-                `Es wurde kein Buch mit der ID ${id} gefunden.`,
-            );
+            // https://www.apollographql.com/docs/apollo-server/data/errors
+            throw new GraphQLError(`Es wurde kein Buch mit der ID ${id} gefunden.`, {
+                extensions: {
+                    code: 'BAD_REQUEST',
+                },
+            });
         }
         const buchDTO = this.#toBuchDTO(buch);
         this.#logger.debug('findById: buchDTO=%o', buchDTO);
@@ -66,8 +64,11 @@ export class BuchQueryResolver {
         const suchkriterium = titelStr === undefined ? {} : { titel: titelStr };
         const buecher = await this.#service.find(suchkriterium);
         if (buecher.length === 0) {
-            // UserInputError liefert Statuscode 200
-            throw new UserInputError('Es wurden keine Buecher gefunden.');
+            throw new GraphQLError('Es wurden keine Buecher gefunden.', {
+                extensions: {
+                    code: 'BAD_REQUEST',
+                },
+            });
         }
 
         const buecherDTO = buecher.map((buch) => this.#toBuchDTO(buch));
