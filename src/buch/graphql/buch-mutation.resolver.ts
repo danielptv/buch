@@ -20,10 +20,10 @@ import { type CreateError, type UpdateError } from '../service/errors.js';
 import { IsInt, IsNumberString, Min } from 'class-validator';
 import { UseGuards, UseInterceptors } from '@nestjs/common';
 import { Abbildung } from '../entity/abbildung.entity.js';
+import { BadRequestError } from './errors.js';
 import { Buch } from '../entity/buch.entity.js';
 import { BuchDTO } from '../rest/buchDTO.entity.js';
 import { BuchWriteService } from '../service/buch-write.service.js';
-import { GraphQLError } from 'graphql';
 import { type IdInput } from './buch-query.resolver.js';
 import { JwtAuthGraphQlGuard } from '../../security/auth/jwt/jwt-auth-graphql.guard.js';
 import { ResponseTimeInterceptor } from '../../logger/response-time.interceptor.js';
@@ -73,10 +73,9 @@ export class BuchMutationResolver {
         this.#logger.debug('createBuch: result=%o', result);
 
         if (Object.prototype.hasOwnProperty.call(result, 'type')) {
-            // https://www.apollographql.com/docs/apollo-server/data/errors
-            throw new GraphQLError(this.#errorMsgCreateBuch(result as CreateError), {
-                extensions: { code: 'BAD_REQUEST' },
-            });
+            throw new BadRequestError(
+                this.#errorMsgCreateBuch(result as CreateError),
+            );
         }
         return result;
     }
@@ -95,9 +94,7 @@ export class BuchMutationResolver {
             version: versionStr,
         });
         if (typeof result === 'object') {
-            throw new GraphQLError(this.#errorMsgUpdateBuch(result), {
-                extensions: { code: 'BAD_REQUEST' },
-            });
+            throw new BadRequestError(this.#errorMsgUpdateBuch(result));
         }
         this.#logger.debug('updateBuch: result=%d', result);
         return result;
