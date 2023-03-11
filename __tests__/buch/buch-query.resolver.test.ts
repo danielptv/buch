@@ -146,7 +146,7 @@ describe('GraphQL Queries', () => {
         expect(path).toBeDefined();
         expect(path!![0]).toBe('buch');
         expect(extensions).toBeDefined();
-        expect(extensions!.code).toBe('BAD_REQUEST');
+        expect(extensions!.code).toBe('BAD_USER_INPUT');
     });
 
     test('Buch zu vorhandenem Titel', async () => {
@@ -274,7 +274,7 @@ describe('GraphQL Queries', () => {
         expect(path).toBeDefined();
         expect(path!![0]).toBe('buecher');
         expect(extensions).toBeDefined();
-        expect(extensions!.code).toBe('BAD_REQUEST');
+        expect(extensions!.code).toBe('BAD_USER_INPUT');
     });
 });
 /* eslint-enable @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-non-null-assertion, @typescript-eslint/no-extra-non-null-assertion */

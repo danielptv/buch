@@ -405,7 +405,7 @@ describe('GraphQL Mutations', () => {
         expect(path).toBeDefined();
         expect(path!![0]).toBe('update');
         expect(extensions).toBeDefined();
-        expect(extensions!.code).toBe('BAD_REQUEST');
+        expect(extensions!.code).toBe('BAD_USER_INPUT');
     });
 
     // -------------------------------------------------------------------------
