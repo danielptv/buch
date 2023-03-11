@@ -18,7 +18,7 @@ import { Args, Mutation, Resolver } from '@nestjs/graphql';
 import { AuthService } from './service/auth.service.js';
 import { ResponseTimeInterceptor } from '../../logger/response-time.interceptor.js';
 import { UseInterceptors } from '@nestjs/common';
-import { UserInputError } from '@nestjs/apollo';
+import { BadUserInputError } from '../../buch/graphql/errors.js';
 import { getLogger } from '../../logger/logger.js';
 
 // @nestjs/graphql fasst die Input-Daten zu einem Typ zusammen
@@ -47,7 +47,7 @@ export class LoginResolver {
         const { username, password } = input;
         const user = await this.#service.validate({ username, pass: password });
         if (user === undefined) {
-            throw new UserInputError(
+            throw new BadUserInputError(
                 'Falscher Benutzername oder falsches Passwort',
             );
         }

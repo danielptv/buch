@@ -16,7 +16,7 @@
  */
 import { Args, Query, Resolver } from '@nestjs/graphql';
 import { type Buch } from '../entity/buch.entity.js';
-import { BadRequestError } from './errors.js';
+import { BadUserInputError } from './errors.js';
 import { BuchReadService } from '../service/buch-read.service.js';
 import { ResponseTimeInterceptor } from '../../logger/response-time.interceptor.js';
 import { UseInterceptors } from '@nestjs/common';
@@ -46,7 +46,7 @@ export class BuchQueryResolver {
         const buch = await this.#service.findById({ id });
         if (buch === undefined) {
             // https://www.apollographql.com/docs/apollo-server/data/errors
-            throw new BadRequestError(
+            throw new BadUserInputError(
                 `Es wurde kein Buch mit der ID ${id} gefunden.`,
             );
         }
@@ -62,7 +62,7 @@ export class BuchQueryResolver {
         const suchkriterium = titelStr === undefined ? {} : { titel: titelStr };
         const buecher = await this.#service.find(suchkriterium);
         if (buecher.length === 0) {
-            throw new BadRequestError('Es wurden keine Buecher gefunden.');
+            throw new BadUserInputError('Es wurden keine Buecher gefunden.');
         }
 
         const buecherDTO = buecher.map((buch) => this.#toBuchDTO(buch));

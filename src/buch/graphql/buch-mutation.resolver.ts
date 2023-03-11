@@ -20,7 +20,7 @@ import { type CreateError, type UpdateError } from '../service/errors.js';
 import { IsInt, IsNumberString, Min } from 'class-validator';
 import { UseGuards, UseInterceptors } from '@nestjs/common';
 import { Abbildung } from '../entity/abbildung.entity.js';
-import { BadRequestError } from './errors.js';
+import { BadUserInputError } from './errors.js';
 import { Buch } from '../entity/buch.entity.js';
 import { BuchDTO } from '../rest/buchDTO.entity.js';
 import { BuchWriteService } from '../service/buch-write.service.js';
@@ -73,7 +73,7 @@ export class BuchMutationResolver {
         this.#logger.debug('createBuch: result=%o', result);
 
         if (Object.prototype.hasOwnProperty.call(result, 'type')) {
-            throw new BadRequestError(
+            throw new BadUserInputError(
                 this.#errorMsgCreateBuch(result as CreateError),
             );
         }
@@ -94,7 +94,7 @@ export class BuchMutationResolver {
             version: versionStr,
         });
         if (typeof result === 'object') {
-            throw new BadRequestError(this.#errorMsgUpdateBuch(result));
+            throw new BadUserInputError(this.#errorMsgUpdateBuch(result));
         }
         this.#logger.debug('updateBuch: result=%d', result);
         return result;

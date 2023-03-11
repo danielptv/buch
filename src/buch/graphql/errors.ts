@@ -24,14 +24,15 @@ import { GraphQLError } from 'graphql';
 
 // https://www.apollographql.com/docs/apollo-server/data/errors
 /**
- * Error-Klasse für GraphQL, die einen Response mit `errors` und code `BAD_REQUEST`
- * produziert
+ * Error-Klasse für GraphQL, die einen Response mit `errors` und
+ * code `BAD_USER_INPUT` produziert.
  */
-export class BadRequestError extends GraphQLError {
+export class BadUserInputError extends GraphQLError {
     constructor(message: string) {
         super(message, {
             extensions: {
-                code: 'BAD_REQUEST',
+                // https://www.apollographql.com/docs/apollo-server/data/errors/#bad_user_input
+                code: 'BAD_USER_INPUT',
             },
         });
     }
