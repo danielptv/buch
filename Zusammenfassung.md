@@ -34,7 +34,9 @@ GPL v3
 - ts-node
 - RESTclient für REST und GraphQL
 - SonarQube
-- Buildpacks, Helm und helmfile
+- Dockerfile
+- Docker Compose
+- Helm und helmfile
 - AsciiDoctor mit PlantUML
 - reveal.js
 - Jenkins
@@ -47,7 +49,7 @@ GPL v3
 - Dependency Injection
 - Request/Response mit Header/Body, Statuscodes, ETag und HATEOAS
 - GraphQL-Schema mit Types, Query und Mutation
-- Validierung mit JSON-Schema durch Ajv
+- Validierung mit class-validator
 - TypeORM
 - .env, config/, reguläre Ausdrücke mit /.../ und new RE2(...)
 - Error
