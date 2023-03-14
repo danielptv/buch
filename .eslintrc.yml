@@ -40,6 +40,7 @@ plugins:
 
 extends:
   # https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/eslint-recommended.ts
+  # https://typescript-eslint.io/rules
   - plugin:@typescript-eslint/recommended
   # https://github.com/eslint/eslint/blob/main/conf/eslint-recommended.js
   - eslint:recommended
