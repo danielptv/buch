@@ -15,8 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { Args, Query, Resolver } from '@nestjs/graphql';
-import { type Buch } from '../entity/buch.entity.js';
 import { BadUserInputError } from './errors.js';
+import { type Buch } from '../entity/buch.entity.js';
 import { BuchReadService } from '../service/buch-read.service.js';
 import { ResponseTimeInterceptor } from '../../logger/response-time.interceptor.js';
 import { UseInterceptors } from '@nestjs/common';
