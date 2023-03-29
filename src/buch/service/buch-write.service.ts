@@ -88,7 +88,6 @@ export class BuchWriteService {
             return validateResult;
         }
 
-        // implizite Transaktion
         const buchDb = await this.#repo.save(buch); // implizite Transaktion
         this.#logger.debug('create: buchDb=%o', buchDb);
 

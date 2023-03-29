@@ -52,18 +52,7 @@ FROM node:${NODE_VERSION}-bullseye-slim
 
 WORKDIR /opt/app
 
-COPY --from=builder /app/package.json /app/.env /app/.npmrc /app/nest-cli.json ./
 ARG NODE_ENV=production
-
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/src/buch/graphql/schema.graphql ./dist/buch/graphql/
-COPY --from=builder /app/src/security/auth/login.graphql ./dist/security/auth/
-COPY --from=builder /app/src/config/dev/mysql ./dist/config/dev/mysql
-COPY --from=builder /app/src/config/dev/postgres ./dist/config/dev/postgres
-# better-sqlite3 muss mit Python uebersetzt werden
-COPY --from=builder /app/src/config/dev/sqlite ./dist/config/dev/sqlite
-COPY --from=builder /app/src/config/jwt ./dist/config/jwt
-COPY --from=builder /app/src/config/tls ./dist/config/tls
 
 # https://unix.stackexchange.com/questions/217369/clear-apt-get-list
 # https://packages.debian.org/bullseye/python3
@@ -72,19 +61,34 @@ RUN set -ex \
     && apt-get install --no-install-recommends --yes python3-minimal \
     && rm -rf /var/lib/apt/lists/* \
     && npm i -g --no-audit npm \
-    && npm i -g --no-audit @nestjs/cli rimraf
+    && npm i -g --no-audit @nestjs/cli rimraf \
+    && npm i -g --no-audit node-gyp
 
 RUN <<EOF
 set -ex
-npm i -g --no-audit node-gyp
-npm i --no-audit --omit dev
-npm prune
 groupadd --gid 10000 app
 useradd --uid 10000 --gid app --create-home --shell /bin/bash app
-chown -R app:app ./
 EOF
-# TODO npm r -D node-gyp
+
+COPY --from=builder --chown=app:app /app/package.json /app/.env /app/.npmrc /app/nest-cli.json ./
+COPY --from=builder --chown=app:app /app/dist ./dist
+COPY --from=builder --chown=app:app /app/src/buch/graphql/schema.graphql ./dist/buch/graphql/
+COPY --from=builder --chown=app:app /app/src/security/auth/login.graphql ./dist/security/auth/
+COPY --from=builder --chown=app:app /app/src/config/dev/mysql ./dist/config/dev/mysql
+COPY --from=builder --chown=app:app /app/src/config/dev/postgres ./dist/config/dev/postgres
+# better-sqlite3 muss mit Python uebersetzt werden
+COPY --from=builder --chown=app:app /app/src/config/dev/sqlite ./dist/config/dev/sqlite
+COPY --from=builder --chown=app:app /app/src/config/jwt ./dist/config/jwt
+COPY --from=builder --chown=app:app /app/src/config/tls ./dist/config/tls
+
+RUN <<EOF
+set -ex
+npm i --omit dev --no-audit
+npm prune --no-audit
+npm r -g --no-audit node-gyp
+EOF
 
 USER app
 EXPOSE 3000
+
 CMD ["node", "dist/main.js"]
