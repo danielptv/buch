@@ -56,12 +56,8 @@ Jürgen Zimmermann <Juergen.Zimmermann@h-ka.de>
 
 === CI und Deployment
 
-* pack für Docker Images
-* Kubernetes
-  - Helm
-  - helmfile
-  - (Skaffold)
-  - Lens und Octant: Pods, Logs, ...
+* Dockerfile
+* Docker Compose
 * Continuous Integration (CI) durch eine Jenkins Pipeline
 
 === Dokumentation
@@ -105,7 +101,7 @@ Jürgen Zimmermann <Juergen.Zimmermann@h-ka.de>
 * OR-Mapping
 * ähnlich wie Hibernate
 * Entity-Klassen
-* Decorators: @Entity(), @Column(), @PrimaryColumn(), @OneToOne(), ..., @VersionColumn(), @CreateDateColumn(), @UpdateDateColumn()
+* Decorators: @Entity(), @Column(), @PrimaryGeneratedColumn(), @OneToOne(), ..., @VersionColumn(), @CreateDateColumn(), @UpdateDateColumn()
 * Repository
 * QueryBuilder
 
