@@ -46,7 +46,8 @@ cloud {
 
 database "DB buch" {
     [Tabelle buch]
-    [Tabelle schlagwort]
+    [Tabelle titel]
+    [Tabelle abbildung]
 }
 
 node {
@@ -65,7 +66,8 @@ GraphQLClient ~~> [RequestLoggerMiddleware]
 
 [Repository<Buch>] ~~> [TypeORM]
 [TypeORM] ~~> [Tabelle buch]
-[TypeORM] ~~> [Tabelle schlagwort]
+[TypeORM] ~~> [Tabelle titel]
+[TypeORM] ~~> [Tabelle abbildung]
 
 [BuchService] ..> [MailService]
 [MailService] ~~> [nodemailer]

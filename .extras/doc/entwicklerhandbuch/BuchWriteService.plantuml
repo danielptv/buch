@@ -51,8 +51,8 @@ package buch {
 
     class BuchWriteService << control >> <<@Injectable()>> {
       + async create(buch: Buch): Promise<string|BuchInvalid|TitelExists|IsbnExists>
-      + async update(id: string, buch: Buch, version: string): Promise<number|BuchInvalid|TitelExists|IsbnExists|VersionInvalid|VersionOutdated>
-      + async delete(id: string): Promise<boolean>
+      + async update(id: number, buch: Buch, version: string): Promise<number|BuchInvalid|TitelExists|IsbnExists|VersionInvalid|VersionOutdated>
+      + async delete(id: number): Promise<boolean>
     }
 
     BuchWriteService o--> "1" BuchValidationService: validationService
