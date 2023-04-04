@@ -75,7 +75,7 @@
     "ts-jest"
   ],
   "dependencies": {
-    "@apollo/server": "4.5.0",
+    "@apollo/server": "4.6.0",
     "@js-temporal/polyfill": "0.4.3",
     "@nestjs/apollo": "11.0.4",
     "@nestjs/axios": "2.0.0",
@@ -142,8 +142,8 @@
     "@types/shelljs": "0.8.11",
     "@types/supertest": "2.0.12",
     "@types/uuid": "9.0.1",
-    "@typescript-eslint/eslint-plugin": "5.57.0",
-    "@typescript-eslint/parser": "5.57.0",
+    "@typescript-eslint/eslint-plugin": "5.57.1",
+    "@typescript-eslint/parser": "5.57.1",
     "apollo-server-types": "3.8.0",
     "asciidoctor": "3.0.0-alpha.4",
     "asciidoctor-kroki": "0.17.0",
@@ -171,7 +171,7 @@
     "node-gyp": "9.3.1",
     "rimraf": "4.4.1",
     "shelljs": "0.8.5",
-    "ts-jest": "29.0.5",
+    "ts-jest": "29.1.0",
     "ts-loader": "9.4.2",
     "ts-node": "10.9.1",
     "tsconfig-paths": "4.2.0",
