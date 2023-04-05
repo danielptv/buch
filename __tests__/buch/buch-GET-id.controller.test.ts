@@ -33,7 +33,7 @@
 //    needle      https://github.com/tomas/needle
 //    ky          https://github.com/sindresorhus/ky
 
-import { afterAll, beforeAll, describe } from '@jest/globals';
+import { afterAll, beforeAll, describe, test } from '@jest/globals';
 import axios, { type AxiosInstance, type AxiosResponse } from 'axios';
 import {
     host,
