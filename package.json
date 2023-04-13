@@ -8,8 +8,8 @@
   "exports": "./dist/src/main.js",
   "type": "module",
   "engines": {
-    "node": ">=19.7.0",
-    "npm": ">=9.6.0"
+    "node": ">=19.8.1",
+    "npm": ">=9.6.4"
   },
   "scripts": {
     "prebuild": "npm run clean",
@@ -126,7 +126,7 @@
     "@graphql-eslint/eslint-plugin": "3.18.0",
     "@jest/globals": "29.5.0",
     "@jest/types": "29.5.0",
-    "@nestjs/cli": "9.3.0",
+    "@nestjs/cli": "9.4.0",
     "@nestjs/testing": "9.4.0",
     "@tsconfig/node18": "1.0.1",
     "@types/compression": "1.7.2",
