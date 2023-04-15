@@ -57,12 +57,15 @@ ARG NODE_ENV=production
 # https://unix.stackexchange.com/questions/217369/clear-apt-get-list
 # https://packages.debian.org/bullseye/python3
 RUN set -ex \
-    && apt-get update \
-    && apt-get install --no-install-recommends --yes python3-minimal \
-    && rm -rf /var/lib/apt/lists/* \
+    && apt update \
+    && apt upgrade --yes \
+    && apt install --no-install-recommends --yes python3-minimal \
     && npm i -g --no-audit npm \
     && npm i -g --no-audit @nestjs/cli rimraf \
-    && npm i -g --no-audit node-gyp
+    && npm i -g --no-audit node-gyp \
+    && apt autoremove -y \
+    && apt clean -y \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN <<EOF
 set -ex
