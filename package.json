@@ -103,7 +103,7 @@
     "graphql": "16.6.0",
     "helmet": "6.1.5",
     "jsonwebtoken": "9.0.0",
-    "mysql2": "3.2.1",
+    "mysql2": "3.2.3",
     "nodemailer": "6.9.1",
     "passport": "0.6.0",
     "passport-jwt": "4.0.1",
@@ -116,7 +116,7 @@
     "rxjs": "7.8.0",
     "sonic-boom": "3.3.0",
     "sqlite3": "5.1.6",
-    "typeorm": "0.3.14",
+    "typeorm": "0.3.15",
     "typeorm-naming-strategies": "4.1.0",
     "uuid": "9.0.0",
     "xss": "1.0.14"
@@ -176,7 +176,7 @@
     "ts-loader": "9.4.2",
     "ts-node": "10.9.1",
     "tsconfig-paths": "4.2.0",
-    "typedoc": "0.24.1",
+    "typedoc": "0.24.4",
     "typescript": "5.0.4",
     "weak-napi": "2.0.2"
   }
