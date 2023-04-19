@@ -114,7 +114,7 @@ services:
   # M y S Q L
   # ------------------------------------------------------------------------------------
   mysql:
-    image: mysql:8.0.32-oracle
+    image: mysql:8.0.33-oracle
     ports:
       - published: 3306
         target: 3306
