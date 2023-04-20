@@ -228,9 +228,9 @@ services:
       - published: 5025
         target: 5025
       - published: 5080
-        target: 5080
+        target: 8080
       - published: 5081
-        target: 5081
+        target: 8081
     volumes:
       - type: bind
         source: C:/Zimmermann/volumes/fakesmtp
