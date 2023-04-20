@@ -76,7 +76,7 @@
     "ts-jest"
   ],
   "dependencies": {
-    "@apollo/server": "4.6.0",
+    "@apollo/server": "4.7.0",
     "@js-temporal/polyfill": "0.4.3",
     "@nestjs/apollo": "11.0.5",
     "@nestjs/axios": "2.0.0",
@@ -127,6 +127,7 @@
     "@jest/globals": "29.5.0",
     "@jest/types": "29.5.0",
     "@nestjs/cli": "9.4.0",
+    "@nestjs/schematics": "9.1.0",
     "@nestjs/testing": "9.4.0",
     "@tsconfig/node18": "2.0.0",
     "@tsconfig/node20": "1.0.0",
