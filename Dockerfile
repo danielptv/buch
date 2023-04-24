@@ -23,7 +23,7 @@
 # ---------------------------------------------------------------------------------------
 # S t a g e :   b u i l d e r
 # ---------------------------------------------------------------------------------------
-ARG NODE_VERSION=19.9.0
+ARG NODE_VERSION=20.0.0
 FROM node:${NODE_VERSION}-bullseye AS builder
 
 WORKDIR /app
@@ -32,13 +32,14 @@ COPY package.json ./package.json.ORIG
 COPY .env .npmrc nest-cli.json tsconfig*.json ./
 COPY src ./src
 
+RUN grep -v \"ts-jest\": package.json.ORIG | grep -v \"ts-node\": - | grep -v \"typedoc\": - | grep -v \"@nestjs/schematics\": - > package.json
+
 # npm ci liest "dependencies" aus package-lock.json
 # "here document" wie in einem Shellscipt
 RUN <<EOF
 set -ex
 npm i -g --no-audit npm
 npm i -g --no-audit @nestjs/cli rimraf
-grep -v \"ts-jest\": package.json.ORIG | grep -v \"ts-node\": - | grep -v \"typedoc\": - > package.json
 npm i --no-audit
 npm run build
 EOF
@@ -54,18 +55,25 @@ WORKDIR /opt/app
 
 ARG NODE_ENV=production
 
+# Caching vom "apt"-Layer
 # https://unix.stackexchange.com/questions/217369/clear-apt-get-list
 # https://packages.debian.org/bullseye/python3
-RUN set -ex \
-    && apt update \
-    && apt upgrade --yes \
-    && apt install --no-install-recommends --yes python3-minimal \
-    && npm i -g --no-audit npm \
-    && npm i -g --no-audit @nestjs/cli rimraf \
-    && npm i -g --no-audit node-gyp \
-    && apt autoremove -y \
-    && apt clean -y \
-    && rm -rf /var/lib/apt/lists/*
+# "python3-dev" enthaelt "multiprocessing"
+# "build-essential" enthaelt "make"
+RUN set -ex && \
+    apt-get update && \
+    apt-get upgrade --yes && \
+    apt-get install --no-install-recommends --yes python3-minimal python3-dev build-essential && \
+    apt-get autoremove -y && \
+    apt-get clean -y && \
+    rm -rf /var/lib/apt/lists/*
+
+RUN set -ex && \
+    npm i -g --no-audit npm && \
+    npm i -g --no-audit @nestjs/cli rimraf && \
+    npm i -g --no-audit node-gyp && \
+    npm cache clean --force && \
+    rm -rf /tmp/*
 
 RUN <<EOF
 set -ex

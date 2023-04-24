@@ -8,8 +8,8 @@
   "exports": "./dist/src/main.js",
   "type": "module",
   "engines": {
-    "node": ">=19.8.1",
-    "npm": ">=9.6.4"
+    "node": ">=20.0.0",
+    "npm": ">=9.6.5"
   },
   "scripts": {
     "prebuild": "npm run clean",
@@ -126,7 +126,7 @@
     "@graphql-eslint/eslint-plugin": "3.18.0",
     "@jest/globals": "29.5.0",
     "@jest/types": "29.5.0",
-    "@nestjs/cli": "9.4.0",
+    "@nestjs/cli": "9.4.1",
     "@nestjs/schematics": "9.1.0",
     "@nestjs/testing": "9.4.0",
     "@tsconfig/node18": "2.0.0",
@@ -136,7 +136,7 @@
     "@types/figlet": "1.5.5",
     "@types/fs-extra": "11.0.1",
     "@types/jest": "29.5.1",
-    "@types/node": "18.15.12",
+    "@types/node": "18.16.0",
     "@types/nodemailer": "6.4.7",
     "@types/nodemailer-direct-transport": "1.0.32",
     "@types/nodemailer-smtp-transport": "2.7.5",
@@ -153,7 +153,6 @@
     "clinic": "12.1.0",
     "depcheck": "1.4.3",
     "docker-compose": "0.23.19",
-    "eslint": "8.38.0",
     "eslint-config-prettier": "8.8.0",
     "eslint-plugin-eslint-comments": "3.2.0",
     "eslint-plugin-import": "2.27.5",
@@ -178,7 +177,7 @@
     "ts-loader": "9.4.2",
     "ts-node": "10.9.1",
     "tsconfig-paths": "4.2.0",
-    "typedoc": "0.24.4",
+    "typedoc": "0.24.5",
     "typescript": "5.1.0-beta",
     "weak-napi": "2.0.2"
   }
