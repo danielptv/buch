@@ -96,9 +96,9 @@ pipeline {
                 sh 'cat /etc/os-release'
                 sh 'cat /etc/debian_version'
                 //sh 'docker --version'
-                sh 'apt update'
+                sh 'apt-get update'
 
-                sh 'curl --silent --fail --show-error --location https://deb.nodesource.com/setup_19.x | bash -; apt install --no-install-recommends --yes --show-progress nodejs'
+                sh 'curl --silent --fail --show-error --location https://deb.nodesource.com/setup_19.x | bash -; apt-get install --no-install-recommends --yes --show-progress nodejs'
                 sh 'node --version'
                 sh 'npm i -g npm'
                 sh 'npm --version'
@@ -109,7 +109,7 @@ pipeline {
                 // https://cloudcone.com/docs/article/how-to-install-python-3-10-on-debian-11
                 // https://linuxhint.com/install-python-debian-10
                 // https://computingforgeeks.com/how-to-install-python-on-debian-linux
-                sh 'apt install --no-install-recommends --yes --show-progress python3-minimal'
+                sh 'apt-get install --no-install-recommends --yes --show-progress python3-minimal'
                 sh 'python3 --version'
 
                 script {
@@ -119,9 +119,11 @@ pipeline {
                 }
 
                 // "clean install", Dauer: ca. 5 Minuten
+                sh "sed -i '/@nestjs\/schematics/d' package.json"
+                sh "sed -i '/typedoc/d' package.json"
                 sh 'npm ci --omit=dev --no-package-lock --force'
                 sh 'npm r -D ts-jest --no-package-lock --force'
-                sh 'npm i -D typescript@rc --no-package-lock --force'
+                sh 'npm i -D typescript@beta --no-package-lock --force'
                 sh 'npm audit --omit dev fix --force'
                 sh 'npm i -D ts-jest --no-package-lock --force'
             }
