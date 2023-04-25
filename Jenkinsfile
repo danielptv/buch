@@ -119,7 +119,7 @@ pipeline {
                 }
 
                 // "clean install", Dauer: ca. 5 Minuten
-                sh "sed -i '/@nestjs\/schematics/d' package.json"
+                sh "sed -i '/@nestjs\\/schematics/d' package.json"
                 sh "sed -i '/typedoc/d' package.json"
                 sh 'npm ci --omit=dev --no-package-lock --force'
                 sh 'npm r -D ts-jest --no-package-lock --force'
