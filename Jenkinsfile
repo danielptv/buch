@@ -124,6 +124,7 @@ pipeline {
                 sh "sed -i '/\"ts-node\":/d' package.json"
                 sh "sed -i '/\"ts-jest\":/d' package.json"
                 sh "sed -i '/\"typedoc\":/d' package.json"
+                sh 'cat package.json'
                 sh 'npm ci --omit=dev --no-package-lock --force'
                 sh 'npm i -D typescript@beta --no-package-lock --force'
                 sh 'npm audit --omit dev fix --force'
