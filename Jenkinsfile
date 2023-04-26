@@ -118,7 +118,7 @@ pipeline {
                     }
                 }
 
-                // "clean install", Dauer: ca. 5 Minuten
+                // sh "apt-get install --yes sed"
                 sh "sed -i '/@nestjs\\/schematics/d' package.json"
                 sh "sed -i '/ts-node/d' package.json"
                 sh "sed -i '/ts-jest/d' package.json"
