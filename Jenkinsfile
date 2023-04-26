@@ -95,7 +95,6 @@ pipeline {
                 //sh 'lsb_release -a'
                 sh 'cat /etc/os-release'
                 sh 'cat /etc/debian_version'
-                sh 'docker version'
 
                 sh 'curl --silent --fail --show-error --location https://deb.nodesource.com/setup_20.x | bash -; apt-get install --no-install-recommends --yes --show-progress nodejs'
                 sh 'node --version'
