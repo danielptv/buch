@@ -102,7 +102,7 @@ pipeline {
                 // https://cloudcone.com/docs/article/how-to-install-python-3-10-on-debian-11
                 // https://linuxhint.com/install-python-debian-10
                 // https://computingforgeeks.com/how-to-install-python-on-debian-linux
-                sh 'apt-get install --no-install-recommends --yes --show-progress apt-utils gcc g++ make python3-minimal'
+                sh 'apt-get install --no-install-recommends --yes --show-progress gcc g++ make python3-minimal'
                 sh 'python3 --version'
 
                 sh 'curl --silent --fail --show-error --location https://deb.nodesource.com/setup_20.x | bash -; apt-get install --no-install-recommends --yes --show-progress nodejs'
