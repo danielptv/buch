@@ -96,19 +96,19 @@ pipeline {
                 sh 'cat /etc/os-release'
                 sh 'cat /etc/debian_version'
 
-                sh 'curl --silent --fail --show-error --location https://deb.nodesource.com/setup_20.x | bash -; apt-get install --no-install-recommends --yes --show-progress nodejs'
-                sh 'node --version'
-                sh 'npm i -g npm'
-                sh 'npm --version'
-
                 // https://packages.debian.org/stable/python/python3
                 // https://packages.debian.org/bullseye/python3
                 // https://computingforgeeks.com/how-to-install-python-on-debian-linux
                 // https://cloudcone.com/docs/article/how-to-install-python-3-10-on-debian-11
                 // https://linuxhint.com/install-python-debian-10
                 // https://computingforgeeks.com/how-to-install-python-on-debian-linux
-                sh 'apt-get install --no-install-recommends --yes --show-progress python3-minimal'
+                sh 'apt-get install --no-install-recommends --yes --show-progress apt-utils gcc g++ make python3-minimal'
                 sh 'python3 --version'
+
+                sh 'curl --silent --fail --show-error --location https://deb.nodesource.com/setup_20.x | bash -; apt-get install --no-install-recommends --yes --show-progress nodejs'
+                sh 'node --version'
+                sh 'npm i -g npm'
+                sh 'npm --version'
 
                 sh 'apt-get update --yes'
                 sh 'apt-get upgrade --yes'
@@ -121,9 +121,9 @@ pipeline {
 
                 // sh "apt-get install --yes sed"
                 sh "sed -i '/@nestjs\\/schematics/d' package.json"
-                sh "sed -i '/ts-node/d' package.json"
-                sh "sed -i '/ts-jest/d' package.json"
-                sh "sed -i '/typedoc/d' package.json"
+                sh "sed -i '/"ts-node":/d' package.json"
+                sh "sed -i '/"ts-jest":/d' package.json"
+                sh "sed -i '/"typedoc":/d' package.json"
                 sh 'npm ci --omit=dev --no-package-lock --force'
                 sh 'npm i -D typescript@beta --no-package-lock --force'
                 sh 'npm audit --omit dev fix --force'
