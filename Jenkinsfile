@@ -40,9 +40,9 @@ pipeline {
     // Umgebungsvariable:
     environment {
         // Cloud:
-        DB_HOST = '?????.amazonaws.com'
-        DB_USER = '?????'
-        DB_PASS = '?????'
+        DB_HOST = 'unknown.amazonaws.com'
+        DB_USER = 'nobody'
+        DB_PASS = 'ChangeMe'
         DB_POPULATE = true
 
         LOG_DIR = './log'
@@ -53,7 +53,7 @@ pipeline {
 
     options {
       // Timeout fuer den gesamten Job
-        timeout(time: 60, unit: 'MINUTES')
+        timeout time: 60, unit: 'MINUTES'
     }
 
     stages {
@@ -95,10 +95,9 @@ pipeline {
                 //sh 'lsb_release -a'
                 sh 'cat /etc/os-release'
                 sh 'cat /etc/debian_version'
-                //sh 'docker --version'
-                sh 'apt-get update'
+                sh 'docker version'
 
-                sh 'curl --silent --fail --show-error --location https://deb.nodesource.com/setup_19.x | bash -; apt-get install --no-install-recommends --yes --show-progress nodejs'
+                sh 'curl --silent --fail --show-error --location https://deb.nodesource.com/setup_20.x | bash -; apt-get install --no-install-recommends --yes --show-progress nodejs'
                 sh 'node --version'
                 sh 'npm i -g npm'
                 sh 'npm --version'
@@ -112,9 +111,12 @@ pipeline {
                 sh 'apt-get install --no-install-recommends --yes --show-progress python3-minimal'
                 sh 'python3 --version'
 
+                sh 'apt-get update --yes'
+                sh 'apt-get upgrade --yes'
+
                 script {
                     if (!fileExists("${env.WORKSPACE}/package.json")) {
-                        echo "package.json ist *NICHT* in ${env.WORKSPACE} vorhanden"
+                        error "package.json ist *NICHT* in ${env.WORKSPACE} vorhanden"
                     }
                 }
 
