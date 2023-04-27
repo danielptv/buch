@@ -119,16 +119,17 @@ pipeline {
                     }
                 }
 
-                // sh "apt-get install --yes sed"
-                sh "sed -i '/@nestjs\\/schematics/d' package.json"
-                sh "sed -i '/\"ts-node\":/d' package.json"
-                sh "sed -i '/\"ts-jest\":/d' package.json"
-                sh "sed -i '/\"typedoc\":/d' package.json"
-                sh 'cat package.json'
-                sh 'npm ci --omit=dev --no-package-lock --force'
-                sh 'npm i -D typescript@beta --no-package-lock --force'
+                // sh "sed -i '/@nestjs\\/schematics/d' package.json"
+                // sh "sed -i '/\"ts-node\":/d' package.json"
+                // sh "sed -i '/\"ts-jest\":/d' package.json"
+                // sh "sed -i '/\"typedoc\":/d' package.json"
+                // sh 'cat package.json'
+                // ci = clean install, d.h. Installation mit package-lock.json
+                sh 'npm ci --production --omit=dev --force'
+                // sh 'npm ci --omit=dev --no-package-lock --force'
+                // sh 'npm i -D typescript@beta --no-package-lock --force'
                 sh 'npm audit --omit dev fix --force'
-                sh 'npm i -D ts-node ts-jest typedoc --no-package-lock --force'
+                // sh 'npm i -D ts-node ts-jest typedoc --no-package-lock --force'
             }
         }
 
