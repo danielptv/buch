@@ -127,9 +127,9 @@ pipeline {
                 // ci = clean install, d.h. Installation mit package-lock.json
                 sh 'npm ci --production --omit=dev --force'
                 // sh 'npm ci --omit=dev --no-package-lock --force'
-                // sh 'npm i -D typescript@beta --no-package-lock --force'
-                sh 'npm audit --omit dev fix --force'
+                sh 'npm i -D typescript@beta --no-package-lock --force'
                 // sh 'npm i -D ts-node ts-jest typedoc --no-package-lock --force'
+                sh 'npm audit --omit dev fix --force'
             }
         }
 
