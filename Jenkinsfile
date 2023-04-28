@@ -72,6 +72,8 @@ pipeline {
 
                 // Unterverzeichnisse src und test im WORKSPACE loeschen: vom letzten Build
                 // Kurzform fuer: sh([script: '...'])
+                sh 'rm -rf package.json'
+                sh 'rm -rf package-lock.json'
                 sh 'rm -rf src'
                 sh 'rm -rf __tests__'
 
