@@ -72,8 +72,6 @@ pipeline {
 
                 // Unterverzeichnisse src und test im WORKSPACE loeschen: vom letzten Build
                 // Kurzform fuer: sh([script: '...'])
-                sh 'rm -rf package.json'
-                sh 'rm -rf package-lock.json'
                 sh 'rm -rf src'
                 sh 'rm -rf __tests__'
 
@@ -125,7 +123,7 @@ pipeline {
                 sh "sed -i '/\"@nestjs\\/schematics\":/d' package.json"
                 sh "sed -i '/\"typescript\":/d' package.json"
                 sh 'cat package.json'
-                sh 'npm i -D --no-package-lock typescript'
+                sh 'npm i -D --no-package-lock typescript@latest'
                 sh 'npm i --no-package-lock'
                 sh 'npm i -D typescript@beta --no-package-lock --force'
                 sh 'npm audit --omit dev fix --force'
