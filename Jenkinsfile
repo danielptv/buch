@@ -129,7 +129,7 @@ pipeline {
                 sh "sed -i '/\"typedoc\":/d' package.json"
                 // ci = clean install, d.h. Installation mit package-lock.json
                 sh 'npm i --omit=dev --force'
-                sh 'npm i -D @nestjs/cli typescript @typescript-eslint/eslint-plugin @typescript-eslint/parser ts-node ts-jest typedoc'
+                sh 'npm i -D @nestjs/cli typescript jest @jest/globals @jest/types @typescript-eslint/eslint-plugin @typescript-eslint/parser ts-node ts-jest typedoc'
                 sh 'npm i -D typescript@beta --force'
                 sh 'npm audit --omit dev fix --force'
             }
