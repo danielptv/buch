@@ -119,6 +119,7 @@ pipeline {
                     }
                 }
 
+                sh 'rm package-lock.json'
                 sh "sed -i '/\"@nestjs\\/schematics\":/d' package.json"
                 sh "sed -i '/\"typescript\":/d' package.json"
                 sh 'npm i -D typescript'
