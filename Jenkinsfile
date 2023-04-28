@@ -121,7 +121,6 @@ pipeline {
 
                 sh "sed -i '/\"@nestjs\\/schematics\":/d' package.json"
                 sh "sed -i '/\"typescript\":/d' package.json"
-                // ci = clean install, d.h. Installation mit package-lock.json
                 sh 'npm i --no-package-lock'
                 sh 'npm i -D typescript@beta --no-package-lock --force'
                 sh 'npm audit --omit dev fix --force'
