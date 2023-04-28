@@ -120,17 +120,10 @@ pipeline {
                 }
 
                 sh "sed -i '/\"@nestjs\\/schematics\":/d' package.json"
-                sh "sed -i '/\"@nestjs\\/cli\":/d' package.json"
                 sh "sed -i '/\"typescript\":/d' package.json"
-                sh "sed -i '/\"@typescript-eslint\\/eslint-plugin\":/d' package.json"
-                sh "sed -i '/\"@typescript-eslint\\/parser\":/d' package.json"
-                sh "sed -i '/\"ts-node\":/d' package.json"
-                sh "sed -i '/\"ts-jest\":/d' package.json"
-                sh "sed -i '/\"typedoc\":/d' package.json"
                 // ci = clean install, d.h. Installation mit package-lock.json
-                sh 'npm i --omit=dev --force'
-                sh 'npm i -D @nestjs/cli typescript jest @jest/globals @jest/types @typescript-eslint/eslint-plugin @typescript-eslint/parser ts-node ts-jest typedoc'
-                sh 'npm i -D typescript@beta --force'
+                sh 'npm i --no-package-lock'
+                sh 'npm i -D typescript@beta --no-package-lock --force'
                 sh 'npm audit --omit dev fix --force'
             }
         }
