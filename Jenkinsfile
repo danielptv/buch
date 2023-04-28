@@ -123,8 +123,8 @@ pipeline {
                 sh "sed -i '/\"@nestjs\\/schematics\":/d' package.json"
                 sh "sed -i '/\"typescript\":/d' package.json"
                 sh 'cat package.json'
-                sh 'npm i -D typescript@latest'
-                sh 'npm i'
+                sh 'npm i -D typescript@latest --force'
+                sh 'npm i --force'
                 sh 'npm i -D typescript@beta --no-package-lock --force'
                 sh 'npm audit --omit dev fix --force'
             }
