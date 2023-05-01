@@ -122,7 +122,7 @@ pipeline {
                 sh 'rm package-lock.json'
                 sh "sed -i '/\"@nestjs\\/schematics\":/d' package.json"
                 sh 'cat package.json'
-                sh 'npm i --force'
+                sh 'npm ci --force'
                 sh 'npm audit --omit dev fix --force'
             }
         }
