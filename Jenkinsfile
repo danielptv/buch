@@ -74,6 +74,7 @@ pipeline {
                 // Kurzform fuer: sh([script: '...'])
                 sh 'rm -rf src'
                 sh 'rm -rf __tests__'
+                sh 'rm -rf node_modules'
 
                 // https://www.jenkins.io/doc/pipeline/steps/git
                 // "named arguments" statt Funktionsaufruf mit Klammern
@@ -120,12 +121,12 @@ pipeline {
                 }
 
                 // /var/jenkins_home/workspace/buch (siehe "pwd" oben)
+                // npm help install
                 // sh 'rm package-lock.json'
                 sh "sed -i '/\"@nestjs\\/schematics\":/d' package.json"
                 sh 'cat package.json'
                 sh 'npm i -E --package-lock=false --audit=false --fund=false --force'
-                sh 'npm i -D -E --package-lock=false --audit=false --fund=false --force'
-                //sh 'npm i -E -D typescript@beta ts-node ts-jest typedoc jest jest/globals jest/types --package-lock=false --audit=false --fund=false --force'
+                sh 'npm i -E -D typescript@beta ts-node ts-jest typedoc jest @jest/globals @jest/types --package-lock=false --audit=false --fund=false --force'
                 sh 'npm audit --omit dev fix --force'
             }
         }
