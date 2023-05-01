@@ -129,7 +129,7 @@ pipeline {
                 sh 'npm i -D typescript'
                 sh 'npm i -E'
                 sh 'npm r -D typescript'
-                sh 'npm i -E -D typescript@beta ts-node ts-jest typedoc jest @jest/globals @jest/types --force'
+                sh 'npm i -E -D typescript@beta ts-node ts-jest typedoc --force'
                 sh 'npm audit --omit dev fix --force'
             }
         }
