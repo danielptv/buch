@@ -124,7 +124,8 @@ pipeline {
                 sh "sed -i '/\"@nestjs\\/schematics\":/d' package.json"
                 sh 'cat package.json'
                 sh 'npm i -E --package-lock=false --audit=false --fund=false --force'
-                sh 'npm i -E -D typescript@beta ts-node ts-jest typedoc jest jest/globals jest/types --package-lock=false --audit=false --fund=false --force'
+                sh 'npm i -D -E --package-lock=false --audit=false --fund=false --force'
+                //sh 'npm i -E -D typescript@beta ts-node ts-jest typedoc jest jest/globals jest/types --package-lock=false --audit=false --fund=false --force'
                 sh 'npm audit --omit dev fix --force'
             }
         }
