@@ -119,13 +119,12 @@ pipeline {
                     }
                 }
 
-                // /var/jenkins_home/workspace/buch
+                // /var/jenkins_home/workspace/buch (siehe "pwd" oben)
                 // sh 'rm package-lock.json'
                 sh "sed -i '/\"@nestjs\\/schematics\":/d' package.json"
                 sh 'cat package.json'
-                // sh 'npm ci --no-package-lock --force'
                 sh 'npm i -E --package-lock=false --audit=false --fund=false --force'
-                sh 'npm i -E -D typescript@beta ts-node ts-jest typedoc --package-lock=false --audit=false --fund=false --force'
+                sh 'npm i -E -D typescript@beta ts-node ts-jest typedoc jest jest/globals jest/types --package-lock=false --audit=false --fund=false --force'
                 sh 'npm audit --omit dev fix --force'
             }
         }
