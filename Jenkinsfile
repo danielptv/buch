@@ -131,10 +131,12 @@ pipeline {
                 sh "sed -i '/\"typedoc\":/d' package.json"
                 sh 'cat package.json'
                 // npm help install
-                sh 'npm i'
-                sh 'npm i -D -E ts-node ts-jest typedoc'
-                sh 'npm i -D -E typescript@beta --force'
-                sh 'npm audit --omit dev fix --force'
+                // sh 'npm i --fund=false --audit=false'
+                sh 'npm i -D --fund=false --audit=false'
+                sh 'npm i -D typescript ts-node ts-jest typedoc --fund=false --audit=false'
+                sh 'npm r -D typescript'
+                sh 'npm i -D typescript@beta --fund=false --audit=false --force'
+                sh 'npm audit --omit=dev fix --force'
             }
         }
 
