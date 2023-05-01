@@ -130,7 +130,7 @@ pipeline {
         stage('Compile') {
             steps {
                 sh 'npx tsc --version'
-                // Dauer < 1 Min. (Warum funktioniert npx nicht?)
+                // TODO Warum funktioniert npx nicht?
                 sh './node_modules/.bin/tsc'
             }
         }
