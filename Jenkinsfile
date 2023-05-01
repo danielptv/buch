@@ -127,7 +127,8 @@ pipeline {
                 sh "sed -i '/\"typescript\":/d' package.json"
                 sh 'cat package.json'
                 sh 'npm i -D typescript'
-                sh 'npm i -E --force'
+                sh 'npm i -E'
+                sh 'npm r -D typescript'
                 sh 'npm i -E -D typescript@beta ts-node ts-jest typedoc jest @jest/globals @jest/types --force'
                 sh 'npm audit --omit dev fix --force'
             }
