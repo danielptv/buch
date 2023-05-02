@@ -120,21 +120,18 @@ pipeline {
                     }
                 }
 
+                sh 'cat package.json'
+                // /var/jenkins_home ist das Homedirectory vom User "jenkins"
                 // /var/jenkins_home/workspace/buch (siehe "pwd" oben)
+                // sh "sed -i '/\"@nestjs\\/schematics\":/d' package.json"
                 // -i: edit in place
                 // d: delete
-                // sh "sed -i '/\"@nestjs\\/schematics\":/d' package.json"
-                // sh "sed -i '/\"typescript\":/d' package.json"
-                // sh "sed -i '/\"ts-node\":/d' package.json"
-                // sh "sed -i '/\"ts-jest\":/d' package.json"
-                // sh "sed -i '/\"typedoc\":/d' package.json"
-                sh 'cat package.json'
                 // npm help install
                 // sh 'npm i --fund=false --audit=false'
-                sh 'npm ci --omit=dev --no-package-lock --force'
-                sh 'npm i -D typescript@beta --no-package-lock --fund=false --audit=false --force'
-                sh 'npm i -D ts-node ts-jest typedoc --no-package-lock --fund=false --audit=false --force'
-                sh 'npm i -D @jest/globals @jest/types --no-package-lock --fund=false --audit=false --force'
+                sh 'npm ci --omit=dev --force'
+                sh 'npm i -D typescript@beta --fund=false --audit=false --force'
+                sh 'npm i -D ts-node ts-jest typedoc --fund=false --audit=false --force'
+                sh 'npm i -D jest jest-config @jest/globals @jest/types --fund=false --audit=false --force'
                 sh 'npm audit --omit=dev fix --force'
             }
         }
