@@ -63,7 +63,7 @@ services:
     networks: [jenkins]
     env_file: [jenkins.env]
     # User "jenkins" mit Group "jenkins" ist in "Dockerfile" voreingestellt
-    # user: "jenkins:jenkins"
+    user: "jenkins:jenkins"
     container_name: jenkins
     hostname: jenkins
     #deploy:

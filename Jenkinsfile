@@ -124,13 +124,15 @@ pipeline {
                 // /var/jenkins_home/workspace/buch (siehe "pwd" oben)
                 sh 'cat package.json'
                 sh 'rm package-lock.json'
+
                 // npm help install
-                // Konfigurationsverzeichnis /root/.npm
-                sh 'npm i'
-                sh 'npm r -D apollo-server-types @types/compression @types/express @types/figlet @types/fs-extra @types/node @types/nodemailer @types/nodemailer-direct-transport @types/nodemailer-smtp-transport @types/passport-jwt @types/passport-local @types/uuid jest jest-config @jest/globals @jest/types'
-                sh 'npm i -D apollo-server-types @types/compression @types/express @types/figlet @types/fs-extra @types/node @types/nodemailer @types/nodemailer-direct-transport @types/nodemailer-smtp-transport @types/passport-jwt @types/passport-local @types/uuid jest jest-config @jest/globals @jest/types'
                 // ci (= clean install) mit package-lock.json
                 // sh 'npm ci --omit=dev'
+                // Konfigurationsverzeichnis /root/.npm
+                sh 'npm i --force'
+                sh 'npm r -D apollo-server-types @types/compression @types/express @types/figlet @types/fs-extra @types/node @types/nodemailer @types/nodemailer-direct-transport @types/nodemailer-smtp-transport @types/passport-jwt @types/passport-local @types/uuid jest jest-config @jest/globals @jest/types --force'
+                sh 'npm i -D apollo-server-types @types/compression @types/express @types/figlet @types/fs-extra @types/node @types/nodemailer @types/nodemailer-direct-transport @types/nodemailer-smtp-transport @types/passport-jwt @types/passport-local @types/uuid jest jest-config @jest/globals @jest/types --force'
+
                 sh 'npm audit --omit=dev fix'
             }
         }
