@@ -62,8 +62,8 @@ services:
       #  target: /root/.npm
     networks: [jenkins]
     env_file: [jenkins.env]
-    # User "jenkins" mit Group "jenkins" ist in "Dockerfile" voreingestellt
-    user: "jenkins:jenkins"
+    # User "jenkins" wurde gesetzt in "Dockerfile"
+    #user: "jenkins:jenkins"
     container_name: jenkins
     hostname: jenkins
     #deploy:

@@ -75,6 +75,7 @@ pipeline {
                 sh 'rm -rf src'
                 sh 'rm -rf __tests__'
                 sh 'rm -rf node_modules'
+                sh 'rm -rf dist'
 
                 // https://www.jenkins.io/doc/pipeline/steps/git
                 // "named arguments" statt Funktionsaufruf mit Klammern
@@ -129,11 +130,11 @@ pipeline {
                 // ci (= clean install) mit package-lock.json
                 // sh 'npm ci --omit=dev'
                 // Konfigurationsverzeichnis /root/.npm
-                sh 'npm i --force'
-                sh 'npm r -D apollo-server-types @types/compression @types/express @types/figlet @types/fs-extra @types/node @types/nodemailer @types/nodemailer-direct-transport @types/nodemailer-smtp-transport @types/passport-jwt @types/passport-local @types/uuid jest jest-config @jest/globals @jest/types --force'
-                sh 'npm i -D apollo-server-types @types/compression @types/express @types/figlet @types/fs-extra @types/node @types/nodemailer @types/nodemailer-direct-transport @types/nodemailer-smtp-transport @types/passport-jwt @types/passport-local @types/uuid jest jest-config @jest/globals @jest/types --force'
+                sh 'runuser -g jenkins -u jenkins -- npm i --force'
+                sh 'runuser -g jenkins -u jenkins -- npm r -D apollo-server-types @types/compression @types/express @types/figlet @types/fs-extra @types/node @types/nodemailer @types/nodemailer-direct-transport @types/nodemailer-smtp-transport @types/passport-jwt @types/passport-local @types/uuid jest jest-config @jest/globals @jest/types --force'
+                sh 'runuser -g jenkins -u jenkins -- npm i -D apollo-server-types @types/compression @types/express @types/figlet @types/fs-extra @types/node @types/nodemailer @types/nodemailer-direct-transport @types/nodemailer-smtp-transport @types/passport-jwt @types/passport-local @types/uuid jest jest-config @jest/globals @jest/types --force'
 
-                sh 'npm audit --omit=dev fix'
+                sh 'runuser -g jenkins -u jenkins -- npm audit --omit=dev fix'
             }
         }
 
@@ -141,7 +142,7 @@ pipeline {
             steps {
                 sh 'npx tsc --version'
                 // TODO Warum funktioniert npx nicht?
-                sh './node_modules/.bin/tsc'
+                sh 'runuser -g jenkins -u jenkins -- ./node_modules/.bin/tsc'
             }
         }
 
@@ -162,11 +163,11 @@ pipeline {
                     },
                     'AsciiDoctor': {
                         sh 'npx asciidoctor --version'
-                        sh 'npm run asciidoctor'
+                        sh 'runuser -g jenkins -u jenkins -- npm run asciidoctor'
                     },
                     'reveal.js': {
                         sh 'npx asciidoctor-revealjs --version'
-                        sh 'npm run revealjs'
+                        sh 'runuser -g jenkins -u jenkins -- npm run revealjs'
                     },
                     'TypeDoc': {
                         sh 'npx typedoc --version'
