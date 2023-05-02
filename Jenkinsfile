@@ -121,7 +121,6 @@ pipeline {
                 }
 
                 // /var/jenkins_home/workspace/buch (siehe "pwd" oben)
-                sh 'rm package-lock.json'
                 // -i: edit in place
                 // d: delete
                 sh "sed -i '/\"@nestjs\\/schematics\":/d' package.json"
@@ -132,10 +131,9 @@ pipeline {
                 sh 'cat package.json'
                 // npm help install
                 // sh 'npm i --fund=false --audit=false'
-                sh 'npm i -D --fund=false --audit=false'
-                sh 'npm i -D typescript ts-node ts-jest typedoc --fund=false --audit=false'
-                sh 'npm r -D typescript'
-                sh 'npm i -D typescript@beta --fund=false --audit=false --force'
+                sh 'npm ci --omit=dev --no-package-lock --force'
+                sh 'npm i -D typescript@beta --no-package-lock --fund=false --audit=false --force'
+                sh 'npm i -D ts-node ts-jest typedoc --no-package-lock --fund=false --audit=false --force'
                 sh 'npm audit --omit=dev fix --force'
             }
         }
