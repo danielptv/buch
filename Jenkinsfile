@@ -134,6 +134,7 @@ pipeline {
                 sh 'npm ci --omit=dev --no-package-lock --force'
                 sh 'npm i -D typescript@beta --no-package-lock --fund=false --audit=false --force'
                 sh 'npm i -D ts-node ts-jest typedoc --no-package-lock --fund=false --audit=false --force'
+                sh 'npm i -D @jest/globals @jest/types --no-package-lock --fund=false --audit=false --force'
                 sh 'npm audit --omit=dev fix --force'
             }
         }
