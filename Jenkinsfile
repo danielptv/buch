@@ -120,19 +120,16 @@ pipeline {
                     }
                 }
 
-                sh 'cat package.json'
                 // /var/jenkins_home ist das Homedirectory vom User "jenkins"
                 // /var/jenkins_home/workspace/buch (siehe "pwd" oben)
-                // sh "sed -i '/\"@nestjs\\/schematics\":/d' package.json"
-                // -i: edit in place
-                // d: delete
+                sh 'cat package.json'
+                sh 'rm package-log.json'
                 // npm help install
-                // sh 'npm i --fund=false --audit=false'
-                sh 'npm ci --omit=dev --force'
-                sh 'npm i -D typescript@beta --fund=false --audit=false --force'
-                sh 'npm i -D ts-node ts-jest typedoc --fund=false --audit=false --force'
-                sh 'npm i -D jest jest-config @jest/globals @jest/types --fund=false --audit=false --force'
-                sh 'npm audit --omit=dev fix --force'
+                sh 'npm i'
+                // sh 'npm ci --omit=dev'
+                // sh 'npm i -D typescript ts-node ts-jest typedoc'
+                // sh 'npm i -D jest jest-config @jest/globals @jest/types'
+                sh 'npm audit --omit=dev fix'
             }
         }
 
