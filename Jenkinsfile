@@ -110,9 +110,6 @@ pipeline {
                 sh 'node --version'
                 sh 'npm i -g npm'
                 sh 'npm --version'
-                sh '[ -d /root/.npm ] || mkdir -p /root/.npm'
-                sh 'chmod 777 /root'
-                sh 'chmod 777 /root/.npm'
 
                 sh 'apt-get update --yes'
                 sh 'apt-get upgrade --yes'
@@ -128,8 +125,10 @@ pipeline {
                 sh 'cat package.json'
                 sh 'rm package-lock.json'
                 // npm help install
+                // Konfigurationsverzeichnis /root/.npm
                 sh 'npm i'
-                sh 'npm i -D jest jest-config @jest/globals @jest/types'
+                sh 'npm r -D apollo-server-types @types/compression @types/express @types/figlet @types/fs-extra @types/node @types/nodemailer @types/nodemailer-direct-transport @types/nodemailer-smtp-transport @types/passport-jwt @types/passport-local @types/uuid jest jest-config @jest/globals @jest/types'
+                sh 'npm i -D apollo-server-types @types/compression @types/express @types/figlet @types/fs-extra @types/node @types/nodemailer @types/nodemailer-direct-transport @types/nodemailer-smtp-transport @types/passport-jwt @types/passport-local @types/uuid jest jest-config @jest/globals @jest/types'
                 // ci (= clean install) mit package-lock.json
                 // sh 'npm ci --omit=dev'
                 sh 'npm audit --omit=dev fix'
