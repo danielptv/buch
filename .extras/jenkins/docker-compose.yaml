@@ -57,6 +57,9 @@ services:
       - type: bind
         source: C:/Zimmermann/volumes/jenkins/data
         target: /var/jenkins_home
+      #- type: bind
+      #  source: C:/Zimmermann/volumes/jenkins/npm
+      #  target: /root/.npm
     networks: [jenkins]
     env_file: [jenkins.env]
     # User "jenkins" mit Group "jenkins" ist in "Dockerfile" voreingestellt

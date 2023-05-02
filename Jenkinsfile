@@ -110,6 +110,8 @@ pipeline {
                 sh 'node --version'
                 sh 'npm i -g npm'
                 sh 'npm --version'
+                sh '[ -d /root/.npm ] || mkdir -p /root/.npm'
+                sh 'chmod 777 /root/.npm'
 
                 sh 'apt-get update --yes'
                 sh 'apt-get upgrade --yes'
