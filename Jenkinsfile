@@ -111,6 +111,7 @@ pipeline {
                 sh 'npm i -g npm'
                 sh 'npm --version'
                 sh '[ -d /root/.npm ] || mkdir -p /root/.npm'
+                sh 'chmod 777 /root'
                 sh 'chmod 777 /root/.npm'
 
                 sh 'apt-get update --yes'
@@ -127,10 +128,10 @@ pipeline {
                 sh 'cat package.json'
                 sh 'rm package-lock.json'
                 // npm help install
-                // ci (= clean install) mit package-lock.json
                 sh 'npm i'
+                sh 'npm i -D jest jest-config @jest/globals @jest/types'
+                // ci (= clean install) mit package-lock.json
                 // sh 'npm ci --omit=dev'
-                // sh 'npm i -D typescript@beta'
                 sh 'npm audit --omit=dev fix'
             }
         }
