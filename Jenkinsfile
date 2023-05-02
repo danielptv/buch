@@ -130,11 +130,11 @@ pipeline {
                 // ci (= clean install) mit package-lock.json
                 // sh 'npm ci --omit=dev'
                 // Konfigurationsverzeichnis /root/.npm
-                sh 'runuser -u jenkins -- npm i --force'
-                sh 'runuser -u jenkins -- npm r -D apollo-server-types @types/compression @types/express @types/figlet @types/fs-extra @types/node @types/nodemailer @types/nodemailer-direct-transport @types/nodemailer-smtp-transport @types/passport-jwt @types/passport-local @types/uuid jest jest-config @jest/globals @jest/types --force'
-                sh 'runuser -u jenkins -- npm i -D apollo-server-types @types/compression @types/express @types/figlet @types/fs-extra @types/node @types/nodemailer @types/nodemailer-direct-transport @types/nodemailer-smtp-transport @types/passport-jwt @types/passport-local @types/uuid jest jest-config @jest/globals @jest/types --force'
+                sh 'npm i --force'
+                sh 'npm r -D apollo-server-types @types/compression @types/express @types/figlet @types/fs-extra @types/node @types/nodemailer @types/nodemailer-direct-transport @types/nodemailer-smtp-transport @types/passport-jwt @types/passport-local @types/uuid jest jest-config @jest/globals @jest/types --force'
+                sh 'npm i -D apollo-server-types @types/compression @types/express @types/figlet @types/fs-extra @types/node @types/nodemailer @types/nodemailer-direct-transport @types/nodemailer-smtp-transport @types/passport-jwt @types/passport-local @types/uuid jest jest-config @jest/globals @jest/types --force'
 
-                sh 'runuser -u jenkins -- npm audit --omit=dev fix'
+                sh 'npm audit --omit=dev fix'
             }
         }
 
@@ -142,7 +142,7 @@ pipeline {
             steps {
                 sh 'npx tsc --version'
                 // TODO Warum funktioniert npx nicht?
-                sh 'runuser -u jenkins -- ./node_modules/.bin/tsc'
+                sh './node_modules/.bin/tsc'
             }
         }
 
@@ -163,11 +163,11 @@ pipeline {
                     },
                     'AsciiDoctor': {
                         sh 'npx asciidoctor --version'
-                        sh 'runuser -u jenkins -- npm run asciidoctor'
+                        sh 'npm run asciidoctor'
                     },
                     'reveal.js': {
                         sh 'npx asciidoctor-revealjs --version'
-                        sh 'runuser -u jenkins -- npm run revealjs'
+                        sh 'npm run revealjs'
                     },
                     'TypeDoc': {
                         sh 'npx typedoc --version'
