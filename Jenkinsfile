@@ -123,11 +123,11 @@ pipeline {
                 // /var/jenkins_home/workspace/buch (siehe "pwd" oben)
                 // -i: edit in place
                 // d: delete
-                sh "sed -i '/\"@nestjs\\/schematics\":/d' package.json"
-                sh "sed -i '/\"typescript\":/d' package.json"
-                sh "sed -i '/\"ts-node\":/d' package.json"
-                sh "sed -i '/\"ts-jest\":/d' package.json"
-                sh "sed -i '/\"typedoc\":/d' package.json"
+                // sh "sed -i '/\"@nestjs\\/schematics\":/d' package.json"
+                // sh "sed -i '/\"typescript\":/d' package.json"
+                // sh "sed -i '/\"ts-node\":/d' package.json"
+                // sh "sed -i '/\"ts-jest\":/d' package.json"
+                // sh "sed -i '/\"typedoc\":/d' package.json"
                 sh 'cat package.json'
                 // npm help install
                 // sh 'npm i --fund=false --audit=false'
