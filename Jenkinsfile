@@ -123,12 +123,12 @@ pipeline {
                 // /var/jenkins_home ist das Homedirectory vom User "jenkins"
                 // /var/jenkins_home/workspace/buch (siehe "pwd" oben)
                 sh 'cat package.json'
-                sh 'rm package-log.json'
+                sh 'rm package-lock.json'
                 // npm help install
+                // ci (= clean install) mit package-lock.json
                 sh 'npm i'
                 // sh 'npm ci --omit=dev'
-                // sh 'npm i -D typescript ts-node ts-jest typedoc'
-                // sh 'npm i -D jest jest-config @jest/globals @jest/types'
+                // sh 'npm i -D typescript@beta'
                 sh 'npm audit --omit=dev fix'
             }
         }
