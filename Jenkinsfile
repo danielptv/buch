@@ -224,7 +224,7 @@ pipeline {
             steps {
                 echo 'TODO: Docker-Image bauen: dockerd starten, pack installieren'
                 // Docker-Installation und laufender Docker-Daemon erforderlich
-                // sh 'docker build --tag juergenzimmermann/buch:2023.1.0 .'
+                // sh 'docker buildx build --tag juergenzimmermann/buch:2023.1.0 .'
             }
         }
 
