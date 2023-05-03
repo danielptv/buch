@@ -136,7 +136,7 @@ pipeline {
                     |@types/nodemailer-direct-transport @types/nodemailer-smtp-transport
                     |@types/passport-jwt @types/passport-local @types/uuid
                     |jest jest-config @jest/globals @jest/types\
-                    '''.stripIndent().replace('\n', ' ')
+                    '''.stripMargin().replace('\n', ' ')
                 sh "npm r -D $devPackages --force"
                 sh "npm i -D $devPackages --force"
 
