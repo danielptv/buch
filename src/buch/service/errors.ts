@@ -64,7 +64,6 @@ export interface BuchNotExists {
 /**
  * Union-Type für Fehler beim Ändern eines Buches:
  * - {@linkcode BuchNotExists}
- * - {@linkcode ConstraintViolations}
  * - {@linkcode VersionInvalid}
  * - {@linkcode VersionOutdated}
  */

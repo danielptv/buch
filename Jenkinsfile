@@ -76,6 +76,7 @@ pipeline {
                 sh 'rm -rf __tests__'
                 sh 'rm -rf node_modules'
                 sh 'rm -rf dist'
+                sh 'rm -rf .extras/doc/api'
 
                 // https://www.jenkins.io/doc/pipeline/steps/git
                 // "named arguments" statt Funktionsaufruf mit Klammern
@@ -176,21 +177,6 @@ pipeline {
             post {
                 always {
                   echo 'TODO: Links fuer Coverage und TypeDoc'
-
-                  publishHTML (target : [
-                    reportDir: '.extras/doc/entwicklerhandbuch/html',
-                    reportFiles: 'entwicklerhandbuch.html',
-                    reportName: 'Entwicklerhandbuch',
-                    reportTitles: 'Entwicklerhandbuch'
-                  ])
-
-                  publishHTML target : [
-                   reportDir: '.extras/doc/folien',
-                   reportFiles: 'folien.html',
-                   reportName: 'Folien (reveal.js)',
-                   reportTitles: 'reveal.js'
-                  ]
-
                   //publishHTML target : [
                   //  reportDir: 'coverage',
                   //  reportFiles: 'index.html',
@@ -198,12 +184,26 @@ pipeline {
                   //  reportTitles: 'Coverage'
                   //]
 
-                  //publishHTML target : [
-                  // reportDir: '.extras/doc/api',
-                  // reportFiles: 'index.html',
-                  // reportName: 'TypeDoc',
-                  // reportTitles: 'TypeDoc'
-                  //]
+                  publishHTML (target : [
+                      reportDir: '.extras/doc/entwicklerhandbuch/html',
+                      reportFiles: 'entwicklerhandbuch.html',
+                      reportName: 'Entwicklerhandbuch',
+                      reportTitles: 'Entwicklerhandbuch'
+                  ])
+
+                  publishHTML target : [
+                      reportDir: '.extras/doc/folien',
+                      reportFiles: 'folien.html',
+                      reportName: 'Folien (reveal.js)',
+                      reportTitles: 'reveal.js'
+                  ]
+
+                  publishHTML target : [
+                      reportDir: '.extras/doc/api',
+                      reportFiles: 'index.html',
+                      reportName: 'TypeDoc',
+                      reportTitles: 'TypeDoc'
+                  ]
                 }
 
                 success {
@@ -222,9 +222,9 @@ pipeline {
 
         stage('Docker Image bauen') {
             steps {
-              echo 'TODO: Docker-Image bauen: dockerd starten, pack installieren'
-              // Docker-Installation und laufender Docker-Daemon erforderlich
-              // sh 'docker build --tag juergenzimmermann/buch:1.0.0 .'
+                echo 'TODO: Docker-Image bauen: dockerd starten, pack installieren'
+                // Docker-Installation und laufender Docker-Daemon erforderlich
+                // sh 'docker build --tag juergenzimmermann/buch:1.0.0 .'
             }
         }
 
