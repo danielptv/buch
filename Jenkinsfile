@@ -222,8 +222,8 @@ pipeline {
 
         stage('Docker Image bauen') {
             steps {
-                echo 'TODO: dockerd starten, dann Docker-Image bauen'
                 // Docker-Installation und laufender Docker-Daemon erforderlich
+                echo 'TODO: dockerd starten, dann Docker-Image bauen'
                 // sh 'docker buildx build --tag juergenzimmermann/buch:2023.1.0 .'
             }
         }
