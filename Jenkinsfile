@@ -137,10 +137,10 @@ pipeline {
                 // npm help install
                 // ci (= clean install) mit package-lock.json
                 // Konfigurationsverzeichnis /root/.npm
-                sh 'npm install --no-package-lock --no-audit --no-fund --force'
-                // sh 'npm ci --omit=dev --no-package-lock --no-audit --no-fund --force'
-                // sh "npm uninstall --save-dev $devPackages --force"
-                // sh "npm install --save-dev $devPackages --no-package-lock --no-audit --no-fund --force"
+                sh 'npm install --no-audit --no-fund'
+                // sh 'npm ci --omit=dev --no-package-lock --no-audit --no-fund'
+                // sh "npm uninstall --save-dev $devPackages"
+                // sh "npm install --save-dev $devPackages --no-package-lock --no-audit --no-fund"
 
                 // sh 'npm audit --omit=dev fix'
             }
