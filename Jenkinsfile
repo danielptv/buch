@@ -19,13 +19,13 @@
 
 // https://www.jenkins.io/doc/tutorials/create-a-pipeline-in-blue-ocean/
 
-def devPackages = '''\
-    apollo-server-types @types/compression @types/express
-    @types/figlet @types/fs-extra @types/node @types/nodemailer
-    @types/nodemailer-direct-transport @types/nodemailer-smtp-transport
-    @types/passport-jwt @types/passport-local @types/uuid
-    jest jest-config @jest/globals @jest/types\
-    '''.stripIndent().replace('\n', ' ')
+// def devPackages = '''\
+//     apollo-server-types @types/compression @types/express
+//     @types/figlet @types/fs-extra @types/node @types/nodemailer
+//     @types/nodemailer-direct-transport @types/nodemailer-smtp-transport
+//     @types/passport-jwt @types/passport-local @types/uuid
+//     jest jest-config @jest/globals @jest/types\
+//     '''.stripIndent().replace('\n', ' ')
 
 pipeline {
     // agent any
@@ -132,15 +132,15 @@ pipeline {
                 // /var/jenkins_home ist das Homedirectory vom User "jenkins"
                 // /var/jenkins_home/workspace/buch (siehe "pwd" oben)
                 sh 'cat package.json'
-                // sh 'rm package-lock.json'
 
                 // npm help install
-                // ci (= clean install) mit package-lock.json
                 // Konfigurationsverzeichnis /root/.npm
-                sh 'npm install --no-audit --no-fund'
-                // sh 'npm ci --omit=dev --no-package-lock --no-audit --no-fund'
+                sh 'npm install --no-fund'
+
+                // ci (= clean install) mit package-lock.json
+                // sh 'npm ci --no-fund'
                 // sh "npm uninstall --save-dev $devPackages"
-                // sh "npm install --save-dev $devPackages --no-package-lock --no-audit --no-fund"
+                // sh "npm install --save-dev $devPackages --no-fund"
 
                 // sh 'npm audit --omit=dev fix'
             }
@@ -163,8 +163,7 @@ pipeline {
                     },
                     'ESLint': {
                         sh 'npx eslint --version'
-                        echo 'TODO: ESLint ist aus Kapazitaetsgruenden auskommentiert'
-                        //sh 'npm run eslint'
+                        sh 'npm run eslint'
                     },
                     'Security Audit': {
                         sh 'npm audit --omit=dev'
@@ -179,8 +178,7 @@ pipeline {
                     },
                     'TypeDoc': {
                         sh 'npx typedoc --version'
-                        echo 'TODO: TypeDoc ist aus Kapazitaetsgruenden auskommentiert'
-                        //sh 'npm run typedoc'
+                        sh 'npm run typedoc'
                     }
                 )
             }
