@@ -139,7 +139,7 @@ pipeline {
                 // Konfigurationsverzeichnis /root/.npm
                 sh 'npm ci --omit=dev --no-package-lock --force'
                 sh "npm r -D $devPackages --force"
-                sh "npm i -D $devPackages --force"
+                sh "npm i -D $devPackages --no-package-lock --force"
 
                 sh 'npm audit --omit=dev fix'
             }
