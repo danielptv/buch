@@ -19,6 +19,14 @@
 
 // https://www.jenkins.io/doc/tutorials/create-a-pipeline-in-blue-ocean/
 
+def devPackages = '''\
+    apollo-server-types @types/compression @types/express
+    @types/figlet @types/fs-extra @types/node @types/nodemailer
+    @types/nodemailer-direct-transport @types/nodemailer-smtp-transport
+    @types/passport-jwt @types/passport-local @types/uuid
+    jest jest-config @jest/globals @jest/types\
+    '''.stripIndent().replace('\n', ' ')
+
 pipeline {
     // agent any
     agent {
@@ -130,13 +138,6 @@ pipeline {
                 // ci (= clean install) mit package-lock.json
                 // Konfigurationsverzeichnis /root/.npm
                 sh 'npm ci --omit=dev --no-package-lock --force'
-                def devPackages = '''\
-                    |apollo-server-types @types/compression @types/express
-                    |@types/figlet @types/fs-extra @types/node @types/nodemailer
-                    |@types/nodemailer-direct-transport @types/nodemailer-smtp-transport
-                    |@types/passport-jwt @types/passport-local @types/uuid
-                    |jest jest-config @jest/globals @jest/types\
-                    '''.stripMargin().replace('\n', ' ')
                 sh "npm r -D $devPackages --force"
                 sh "npm i -D $devPackages --force"
 
