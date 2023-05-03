@@ -19,14 +19,6 @@
 
 // https://www.jenkins.io/doc/tutorials/create-a-pipeline-in-blue-ocean/
 
-// def devPackages = '''\
-//     apollo-server-types @types/compression @types/express
-//     @types/figlet @types/fs-extra @types/node @types/nodemailer
-//     @types/nodemailer-direct-transport @types/nodemailer-smtp-transport
-//     @types/passport-jwt @types/passport-local @types/uuid
-//     jest jest-config @jest/globals @jest/types\
-//     '''.stripIndent().replace('\n', ' ')
-
 pipeline {
     // agent any
     agent {
@@ -139,10 +131,8 @@ pipeline {
 
                 // ci (= clean install) mit package-lock.json
                 // sh 'npm ci --no-fund'
-                // sh "npm uninstall --save-dev $devPackages"
-                // sh "npm install --save-dev $devPackages --no-fund"
-
-                // sh 'npm audit --omit=dev fix'
+                // sh "npm uninstall --save-dev ..."
+                // sh "npm install --save-dev ... --no-fund"
             }
         }
 
