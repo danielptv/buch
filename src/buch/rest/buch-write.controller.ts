@@ -140,6 +140,7 @@ export class BuchWriteController {
     // eslint-disable-next-line max-params
     @Put(':id')
     @RolesAllowed('admin', 'mitarbeiter')
+    @HttpCode(HttpStatus.NO_CONTENT)
     @ApiOperation({
         summary: 'Ein vorhandenes Buch aktualisieren',
         tags: ['Aktualisieren'],
@@ -188,9 +189,7 @@ export class BuchWriteController {
         const buch = this.#buchDtoOhneRefToBuch(buchDTO);
         const neueVersion = await this.#service.update({ id, buch, version });
         this.#logger.debug('update: version=%d', neueVersion);
-        return res
-            .set('ETag', `"${neueVersion}"`)
-            .sendStatus(HttpStatus.NO_CONTENT);
+        return res.header('ETag', `"${neueVersion}"`).send();
     }
 
     /**
