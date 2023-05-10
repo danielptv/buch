@@ -15,11 +15,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { Args, Query, Resolver } from '@nestjs/graphql';
-import { BadUserInputError } from './errors.js';
+import { UseFilters, UseInterceptors } from '@nestjs/common';
 import { type Buch } from '../entity/buch.entity.js';
 import { BuchReadService } from '../service/buch-read.service.js';
+import { HttpExceptionFilter } from './http-exception.filter.js';
 import { ResponseTimeInterceptor } from '../../logger/response-time.interceptor.js';
-import { UseInterceptors } from '@nestjs/common';
 import { getLogger } from '../../logger/logger.js';
 
 export type BuchDTO = Omit<Buch, 'abbildungen' | 'aktualisiert' | 'erzeugt'>;
@@ -28,6 +28,7 @@ export interface IdInput {
 }
 
 @Resolver()
+@UseFilters(HttpExceptionFilter)
 @UseInterceptors(ResponseTimeInterceptor)
 export class BuchQueryResolver {
     readonly #service: BuchReadService;
@@ -44,13 +45,8 @@ export class BuchQueryResolver {
         this.#logger.debug('findById: id=%d', id);
 
         const buch = await this.#service.findById({ id });
-        if (buch === undefined) {
-            // https://www.apollographql.com/docs/apollo-server/data/errors
-            throw new BadUserInputError(
-                `Es wurde kein Buch mit der ID ${id} gefunden.`,
-            );
-        }
         const buchDTO = this.#toBuchDTO(buch);
+
         this.#logger.debug('findById: buchDTO=%o', buchDTO);
         return buchDTO;
     }
@@ -60,12 +56,10 @@ export class BuchQueryResolver {
         const titelStr = titel?.titel;
         this.#logger.debug('find: titel=%s', titelStr);
         const suchkriterium = titelStr === undefined ? {} : { titel: titelStr };
-        const buecher = await this.#service.find(suchkriterium);
-        if (buecher.length === 0) {
-            throw new BadUserInputError('Es wurden keine Buecher gefunden.');
-        }
 
+        const buecher = await this.#service.find(suchkriterium);
         const buecherDTO = buecher.map((buch) => this.#toBuchDTO(buch));
+
         this.#logger.debug('find: buecherDTO=%o', buecherDTO);
         return buecherDTO;
     }

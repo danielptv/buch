@@ -115,6 +115,7 @@ export class DbPopulateService implements OnApplicationBootstrap {
         const copyStmt =
             "COPY %TABELLE% FROM '/csv/%TABELLE%.csv' (FORMAT csv, DELIMITER ';', HEADER true);";
         for (const tabelle of this.#tabellen) {
+            // eslint-disable-next-line unicorn/prefer-string-replace-all
             await dataSource.query(copyStmt.replace(/%TABELLE%/gu, tabelle));
         }
         await dataSource.destroy();
@@ -140,6 +141,7 @@ export class DbPopulateService implements OnApplicationBootstrap {
             "INTO TABLE %TABELLE% FIELDS TERMINATED BY ';' " +
             "ENCLOSED BY '\"' LINES TERMINATED BY '\\n' IGNORE 1 ROWS;";
         for (const tabelle of this.#tabellen) {
+            // eslint-disable-next-line unicorn/prefer-string-replace-all
             await dataSource.query(copyStmt.replace(/%TABELLE%/gu, tabelle));
         }
         await dataSource.destroy();

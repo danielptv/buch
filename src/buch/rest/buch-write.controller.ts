@@ -1,4 +1,3 @@
-/* eslint-disable max-lines */
 /*
  * Copyright (C) 2021 - present Juergen Zimmermann, Hochschule Karlsruhe
  *
@@ -37,6 +36,7 @@ import {
     Controller,
     Delete,
     Headers,
+    HttpCode,
     HttpStatus,
     Param,
     Post,
@@ -47,7 +47,6 @@ import {
     UseInterceptors,
 } from '@nestjs/common';
 import { BuchDTO, BuchDtoOhneRef } from './buchDTO.entity.js';
-import { type CreateError, type UpdateError } from '../service/errors.js';
 import { Request, Response } from 'express';
 import { type Abbildung } from '../entity/abbildung.entity.js';
 import { type Buch } from '../entity/buch.entity.js';
@@ -107,11 +106,8 @@ export class BuchWriteController {
 
         const buch = this.#buchDtoToBuch(buchDTO);
         const result = await this.#service.create(buch);
-        if (Object.prototype.hasOwnProperty.call(result, 'type')) {
-            return this.#handleCreateError(result as CreateError, res);
-        }
 
-        const location = `${getBaseUri(req)}/${result as number}`;
+        const location = `${getBaseUri(req)}/${result}`;
         this.#logger.debug('create: location=%s', location);
         return res.location(location).send();
     }
@@ -190,13 +186,11 @@ export class BuchWriteController {
         }
 
         const buch = this.#buchDtoOhneRefToBuch(buchDTO);
-        const result = await this.#service.update({ id, buch, version });
-        if (typeof result === 'object') {
-            return this.#handleUpdateError(result, res);
-        }
-
-        this.#logger.debug('update: version=%d', result);
-        return res.set('ETag', `"${result}"`).sendStatus(HttpStatus.NO_CONTENT);
+        const neueVersion = await this.#service.update({ id, buch, version });
+        this.#logger.debug('update: version=%d', neueVersion);
+        return res
+            .set('ETag', `"${neueVersion}"`)
+            .sendStatus(HttpStatus.NO_CONTENT);
     }
 
     /**
@@ -209,6 +203,7 @@ export class BuchWriteController {
      */
     @Delete(':id')
     @RolesAllowed('admin')
+    @HttpCode(HttpStatus.NO_CONTENT)
     @ApiOperation({ summary: 'Buch mit der ID löschen', tags: ['Loeschen'] })
     @ApiHeader({
         name: 'Authorization',
@@ -218,20 +213,9 @@ export class BuchWriteController {
     @ApiNoContentResponse({
         description: 'Das Buch wurde gelöscht oder war nicht vorhanden',
     })
-    async delete(
-        @Param('id') id: number,
-        @Res() res: Response,
-    ): Promise<Response<undefined>> {
+    async delete(@Param('id') id: number) {
         this.#logger.debug('delete: id=%s', id);
-
-        try {
-            await this.#service.delete(id);
-        } catch (err) {
-            this.#logger.error('delete: error=%o', err);
-            return res.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        return res.sendStatus(HttpStatus.NO_CONTENT);
+        await this.#service.delete(id);
     }
 
     #buchDtoToBuch(buchDTO: BuchDTO): Buch {
@@ -277,30 +261,6 @@ export class BuchWriteController {
         return buch;
     }
 
-    #handleCreateError(err: CreateError, res: Response) {
-        switch (err.type) {
-            case 'IsbnExists': {
-                return this.#handleIsbnExists(err.isbn, res);
-            }
-
-            default: {
-                return res.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-    }
-
-    #handleIsbnExists(
-        isbn: string | null | undefined,
-        res: Response,
-    ): Response {
-        const msg = `Die ISBN-Nummer "${isbn}" existiert bereits.`;
-        this.#logger.debug('#handleIsbnExists(): msg=%s', msg);
-        return res
-            .status(HttpStatus.UNPROCESSABLE_ENTITY)
-            .set('Content-Type', 'text/plain')
-            .send(msg);
-    }
-
     #buchDtoOhneRefToBuch(buchDTO: BuchDtoOhneRef): Buch {
         return {
             id: undefined,
@@ -320,43 +280,4 @@ export class BuchWriteController {
             aktualisiert: undefined,
         };
     }
-
-    #handleUpdateError(err: UpdateError, res: Response): Response {
-        switch (err.type) {
-            case 'BuchNotExists': {
-                const { id } = err;
-                const msg = `Es gibt kein Buch mit der ID "${id}".`;
-                this.#logger.debug('#handleUpdateError: msg=%s', msg);
-                return res
-                    .status(HttpStatus.PRECONDITION_FAILED)
-                    .set('Content-Type', 'text/plain')
-                    .send(msg);
-            }
-
-            case 'VersionInvalid': {
-                const { version } = err;
-                const msg = `Die Versionsnummer "${version}" ist ungueltig.`;
-                this.#logger.debug('#handleUpdateError: msg=%s', msg);
-                return res
-                    .status(HttpStatus.PRECONDITION_FAILED)
-                    .set('Content-Type', 'text/plain')
-                    .send(msg);
-            }
-
-            case 'VersionOutdated': {
-                const { version } = err;
-                const msg = `Die Versionsnummer "${version}" ist nicht aktuell.`;
-                this.#logger.debug('#handleUpdateError: msg=%s', msg);
-                return res
-                    .status(HttpStatus.PRECONDITION_FAILED)
-                    .set('Content-Type', 'text/plain')
-                    .send(msg);
-            }
-
-            default: {
-                return res.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-            }
-        }
-    }
 }
-/* eslint-enable max-lines */

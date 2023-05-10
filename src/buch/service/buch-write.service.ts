@@ -21,19 +21,17 @@
  * @packageDocumentation
  */
 
-import {
-    type BuchNotExists,
-    type CreateError,
-    type UpdateError,
-    type VersionInvalid,
-    type VersionOutdated,
-} from './errors.js';
 import { type DeleteResult, Repository } from 'typeorm';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+    IsbnExistsException,
+    VersionInvalidException,
+    VersionOutdatedException,
+} from './exceptions.js';
 import { Abbildung } from '../entity/abbildung.entity.js';
 import { Buch } from '../entity/buch.entity.js';
 import { BuchReadService } from './buch-read.service.js';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Injectable } from '@nestjs/common';
 import { MailService } from '../../mail/mail.service.js';
 import RE2 from 're2';
 import { Titel } from '../entity/titel.entity.js';
@@ -78,15 +76,12 @@ export class BuchWriteService {
     /**
      * Ein neues Buch soll angelegt werden.
      * @param buch Das neu abzulegende Buch
-     * @returns Die ID des neu angelegten Buches oder im Fehlerfall
-     * [CreateError](../types/buch_service_errors.CreateError.html)
+     * @returns Die ID des neu angelegten Buches
+     * @throws IsbnExists falls die ISBN-Nummer bereits existiert
      */
-    async create(buch: Buch): Promise<CreateError | number> {
+    async create(buch: Buch): Promise<number> {
         this.#logger.debug('create: buch=%o', buch);
-        const validateResult = await this.#validateCreate(buch);
-        if (validateResult !== undefined) {
-            return validateResult;
-        }
+        await this.#validateCreate(buch);
 
         const buchDb = await this.#repo.save(buch); // implizite Transaktion
         this.#logger.debug('create: buchDb=%o', buchDb);
@@ -102,14 +97,11 @@ export class BuchWriteService {
      * @param id ID des zu aktualisierenden Buchs
      * @param version Die Versionsnummer für optimistische Synchronisation
      * @returns Die neue Versionsnummer gemäß optimistischer Synchronisation
-     *  oder im Fehlerfall [UpdateError](../types/buch_service_errors.UpdateError.html)
+     * @throws VersionInvalidException falls die Versionsnummer ungültig ist
+     * @throws VersionOutdatedException falls die Versionsnummer veraltet ist
      */
     // https://2ality.com/2015/01/es6-destructuring.html#simulating-named-parameters-in-javascript
-    async update({
-        id,
-        buch,
-        version,
-    }: UpdateParams): Promise<UpdateError | number> {
+    async update({ id, buch, version }: UpdateParams): Promise<number> {
         this.#logger.debug(
             'update: id=%d, buch=%o, version=%s',
             id,
@@ -118,7 +110,7 @@ export class BuchWriteService {
         );
         if (id === undefined) {
             this.#logger.debug('update: Keine gueltige ID');
-            return { type: 'BuchNotExists', id };
+            throw new NotFoundException(`Es gibt kein Buch mit der ID ${id}.`);
         }
 
         const validateResult = await this.#validateUpdate(buch, id, version);
@@ -148,9 +140,6 @@ export class BuchWriteService {
             id,
             mitAbbildungen: true,
         });
-        if (buch === undefined) {
-            return false;
-        }
 
         let deleteResult: DeleteResult | undefined;
         await this.#repo.manager.transaction(async (transactionalMgr) => {
@@ -177,13 +166,13 @@ export class BuchWriteService {
         );
     }
 
-    async #validateCreate(buch: Buch): Promise<CreateError | undefined> {
+    async #validateCreate(buch: Buch): Promise<undefined> {
         this.#logger.debug('#validateCreate: buch=%o', buch);
 
         const { isbn } = buch;
         const buecher = await this.#readService.find({ isbn: isbn }); // eslint-disable-line object-shorthand
         if (buecher.length > 0) {
-            return { type: 'IsbnExists', isbn };
+            throw new IsbnExistsException(isbn);
         }
 
         this.#logger.debug('#validateCreate: ok');
@@ -201,13 +190,8 @@ export class BuchWriteService {
         buch: Buch,
         id: number,
         versionStr: string,
-    ): Promise<Buch | UpdateError> {
-        const result = this.#validateVersion(versionStr);
-        if (typeof result !== 'number') {
-            return result;
-        }
-
-        const version = result;
+    ): Promise<Buch> {
+        const version = this.#validateVersion(versionStr);
         this.#logger.debug(
             '#validateUpdate: buch=%o, version=%s',
             buch,
@@ -219,43 +203,29 @@ export class BuchWriteService {
         return resultFindById;
     }
 
-    #validateVersion(version: string | undefined): VersionInvalid | number {
+    #validateVersion(version: string | undefined): number {
+        this.#logger.debug('#validateVersion: version=%s', version);
         if (
             version === undefined ||
             !BuchWriteService.VERSION_PATTERN.test(version)
         ) {
-            const error: VersionInvalid = { type: 'VersionInvalid', version };
-            this.#logger.debug('#validateVersion: VersionInvalid=%o', error);
-            return error;
+            throw new VersionInvalidException(version);
         }
 
         return Number.parseInt(version.slice(1, -1), 10);
     }
 
-    async #findByIdAndCheckVersion(
-        id: number,
-        version: number,
-    ): Promise<Buch | BuchNotExists | VersionOutdated> {
+    async #findByIdAndCheckVersion(id: number, version: number): Promise<Buch> {
         const buchDb = await this.#readService.findById({ id });
-        if (buchDb === undefined) {
-            const result: BuchNotExists = { type: 'BuchNotExists', id };
-            this.#logger.debug('#checkIdAndVersion: BuchNotExists=%o', result);
-            return result;
-        }
 
         // nullish coalescing
         const versionDb = buchDb.version!; // eslint-disable-line @typescript-eslint/no-non-null-assertion
         if (version < versionDb) {
-            const result: VersionOutdated = {
-                type: 'VersionOutdated',
-                id,
-                version,
-            };
             this.#logger.debug(
-                '#checkIdAndVersion: VersionOutdated=%o',
-                result,
+                '#checkIdAndVersion: VersionOutdated=%d',
+                version,
             );
-            return result;
+            throw new VersionOutdatedException(version);
         }
 
         return buchDb;

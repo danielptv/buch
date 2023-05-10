@@ -65,7 +65,7 @@ Authorization: Bearer {{login.response.body.$.token}}
 ### Vorhandenes Buch mit alter Versionsnummer aktualisieren
 PUT {{restUrl}}/30
 Content-Type: application/json
-If-Match: "-1"
+If-Match: "0"
 Authorization: Bearer {{login.response.body.$.token}}
 
 < .\json\buch-30-put.json

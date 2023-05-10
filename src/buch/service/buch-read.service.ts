@@ -21,7 +21,7 @@
  */
 
 import { Buch, type BuchArt } from './../entity/buch.entity.js';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { QueryBuilder } from './query-builder.js';
 import RE2 from 're2';
 import { getLogger } from '../../logger/logger.js';
@@ -84,9 +84,9 @@ export class BuchReadService {
     /**
      * Ein Buch asynchron anhand seiner ID suchen
      * @param id ID des gesuchten Buches
-     * @returns Das gefundene Buch vom Typ [Buch](buch_entity_buch_entity.Buch.html) oder undefined
-     *          in einem Promise aus ES2015 (vgl.: Mono aus Project Reactor oder
-     *          Future aus Java)
+     * @returns Das gefundene Buch vom Typ [Buch](buch_entity_buch_entity.Buch.html)
+     *          in einem Promise aus ES2015.
+     * @throws NotFoundException falls kein Buch mit der ID existiert
      */
     // https://2ality.com/2015/01/es6-destructuring.html#simulating-named-parameters-in-javascript
     async findById({ id, mitAbbildungen = false }: FindByIdParams) {
@@ -99,8 +99,7 @@ export class BuchReadService {
             .buildId({ id, mitAbbildungen })
             .getOne();
         if (buch === null) {
-            this.#logger.debug('findById: Kein Buch gefunden');
-            return;
+            throw new NotFoundException(`Es gibt kein Buch mit der ID ${id}.`);
         }
 
         this.#logger.debug('findById: buch=%o', buch);
@@ -110,7 +109,8 @@ export class BuchReadService {
     /**
      * Bücher asynchron suchen.
      * @param suchkriterien JSON-Objekt mit Suchkriterien
-     * @returns Ein JSON-Array mit den gefundenen Büchern. Ggf. ist das Array leer.
+     * @returns Ein JSON-Array mit den gefundenen Büchern.
+     * @throws NotFoundException falls keine Bücher gefunden wurden.
      */
     async find(suchkriterien?: Suchkriterien) {
         this.#logger.debug('find: suchkriterien=%o', suchkriterien);
@@ -130,7 +130,7 @@ export class BuchReadService {
 
         // Falsche Namen fuer Suchkriterien?
         if (!this.#checkKeys(keys)) {
-            return [];
+            throw new NotFoundException('Ungueltige Suchkriterien');
         }
 
         // QueryBuilder https://typeorm.io/select-query-builder
@@ -138,6 +138,11 @@ export class BuchReadService {
         // Lesen: Keine Transaktion erforderlich
         const buecher = await this.#queryBuilder.build(suchkriterien).getMany();
         this.#logger.debug('find: buecher=%o', buecher);
+        if (buecher.length === 0) {
+            throw new NotFoundException(
+                `Keine Buecher gefunden: ${JSON.stringify(suchkriterien)}`,
+            );
+        }
 
         return buecher;
     }

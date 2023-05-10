@@ -16,14 +16,13 @@
  */
 // eslint-disable-next-line max-classes-per-file
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
-import { type CreateError, type UpdateError } from '../service/errors.js';
 import { IsInt, IsNumberString, Min } from 'class-validator';
-import { UseGuards, UseInterceptors } from '@nestjs/common';
+import { UseFilters, UseGuards, UseInterceptors } from '@nestjs/common';
 import { Abbildung } from '../entity/abbildung.entity.js';
-import { BadUserInputError } from './errors.js';
 import { Buch } from '../entity/buch.entity.js';
 import { BuchDTO } from '../rest/buchDTO.entity.js';
 import { BuchWriteService } from '../service/buch-write.service.js';
+import { HttpExceptionFilter } from './http-exception.filter.js';
 import { type IdInput } from './buch-query.resolver.js';
 import { JwtAuthGraphQlGuard } from '../../security/auth/jwt/jwt-auth-graphql.guard.js';
 import { ResponseTimeInterceptor } from '../../logger/response-time.interceptor.js';
@@ -53,6 +52,7 @@ export class BuchUpdateDTO extends BuchDTO {
 @Resolver()
 // alternativ: globale Aktivierung der Guards https://docs.nestjs.com/security/authorization#basic-rbac-implementation
 @UseGuards(JwtAuthGraphQlGuard, RolesGraphQlGuard)
+@UseFilters(HttpExceptionFilter)
 @UseInterceptors(ResponseTimeInterceptor)
 export class BuchMutationResolver {
     readonly #service: BuchWriteService;
@@ -69,15 +69,10 @@ export class BuchMutationResolver {
         this.#logger.debug('create: buchDTO=%o', buchDTO);
 
         const buch = this.#buchDtoToBuch(buchDTO);
-        const result = await this.#service.create(buch);
-        this.#logger.debug('createBuch: result=%o', result);
-
-        if (Object.prototype.hasOwnProperty.call(result, 'type')) {
-            throw new BadUserInputError(
-                this.#errorMsgCreateBuch(result as CreateError),
-            );
-        }
-        return result;
+        const id = await this.#service.create(buch);
+        // TODO BadUserInputError
+        this.#logger.debug('createBuch: id=%d', id);
+        return id;
     }
 
     @Mutation()
@@ -93,9 +88,7 @@ export class BuchMutationResolver {
             buch,
             version: versionStr,
         });
-        if (typeof result === 'object') {
-            throw new BadUserInputError(this.#errorMsgUpdateBuch(result));
-        }
+        // TODO BadUserInputError
         this.#logger.debug('updateBuch: result=%d', result);
         return result;
     }
@@ -170,31 +163,31 @@ export class BuchMutationResolver {
         };
     }
 
-    #errorMsgCreateBuch(err: CreateError) {
-        switch (err.type) {
-            case 'IsbnExists': {
-                return `Die ISBN ${err.isbn} existiert bereits`;
-            }
-            default: {
-                return 'Unbekannter Fehler';
-            }
-        }
-    }
+    // #errorMsgCreateBuch(err: CreateError) {
+    //     switch (err.type) {
+    //         case 'IsbnExists': {
+    //             return `Die ISBN ${err.isbn} existiert bereits`;
+    //         }
+    //         default: {
+    //             return 'Unbekannter Fehler';
+    //         }
+    //     }
+    // }
 
-    #errorMsgUpdateBuch(err: UpdateError) {
-        switch (err.type) {
-            case 'BuchNotExists': {
-                return `Es gibt kein Buch mit der ID ${err.id}`;
-            }
-            case 'VersionInvalid': {
-                return `"${err.version}" ist keine gueltige Versionsnummer`;
-            }
-            case 'VersionOutdated': {
-                return `Die Versionsnummer "${err.version}" ist nicht mehr aktuell`;
-            }
-            default: {
-                return 'Unbekannter Fehler';
-            }
-        }
-    }
+    // #errorMsgUpdateBuch(err: UpdateError) {
+    //     switch (err.type) {
+    //         case 'BuchNotExists': {
+    //             return `Es gibt kein Buch mit der ID ${err.id}`;
+    //         }
+    //         case 'VersionInvalid': {
+    //             return `"${err.version}" ist keine gueltige Versionsnummer`;
+    //         }
+    //         case 'VersionOutdated': {
+    //             return `Die Versionsnummer "${err.version}" ist nicht mehr aktuell`;
+    //         }
+    //         default: {
+    //             return 'Unbekannter Fehler';
+    //         }
+    //     }
+    // }
 }

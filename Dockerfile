@@ -23,7 +23,7 @@
 # ---------------------------------------------------------------------------------------
 # S t a g e :   b u i l d e r
 # ---------------------------------------------------------------------------------------
-ARG NODE_VERSION=20.0.0
+ARG NODE_VERSION=20.1.0
 FROM node:${NODE_VERSION}-bullseye AS builder
 
 WORKDIR /app
@@ -38,9 +38,9 @@ RUN grep -v \"ts-jest\": package.json.ORIG | grep -v \"ts-node\": - | grep -v \"
 # "here document" wie in einem Shellscipt
 RUN <<EOF
 set -ex
-npm i -g --no-audit npm
-npm i -g --no-audit @nestjs/cli rimraf
-npm i --no-audit
+npm i -g --no-audit --no-fund npm
+npm i -g --no-audit --no-fund @nestjs/cli rimraf
+npm i --no-audit --no-fund
 npm run build
 EOF
 
@@ -69,9 +69,9 @@ RUN set -ex && \
     rm -rf /var/lib/apt/lists/*
 
 RUN set -ex && \
-    npm i -g --no-audit npm && \
-    npm i -g --no-audit @nestjs/cli rimraf && \
-    npm i -g --no-audit node-gyp && \
+    npm i -g --no-audit --no-fund npm && \
+    npm i -g --no-audit --no-fund @nestjs/cli rimraf && \
+    npm i -g --no-audit --no-fund node-gyp && \
     npm cache clean --force && \
     rm -rf /tmp/*
 
@@ -94,8 +94,8 @@ COPY --from=builder --chown=app:app /app/src/config/tls ./dist/config/tls
 
 RUN <<EOF
 set -ex
-npm i --omit dev --no-audit
-npm prune --no-audit
+npm i --omit dev --no-audit --no-fund
+npm prune --no-audit --no-fund
 npm r -g --no-audit node-gyp
 EOF
 

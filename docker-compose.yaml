@@ -86,7 +86,7 @@ services:
   # ------------------------------------------------------------------------------------
   # http://localhost:8888 mit Emailadresse "pgadmin@acme.com" und Passwort "p"
   pgadmin:
-    image: dpage/pgadmin4:7.0
+    image: dpage/pgadmin4:7.1
     ports:
       - published: 8888
         target: 80
@@ -200,7 +200,7 @@ services:
   # ------------------------------------------------------------------------------------
   # als User "cbadmin" muss man eine DB-Verbindung und einen User einrichten
   dbeaver:
-    image: dbeaver/cloudbeaver:23.0.3
+    image: dbeaver/cloudbeaver:23.0.4
     links: [ mysql ]
     ports:
       - published: 8978

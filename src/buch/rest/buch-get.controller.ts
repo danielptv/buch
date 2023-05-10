@@ -187,7 +187,7 @@ export class BuchGetController {
      * @param res Leeres Response-Objekt von Express.
      * @returns Leeres Promise-Objekt.
      */
-    // eslint-disable-next-line max-params, max-lines-per-function
+    // eslint-disable-next-line max-params
     @Get(':id')
     @ApiOperation({ summary: 'Suche mit der Buch-ID', tags: ['Suchen'] })
     @ApiParam({
@@ -218,22 +218,7 @@ export class BuchGetController {
             return res.sendStatus(HttpStatus.NOT_ACCEPTABLE);
         }
 
-        let buch: Buch | undefined;
-        try {
-            // vgl. Kotlin: Aufruf einer suspend-Function
-            buch = await this.#service.findById({ id });
-        } catch (err) {
-            // err ist implizit vom Typ "unknown", d.h. keine Operationen koennen ausgefuehrt werden
-            // Exception einer export async function bei der Ausfuehrung fangen:
-            // https://strongloop.com/strongblog/comparing-node-js-promises-trycatch-zone-js-angular
-            this.#logger.error('findById: error=%o', err);
-            return res.sendStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        if (buch === undefined) {
-            this.#logger.debug('findById: NOT_FOUND');
-            return res.sendStatus(HttpStatus.NOT_FOUND);
-        }
+        const buch = await this.#service.findById({ id });
         this.#logger.debug('findById(): buch=%o', buch);
 
         // ETags
@@ -284,10 +269,6 @@ export class BuchGetController {
 
         const buecher = await this.#service.find(query);
         this.#logger.debug('find: %o', buecher);
-        if (buecher.length === 0) {
-            this.#logger.debug('find: NOT_FOUND');
-            return res.sendStatus(HttpStatus.NOT_FOUND);
-        }
 
         // HATEOAS: Atom Links je Buch
         const buecherModel = buecher.map((buch) =>
