@@ -26,6 +26,7 @@ import {
     startServer,
 } from '../testserver.js';
 import { type BuecherModel } from '../../src/buch/rest/buch-get.controller.js';
+import { type ErrorResponse } from './error-response.js';
 import { HttpStatus } from '@nestjs/common';
 
 // -----------------------------------------------------------------------------
@@ -115,7 +116,7 @@ describe('GET /rest', () => {
         const params = { titel: titelNichtVorhanden };
 
         // when
-        const response: AxiosResponse<string> = await client.get('/', {
+        const response: AxiosResponse<ErrorResponse> = await client.get('/', {
             params,
         });
 
@@ -123,7 +124,11 @@ describe('GET /rest', () => {
         const { status, data } = response;
 
         expect(status).toBe(HttpStatus.NOT_FOUND);
-        expect(data).toMatch(/^not found$/iu);
+
+        const { error, statusCode } = data;
+
+        expect(error).toBe('Not Found');
+        expect(statusCode).toBe(HttpStatus.NOT_FOUND);
     });
 
     test('Mind. 1 Buch mit vorhandenem Schlagwort', async () => {
@@ -160,7 +165,7 @@ describe('GET /rest', () => {
         const params = { [schlagwortNichtVorhanden]: 'true' };
 
         // when
-        const response: AxiosResponse<string> = await client.get('/', {
+        const response: AxiosResponse<ErrorResponse> = await client.get('/', {
             params,
         });
 
@@ -168,7 +173,11 @@ describe('GET /rest', () => {
         const { status, data } = response;
 
         expect(status).toBe(HttpStatus.NOT_FOUND);
-        expect(data).toMatch(/^not found$/iu);
+
+        const { error, statusCode } = data;
+
+        expect(error).toBe('Not Found');
+        expect(statusCode).toBe(HttpStatus.NOT_FOUND);
     });
 
     test('Keine Buecher zu einer nicht-vorhandenen Property', async () => {
@@ -176,7 +185,7 @@ describe('GET /rest', () => {
         const params = { foo: 'bar' };
 
         // when
-        const response: AxiosResponse<string> = await client.get('/', {
+        const response: AxiosResponse<ErrorResponse> = await client.get('/', {
             params,
         });
 
@@ -184,7 +193,11 @@ describe('GET /rest', () => {
         const { status, data } = response;
 
         expect(status).toBe(HttpStatus.NOT_FOUND);
-        expect(data).toMatch(/^not found$/iu);
+
+        const { error, statusCode } = data;
+
+        expect(error).toBe('Not Found');
+        expect(statusCode).toBe(HttpStatus.NOT_FOUND);
     });
 });
 /* eslint-enable no-underscore-dangle */

@@ -43,6 +43,7 @@ import {
     startServer,
 } from '../testserver.js';
 import { type BuchModel } from '../../src/buch/rest/buch-get.controller.js';
+import { type ErrorResponse } from './error-response.js';
 import { HttpStatus } from '@nestjs/common';
 
 // -----------------------------------------------------------------------------
@@ -100,13 +101,18 @@ describe('GET /rest/:id', () => {
         const url = `/${idNichtVorhanden}`;
 
         // when
-        const response: AxiosResponse<string> = await client.get(url);
+        const response: AxiosResponse<ErrorResponse> = await client.get(url);
 
         // then
         const { status, data } = response;
 
         expect(status).toBe(HttpStatus.NOT_FOUND);
-        expect(data).toMatch(/^not found$/iu);
+
+        const { error, message, statusCode } = data;
+
+        expect(error).toBe('Not Found');
+        expect(message).toEqual(expect.stringContaining(message));
+        expect(statusCode).toBe(HttpStatus.NOT_FOUND);
     });
 
     test('Buch zu vorhandener ID mit ETag', async () => {

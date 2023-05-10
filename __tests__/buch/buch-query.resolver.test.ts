@@ -142,7 +142,7 @@ describe('GraphQL Queries', () => {
         const [error] = errors!;
         const { message, path, extensions } = error!;
 
-        expect(message).toBe(`Es wurde kein Buch mit der ID ${id} gefunden.`);
+        expect(message).toBe(`Es gibt kein Buch mit der ID ${id}.`);
         expect(path).toBeDefined();
         expect(path!![0]).toBe('buch');
         expect(extensions).toBeDefined();
@@ -270,7 +270,7 @@ describe('GraphQL Queries', () => {
         const [error] = errors!;
         const { message, path, extensions } = error!;
 
-        expect(message).toBe('Es wurden keine Buecher gefunden.');
+        expect(message).toMatch(/^Keine Buecher gefunden:/u);
         expect(path).toBeDefined();
         expect(path!![0]).toBe('buecher');
         expect(extensions).toBeDefined();

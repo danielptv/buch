@@ -170,13 +170,14 @@ export class BuchWriteService {
         this.#logger.debug('#validateCreate: buch=%o', buch);
 
         const { isbn } = buch;
-        const buecher = await this.#readService.find({ isbn: isbn }); // eslint-disable-line object-shorthand
-        if (buecher.length > 0) {
-            throw new IsbnExistsException(isbn);
+        try {
+            await this.#readService.find({ isbn: isbn }); // eslint-disable-line object-shorthand
+        } catch (err) {
+            if (err instanceof NotFoundException) {
+                return;
+            }
         }
-
-        this.#logger.debug('#validateCreate: ok');
-        return undefined;
+        throw new IsbnExistsException(isbn);
     }
 
     async #sendmail(buch: Buch) {

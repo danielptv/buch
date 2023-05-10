@@ -25,6 +25,7 @@ import {
     startServer,
 } from '../testserver.js';
 import { type BuchDtoOhneRef } from '../../src/buch/rest/buchDTO.entity.js';
+import { type ErrorResponse } from './error-response.js';
 import { HttpStatus } from '@nestjs/common';
 import { loginRest } from '../login.js';
 
@@ -144,12 +145,9 @@ describe('PUT /rest/:id', () => {
         );
 
         // then
-        const { status, data } = response;
+        const { status } = response;
 
-        expect(status).toBe(HttpStatus.PRECONDITION_FAILED);
-        expect(data).toBe(
-            `Es gibt kein Buch mit der ID "${idNichtVorhanden}".`,
-        );
+        expect(status).toBe(HttpStatus.NOT_FOUND);
     });
 
     test('Vorhandenes Buch aendern, aber mit ungueltigen Daten', async () => {
@@ -217,7 +215,7 @@ describe('PUT /rest/:id', () => {
         headers['If-Match'] = '"-1"';
 
         // when
-        const response: AxiosResponse<string> = await client.put(
+        const response: AxiosResponse<ErrorResponse> = await client.put(
             url,
             veraltesBuch,
             { headers },
@@ -227,7 +225,11 @@ describe('PUT /rest/:id', () => {
         const { status, data } = response;
 
         expect(status).toBe(HttpStatus.PRECONDITION_FAILED);
-        expect(data).toEqual(expect.stringContaining('Die Versionsnummer'));
+
+        const { message, statusCode } = data;
+
+        expect(message).toMatch(/Versionsnummer/u);
+        expect(statusCode).toBe(HttpStatus.PRECONDITION_FAILED);
     });
 
     test('Vorhandenes Buch aendern, aber ohne Token', async () => {

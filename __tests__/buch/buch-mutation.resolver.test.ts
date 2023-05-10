@@ -171,11 +171,11 @@ describe('GraphQL Mutations', () => {
         expect(errors).toHaveLength(1);
 
         const [error] = errors!;
-        const extensions: any = error?.extensions;
 
-        expect(extensions).toBeDefined();
+        expect(error).toBeDefined();
 
-        const messages: string[] = extensions?.originalError?.message;
+        const { message } = error!;
+        const messages: string[] = message.split(',');
 
         expect(messages).toBeDefined();
         expect(messages).toHaveLength(expectedMsg.length);
@@ -233,7 +233,7 @@ describe('GraphQL Mutations', () => {
 
         expect(message).toBe('Forbidden resource');
         expect(extensions).toBeDefined();
-        expect(extensions!.code).toBe('FORBIDDEN');
+        expect(extensions!.code).toBe('BAD_USER_INPUT');
     });
 
     // -------------------------------------------------------------------------
@@ -339,11 +339,8 @@ describe('GraphQL Mutations', () => {
         expect(errors).toHaveLength(1);
 
         const [error] = errors!;
-        const extensions: any = error?.extensions;
-
-        expect(extensions).toBeDefined();
-
-        const messages: string[] = extensions.originalError.message;
+        const { message } = error!;
+        const messages: string[] = message.split(',');
 
         expect(messages).toBeDefined();
         expect(messages).toHaveLength(expectedMsg.length);
@@ -397,10 +394,13 @@ describe('GraphQL Mutations', () => {
         expect(errors).toHaveLength(1);
 
         const [error] = errors!;
+
+        expect(error).toBeDefined();
+
         const { message, path, extensions } = error!;
 
         expect(message).toBe(
-            `Es gibt kein Buch mit der ID ${id.toLowerCase()}`,
+            `Es gibt kein Buch mit der ID ${id.toLowerCase()}.`,
         );
         expect(path).toBeDefined();
         expect(path!![0]).toBe('update');

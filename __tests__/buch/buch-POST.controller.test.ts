@@ -26,6 +26,7 @@ import {
 } from '../testserver.js';
 import { type BuchDTO } from '../../src/buch/rest/buchDTO.entity.js';
 import { BuchReadService } from '../../src/buch/service/buch-read.service.js';
+import { type ErrorResponse } from './error-response.js';
 import { HttpStatus } from '@nestjs/common';
 import { loginRest } from '../login.js';
 
@@ -185,17 +186,19 @@ describe('POST /rest', () => {
         headers.Authorization = `Bearer ${token}`;
 
         // when
-        const response: AxiosResponse<string> = await client.post(
+        const response: AxiosResponse<ErrorResponse> = await client.post(
             '/rest',
             neuesBuchIsbnExistiert,
             { headers },
         );
 
         // then
-        const { status, data } = response;
+        const { data } = response;
 
-        expect(status).toBe(HttpStatus.UNPROCESSABLE_ENTITY);
-        expect(data).toEqual(expect.stringContaining('ISBN'));
+        const { message, statusCode } = data;
+
+        expect(message).toEqual(expect.stringContaining('ISBN'));
+        expect(statusCode).toBe(HttpStatus.UNPROCESSABLE_ENTITY);
     });
 
     test('Neues Buch, aber ohne Token', async () => {
