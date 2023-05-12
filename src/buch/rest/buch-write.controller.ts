@@ -97,18 +97,18 @@ export class BuchWriteController {
     @ApiOperation({ summary: 'Ein neues Buch anlegen' })
     @ApiCreatedResponse({ description: 'Erfolgreich neu angelegt' })
     @ApiBadRequestResponse({ description: 'Fehlerhafte Buchdaten' })
-    async create(
+    async post(
         @Body() buchDTO: BuchDTO,
         @Req() req: Request,
         @Res() res: Response,
     ): Promise<Response> {
-        this.#logger.debug('create: buchDTO=%o', buchDTO);
+        this.#logger.debug('post: buchDTO=%o', buchDTO);
 
         const buch = this.#buchDtoToBuch(buchDTO);
         const result = await this.#service.create(buch);
 
         const location = `${getBaseUri(req)}/${result}`;
-        this.#logger.debug('create: location=%s', location);
+        this.#logger.debug('post: location=%s', location);
         return res.location(location).send();
     }
 
@@ -164,14 +164,14 @@ export class BuchWriteController {
         status: HttpStatus.PRECONDITION_REQUIRED,
         description: 'Header "If-Match" fehlt',
     })
-    async update(
+    async put(
         @Body() buchDTO: BuchDtoOhneRef,
         @Param('id') id: number,
         @Headers('If-Match') version: string | undefined,
         @Res() res: Response,
     ): Promise<Response> {
         this.#logger.debug(
-            'update: id=%s, buchDTO=%o, version=%s',
+            'put: id=%s, buchDTO=%o, version=%s',
             id,
             buchDTO,
             version,
@@ -179,7 +179,7 @@ export class BuchWriteController {
 
         if (version === undefined) {
             const msg = 'Header "If-Match" fehlt';
-            this.#logger.debug('#handleUpdateError: msg=%s', msg);
+            this.#logger.debug('put: msg=%s', msg);
             return res
                 .status(HttpStatus.PRECONDITION_REQUIRED)
                 .set('Content-Type', 'text/plain')
@@ -188,7 +188,7 @@ export class BuchWriteController {
 
         const buch = this.#buchDtoOhneRefToBuch(buchDTO);
         const neueVersion = await this.#service.update({ id, buch, version });
-        this.#logger.debug('update: version=%d', neueVersion);
+        this.#logger.debug('put: version=%d', neueVersion);
         return res.header('ETag', `"${neueVersion}"`).send();
     }
 

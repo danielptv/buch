@@ -205,34 +205,34 @@ export class BuchGetController {
         status: HttpStatus.NOT_MODIFIED,
         description: 'Das Buch wurde bereits heruntergeladen',
     })
-    async findById(
+    async getById(
         @Param('id') id: number,
         @Req() req: Request,
         @Headers('If-None-Match') version: string | undefined,
         @Res() res: Response,
     ): Promise<Response<BuchModel | undefined>> {
-        this.#logger.debug('findById: id=%s, version=%s"', id, version);
+        this.#logger.debug('getById: id=%s, version=%s"', id, version);
 
         if (req.accepts(['json', 'html']) === false) {
-            this.#logger.debug('findById: accepted=%o', req.accepted);
+            this.#logger.debug('getById: accepted=%o', req.accepted);
             return res.sendStatus(HttpStatus.NOT_ACCEPTABLE);
         }
 
         const buch = await this.#service.findById({ id });
-        this.#logger.debug('findById(): buch=%o', buch);
+        this.#logger.debug('getById(): buch=%o', buch);
 
         // ETags
         const versionDb = buch.version;
         if (version === `"${versionDb}"`) {
-            this.#logger.debug('findById: NOT_MODIFIED');
+            this.#logger.debug('getById: NOT_MODIFIED');
             return res.sendStatus(HttpStatus.NOT_MODIFIED);
         }
-        this.#logger.debug('findById: versionDb=%s', versionDb);
+        this.#logger.debug('getById: versionDb=%s', versionDb);
         res.header('ETag', `"${versionDb}"`);
 
         // HATEOAS mit Atom Links und HAL (= Hypertext Application Language)
         const buchModel = this.#toModel(buch, req);
-        this.#logger.debug('findById: buchModel=%o', buchModel);
+        this.#logger.debug('getById: buchModel=%o', buchModel);
         return res.json(buchModel);
     }
 
@@ -255,26 +255,26 @@ export class BuchGetController {
     @Get()
     @ApiOperation({ summary: 'Suche mit Suchkriterien', tags: ['Suchen'] })
     @ApiOkResponse({ description: 'Eine evtl. leere Liste mit Büchern' })
-    async find(
+    async get(
         @Query() query: BuchQuery,
         @Req() req: Request,
         @Res() res: Response,
     ): Promise<Response<BuecherModel | undefined>> {
-        this.#logger.debug('find: query=%o', query);
+        this.#logger.debug('get: query=%o', query);
 
         if (req.accepts(['json', 'html']) === false) {
-            this.#logger.debug('find: accepted=%o', req.accepted);
+            this.#logger.debug('get: accepted=%o', req.accepted);
             return res.sendStatus(HttpStatus.NOT_ACCEPTABLE);
         }
 
         const buecher = await this.#service.find(query);
-        this.#logger.debug('find: %o', buecher);
+        this.#logger.debug('get: %o', buecher);
 
         // HATEOAS: Atom Links je Buch
         const buecherModel = buecher.map((buch) =>
             this.#toModel(buch, req, false),
         );
-        this.#logger.debug('find: buecherModel=%o', buecherModel);
+        this.#logger.debug('get: buecherModel=%o', buecherModel);
 
         const result: BuecherModel = { _embedded: { buecher: buecherModel } };
         return res.json(result).send();
