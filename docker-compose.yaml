@@ -26,7 +26,7 @@ services:
   # P o s t g r e S Q L
   # ------------------------------------------------------------------------------------
   postgres:
-    image: postgres:15.2-bullseye
+    image: postgres:15.3-bullseye
     ports:
       - published: 5432
         target: 5432

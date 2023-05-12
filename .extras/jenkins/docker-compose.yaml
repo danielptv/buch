@@ -23,7 +23,7 @@
 # https://docs.docker.com/compose/compose-file/compose-file-v3
 services:
   jenkins-certs:
-    image: docker:24.0.0-rc.2-dind
+    image: docker:24.0.0-rc.3-dind
     volumes:
       - type: bind
         source: C:/Zimmermann/volumes/jenkins/certs
@@ -35,8 +35,8 @@ services:
     networks:
       jenkins:
         # alternative hostnames
-        aliases: [docker]
-    env_file: [jenkins-certs.env]
+        aliases: [ docker ]
+    env_file: [ jenkins-certs.env ]
     container_name: jenkins-cert
     deploy:
       resources:
@@ -48,7 +48,7 @@ services:
     ports:
       - published: 7070
         target: 8080
-    depends_on: [jenkins-certs]
+    depends_on: [ jenkins-certs ]
     volumes:
       - type: bind
         source: C:/Zimmermann/volumes/jenkins/certs
@@ -60,8 +60,8 @@ services:
       #- type: bind
       #  source: C:/Zimmermann/volumes/jenkins/npm
       #  target: /root/.npm
-    networks: [jenkins]
-    env_file: [jenkins.env]
+    networks: [ jenkins ]
+    env_file: [ jenkins.env ]
     # User "jenkins" wurde gesetzt in "Dockerfile"
     #user: "jenkins:jenkins"
     container_name: jenkins
