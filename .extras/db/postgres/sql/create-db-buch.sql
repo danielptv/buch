@@ -27,7 +27,7 @@
 --     docker compose down
 -- (3) in docker-compose.yaml den User "postgres" wieder aktivieren, d.h. Kommentar entfernen
 -- (4) 1. PowerShell:
---     docker compose up
+--     docker compose up postgres
 -- (5) 2. PowerShell:
 --     docker compose exec postgres bash
 --        psql --dbname=postgres --username=postgres --file=/sql/create-db-buch.sql
