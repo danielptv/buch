@@ -35,9 +35,6 @@ import {
     Max,
     Min,
     ValidateNested,
-    ValidatorConstraint,
-    ValidatorConstraintInterface,
-    isInt,
 } from 'class-validator';
 import { AbbildungDTO } from './abbildungDTO.entity.js';
 import { ApiProperty } from '@nestjs/swagger';
@@ -46,22 +43,6 @@ import { TitelDTO } from './titelDTO.entity.js';
 import { Type } from 'class-transformer';
 
 export const MAX_RATING = 5;
-
-@ValidatorConstraint({ name: 'isRating' })
-export class IsRating implements ValidatorConstraintInterface {
-    validate(numberString: string) {
-        const number = Number(numberString);
-        if (
-            !Number.isNaN(number) &&
-            isInt(number) &&
-            number >= 0 &&
-            number <= 5
-        ) {
-            return true;
-        }
-        return false;
-    }
-}
 
 /**
  * Entity-Klasse für Bücher ohne TypeORM und ohne Referenzen.
