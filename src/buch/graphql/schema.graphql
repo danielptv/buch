@@ -47,7 +47,7 @@ type Buch {
   id: ID!
   version: Int!
   isbn: String!
-  rating: Int
+  rating: [Int]
   art: Art
   preis: Float!
   rabatt: Float
@@ -79,7 +79,7 @@ input AbbildungInput {
 "Daten für ein neues Buch"
 input BuchInput {
   isbn: String
-  rating: Int
+  rating: [Int]
   art: Art
   preis: Float
   rabatt: Float
@@ -96,7 +96,7 @@ input BuchUpdateInput {
   id: ID
   version: Int
   isbn: String
-  rating: Int
+  rating: [Int]
   art: Art
   preis: Float
   rabatt: Float

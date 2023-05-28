@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS buch (
     isbn          varchar(17) NOT NULL UNIQUE USING INDEX TABLESPACE buchspace,
                   -- https://www.postgresql.org/docs/current/ddl-constraints.html#DDL-CONSTRAINTS-CHECK-CONSTRAINTS
                   -- https://www.postgresql.org/docs/current/functions-matching.html#FUNCTIONS-POSIX-REGEXP
-    rating        integer NOT NULL CHECK (rating >= 0 AND rating <= 5),
+    rating        varchar(64),
     art           buchart,
                   -- https://www.postgresql.org/docs/current/datatype-numeric.html#DATATYPE-NUMERIC-DECIMAL
                   -- 10 Stellen, davon 2 Nachkommastellen

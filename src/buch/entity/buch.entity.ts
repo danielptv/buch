@@ -79,9 +79,10 @@ export class Buch {
     @ApiProperty({ example: '0-0070-0644-6', type: String })
     readonly isbn!: string;
 
-    @Column('int')
-    @ApiProperty({ example: 5, type: Number })
-    readonly rating: number | undefined;
+    @Column('simple-array')
+    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+    @ApiProperty({ example: [3, 4, 5] })
+    readonly rating: number[] | undefined;
 
     @Column('varchar', { length: 12 })
     @ApiProperty({ example: 'DRUCKAUSGABE', type: String })

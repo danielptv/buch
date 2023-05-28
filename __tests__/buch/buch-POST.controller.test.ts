@@ -35,7 +35,8 @@ import { loginRest } from '../login.js';
 // -----------------------------------------------------------------------------
 const neuesBuch: BuchDTO = {
     isbn: '978-0-007-00644-1',
-    rating: 1,
+    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+    rating: [1, 3],
     art: 'DRUCKAUSGABE',
     preis: 99.99,
     rabatt: 0.123,
@@ -70,7 +71,8 @@ const neuesBuchInvalid: Record<string, unknown> = {
 };
 const neuesBuchIsbnExistiert: BuchDTO = {
     isbn: '978-3-897-22583-1',
-    rating: 1,
+    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+    rating: [1, 4],
     art: 'DRUCKAUSGABE',
     preis: 99.99,
     rabatt: 0.099,
@@ -152,6 +154,7 @@ describe('POST /rest', () => {
         const expectedMsg = [
             expect.stringMatching(/^isbn /u),
             expect.stringMatching(/^rating /u),
+            expect.stringMatching(/rating /u),
             expect.stringMatching(/^art /u),
             expect.stringMatching(/^preis /u),
             expect.stringMatching(/^rabatt /u),

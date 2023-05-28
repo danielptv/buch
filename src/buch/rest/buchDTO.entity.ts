@@ -35,6 +35,9 @@ import {
     Max,
     Min,
     ValidateNested,
+    ValidatorConstraint,
+    ValidatorConstraintInterface,
+    isInt,
 } from 'class-validator';
 import { AbbildungDTO } from './abbildungDTO.entity.js';
 import { ApiProperty } from '@nestjs/swagger';
@@ -43,6 +46,22 @@ import { TitelDTO } from './titelDTO.entity.js';
 import { Type } from 'class-transformer';
 
 export const MAX_RATING = 5;
+
+@ValidatorConstraint({ name: 'isRating' })
+export class IsRating implements ValidatorConstraintInterface {
+    validate(numberString: string) {
+        const number = Number(numberString);
+        if (
+            !Number.isNaN(number) &&
+            isInt(number) &&
+            number >= 0 &&
+            number <= 5
+        ) {
+            return true;
+        }
+        return false;
+    }
+}
 
 /**
  * Entity-Klasse für Bücher ohne TypeORM und ohne Referenzen.
@@ -53,11 +72,13 @@ export class BuchDtoOhneRef {
     @ApiProperty({ example: '0-007-00644-6', type: String })
     readonly isbn!: string;
 
-    @IsInt()
-    @Min(0)
-    @Max(MAX_RATING)
-    @ApiProperty({ example: 5, type: Number })
-    readonly rating: number | undefined;
+    @IsArray()
+    @IsInt({ each: true })
+    @Min(0, { each: true })
+    @Max(MAX_RATING, { each: true })
+    // @Validate(IsRating, { each: true })
+    @ApiProperty({ example: [3, 4, 5] })
+    readonly rating: number[] | undefined;
 
     @Matches(/^DRUCKAUSGABE$|^KINDLE$/u)
     @IsOptional()

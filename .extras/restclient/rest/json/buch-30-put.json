@@ -1,6 +1,6 @@
 {
   "isbn": "978-0-201-63361-0",
-  "rating": 5,
+  "rating": [3, 5, 4],
   "art": "KINDLE",
   "preis": 3333,
   "rabatt": 0.33,

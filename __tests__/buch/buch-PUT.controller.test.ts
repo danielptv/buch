@@ -34,7 +34,8 @@ import { loginRest } from '../login.js';
 // -----------------------------------------------------------------------------
 const geaendertesBuch: BuchDtoOhneRef = {
     isbn: '978-0-201-63361-0',
-    rating: 5,
+    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+    rating: [5, 4],
     art: 'KINDLE',
     preis: 3333,
     rabatt: 0.33,
@@ -47,7 +48,8 @@ const idVorhanden = '30';
 
 const geaendertesBuchIdNichtVorhanden: BuchDtoOhneRef = {
     isbn: '978-0-007-09732-6',
-    rating: 4,
+    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+    rating: [4, 3],
     art: 'DRUCKAUSGABE',
     preis: 44.4,
     rabatt: 0.044,
@@ -72,7 +74,8 @@ const geaendertesBuchInvalid: Record<string, unknown> = {
 
 const veraltesBuch: BuchDtoOhneRef = {
     isbn: '978-0-007-09732-6',
-    rating: 1,
+    // eslint-disable-next-line @typescript-eslint/no-magic-numbers
+    rating: [1, 2],
     art: 'DRUCKAUSGABE',
     preis: 44.4,
     rabatt: 0.044,
@@ -159,6 +162,7 @@ describe('PUT /rest/:id', () => {
         const expectedMsg = [
             expect.stringMatching(/^isbn /u),
             expect.stringMatching(/^rating /u),
+            expect.stringMatching(/rating /u),
             expect.stringMatching(/^art /u),
             expect.stringMatching(/^preis /u),
             expect.stringMatching(/^rabatt /u),

@@ -144,7 +144,7 @@ describe('GraphQL Mutations', () => {
         };
         const expectedMsg = [
             expect.stringMatching(/^isbn /u),
-            expect.stringMatching(/^rating /u),
+            expect.stringMatching(/rating /u),
             expect.stringMatching(/^preis /u),
             expect.stringMatching(/^rabatt /u),
             expect.stringMatching(/^datum /u),
@@ -199,7 +199,7 @@ describe('GraphQL Mutations', () => {
                             rabatt: 0.011,
                             lieferbar: true,
                             datum: "2021-01-31",
-                            homepage: "http://acme.com",
+                            homepage: "https://acme.com",
                             schlagwoerter: ["JAVASCRIPT"]
                             titel: {
                                 titel: "Titelcreatemutation",
@@ -313,7 +313,7 @@ describe('GraphQL Mutations', () => {
         };
         const expectedMsg = [
             expect.stringMatching(/^isbn /u),
-            expect.stringMatching(/^rating /u),
+            expect.stringMatching(/rating /u),
             expect.stringMatching(/^preis /u),
             expect.stringMatching(/^rabatt /u),
             expect.stringMatching(/^datum /u),

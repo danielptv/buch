@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS buch (
     id            INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     version       INT NOT NULL DEFAULT 0,
     isbn          CHAR(17) UNIQUE NOT NULL,
-    rating        INT NOT NULL CHECK (rating >= 0 AND rating <= 5),
+    schlagwoerter VARCHAR(64),
     art           ENUM('DRUCKAUSGABE', 'KINDLE'),
     preis         DECIMAL(8,2) NOT NULL,
     rabatt        DECIMAL(4,3) NOT NULL,

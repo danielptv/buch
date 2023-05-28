@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS buch (
     id             INTEGER PRIMARY KEY AUTOINCREMENT,
     version        INTEGER NOT NULL DEFAULT 0,
     isbn           TEXT NOT NULL UNIQUE,
-    rating         INTEGER NOT NULL CHECK (rating >= 0 AND rating <= 5),
+    schlagwoerter  TEXT,
     art            TEXT,
     preis          REAL,
     rabatt         REAL,
