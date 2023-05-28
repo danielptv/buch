@@ -76,7 +76,6 @@ export class BuchDtoOhneRef {
     @IsInt({ each: true })
     @Min(0, { each: true })
     @Max(MAX_RATING, { each: true })
-    // @Validate(IsRating, { each: true })
     @ApiProperty({ example: [3, 4, 5] })
     readonly rating: number[] | undefined;
 
