@@ -52,6 +52,9 @@ GET {{restUrl}}?typescript=true
 ### Suche mit vorhandenen Schlagwoertern
 GET {{restUrl}}?javascript=true&typescript=true
 
+### Suche mit variablen Schlagwoertern oder deren Teilen
+GET {{restUrl}}?schlagwoerter=JavaScript,type
+
 ### Suche mit nicht-vorhandener Property
 GET {{restUrl}}?php=true
 

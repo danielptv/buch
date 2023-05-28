@@ -46,6 +46,7 @@ export interface Suchkriterien {
     readonly homepage?: string;
     readonly javascript?: boolean;
     readonly typescript?: boolean;
+    readonly schlagwoerter?: string[];
     readonly titel?: string;
 }
 

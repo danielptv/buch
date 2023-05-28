@@ -98,7 +98,8 @@ export class QueryBuilder {
         // z.B. { titel: 'a', rating: 5, javascript: true }
         // "rest properties" fuer anfaengliche WHERE-Klausel: ab ES 2018 https://github.com/tc39/proposal-object-rest-spread
         // type-coverage:ignore-next-line
-        const { titel, javascript, typescript, ...props } = suchkriterien;
+        const { titel, javascript, typescript, schlagwoerter, ...props } =
+            suchkriterien;
 
         let useWhere = true;
 
@@ -113,6 +114,24 @@ export class QueryBuilder {
                 { titel: `%${titel}%` },
             );
             useWhere = false;
+        }
+
+        if (schlagwoerter !== undefined && Array.isArray(schlagwoerter)) {
+            const ilike =
+                typeOrmModuleOptions.type === 'postgres' ? 'ilike' : 'like';
+            schlagwoerter.forEach((schlagwort) => {
+                queryBuilder = useWhere
+                    ? queryBuilder.where(
+                          `${this.#buchAlias}.schlagwoerter ${ilike} '%${
+                              schlagwort as string
+                          }%'`,
+                      )
+                    : queryBuilder.andWhere(
+                          `${this.#buchAlias}.schlagwoerter ${ilike} '%${
+                              schlagwort as string
+                          }%'`,
+                      );
+            });
         }
 
         if (javascript === 'true') {

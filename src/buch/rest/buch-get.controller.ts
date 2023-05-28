@@ -47,10 +47,12 @@ import {
     Req,
     Res,
     UseInterceptors,
+    ValidationPipe,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { ResponseTimeInterceptor } from '../../logger/response-time.interceptor.js';
 import { Titel } from '../entity/titel.entity.js';
+import { Transform } from 'class-transformer';
 import { getBaseUri } from './getBaseUri.js';
 import { getLogger } from '../../logger/logger.js';
 import { paths } from '../../config/paths.js';
@@ -136,6 +138,10 @@ export class BuchQuery implements Suchkriterien {
 
     @ApiProperty({ required: false })
     declare readonly typescript: boolean;
+
+    @ApiProperty({ required: false })
+    @Transform(({ value }) => (value as string).split(','))
+    declare readonly schlagwoerter: string[];
 
     @ApiProperty({ required: false })
     declare readonly titel: string;
@@ -256,7 +262,7 @@ export class BuchGetController {
     @ApiOperation({ summary: 'Suche mit Suchkriterien', tags: ['Suchen'] })
     @ApiOkResponse({ description: 'Eine evtl. leere Liste mit Büchern' })
     async get(
-        @Query() query: BuchQuery,
+        @Query(new ValidationPipe({ transform: true })) query: BuchQuery,
         @Req() req: Request,
         @Res() res: Response,
     ): Promise<Response<BuecherModel | undefined>> {
