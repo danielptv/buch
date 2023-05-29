@@ -137,7 +137,28 @@ export class BuchReadService {
         // QueryBuilder https://typeorm.io/select-query-builder
         // Das Resultat ist eine leere Liste, falls nichts gefunden
         // Lesen: Keine Transaktion erforderlich
-        const buecher = await this.#queryBuilder.build(suchkriterien).getMany();
+        let buecher = await this.#queryBuilder.build(suchkriterien).getMany();
+
+        // Filtern der Ergebnisse nach Rating. Zurückgegeben werden Ergebnisse mit einem Rating größer oder gleich dem gesuchten.
+        if (suchkriterien.rating !== undefined) {
+            buecher = buecher.filter((buch) => {
+                if (
+                    suchkriterien.rating === undefined ||
+                    buch.rating === undefined ||
+                    buch.rating.length === 0
+                ) {
+                    return false;
+                }
+                const average =
+                    buch.rating.reduce((a, b) => Number(a) + Number(b), 0) /
+                    buch.rating.length;
+                if (average < suchkriterien.rating) {
+                    return false;
+                }
+                return true;
+            });
+        }
+
         this.#logger.debug('find: buecher=%o', buecher);
         if (buecher.length === 0) {
             throw new NotFoundException(
