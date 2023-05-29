@@ -1,3 +1,5 @@
+// eslint-disable-next-line eslint-comments/disable-enable-pair
+/* eslint-disable prettier/prettier */
 /*
  * Copyright (C) 2021 - present Juergen Zimmermann, Hochschule Karlsruhe
  *
@@ -15,9 +17,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 import { Args, Query, Resolver } from '@nestjs/graphql';
+import { type Buch, BuchArt } from '../entity/buch.entity.js';
+import {
+    BuchReadService,
+    Suchkriterien,
+} from '../service/buch-read.service.js';
 import { UseFilters, UseInterceptors } from '@nestjs/common';
-import { type Buch } from '../entity/buch.entity.js';
-import { BuchReadService } from '../service/buch-read.service.js';
 import { HttpExceptionFilter } from './http-exception.filter.js';
 import { ResponseTimeInterceptor } from '../../logger/response-time.interceptor.js';
 import { getLogger } from '../../logger/logger.js';
@@ -52,12 +57,34 @@ export class BuchQueryResolver {
     }
 
     @Query()
-    async buecher(@Args() titel: { titel: string } | undefined) {
-        const titelStr = titel?.titel;
-        this.#logger.debug('find: titel=%s', titelStr);
-        const suchkriterium = titelStr === undefined ? {} : { titel: titelStr };
+    async buecher(
+        @Args()
+        suche:
+            | {
+                  titel?: string;
+                  rating?: number;
+                  schlagwoerter?: string[];
+                  art?: BuchArt;
+              }
+            | undefined,
+    ) {
+        // Abfrage nach der Buchart, weil diese nicht als Undefined-Property übergeben werden kann (sonst Problem bei der SQL-Generierung im Query Builder).
+        const suchkriterien =
+            suche?.art === undefined
+                ? ({
+                      titel: suche?.titel,
+                      rating: suche?.rating,
+                      schlagwoerter: suche?.schlagwoerter,
+                  } as Suchkriterien)
+                : {
+                      titel: suche.titel,
+                      rating: suche.rating,
+                      schlagwoerter: suche.schlagwoerter,
+                      art: suche.art,
+                  } as Suchkriterien;
+        this.#logger.debug('find: suchkritierien=%o', suchkriterien);
 
-        const buecher = await this.#service.find(suchkriterium);
+        const buecher = await this.#service.find(suchkriterien);
         const buecherDTO = buecher.map((buch) => this.#toBuchDTO(buch));
 
         this.#logger.debug('find: buecherDTO=%o', buecherDTO);

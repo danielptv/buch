@@ -160,15 +160,18 @@ export class QueryBuilder {
         Object.keys(props).forEach((key) => {
             const param: Record<string, any> = {};
             param[key] = props[key]; // eslint-disable-line @typescript-eslint/no-unsafe-assignment, security/detect-object-injection
-            queryBuilder = useWhere
-                ? queryBuilder.where(
-                      `${this.#buchAlias}.${key} = :${key}`,
-                      param,
-                  )
-                : queryBuilder.andWhere(
-                      `${this.#buchAlias}.${key} = :${key}`,
-                      param,
-                  );
+            this.#logger.debug('build: builder=%o', queryBuilder.getSql());
+            if (key !== 'rating') {
+                queryBuilder = useWhere
+                    ? queryBuilder.where(
+                          `${this.#buchAlias}.${key} = :${key}`,
+                          param,
+                      )
+                    : queryBuilder.andWhere(
+                          `${this.#buchAlias}.${key} = :${key}`,
+                          param,
+                      );
+            }
             useWhere = false;
         });
 

@@ -22,7 +22,12 @@ schema {
 
 "Funktionen, um Bücherdaten zu lesen"
 type Query {
-  buecher(titel: String): [Buch!]
+  buecher(
+    titel: String
+    art: String
+    rating: Int
+    schlagwoerter: [String]
+  ): [Buch!]
 
   buch(id: ID!): Buch
 }
