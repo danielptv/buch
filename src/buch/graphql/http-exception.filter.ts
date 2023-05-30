@@ -16,7 +16,7 @@
  */
 
 /**
- * Das Modul besteht aus der Klasse {@linkcode HttpExceptionInterceptor}.
+ * Das Modul besteht aus der Klasse {@linkcode HttpExceptionFilter}.
  * @packageDocumentation
  */
 import {

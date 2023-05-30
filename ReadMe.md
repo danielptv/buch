@@ -160,12 +160,12 @@ Wenn man den eigenen Microservice direkt mit Windows laufen lässt, kann man
 PostgreSQL und das Administrationswerkzeug pgadmin einfach mit _Docker Compose_
 starten und später auch herunterfahren.
 
-> ❗ Vor dem 1. Start von PostgreSQL muss man in `docker-compose.yaml` im
-> Verzeichnis .extras\postgres die Zeile mit dem (eingeschränkten) Linux-User
+> ❗ Vor dem 1. Start von PostgreSQL muss man in `docker-compose.yaml` beim
+> Service postgres die Zeile mit dem (eingeschränkten) Linux-User
 > "postgres:postgres" auskommentieren, damit die Initialisierung von PostgreSQL
 > als Linux-User `root` ausgeführt werden kann. Danach kopiert man die Skripte
 > `create-db-buch.sh` und `create-db-buch.sql` aus dem Verzeichnis
-> `.extras\postgres\sql` nach `C:\Zimmermann\volumes\postgres\sql`.
+> `.extras\db\postgres\sql` nach `C:\Zimmermann\volumes\postgres\sql`.
 > Für die Windows-Verzeichnisse `C:\Zimmermann\volumes\postgres\data`,
 > `C:\Zimmermann\volumes\postgres\tablespace` und
 > `C:\Zimmermann\volumes\postgres\tablespace\buch` muss außerdem Vollzugriff
@@ -177,12 +177,11 @@ starten und später auch herunterfahren.
 > Übrigens ist das Emoji für das Ausrufezeichen von https://emojipedia.org.
 
 ```powershell
-    cd .extras\postgres
-    docker compose up
+    docker compose --profile postgres up
 
     # Herunterfahren in einer 2. Shell:
     cd .extras\postgres
-    docker compose down
+    docker compose --profile postgres down
 ```
 
 Der Name des Docker-Containers lautet `postgres` und ebenso lautet der
@@ -196,7 +195,7 @@ wird später auch als Service-Name für PostgreSQL in Kubernetes verwendet.
 > Docker-Container das `bash`-Skript ausführen:
 
 ```powershell
-    docker compose exec postgres sh
+    docker compose --profile postgres exec postgres sh
        psql --dbname=postgres --username=postgres --file=/sql/create-db-kunde.sql
 ```
 
@@ -255,17 +254,16 @@ Wenn man den eigenen Microservice direkt mit Windows - nicht mit Kubernetes -
 laufen lässt, kann man MySQL und das Administrationswerkzeug phpMyAdmin einfach
 mit _Docker Compose_ starten und später auch herunterfahren.
 
-> ❗ Vor dem 1. Start von MySQL muss man die Skripte `create-db-buch.sh` und
-> `create-db-buch.sql` aus dem Projektverzeichnis
-> `.extras\mysql\sql` nach `C:\Zimmermann\volumes\mysql\sql` kopieren.
+> ❗ Vor dem 1. Start von MySQL muss man das Skripte `create-db-buch.sql` aus
+> dem Projektverzeichnis `.extras\db\mysql\sql` nach
+> `C:\Zimmermann\volumes\mysql\sql` kopieren.
 
 ```powershell
-    cd .extras\mysql
-    docker compose up
+    docker compose --profile mysql up
 
     # Herunterfahren in einer 2. Shell:
     cd .extras\mysql
-    docker compose down
+    docker compose --profile mysql down
 ```
 
 Der Name des Docker-Containers und des _virtuellen Rechners_ lautet `mysql`.
@@ -279,7 +277,7 @@ Kubernetes verwendet.
 > `bash`-Skript ausführen:
 
 ```powershell
-    docker compose exec mysql sh
+    docker compose --profile mysql exec mysql sh
         mysql --user=root --password=p < /sql/create-db-kunde.sql
 ```
 
@@ -576,8 +574,7 @@ Für eine statische Codeanalyse durch _SonarQube_ muss zunächst der
 SonarQube-Server mit _Docker Compose_ als Docker-Container gestartet werden:
 
 ```powershell
-    cd .extras\sonarqube
-    docker compose up
+    docker compose --profile sonar up
 ```
 
 Wenn der Server zum ersten Mal gestartet wird, ruft man in einem Webbrowser die
@@ -597,8 +594,7 @@ inspiziert werden.
 Abschließend wird der oben gestartete Server heruntergefahren.
 
 ```powershell
-    cd .extras\sonarqube
-    docker compose down
+    docker compose --profile sonar down
 ```
 
 ### type-coverage
@@ -662,27 +658,24 @@ im Verzeichnis `.extras\doc\html` erstellt:
 
 ## Continuous Integration mit Jenkins
 
-Jenkins wird nicht in Kubernetes, sondern direkt mit _Docker Compose_
-genutzt. Dadurch muss Jenkins nicht immer laufen und kann bei Bedarf gestartet
-und wieder heruntergefahren werden. Dazu muss zunächst das Jenkins-Image um eine
-Docker-Installation ergänzt werden, wozu es im Unterverzeichnis `.extras\jenkins`
-das `Dockerfile` gibt, um ein solches Image zu erstellen:
+Jenkins wird direkt mit _Docker Compose_ genutzt. Dadurch muss Jenkins nicht
+immer laufen und kann bei Bedarf gestartet und wieder heruntergefahren werden.
+Dazu muss zunächst das Jenkins-Image um eine Docker-Installation ergänzt werden,
+wozu es die Datei `Dockerfile.jenkins` gibt, um ein solches Image zu erstellen:
 
 ```powershell
-    cd .extras\jenkins
-    Get-Content Dockerfile | docker run --rm --interactive hadolint/hadolint:2.10.0-beta-debian
-    docker buildx build --tag juergenzimmermann/jenkins:2023.1.0 .
+    Get-Content Dockerfile.jenkins | docker run --rm --interactive hadolint/hadolint:2.10.0-beta-debian
+    docker buildx build --tag juergenzimmermann/jenkins:2023.1.0 --file Dockerfile.jenkins .
 ```
 
 Das neu gebaute Image `juergenzimmermann/jenkins:2023.1.0` wird in
-`docker-compose.yaml` verwendet:
+`docker-compose.yaml` beim Service `jenkins` verwendet:
 
 ```powershell
-    cd .extras\jenkins
-    docker compose up
+    docker compose --profile jenkins up
 
     # In einer 2. PowerShell: Herunterfahren
-    docker compose down
+    docker compose --profile jenkins down
 ```
 
 ### Aufruf mit Webbrowser
@@ -694,8 +687,7 @@ Jenkins-Image zugreifen. Der Benutzername ist `admin` und das Passwort
 ### Bash zur evtl. Fehlersuche im laufenden Jenkins-Container
 
 ```powershell
-    cd .extras\jenkins
-    docker compose exec jenkins bash
+    docker compose --profile jenkins exec jenkins bash
 ```
 
 ## Monitoring durch clinic

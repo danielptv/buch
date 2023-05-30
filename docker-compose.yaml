@@ -348,7 +348,7 @@ services:
       - DOCKER_HOST=tcp://docker:2376
       - DOCKER_CERT_PATH=/certs/client
       - DOCKER_TLS_VERIFY=1
-      - TZ=Europe/Berlin=value
+      - TZ=Europe/Berlin
     # User "jenkins" wurde gesetzt in "Dockerfile"
     #user: "jenkins:jenkins"
     container_name: jenkins
