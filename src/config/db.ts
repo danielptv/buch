@@ -26,7 +26,6 @@ import { type TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { dbType } from './dbtype.js';
 import { entities } from '../buch/entity/entities.js';
 import { env } from './env.js';
-import { k8sConfig } from './kubernetes.js';
 import { loggerDefaultValue } from './logger.js';
 import { nodeConfig } from './node.js';
 
@@ -41,9 +40,8 @@ const {
 
 // nullish coalescing
 const database = DB_NAME ?? Buch.name.toLowerCase();
-const { detected } = k8sConfig;
 
-const host = detected ? dbType : DB_HOST ?? 'localhost';
+const host = DB_HOST ?? 'localhost';
 const username = DB_USERNAME ?? Buch.name.toLowerCase();
 const pass = DB_PASSWORD ?? 'p';
 const passAdmin = DB_PASSWORD_ADMIN ?? 'p';

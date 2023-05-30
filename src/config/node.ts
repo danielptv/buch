@@ -25,7 +25,6 @@ import { type HttpsOptions } from '@nestjs/common/interfaces/external/https-opti
 import { cloud } from './cloud.js';
 import { env } from './env.js';
 import { hostname } from 'node:os';
-import { k8sConfig } from './kubernetes.js';
 import { resolve } from 'node:path';
 
 const { NODE_ENV, PORT, BUCH_SERVICE_HOST, BUCH_SERVICE_PORT, LOG_DEFAULT } =
@@ -45,7 +44,7 @@ if (Number.isNaN(port)) {
 // https://nodejs.org/api/fs.html
 // https://nodejs.org/api/path.html
 // http://2ality.com/2017/11/import-meta.html
-const usePKI = cloud === undefined && (!k8sConfig.detected || k8sConfig.tls);
+const usePKI = cloud === undefined;
 
 // fuer z.B. PEM-Dateien fuer TLS
 const srcDir = existsSync('src') ? 'src' : 'dist';
@@ -63,23 +62,17 @@ const cert = usePKI
 
 let httpsOptions: HttpsOptions | undefined;
 if (cloud === undefined) {
-    if (k8sConfig.detected && !k8sConfig.tls) {
-        if (LOG_DEFAULT?.toLowerCase() !== 'true') {
-            console.debug('HTTP: Lokaler Kubernetes-Cluster');
-        }
+    if (LOG_DEFAULT?.toLowerCase() !== 'true') {
+        console.debug('HTTPS');
+    }
+    if (key === undefined || cert === undefined) {
+        console.warn('Key und/oder Zertifikat fehlen');
     } else {
-        if (LOG_DEFAULT?.toLowerCase() !== 'true') {
-            console.debug('HTTPS: On-Premise oder Kubernetes-Cluster');
-        }
-        if (key === undefined || cert === undefined) {
-            console.warn('Key und/oder Zertifikat fehlen');
-        } else {
-            httpsOptions = {
-                // Shorthand Properties:   key: key
-                key,
-                cert,
-            };
-        }
+        httpsOptions = {
+            // Shorthand Properties:   key: key
+            key,
+            cert,
+        };
     }
 }
 

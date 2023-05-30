@@ -21,7 +21,6 @@
 # https://docs.docker.com/compose/compose-file
 # https://docs.docker.com/compose/compose-file/compose-file-v3
 services:
-
   # ------------------------------------------------------------------------------------
   # P o s t g r e S Q L
   # ------------------------------------------------------------------------------------
@@ -30,6 +29,10 @@ services:
     ports:
       - published: 5432
         target: 5432
+    # https://docs.docker.com/compose/profiles
+    profiles: [ postgres ]
+    # https://docs.docker.com/compose/networking
+    networks: [ buch-network ]
     volumes:
       - type: bind
         source: C:/Zimmermann/volumes/postgres/data
@@ -50,23 +53,18 @@ services:
         target: /sql
         read_only: true
     environment:
-      POSTGRES_PASSWORD: p
-      TZ: Europe/Berlin
-      PGTZ: Europe/Berlin
-      #PGDATA: /var/lib/postgresql/data
+      - POSTGRES_PASSWORD=p
+      - TZ=Europe/Berlin
+      - PGTZ=Europe/Berlin
+      #- PGDATA=/var/lib/postgresql/data
       # https://www.postgresql.org/docs/current/auth-trust.html
-      #POSTGRES_HOST_AUTH_METHOD: trust
+      #- POSTGRES_HOST_AUTH_METHOD=trust
     user: "postgres:postgres"
     security_opt:
       - label:user:postgres
       - no-new-privileges:true
     container_name: postgres
     hostname: postgres
-    deploy:
-      resources:
-        limits:
-          cpus: "2.0"
-          memory: 2048M
     healthcheck:
       test:
         [
@@ -80,6 +78,16 @@ services:
       interval: 5s
       timeout: 2s
       start_period: 5s
+    # https://docs.docker.com/compose/compose-file/deploy
+    deploy:
+      # https://docs.docker.com/compose/compose-file/deploy/#resources
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 1G
+        reservations:
+          cpus: "1.0"
+          memory: 512M
 
   # ------------------------------------------------------------------------------------
   # p g a d m i n
@@ -90,6 +98,8 @@ services:
     ports:
       - published: 8888
         target: 80
+    profiles: [ postgres ]
+    networks: [ buch-network ]
     volumes:
       - type: bind
         source: C:/Zimmermann/volumes/postgres/pgadmin
@@ -99,8 +109,8 @@ services:
         source: C:/Zimmermann/volumes/postgres/pgadmin4
         target: /var/lib/pgadmin4
     environment:
-      PGADMIN_DEFAULT_EMAIL: pgadmin@acme.com
-      PGADMIN_DEFAULT_PASSWORD: p
+      - PGADMIN_DEFAULT_EMAIL=pgadmin@acme.com
+      - PGADMIN_DEFAULT_PASSWORD=p
     user: "pgadmin:5050"
     container_name: pgadmin
     hostname: pgadmin
@@ -108,7 +118,10 @@ services:
       resources:
         limits:
           cpus: "2.0"
-          memory: 2048M
+          memory: 2G
+        reservations:
+          cpus: "1.0"
+          memory: 1G
 
   # ------------------------------------------------------------------------------------
   # M y S Q L
@@ -118,6 +131,8 @@ services:
     ports:
       - published: 3306
         target: 3306
+    profiles: [ mysql ]
+    networks: [ buch-network ]
     volumes:
       - type: bind
         source: C:/Zimmermann/volumes/mysql/db
@@ -144,19 +159,14 @@ services:
         target: /sql
         read_only: true
     environment:
-      PMA_HOST: mysql
-      MYSQL_ROOT_PASSWORD: p
-      TZ: Europe/Berlin
+      - PMA_HOST=mysql
+      - MYSQL_ROOT_PASSWORD=p
+      - TZ=Europe/Berlin
     security_opt:
       - label:user:mysql
       - no-new-privileges:true
     container_name: mysql
     hostname: mysql
-    deploy:
-      resources:
-        limits:
-          cpus: "2.0"
-          memory: 2048M
     healthcheck:
       test:
         [
@@ -170,6 +180,14 @@ services:
       interval: 5s
       timeout: 2s
       start_period: 5s
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 1G
+        reservations:
+          cpus: "1.0"
+          memory: 512M
 
   # ------------------------------------------------------------------------------------
   # p h p M y A d m i n
@@ -180,11 +198,13 @@ services:
     ports:
       - published: 8889
         target: 80
+    profiles: [ mysql ]
+    networks: [ buch-network ]
     environment:
-      MYSQL_ROOT_PASSWORD: p
-      PMA_HOST: mysql
-      PMA_PORT: 3306
-      PMA_ARBITRARY: 1
+      - MYSQL_ROOT_PASSWORD=p
+      - PMA_HOST=mysql
+      - PMA_PORT=3306
+      - PMA_ARBITRARY=1
     # kein dedizierter User im Image vorhanden
     container_name: phpmyadmin
     # https://github.com/phpmyadmin/docker/issues/293
@@ -194,34 +214,13 @@ services:
         limits:
           cpus: "0.5"
           memory: 768M
-
-  # ------------------------------------------------------------------------------------
-  # D B e a v e r
-  # ------------------------------------------------------------------------------------
-  # als User "cbadmin" muss man eine DB-Verbindung und einen User einrichten
-  dbeaver:
-    image: dbeaver/cloudbeaver:23.0.5
-    links: [ mysql ]
-    ports:
-      - published: 8978
-        target: 8978
-    volumes:
-      - type: bind
-        source: C:/Zimmermann/volumes/dbeaver
-        target: /opt/cloudbeaver/workspace
-    environment:
-      TZ: Europe/Berlin
-    container_name: dbeaver
-    hostname: dbeaver
-    deploy:
-      resources:
-        limits:
+        reservations:
           cpus: "0.5"
           memory: 768M
 
-  # ------------------------------------------------------------------------------------
+  # ----------------------------------------------------------------------------
   # f a k e s m t p
-  # ------------------------------------------------------------------------------------
+  # ----------------------------------------------------------------------------
   fakesmtp:
     image: gessnerfl/fake-smtp-server:2.0.2
     ports:
@@ -231,16 +230,18 @@ services:
         target: 8080
       - published: 5081
         target: 8081
+    profiles: [ fakesmtp ]
+    networks: [ buch-network ]
     volumes:
       - type: bind
         source: C:/Zimmermann/volumes/fakesmtp
         target: /tmp
     environment:
-      TZ: Europe/Berlin
-      SPRING_OUTPUT_ANSI_ENABLED: ALWAYS
-      SPRING_MAIN_BANNER-MODE: LOG
-      SPRING_LAZY-INITIALIZATION: "true"
-      SPRING_JPA_OPEN-IN-VIEW: "true"
+      - TZ=Europe/Berlin
+      - SPRING_OUTPUT_ANSI_ENABLED=ALWAYS
+      - SPRING_MAIN_BANNER-MODE=LOG
+      - SPRING_LAZY-INITIALIZATION=true
+      - SPRING_JPA_OPEN-IN-VIEW=true
     container_name: fakesmtp
     hostname: fakesmtp
     deploy:
@@ -248,27 +249,190 @@ services:
         limits:
           cpus: "0.5"
           memory: 768M
+        reservations:
+          cpus: "0.5"
+          memory: 768M
 
-  # ------------------------------------------------------------------------------------
+  # ----------------------------------------------------------------------------
+  # S o n a r Q u b e
+  # ----------------------------------------------------------------------------
+  sonar:
+    image: sonarqube:10.0.0-community
+    ports:
+      # Port fuer HTTP
+      - published: 9000
+        target: 9000
+      # Port fuer H2
+      - published: 9092
+        target: 9092
+    profiles: [ sonar ]
+    volumes:
+      - type: bind
+        source: C:/Zimmermann/volumes/sonarqube/data
+        target: /opt/sonarqube/data
+      - type: bind
+        source: C:/Zimmermann/volumes/sonarqube/logs
+        target: /opt/sonarqube/logs
+      - type: bind
+        source: C:/Zimmermann/volumes/sonarqube/language-plugins
+        target: /opt/sonarqube/lib/extensions
+        read_only: true
+    environment:
+      - TZ=Europe/Berlin
+    container_name: sonar
+    hostname: sonar
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 2G
+        reservations:
+          cpus: "2.0"
+          memory: 2G
+
+  # ----------------------------------------------------------------------------
+  # J e n k i n s
+  # ----------------------------------------------------------------------------
+  # https://github.com/compose-spec/compose-spec/blob/master/spec.md#compose-file
+  # https://github.com/compose-spec/compose-spec/blob/master/spec.md#services-top-level-element
+  # https://docs.docker.com/compose/compose-file
+  # https://docs.docker.com/compose/compose-file/compose-file-v3
+  jenkins-certs:
+    image: docker:24.0.2-dind
+    profiles: [ jenkins ]
+    networks:
+      jenkins-network:
+        # alternative hostnames
+        aliases: [ docker ]
+    volumes:
+      - type: bind
+        source: C:/Zimmermann/volumes/jenkins/certs
+        target: /certs/client
+      - type: bind
+        source: C:/Zimmermann/volumes/jenkins/data
+        target: /var/jenkins_home
+    privileged: true
+    environment:
+      - DOCKER_TLS_CERTDIR=/certs
+      - TZ=Europe/Berlin
+    container_name: jenkins-cert
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 512M
+        reservations:
+          cpus: "2.0"
+          memory: 512M
+
+  jenkins:
+    image: juergenzimmermann/jenkins:2023.1.0
+    ports:
+      - published: 7070
+        target: 8080
+    depends_on: [ jenkins-certs ]
+    profiles: [ jenkins ]
+    networks: [ jenkins-network ]
+    volumes:
+      - type: bind
+        source: C:/Zimmermann/volumes/jenkins/certs
+        target: /certs/client
+        read_only: true
+      - type: bind
+        source: C:/Zimmermann/volumes/jenkins/data
+        target: /var/jenkins_home
+      #- type: bind
+      #  source: C:/Zimmermann/volumes/jenkins/npm
+      #  target: /root/.npm
+    environment:
+      - DOCKER_HOST=tcp://docker:2376
+      - DOCKER_CERT_PATH=/certs/client
+      - DOCKER_TLS_VERIFY=1
+      - TZ=Europe/Berlin=value
+    # User "jenkins" wurde gesetzt in "Dockerfile"
+    #user: "jenkins:jenkins"
+    container_name: jenkins
+    hostname: jenkins
+    deploy:
+     resources:
+       limits:
+         cpus: "2.0"
+         memory: 4G
+       reservations:
+          cpus: "2.0"
+          memory: 2G
+
+  # ----------------------------------------------------------------------------
+  # K e y c l o a k
+  # ----------------------------------------------------------------------------
+  keycloak:
+    image: quay.io/keycloak/keycloak:21.1.1
+    #depends_on: [postgres]
+    ports:
+      - published: 8080
+        target: 8080
+    profiles: [ keycloak ]
+    volumes:
+      - type: bind
+        source: C:/Zimmermann/volumes/keycloak
+        # mit Unterverzeichnis h2
+        target: /opt/keycloak/data
+      # ggf. /opt/keycloak/conf/keycloak.conf
+    environment:
+      - TZ=Europe/Berlin
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=p
+      #- KC_DB_URL=jdbc:postgresql://postgres:5432/keycloak?ssl=allow
+      #- KC_DB_SCHEMA=public
+      #- KC_DB_USERNAME=keycloak
+      #- KC_DB_PASSWORD=keycloak
+      #- KC_HOSTNAME=myhost.acme.com
+      #- KC_HOSTNAME_STRICT=false
+      - KC_HTTP_ENABLED=true
+      #- KC_HTTP_RELATIVE_PATH=/
+    container_name: keycloak
+    hostname: keycloak
+    user: keycloak:1000
+    # --features=token-exchange
+    entrypoint: ["/opt/keycloak/bin/kc.sh", "start-dev"]
+    deploy:
+      resources:
+        limits:
+          cpus: "2.0"
+          memory: 2G
+
+  # ----------------------------------------------------------------------------
   # b u c h
-  # ------------------------------------------------------------------------------------
+  # ----------------------------------------------------------------------------
   buch:
     image: juergenzimmermann/buch:2023.1.0
     ports:
       - published: 3000
         target: 3000
+    # https://docs.docker.com/compose/profiles
+    profiles: [ buch ]
+    # https://docs.docker.com/compose/networking
+    networks: [ buch-network ]
     volumes:
       - type: bind
         source: C:\Zimmermann\volumes\buch
         target: /opt/app/log
-    env_file: [ "docker-compose.env" ]
+    env_file: [ docker-compose.env ]
     environment:
       # https://docs.docker.com/compose/compose-file/compose-file-v3/#variable-substitution
-      USER_PASSWORD_ENCODED: "$$argon2i$$v=19$$m=4096,t=3,p=1$$aaxA2v/9rRSPGkwYN+NQog$$27Huii1XtD3iEd62fog+04G26LRPZMHoYCI6AGKTL8M"
+      - USER_PASSWORD_ENCODED=$$argon2i$$v=19$$m=4096,t=3,p=1$$aaxA2v/9rRSPGkwYN+NQog$$27Huii1XtD3iEd62fog+04G26LRPZMHoYCI6AGKTL8M
     container_name: buch
     hostname: buch
     deploy:
       resources:
         limits:
           cpus: "1.0"
-          memory: 1024M
+          memory: 1G
+        reservations:
+          cpus: "1.0"
+          memory: 1G
+
+# https://docs.docker.com/compose/compose-file/06-networks
+networks:
+  buch-network: {}
+  jenkins-network: {}

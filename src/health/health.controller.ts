@@ -29,7 +29,6 @@ import {
 } from '@nestjs/terminus';
 import { Agent } from 'node:https';
 import { ApiTags } from '@nestjs/swagger';
-import { k8sConfig } from '../config/kubernetes.js';
 import { nodeConfig } from '../config/node.js';
 
 /**
@@ -44,7 +43,7 @@ export class HealthController {
 
     readonly #typeorm: TypeOrmHealthIndicator;
 
-    readonly #schema = k8sConfig.detected && !k8sConfig.tls ? 'http' : 'https';
+    readonly #schema = 'https';
 
     readonly #httpsAgent = new Agent({
         requestCert: true,

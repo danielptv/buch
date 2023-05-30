@@ -26,7 +26,6 @@ import { dbType } from '../config/dbtype.js';
 import figlet from 'figlet';
 import { getLogger } from './logger.js';
 import { hash } from 'argon2';
-import { k8sConfig } from '../config/kubernetes.js';
 import { nodeConfig } from '../config/node.js';
 import process from 'node:process';
 
@@ -41,23 +40,14 @@ export class BannerService implements OnApplicationBootstrap {
      * Die Test-DB wird im Development-Modus neu geladen.
      */
     async onApplicationBootstrap() {
-        const { host, httpsOptions, nodeEnv, port, serviceHost, servicePort } =
-            nodeConfig;
-        const isK8s = k8sConfig.detected;
-        const plattform = isK8s
-            ? `Kubernetes: BUCH_SERVICE_HOST=${serviceHost}, BUCH_SERVICE_PORT=${servicePort}`
-            : 'Kubernetes: N/A';
-
+        const { host, httpsOptions, nodeEnv, port } = nodeConfig;
         figlet('buch', (_, data) => console.info(data));
         // https://nodejs.org/api/process.html
         // "Template String" ab ES 2015
         this.#logger.info('Node: %s', process.version);
         this.#logger.info('NODE_ENV: %s', nodeEnv);
-        this.#logger.info(plattform);
-
-        const desPods = isK8s ? ' des Pods' : '';
-        this.#logger.info('Rechnername%s: %s', desPods, host);
-        this.#logger.info('Port%s: %s', desPods, port);
+        this.#logger.info('Rechnername%s: %s', host);
+        this.#logger.info('Port%s: %s', port);
         this.#logger.info(
             '%s',
             httpsOptions === undefined ? 'HTTP (ohne TLS)' : 'HTTPS',
@@ -65,7 +55,6 @@ export class BannerService implements OnApplicationBootstrap {
         this.#logger.info('DB-System: %s', dbType);
         this.#logger.info('Betriebssystem: %s (%s)', type(), release());
         this.#logger.info('Username: %s', userInfo().username);
-        this.#logger.info('GraphQL playground: %s', '/graphql');
 
         // const options: argon2.Options = {...};
         // Argon2 Defaultwerte https://www.rfc-editor.org/rfc/rfc9106.txt
