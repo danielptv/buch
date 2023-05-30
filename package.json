@@ -9,7 +9,7 @@
   "type": "module",
   "engines": {
     "node": ">=20.2.0",
-    "npm": ">=9.6.6"
+    "npm": ">=9.6.7"
   },
   "scripts": {
     "prebuild": "npm run clean",
