@@ -21,11 +21,11 @@
  * @packageDocumentation
  */
 
-import { mailConfig, mailDeactivated } from '../config/mail.js';
 import { Injectable } from '@nestjs/common';
 import { type SendMailOptions } from 'nodemailer';
 import { cloud } from '../config/cloud.js';
 import { getLogger } from '../logger/logger.js';
+import { mailConfig } from '../config/mail.js';
 
 /** Typdefinition für das Senden einer Email. */
 export interface SendMailParams {
@@ -39,8 +39,9 @@ export class MailService {
     readonly #logger = getLogger(MailService.name);
 
     async sendmail({ subject, body }: SendMailParams) {
-        if (mailDeactivated) {
+        if (mailConfig.deactivated) {
             this.#logger.warn('#sendmail: Mail deaktiviert');
+            return;
         }
         if (cloud !== undefined) {
             // In der Cloud kann man z.B. "@sendgrid/mail" statt
@@ -56,7 +57,7 @@ export class MailService {
 
         try {
             const nodemailer = await import('nodemailer');
-            await nodemailer.createTransport(mailConfig).sendMail(data);
+            await nodemailer.createTransport(mailConfig.options).sendMail(data);
         } catch (err) {
             this.#logger.warn('#sendmail: Fehler %o', err);
         }

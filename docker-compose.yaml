@@ -418,7 +418,7 @@ services:
         source: C:\Zimmermann\volumes\buch
         target: /opt/app/log
       - type: bind
-        source: buch.docker-compose.yaml
+        source: buch.container.yaml
         target: /opt/app/buch.yaml
         read_only: true
     env_file: [ docker-compose.env ]

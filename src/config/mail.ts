@@ -26,7 +26,7 @@ import { loggerDefaultValue } from './logger.js';
 
 const { mail } = config;
 
-export const mailDeactivated = mail?.deactivated === true;
+const deactivated = mail?.deactivated === true;
 
 // Hochschule Karlsruhe: smtp.h-ka.de
 // nullish coalescing
@@ -40,7 +40,7 @@ const logger = mail?.log === true;
  */
 // TODO records als "deeply immutable data structure" (Stage 2)
 // https://github.com/tc39/proposal-record-tuple
-export const mailConfig: Options = {
+export const options: Options = {
     host,
     port,
     secure: false,
@@ -55,8 +55,11 @@ export const mailConfig: Options = {
     priority: 'normal',
     logger,
 } as const;
-Object.freeze(mailConfig);
+export const mailConfig = {
+    deactivated,
+    options,
+};
+Object.freeze(options);
 if (!loggerDefaultValue) {
-    console.debug('mailDeactivated: %s', mailDeactivated);
     console.debug('mailConfig: %o', mailConfig);
 }
