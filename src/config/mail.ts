@@ -21,18 +21,19 @@
  */
 
 import { type Options } from 'nodemailer/lib/smtp-transport';
-import { env } from './env.js';
+import { config } from './buch-config.js';
 import { loggerDefaultValue } from './logger.js';
 
-const { SMTP_DEACTIVATED, SMTP_HOST, SMTP_PORT, SMTP_LOG } = env;
+const { mail } = config;
 
-export const mailDeactivated = SMTP_DEACTIVATED?.toLowerCase() === 'true';
-// Hochschule Karlsruhe:   smtp.h-ka.de
+export const mailDeactivated = mail?.deactivated === true;
+
+// Hochschule Karlsruhe: smtp.h-ka.de
 // nullish coalescing
-const host = SMTP_HOST ?? 'smtp';
+const host = mail?.host as string | undefined ?? 'smtp'; // eslint-disable-line prettier/prettier
 // Hochschule Karlsruhe:   25
-const port = Number.parseInt(SMTP_PORT ?? '25', 10);
-const logger = SMTP_LOG?.toLowerCase() === 'true';
+const port = mail?.port as number | undefined ?? 25; // eslint-disable-line @typescript-eslint/no-magic-numbers, prettier/prettier
+const logger = mail?.log === true;
 
 /**
  * Konfiguration für den Mail-Client mit _nodemailer_.
@@ -56,5 +57,6 @@ export const mailConfig: Options = {
 } as const;
 Object.freeze(mailConfig);
 if (!loggerDefaultValue) {
+    console.debug('mailDeactivated: %s', mailDeactivated);
     console.debug('mailConfig: %o', mailConfig);
 }

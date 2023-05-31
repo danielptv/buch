@@ -16,10 +16,11 @@
  */
 
 import { type User } from '../../security/auth/service/user.service.js';
-import { env } from '../env.js';
+import { config } from '../buch-config.js';
 
-const { USER_PASSWORD_ENCODED } = env;
-const password = USER_PASSWORD_ENCODED ?? '! To Be Changed !';
+const { passwordEncoded } = config.auth; // eslint-disable-line @typescript-eslint/no-unsafe-assignment
+const password =
+    (passwordEncoded as string | undefined) ?? '!!! To Be Changed !!!';
 
 /**
  * Ein JSON-Array der Benutzerdaten mit den vorhandenen Rollen.

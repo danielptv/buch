@@ -17,6 +17,7 @@
 
 import { type PrettyOptions } from 'pino-pretty';
 import { type SonicBoom } from 'sonic-boom';
+import { config } from './buch-config.js';
 import { env } from './env.js';
 import { nodeConfig } from './node.js';
 import pino from 'pino';
@@ -31,16 +32,21 @@ const logDirDefault = 'log';
 const logFileNameDefault = 'server.log';
 const logFileDefault = resolve(logDirDefault, logFileNameDefault);
 
-const { LOG_LEVEL, LOG_DIR, LOG_PRETTY, LOG_DEFAULT } = env;
+const { log } = config;
 const { nodeEnv } = nodeConfig;
 
 // Default-Einstellung fuer Logging
-export const loggerDefaultValue = LOG_DEFAULT?.toLowerCase() === 'true';
+export const loggerDefaultValue =
+    env.LOG_DEFAULT?.toLowerCase() === 'true' || log?.default === true;
 
-const logDir = LOG_DIR === undefined ? LOG_DIR : LOG_DIR.trimEnd();
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+const logDir: string | undefined =
+    (log?.dir as string | undefined) === undefined
+        ? undefined
+        : log.dir.trimEnd();
 const logFile =
     logDir === undefined ? logFileDefault : resolve(logDir, logFileNameDefault);
-const pretty = LOG_PRETTY?.toLowerCase() === 'true';
+const pretty = log?.pretty === true;
 
 // https://getpino.io
 // Log-Levels: fatal, error, warn, info, debug, trace
@@ -50,7 +56,7 @@ const pretty = LOG_PRETTY?.toLowerCase() === 'true';
 
 let logLevel = 'info';
 if (
-    LOG_LEVEL === 'debug' &&
+    log?.level === 'debug' &&
     nodeEnv !== 'production' &&
     nodeEnv !== 'PRODUCTION' &&
     !loggerDefaultValue

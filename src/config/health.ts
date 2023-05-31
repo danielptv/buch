@@ -20,10 +20,11 @@
  * @packageDocumentation
  */
 
-import { env } from './env.js';
+import { config } from './buch-config.js';
 import { loggerDefaultValue } from './logger.js';
 
-const { HEALTH_PRETTY_PRINT } = env;
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+const prettyPrint: string | undefined = config.health?.prettyPrint;
 
 /**
  * Das Konfigurationsobjekt für Health.
@@ -32,8 +33,7 @@ const { HEALTH_PRETTY_PRINT } = env;
 // https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-4.html#const-assertions
 export const healthConfig = {
     prettyPrint:
-        HEALTH_PRETTY_PRINT !== undefined &&
-        HEALTH_PRETTY_PRINT.toLowerCase() === 'true',
+        prettyPrint !== undefined && prettyPrint.toLowerCase() === 'true',
 } as const;
 
 if (!loggerDefaultValue) {

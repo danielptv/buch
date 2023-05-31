@@ -22,6 +22,7 @@
  */
 
 import RE2 from 're2';
+import { config } from './buch-config.js';
 import { env } from './env.js';
 import { hostname } from 'node:os';
 
@@ -44,6 +45,6 @@ if (openshiftRegexp.test(computername)) {
     cloud = 'openshift';
 }
 
-if (env.LOG_DEFAULT?.toLowerCase() !== 'true') {
+if (env.LOG_DEFAULT?.toLowerCase() !== 'true' && config.log?.default !== true) {
     console.debug('cloud: %s', cloud);
 }

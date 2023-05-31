@@ -225,7 +225,7 @@ services:
     image: gessnerfl/fake-smtp-server:2.0.2
     ports:
       - published: 5025
-        target: 5025
+        target: 8025
       - published: 5080
         target: 8080
       - published: 5081
@@ -417,6 +417,10 @@ services:
       - type: bind
         source: C:\Zimmermann\volumes\buch
         target: /opt/app/log
+      - type: bind
+        source: buch.docker-compose.yaml
+        target: /opt/app/buch.yaml
+        read_only: true
     env_file: [ docker-compose.env ]
     environment:
       # https://docs.docker.com/compose/compose-file/compose-file-v3/#variable-substitution

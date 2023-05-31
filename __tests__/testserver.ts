@@ -22,6 +22,7 @@ import {
 import { Agent } from 'node:https';
 import { AppModule } from '../src/app.module.js';
 import { NestFactory } from '@nestjs/core';
+import { config } from '../src/config/buch-config.js';
 import { dbType } from '../src/config/dbtype.js';
 import dockerCompose from 'docker-compose';
 import { env } from '../src/config/env.js';
@@ -115,7 +116,11 @@ export const startServer = async () => {
         throw new Error('HTTPS wird nicht konfiguriert.');
     }
 
-    if (env.START_DB_SERVER === 'true' || env.START_DB_SERVER === 'TRUE') {
+    if (
+        env.START_DB_SERVER === 'true' ||
+        env.START_DB_SERVER === 'TRUE' ||
+        config.test?.startDbServer === true
+    ) {
         await startDbServer();
     }
 

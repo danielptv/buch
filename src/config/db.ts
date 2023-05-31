@@ -23,28 +23,22 @@ import { Buch } from '../buch/entity/buch.entity.js';
 import { type DataSourceOptions } from 'typeorm';
 import { SnakeNamingStrategy } from 'typeorm-naming-strategies';
 import { type TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { config } from './buch-config.js';
 import { dbType } from './dbtype.js';
 import { entities } from '../buch/entity/entities.js';
-import { env } from './env.js';
 import { loggerDefaultValue } from './logger.js';
 import { nodeConfig } from './node.js';
 
-const {
-    DB_NAME,
-    DB_HOST,
-    DB_USERNAME,
-    DB_PASSWORD,
-    DB_PASSWORD_ADMIN,
-    DB_POPULATE,
-} = env;
+const { db } = config;
 
 // nullish coalescing
-const database = DB_NAME ?? Buch.name.toLowerCase();
+const database = (db?.name as string | undefined) ?? Buch.name.toLowerCase();
 
-const host = DB_HOST ?? 'localhost';
-const username = DB_USERNAME ?? Buch.name.toLowerCase();
-const pass = DB_PASSWORD ?? 'p';
-const passAdmin = DB_PASSWORD_ADMIN ?? 'p';
+const host = (db?.host as string | undefined) ?? 'localhost';
+const username =
+    (db?.username as string | undefined) ?? Buch.name.toLowerCase();
+const pass = (db?.password as string | undefined) ?? 'p';
+const passAdmin = (db?.passwordAdmin as string | undefined) ?? 'p';
 
 const namingStrategy = new SnakeNamingStrategy();
 
@@ -131,7 +125,7 @@ switch (dbType) {
 }
 Object.freeze(typeOrmModuleOptions);
 
-export const dbPopulate = DB_POPULATE?.toLowerCase() === 'true';
+export const dbPopulate = db?.populate === true;
 export const adminDataSourceOptions: DataSourceOptions =
     dbType === 'mysql'
         ? {

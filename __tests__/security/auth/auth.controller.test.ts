@@ -26,19 +26,13 @@ import {
     startServer,
 } from '../../testserver.js';
 import { HttpStatus } from '@nestjs/common';
-import dotenv from 'dotenv';
-import process from 'node:process';
-
-dotenv.config();
-const { env } = process;
-const { USER_PASSWORD, USER_PASSWORD_FALSCH } = env;
 
 // -----------------------------------------------------------------------------
 // T e s t d a t e n
 // -----------------------------------------------------------------------------
 const username = 'admin';
-const password = USER_PASSWORD;
-const passwordFalsch = USER_PASSWORD_FALSCH;
+const password = 'p'; // NOSONAR
+const passwordFalsch = 'FALSCHES_PASSWORT !!!'; // NOSONAR
 
 // -----------------------------------------------------------------------------
 // T e s t s

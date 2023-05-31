@@ -23,23 +23,15 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { type HttpsOptions } from '@nestjs/common/interfaces/external/https-options.interface.js';
 import { cloud } from './cloud.js';
+import { config } from './buch-config.js';
 import { env } from './env.js';
 import { hostname } from 'node:os';
 import { resolve } from 'node:path';
 
-const { NODE_ENV, PORT, BUCH_SERVICE_HOST, BUCH_SERVICE_PORT, LOG_DEFAULT } =
-    env;
+const { LOG_DEFAULT, NODE_ENV } = env;
 
 const computername = hostname();
-let port = Number.NaN;
-const portStr = PORT;
-if (portStr !== undefined) {
-    port = Number.parseInt(portStr, 10);
-}
-if (Number.isNaN(port)) {
-    // PORT ist zwar gesetzt, aber keine Zahl
-    port = 3000; // eslint-disable-line @typescript-eslint/no-magic-numbers
-}
+const port = (config.node?.port as number | undefined) ?? 3000; // eslint-disable-line @typescript-eslint/no-magic-numbers
 
 // https://nodejs.org/api/fs.html
 // https://nodejs.org/api/path.html
@@ -62,7 +54,7 @@ const cert = usePKI
 
 let httpsOptions: HttpsOptions | undefined;
 if (cloud === undefined) {
-    if (LOG_DEFAULT?.toLowerCase() !== 'true') {
+    if (LOG_DEFAULT?.toLowerCase() !== 'true' && config.log?.default !== true) {
         console.debug('HTTPS');
     }
     if (key === undefined || cert === undefined) {
@@ -100,6 +92,4 @@ export const nodeConfig = {
         | 'production'
         | 'test'
         | undefined,
-    serviceHost: BUCH_SERVICE_HOST,
-    servicePort: BUCH_SERVICE_PORT,
 } as const;

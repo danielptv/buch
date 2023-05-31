@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 - present Juergen Zimmermann, Hochschule Karlsruhe
+ * Copyright (C) 2020 - present Juergen Zimmermann, Hochschule Karlsruhe
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,17 +16,14 @@
  */
 
 /**
- * Das Modul enthält den Namen des DB-Typs: postgres, mysql oder sqlite.
+ * Das Modul enthält Objekte mit KOnfigurationsdaten aus der .yaml-Datei.
  * @packageDocumentation
  */
 
-import { config } from './buch-config.js';
+import { load } from 'js-yaml';
+import { readFileSync } from 'node:fs';
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-const type: string | undefined = config.db?.type;
-
-// 'better-sqlite3' erfordert Python zum Uebersetzen, wenn das Docker-Image gebaut wird
-export const dbType =
-    type === 'postgres' || type === 'mysql' || type === 'sqlite'
-        ? (type as string)
-        : 'postgres';
+export const config = load(readFileSync('buch.yaml', 'utf8')) as Record<
+    string,
+    any
+>;
