@@ -46,8 +46,8 @@ export class BannerService implements OnApplicationBootstrap {
         // "Template String" ab ES 2015
         this.#logger.info('Node: %s', process.version);
         this.#logger.info('NODE_ENV: %s', nodeEnv);
-        this.#logger.info('Rechnername%s: %s', host);
-        this.#logger.info('Port%s: %s', port);
+        this.#logger.info('Rechnername: %s', host);
+        this.#logger.info('Port: %s', port);
         this.#logger.info(
             '%s',
             httpsOptions === undefined ? 'HTTP (ohne TLS)' : 'HTTPS',
