@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS buch (
     lieferbar     BOOLEAN NOT NULL DEFAULT FALSE,
     datum         DATE,
     homepage      VARCHAR(40),
+    rating        VARCHAR(192),
     schlagwoerter VARCHAR(64),
     erzeugt       DATETIME NOT NULL DEFAULT (CURRENT_TIMESTAMP),
     aktualisiert  DATETIME NOT NULL DEFAULT (CURRENT_TIMESTAMP)

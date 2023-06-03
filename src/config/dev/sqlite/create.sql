@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS buch (
     lieferbar      INTEGER NOT NULL CHECK (lieferbar = 0 OR lieferbar = 1) DEFAULT 0,
     datum          TEXT,
     homepage       TEXT,
+    rating         TEXT,
     schlagwoerter  TEXT,
     erzeugt        TEXT NOT NULL,
     aktualisiert   TEXT NOT NULL
