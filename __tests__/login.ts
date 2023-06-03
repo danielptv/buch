@@ -21,15 +21,9 @@ import {
 } from './buch/buch-query.resolver.test.js';
 import { httpsAgent, loginPath } from './testserver.js';
 import { type LoginResult } from '../src/security/auth/service/auth.service.js';
-import dotenv from 'dotenv';
-import process from 'node:process';
 
 const usernameDefault = 'admin';
-
-dotenv.config();
-const { env } = process;
-const { USER_PASSWORD } = env;
-const passwordDefault = USER_PASSWORD!; // eslint-disable-line @typescript-eslint/no-non-null-assertion
+const passwordDefault = 'p'; // NOSONAR
 
 export const loginRest = async (
     axiosInstance: AxiosInstance,

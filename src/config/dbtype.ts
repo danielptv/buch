@@ -20,12 +20,13 @@
  * @packageDocumentation
  */
 
-import { env } from './env.js';
+import { config } from './buch-config.js';
 
-const { DB_TYPE } = env;
+// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+const type: string | undefined = config.db?.type;
 
 // 'better-sqlite3' erfordert Python zum Uebersetzen, wenn das Docker-Image gebaut wird
 export const dbType =
-    DB_TYPE === 'postgres' || DB_TYPE === 'mysql' || DB_TYPE === 'sqlite'
-        ? DB_TYPE
+    type === 'postgres' || type === 'mysql' || type === 'sqlite'
+        ? (type as string)
         : 'postgres';

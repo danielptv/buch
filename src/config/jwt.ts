@@ -16,8 +16,8 @@
  */
 
 import { type SignOptions, type VerifyOptions } from 'jsonwebtoken';
+import { config } from './buch-config.js';
 import { configDir } from './node.js';
-import { env } from './env.js';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -57,14 +57,15 @@ const privateKey = readFileSync(resolve(jwtDir, 'private-key.pem'), utf8); // es
 //  iss(uer)
 // https://docs.microsoft.com/en-us/azure/active-directory/develop/id-tokens
 
-// destructuring (default fuer expiresIn: 1h)
-const { JWT_EXPIRES_IN, JWT_ISSUER } = env;
+const { jwt } = config;
 
 // shorthand property
 const signOptions: SignOptions = {
     algorithm,
-    expiresIn: JWT_EXPIRES_IN ?? '1h',
-    issuer: JWT_ISSUER ?? 'https://hka.de/JuergenZimmermann',
+    expiresIn: (jwt?.expiresIn as string | undefined) ?? '1h',
+    issuer:
+        (jwt?.issuer as string | undefined) ??
+        'https://hka.de/JuergenZimmermann',
 };
 
 const verifyOptions: VerifyOptions = {

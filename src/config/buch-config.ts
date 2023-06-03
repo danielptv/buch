@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 - present Juergen Zimmermann, Hochschule Karlsruhe
+ * Copyright (C) 2020 - present Juergen Zimmermann, Hochschule Karlsruhe
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,22 +16,14 @@
  */
 
 /**
- * Das Modul besteht aus der Klasse {@linkcode HttpExceptionFilter}.
+ * Das Modul enthält Objekte mit KOnfigurationsdaten aus der .yaml-Datei.
  * @packageDocumentation
  */
-import {
-    ArgumentsHost,
-    Catch,
-    ExceptionFilter,
-    HttpException,
-} from '@nestjs/common';
-import { BadUserInputError } from './errors.js';
 
-@Catch(HttpException)
-export class HttpExceptionFilter implements ExceptionFilter {
-    catch(exception: HttpException, _host: ArgumentsHost) {
-        // eslint-disable-next-line prefer-destructuring, @typescript-eslint/no-unsafe-assignment
-        const message: string = (exception.getResponse() as any).message;
-        throw new BadUserInputError(message, exception);
-    }
-}
+import { load } from 'js-yaml';
+import { readFileSync } from 'node:fs';
+
+export const config = load(readFileSync('buch.yaml', 'utf8')) as Record<
+    string,
+    any
+>;
