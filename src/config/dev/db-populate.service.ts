@@ -100,7 +100,7 @@ export class DbPopulateService implements OnApplicationBootstrap {
         const dropStatements = readFileSync(dropScript, 'utf8'); // eslint-disable-line security/detect-non-literal-fs-filename
         await this.#datasource.query(dropStatements);
 
-        const createScript = resolve(basePath, 'create.sql');
+        const createScript = resolve(basePath, 'create.sql'); // eslint-disable-line sonarjs/no-duplicate-string
         // https://nodejs.org/api/fs.html#fs_fs_readfilesync_path_options
         const createStatements = readFileSync(createScript, 'utf8'); // eslint-disable-line security/detect-non-literal-fs-filename
         await this.#datasource.query(createStatements);

@@ -117,15 +117,11 @@ export class BuchReadService {
 
         // Keine Suchkriterien?
         if (suchkriterien === undefined) {
-            const buecher = await this.#queryBuilder.build({}).getMany();
-            return buecher;
+            return this.#queryBuilder.build({}).getMany();
         }
         const keys = Object.keys(suchkriterien);
         if (keys.length === 0) {
-            const buecher = await this.#queryBuilder
-                .build(suchkriterien)
-                .getMany();
-            return buecher;
+            return this.#queryBuilder.build(suchkriterien).getMany();
         }
 
         // Falsche Namen fuer Suchkriterien?
