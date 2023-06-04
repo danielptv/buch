@@ -128,7 +128,8 @@ pipeline {
 
                 // npm help install
                 // Konfigurationsverzeichnis /root/.npm
-                sh 'npm install --no-fund'
+                //sh 'npm install --no-fund'
+                sh 'npm install --no-fund --force'
 
                 // ci (= clean install) mit package-lock.json
                 // sh 'npm ci --no-fund'
