@@ -18,6 +18,7 @@ build
 .extras/mysql/helm/README.md
 .extras/mysql/.kpt-pipeline
 node-ts
+scripts/sonar-scanner.js
 temp
 tmp
 zz_env
