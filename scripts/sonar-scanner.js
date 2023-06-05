@@ -19,16 +19,16 @@ import scanner from 'sonarqube-scanner';
 
 scanner(
     {
-      serverUrl : 'http://localhost:9000',
-      token : 'sqa_f544141aa3cd235a08ad9ce9ca3632c55ac1f90f',
-      options: {
-        'sonar.projectName': 'buch',
-        'sonar.projectDescription': 'Beispielprojekt fuer Software Engineering',
-        'sonar.projectVersion': '2023.1.0',
-        'sonar.sources': 'src',
-        'sonar.tests': '__tests__',
-        'sonar.scm.disabled': 'true',
-      }
+        serverUrl: 'http://localhost:9000',
+        token: 'sqa_f544141aa3cd235a08ad9ce9ca3632c55ac1f90f',
+        options: {
+            'sonar.projectName': 'buch',
+            'sonar.projectDescription': 'Beispiel fuer Software Engineering',
+            'sonar.projectVersion': '2023.1.0',
+            'sonar.sources': 'src',
+            'sonar.tests': '__tests__',
+            'sonar.scm.disabled': 'true',
+        },
     },
     () => process.exit(),
-  )
+);
