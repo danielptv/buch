@@ -18,6 +18,7 @@ build
 .extras/mysql/helm/README.md
 .extras/mysql/.kpt-pipeline
 node-ts
+# Sicherheitsrisiko und deshalb ignorieren wegen SonarQube-Token
 scripts/sonar-scanner.js
 temp
 tmp
