@@ -26,6 +26,7 @@ scanner(
             'sonar.projectVersion': '2023.1.0',
             'sonar.sources': 'src',
             'sonar.tests': '__tests__',
+            'sonar.token': 'sqa_f544141aa3cd235a08ad9ce9ca3632c55ac1f90f',
             'sonar.scm.disabled': 'true',
         },
     },
