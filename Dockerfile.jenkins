@@ -22,7 +22,7 @@
 # https://www.jenkins.io/doc/book/installing/docker
 # https://manpages.debian.org/bullseye/apt/apt-get.8.en.html
 
-ARG JENKINS_VERSION=2.407-jdk17
+ARG JENKINS_VERSION=2.409-jdk17
 FROM jenkins/jenkins:${JENKINS_VERSION}
 
 USER root
