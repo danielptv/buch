@@ -591,7 +591,8 @@ Eingaben:
 - _Expires in_: z.B. _90 days_ auswählen
 
 Abschließend klickt man auf den Button _Generate_ und trägt den generierten
-Token im Skript `scripts\sonar-scanner.js` bei der Option `sonar.token` ein.
+Token in der Datei `.env` für die Umgebungsvariable `SONAR_TOKEN` ein, damit
+der Token im Skript `scripts\sonar-scanner.js` verwendet werden kann.
 
 Nachdem der Server gestartet ist, wird der SonarQube-Scanner in einer zweiten
 PowerShell mit `gradle sonar` gestartet. Das Resultat kann dann in der Webseite
