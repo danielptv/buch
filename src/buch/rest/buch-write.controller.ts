@@ -227,7 +227,7 @@ export class BuchWriteController {
         };
         const abbildungen = buchDTO.abbildungen?.map((abbildungDTO) => {
             const abbildung: Abbildung = {
-                id: undefined,
+                id: abbildungDTO.id,
                 beschriftung: abbildungDTO.beschriftung,
                 contentType: abbildungDTO.contentType,
                 buch: undefined,

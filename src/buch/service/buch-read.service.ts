@@ -113,18 +113,20 @@ export class BuchReadService {
      * @returns Ein JSON-Array mit den gefundenen Büchern.
      * @throws NotFoundException falls keine Bücher gefunden wurden.
      */
-    async find(suchkriterien?: Suchkriterien) {
+    async find(suchkriterien?: Suchkriterien, mitAbbildungen = false) {
         this.#logger.debug('find: suchkriterien=%o', suchkriterien);
 
         // Keine Suchkriterien?
         if (suchkriterien === undefined) {
-            const buecher = await this.#queryBuilder.build({}).getMany();
+            const buecher = await this.#queryBuilder
+                .build({}, mitAbbildungen)
+                .getMany();
             return buecher;
         }
         const keys = Object.keys(suchkriterien);
         if (keys.length === 0) {
             const buecher = await this.#queryBuilder
-                .build(suchkriterien)
+                .build(suchkriterien, mitAbbildungen)
                 .getMany();
             return buecher;
         }
@@ -137,7 +139,9 @@ export class BuchReadService {
         // QueryBuilder https://typeorm.io/select-query-builder
         // Das Resultat ist eine leere Liste, falls nichts gefunden
         // Lesen: Keine Transaktion erforderlich
-        let buecher = await this.#queryBuilder.build(suchkriterien).getMany();
+        let buecher = await this.#queryBuilder
+            .build(suchkriterien, mitAbbildungen)
+            .getMany();
 
         // Filtern der Ergebnisse nach Rating. Zurückgegeben werden Ergebnisse mit einem Rating größer oder gleich dem gesuchten.
         if (suchkriterien.rating !== undefined) {

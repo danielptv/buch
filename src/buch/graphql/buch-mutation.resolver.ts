@@ -113,7 +113,7 @@ export class BuchMutationResolver {
         };
         const abbildungen = buchDTO.abbildungen?.map((abbildungDTO) => {
             const abbildung: Abbildung = {
-                id: undefined,
+                id: abbildungDTO.id,
                 beschriftung: abbildungDTO.beschriftung,
                 contentType: abbildungDTO.contentType,
                 buch: undefined,
@@ -140,6 +140,9 @@ export class BuchMutationResolver {
 
         // Rueckwaertsverweis
         buch.titel.buch = buch;
+        buch.abbildungen?.forEach((abbildung) => {
+            abbildung.buch = buch;
+        });
         return buch;
     }
 

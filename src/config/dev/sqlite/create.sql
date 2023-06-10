@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS titel (
 
 
 CREATE TABLE IF NOT EXISTS abbildung (
-    id              INTEGER PRIMARY KEY AUTOINCREMENT,
+    id              TEXT PRIMARY KEY,
     beschriftung    TEXT NOT NULL,
     content_type    TEXT NOT NULL,
     buch_id         INTEGER NOT NULL REFERENCES buch

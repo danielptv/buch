@@ -21,12 +21,17 @@
  * @packageDocumentation
  */
 
-import { MaxLength } from 'class-validator';
+import { Length, Matches, MaxLength } from 'class-validator';
 
 /**
  * Entity-Klasse für Abbildung ohne TypeORM.
  */
 export class AbbildungDTO {
+    // SHA-1 Hash
+    @Length(40, 40)
+    @Matches('^[a-zA-Z0-9]+$')
+    readonly id!: string;
+
     @MaxLength(32)
     readonly beschriftung!: string;
 

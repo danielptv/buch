@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS titel (
 ALTER TABLE titel AUTO_INCREMENT=1000;
 
 CREATE TABLE IF NOT EXISTS abbildung (
-    id              INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    id              CHAR(40) NOT NULL PRIMARY KEY,
     beschriftung    VARCHAR(32) NOT NULL,
     content_type    VARCHAR(16) NOT NULL,
     buch_id         CHAR(36) NOT NULL references buch(id),

@@ -89,7 +89,7 @@ export class QueryBuilder {
      * @returns QueryBuilder
      */
     // eslint-disable-next-line max-lines-per-function
-    build(suchkriterien: Record<string, any>) {
+    build(suchkriterien: Record<string, any>, mitAbbildungen = false) {
         this.#logger.debug('build: suchkriterien=%o', suchkriterien);
 
         let queryBuilder = this.#repo.createQueryBuilder(this.#buchAlias);
@@ -174,6 +174,13 @@ export class QueryBuilder {
             }
             useWhere = false;
         });
+
+        if (mitAbbildungen) {
+            queryBuilder.leftJoinAndSelect(
+                `${this.#buchAlias}.abbildungen`,
+                this.#abbildungAlias,
+            );
+        }
 
         this.#logger.debug('build: sql=%s', queryBuilder.getSql());
         return queryBuilder;

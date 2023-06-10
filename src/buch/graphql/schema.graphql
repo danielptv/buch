@@ -47,6 +47,13 @@ type Titel {
   untertitel: String
 }
 
+"Daten zu einer Abbildung eines Buches"
+type Abbildung {
+  id: String!
+  beschriftung: String!
+  contentType: String
+}
+
 "Datenschema zu einem Buch, das gelesen wird"
 type Buch {
   id: ID!
@@ -61,6 +68,7 @@ type Buch {
   homepage: String
   schlagwoerter: [String]
   titel: Titel!
+  abbildungen: [Abbildung]
 }
 
 "Enum-Typ für die Art eines Buches"
@@ -77,6 +85,7 @@ input TitelInput {
 
 "Daten zu den Abbildungen eines Buches"
 input AbbildungInput {
+  id: String!
   beschriftung: String!
   contentType: String!
 }

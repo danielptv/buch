@@ -50,6 +50,7 @@ const neuesBuch: BuchDTO = {
     },
     abbildungen: [
         {
+            id: '98387c186b53f1933b832e8d61cee0340d8a6ad5', // DevSkim: ignore DS173237
             beschriftung: 'Abb. 1',
             contentType: 'img/png',
         },

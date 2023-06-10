@@ -47,18 +47,18 @@ INSERT INTO titel(id, titel, untertitel, buch_id) VALUES
     (60,'Phi','phi',60);
 
 INSERT INTO abbildung(id, beschriftung, content_type, buch_id) VALUES
-    (1,'Abb. 1','img/png',1);
+    ('27dffddf814f2ad354b3cdcfc7a877775b638f11','Abb. 1','img/png',1); -- DevSkim: ignore DS173237
 INSERT INTO abbildung(id, beschriftung, content_type, buch_id) VALUES
-    (20,'Abb. 1','img/png',20);
+    ('7c31e924f873a42d91ab377bf8c63d13bfa0167e','Abb. 1','img/png',20); -- DevSkim: ignore DS173237
 INSERT INTO abbildung(id, beschriftung, content_type, buch_id) VALUES
-    (21,'Abb. 2','img/png',20);
+    ('abcd977e6a0b626c73377ce0ff3288e725833281','Abb. 2','img/png',20); -- DevSkim: ignore DS173237
 INSERT INTO abbildung(id, beschriftung, content_type, buch_id) VALUES
-    (30,'Abb. 1','img/png',30);
+    ('1b35bbb589a243ae31284901d5c55eb64901de98','Abb. 1','img/png',30); -- DevSkim: ignore DS173237
 INSERT INTO abbildung(id, beschriftung, content_type, buch_id) VALUES
-    (31,'Abb. 2','img/png',30);
+    ('abcd977e6a0b626c73377ce0ff3288e725833282','Abb. 2','img/png',30); -- DevSkim: ignore DS173237
 INSERT INTO abbildung(id, beschriftung, content_type, buch_id) VALUES
-    (40,'Abb. 1','img/png',40);
+    ('21dc7ba97966101a463f22a564856a3980fb22c2','Abb. 1','img/png',40); -- DevSkim: ignore DS173237
 INSERT INTO abbildung(id, beschriftung, content_type, buch_id) VALUES
-    (50,'Abb. 1','img/png',50);
+    ('e6b4190b6230376d61677f5bd4c6dd0b45e6f931','Abb. 1','img/png',50); -- DevSkim: ignore DS173237
 INSERT INTO abbildung(id, beschriftung, content_type, buch_id) VALUES
-    (60,'Abb. 1','img/png',60);
+    ('abcd977e6a0b626c73377ce0ff3288e72583328d','Abb. 1','img/png',60); -- DevSkim: ignore DS173237

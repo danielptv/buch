@@ -35,7 +35,7 @@ X-REQUEST-TYPE: GraphQL
   }
 }
 
-### Suche isbn, version, art und titel von einem Buch mit vorhandener Buch-ID
+### Suche isbn, version, art, abbildungen und titel von einem Buch mit vorhandener Buch-ID
 POST {{graphQlUrl}}
 Content-Type: application/json
 X-REQUEST-TYPE: GraphQL
@@ -47,6 +47,11 @@ query ($id: ID! = "1") {
     art
     titel {
       titel
+    }
+    abbildungen {
+      id
+      beschriftung
+      contentType
     }
   }
 }

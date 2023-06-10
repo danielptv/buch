@@ -15,22 +15,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import {
-    Column,
-    Entity,
-    JoinColumn,
-    ManyToOne,
-    PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 import { Buch } from './buch.entity.js';
 
 @Entity()
 export class Abbildung {
-    @Column('int')
     // https://typeorm.io/entities#primary-columns
     // CAVEAT: zuerst @Column() und erst dann @PrimaryGeneratedColumn()
-    @PrimaryGeneratedColumn()
-    id: number | undefined;
+    @PrimaryColumn('char')
+    id: string | undefined;
 
     @Column('varchar', { unique: true, length: 32 })
     readonly beschriftung!: string;

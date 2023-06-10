@@ -27,7 +27,7 @@ import { HttpExceptionFilter } from './http-exception.filter.js';
 import { ResponseTimeInterceptor } from '../../logger/response-time.interceptor.js';
 import { getLogger } from '../../logger/logger.js';
 
-export type BuchDTO = Omit<Buch, 'abbildungen' | 'aktualisiert' | 'erzeugt'>;
+export type BuchDTO = Omit<Buch, 'aktualisiert' | 'erzeugt'>;
 export interface IdInput {
     id: number;
 }
@@ -49,7 +49,7 @@ export class BuchQueryResolver {
         const { id } = idInput;
         this.#logger.debug('findById: id=%d', id);
 
-        const buch = await this.#service.findById({ id });
+        const buch = await this.#service.findById({ id, mitAbbildungen: true });
         const buchDTO = this.#toBuchDTO(buch);
 
         this.#logger.debug('findById: buchDTO=%o', buchDTO);
@@ -84,7 +84,8 @@ export class BuchQueryResolver {
                   } as Suchkriterien;
         this.#logger.debug('find: suchkritierien=%o', suchkriterien);
 
-        const buecher = await this.#service.find(suchkriterien);
+        // eslint-disable-next-line unicorn/no-array-method-this-argument
+        const buecher = await this.#service.find(suchkriterien, true);
         const buecherDTO = buecher.map((buch) => this.#toBuchDTO(buch));
 
         this.#logger.debug('find: buecherDTO=%o', buecherDTO);
@@ -105,6 +106,7 @@ export class BuchQueryResolver {
             homepage: buch.homepage,
             schlagwoerter: buch.schlagwoerter,
             titel: buch.titel,
+            abbildungen: buch.abbildungen,
         };
     }
 }
