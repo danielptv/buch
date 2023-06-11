@@ -66,11 +66,14 @@ CREATE TABLE IF NOT EXISTS titel (
     buch_id     integer NOT NULL UNIQUE USING INDEX TABLESPACE buchspace REFERENCES buch
 ) TABLESPACE buchspace;
 
-
 CREATE TABLE IF NOT EXISTS abbildung (
     id              char(40) PRIMARY KEY USING INDEX TABLESPACE buchspace,
     beschriftung    varchar(32) NOT NULL,
-    content_type    varchar(16) NOT NULL,
-    buch_id         integer NOT NULL REFERENCES buch
+    content_type    varchar(16) NOT NULL
 ) TABLESPACE buchspace;
-CREATE INDEX IF NOT EXISTS abbildung_buch_id_idx ON abbildung(buch_id) TABLESPACE buchspace;
+
+CREATE TABLE IF NOT EXISTS buch_abbildungen (
+    buch_id         integer REFERENCES buch,
+    abbildung_id    char(40) REFERENCES abbildung,
+    PRIMARY KEY (buch_id, abbildung_id)
+) TABLESPACE buchspace;

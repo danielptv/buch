@@ -28,7 +28,6 @@ import {
     VersionInvalidException,
     VersionOutdatedException,
 } from './exceptions.js';
-import { Abbildung } from '../entity/abbildung.entity.js';
 import { Buch } from '../entity/buch.entity.js';
 import { BuchReadService } from './buch-read.service.js';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -150,10 +149,12 @@ export class BuchWriteService {
             if (titelId !== undefined) {
                 await transactionalMgr.delete(Titel, titelId);
             }
-            const abbildungen = buch.abbildungen ?? [];
-            for (const abbildung of abbildungen) {
-                await transactionalMgr.delete(Abbildung, abbildung.id);
-            }
+            await transactionalMgr
+                .createQueryBuilder()
+                .delete()
+                .from('buch_abbildungen')
+                .where(`buch_id = ${buch.id}`)
+                .execute();
 
             deleteResult = await transactionalMgr.delete(Buch, id);
             this.#logger.debug('delete: deleteResult=%o', deleteResult);

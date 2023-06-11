@@ -1,9 +1,9 @@
-id;beschriftung;content_type;buch_id
-27dffddf814f2ad354b3cdcfc7a877775b638f11;Abb. 1;img/png;1
-7c31e924f873a42d91ab377bf8c63d13bfa0167e;Abb. 1;img/png;20
-abcd977e6a0b626c73377ce0ff3288e725833281;Abb. 2;img/png;20
-1b35bbb589a243ae31284901d5c55eb64901de98;Abb. 1;img/png;30
-abcd977e6a0b626c73377ce0ff3288e725833282;Abb. 2;img/png;30
-21dc7ba97966101a463f22a564856a3980fb22c2;Abb. 1;img/png;40
-e6b4190b6230376d61677f5bd4c6dd0b45e6f931;Abb. 1;img/png;50
-abcd977e6a0b626c73377ce0ff3288e72583328d;Abb. 1;img/png;60
+id;beschriftung;content_type
+27dffddf814f2ad354b3cdcfc7a877775b638f11;Abb. 1;img/png
+7c31e924f873a42d91ab377bf8c63d13bfa0167e;Abb. 1;img/png
+abcd977e6a0b626c73377ce0ff3288e725833281;Abb. 2;img/png
+1b35bbb589a243ae31284901d5c55eb64901de98;Abb. 1;img/png
+abcd977e6a0b626c73377ce0ff3288e725833282;Abb. 2;img/png
+21dc7ba97966101a463f22a564856a3980fb22c2;Abb. 1;img/png
+e6b4190b6230376d61677f5bd4c6dd0b45e6f931;Abb. 1;img/png
+abcd977e6a0b626c73377ce0ff3288e72583328d;Abb. 1;img/png

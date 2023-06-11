@@ -55,8 +55,10 @@ CREATE TABLE IF NOT EXISTS abbildung (
     id              CHAR(40) NOT NULL PRIMARY KEY,
     beschriftung    VARCHAR(32) NOT NULL,
     content_type    VARCHAR(16) NOT NULL,
-    buch_id         CHAR(36) NOT NULL references buch(id),
-
-    INDEX abbildung_buch_id_idx(buch_id)
 ) TABLESPACE buchspace ROW_FORMAT=COMPACT;
-ALTER TABLE abbildung AUTO_INCREMENT=1000;
+
+CREATE TABLE IF NOT EXISTS buch_abbildungen (
+    buch_id         integer REFERENCES buch(id),
+    abbildung_id    char(40) REFERENCES abbildung(id),
+    PRIMARY KEY (buch_id, abbildung_id)
+) TABLESPACE buchspace;

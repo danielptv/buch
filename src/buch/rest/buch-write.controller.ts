@@ -230,7 +230,7 @@ export class BuchWriteController {
                 id: abbildungDTO.id,
                 beschriftung: abbildungDTO.beschriftung,
                 contentType: abbildungDTO.contentType,
-                buch: undefined,
+                buecher: undefined,
             };
             return abbildung;
         });
@@ -255,7 +255,7 @@ export class BuchWriteController {
         // Rueckwaertsverweise
         buch.titel.buch = buch;
         buch.abbildungen?.forEach((abbildung) => {
-            abbildung.buch = buch;
+            abbildung.buecher?.push(buch);
         });
         return buch;
     }

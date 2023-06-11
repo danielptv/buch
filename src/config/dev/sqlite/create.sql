@@ -49,11 +49,14 @@ CREATE TABLE IF NOT EXISTS titel (
     buch_id     INTEGER NOT NULL UNIQUE REFERENCES buch
 );
 
-
 CREATE TABLE IF NOT EXISTS abbildung (
     id              TEXT PRIMARY KEY,
     beschriftung    TEXT NOT NULL,
     content_type    TEXT NOT NULL,
-    buch_id         INTEGER NOT NULL REFERENCES buch
 );
-CREATE INDEX IF NOT EXISTS abbildung_buch_id_idx ON abbildung(buch_id);
+
+CREATE TABLE IF NOT EXISTS buch_abbildungen (
+    buch_id         INTEGER REFERENCES buch,
+    abbildung_id    TEXT REFERENCES abbildung,
+    PRIMARY KEY (buch_id, abbildung_id)
+) TABLESPACE buchspace;

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Column, Entity, ManyToMany, PrimaryColumn } from 'typeorm';
 import { Buch } from './buch.entity.js';
 
 @Entity()
@@ -31,7 +31,6 @@ export class Abbildung {
     @Column('varchar', { length: 16 })
     readonly contentType: string | undefined;
 
-    @ManyToOne(() => Buch, (buch) => buch.abbildungen)
-    @JoinColumn({ name: 'buch_id' })
-    buch: Buch | undefined;
+    @ManyToMany(() => Buch, (buch) => buch.abbildungen)
+    buecher: Buch[] | undefined;
 }

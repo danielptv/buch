@@ -43,7 +43,8 @@ import {
     Column,
     CreateDateColumn,
     Entity,
-    OneToMany,
+    JoinTable,
+    ManyToMany,
     OneToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
@@ -129,9 +130,10 @@ export class Buch {
     readonly titel: Titel | undefined;
 
     // undefined wegen Updates
-    @OneToMany(() => Abbildung, (abbildung) => abbildung.buch, {
-        cascade: ['insert', 'remove'],
+    @ManyToMany(() => Abbildung, (abbildung) => abbildung.buecher, {
+        cascade: ['insert', 'remove', 'update'],
     })
+    @JoinTable({ name: 'buch_abbildungen' })
     readonly abbildungen: Abbildung[] | undefined;
 
     // https://typeorm.io/entities#special-columns
