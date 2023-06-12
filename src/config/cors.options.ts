@@ -21,8 +21,8 @@ export const corsOptions: CorsOptions = {
     origin: [
         'https://studio.apollographql.com',
         'http://localhost:4200',
-        'http://localhost:5173',
-        'http://localhost:5174',
+        'https://localhost:5173',
+        'https://localhost:5174',
     ],
     // origin: true,
 
