@@ -21,30 +21,30 @@
 -- "Software Pioneers"
 
 INSERT INTO buch(id, version, isbn, rating, art, preis, rabatt, lieferbar, datum, homepage, schlagwoerter, erzeugt, aktualisiert) VALUES
-    (1,0,'978-3-897-22583-1','4,5','DRUCKAUSGABE',11.1,0.011,true,'2022-02-01','https://acme.at','JAVASCRIPT','2022-02-01 00:00:00','2022-02-01 00:00:00');
+    (1,0,'978-3-897-22583-1','3,3,5,4','DRUCKAUSGABE',6.99,0,true,'2007-09-01','https://acme.at','LEBENSWEISHEITEN','2022-02-01 00:00:00','2022-02-01 00:00:00');
 INSERT INTO buch(id, version, isbn, rating, art, preis, rabatt, lieferbar, datum, homepage, schlagwoerter, erzeugt, aktualisiert) VALUES
-    (20,0,'978-3-827-31552-6','1,2,4','KINDLE',22.2,0.022,true,'2022-02-02','https://acme.biz','TYPESCRIPT','2022-02-02 00:00:00','2022-02-02 00:00:00');
+    (20,0,'978-3-827-31552-6','1,2,4,4','KINDLE',24.99,0.03,true,'2016-09-19','https://acme.biz','RECHNUNGSWESEN','2022-02-02 00:00:00','2022-02-02 00:00:00');
 INSERT INTO buch(id, version, isbn, rating, art, preis, rabatt, lieferbar, datum, homepage, schlagwoerter, erzeugt, aktualisiert) VALUES
-    (30,0,'978-0-201-63361-0','3,5','DRUCKAUSGABE',33.3,0.033,true,'2022-02-03','https://acme.com','JAVASCRIPT,TYPESCRIPT','2022-02-03 00:00:00','2022-02-03 00:00:00');
+    (30,0,'978-0-201-63361-0','3,5','KINDLE',19.99,0.03,true,'2018-04-16','https://acme.com','KINDER,BILDUNG','2022-02-03 00:00:00','2022-02-03 00:00:00');
 INSERT INTO buch(id, version, isbn, rating, art, preis, rabatt, lieferbar, datum, homepage, schlagwoerter, erzeugt, aktualisiert) VALUES
-    (40,0,'978-0-007-09732-6','4,1,3','DRUCKAUSGABE',44.4,0.044,true,'2022-02-04','https://acme.de',null,'2022-02-04 00:00:00','2022-02-04 00:00:00');
+    (40,0,'978-0-007-09732-6','1','DRUCKAUSGABE',63.49,0.88,true,'2012-01-18','https://acme.de','DATENBANK,KLAUSURAUFGABEN','2022-02-04 00:00:00','2022-02-04 00:00:00');
 INSERT INTO buch(id, version, isbn, rating, art, preis, rabatt, lieferbar, datum, homepage, schlagwoerter, erzeugt, aktualisiert) VALUES
-    (50,0,'978-3-824-40481-0','2,4','KINDLE',55.5,0.055,true,'2022-02-05','https://acme.es','TYPESCRIPT','2022-02-05 00:00:00','2022-02-05 00:00:00');
+    (50,0,'978-3-824-40481-0','1,2,2','KINDLE',19.99,0.05,true,'2022-02-05','https://acme.es','PHP','2022-02-05 00:00:00','2022-02-05 00:00:00');
 INSERT INTO buch(id, version, isbn, rating, art, preis, rabatt, lieferbar, datum, homepage, schlagwoerter, erzeugt, aktualisiert) VALUES
-    (60,0,'978-3-540-43081-0','1,5','KINDLE',66.6,0.066,true,'2022-02-06','https://acme.fi','TYPESCRIPT','2022-02-06 00:00:00','2022-02-06 00:00:00');
+    (60,0,'978-3-540-43081-0','1,4,3','KINDLE',14.99,0,true,'2022-02-06','https://acme.fi','CODING,BEST_PRACTICES','2022-02-06 00:00:00','2022-02-06 00:00:00');
 
 INSERT INTO titel(id, titel, untertitel, buch_id) VALUES
-    (1,'Alpha','alpha',1);
+    (1,'Will denn in China gar kein Sack Reis mehr umfallen?',null,1);
 INSERT INTO titel(id, titel, untertitel, buch_id) VALUES
-    (20,'Beta',null,20);
+    (20,'Grundlagen der doppelten Buchführung','Schritt für Schritt einfach erklärt, fast 70 Übungen mit Lösungen',20);
 INSERT INTO titel(id, titel, untertitel, buch_id) VALUES
-    (30,'Gamma','gamma',30);
+    (30,'Ausgestorben um zu Bleiben','Dinosaurier und ihre Nachfahren',30);
 INSERT INTO titel(id, titel, untertitel, buch_id) VALUES
-    (40,'Delta','delta',40);
+    (40,'Theory and Practise of Relational Algebra','Transforming Relational Algebra to SQL',40);
 INSERT INTO titel(id, titel, untertitel, buch_id) VALUES
-    (50,'Epsilon','epsilon',50);
+    (50,'Leistungsstarke PHP-Anwendungen','Von Geodaten bis NoSQL',50);
 INSERT INTO titel(id, titel, untertitel, buch_id) VALUES
-    (60,'Phi','phi',60);
+    (60,'Bad Programming Practises 101','Become a Better Coder by Learning How (Not) to Program',60);
 
 INSERT INTO abbildung(id, beschriftung, content_type) VALUES
     ('27dffddf814f2ad354b3cdcfc7a877775b638f11','Abb. 1','img/png'); -- DevSkim: ignore DS173237

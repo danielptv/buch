@@ -1,7 +1,7 @@
 id;titel;untertitel;buch_id
-1;Alpha;alpha;1
-20;Beta;null;20
-30;Gamma;gamma;30
-40;Delta;delta;40
-50;Epsilon;Epsilon;50
-60;Phi;phi;60
+1;Will denn in China gar kein Sack Reis mehr umfallen?;null;1
+20;Grundlagen der doppelten Buchführung;Schritt für Schritt einfach erklärt, fast 70 Übungen mit Lösungen;20
+30;Ausgestorben um zu Bleiben;Dinosaurier und ihre Nachfahren;30
+40;Theory and Practise of Relational Algebra;Transforming Relational Algebra to SQL;40
+50;Leistungsstarke PHP-Anwendungen;Von Geodaten bis NoSQL;50
+60;Bad Programming Practises 101;Become a Better Coder by Learning How (Not) to Program;60

@@ -45,8 +45,8 @@ ALTER TABLE buch AUTO_INCREMENT=1000;
 
 CREATE TABLE IF NOT EXISTS titel (
     id          INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-    titel       VARCHAR(40) NOT NULL,
-    untertitel  VARCHAR(40),
+    titel       VARCHAR(80) NOT NULL,
+    untertitel  VARCHAR(80),
     buch_id     CHAR(36) UNIQUE NOT NULL references buch(id)
 ) TABLESPACE buchspace ROW_FORMAT=COMPACT;
 ALTER TABLE titel AUTO_INCREMENT=1000;

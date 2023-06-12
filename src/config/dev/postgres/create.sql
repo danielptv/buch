@@ -61,8 +61,8 @@ CREATE TABLE IF NOT EXISTS buch (
 
 CREATE TABLE IF NOT EXISTS titel (
     id          integer GENERATED ALWAYS AS IDENTITY(START WITH 1000) PRIMARY KEY USING INDEX TABLESPACE buchspace,
-    titel       varchar(40) NOT NULL,
-    untertitel  varchar(40),
+    titel       varchar(80) NOT NULL,
+    untertitel  varchar(80),
     buch_id     integer NOT NULL UNIQUE USING INDEX TABLESPACE buchspace REFERENCES buch
 ) TABLESPACE buchspace;
 
