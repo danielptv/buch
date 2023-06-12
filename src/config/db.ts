@@ -68,7 +68,7 @@ switch (dbType) {
         // "rest properties" ab ES 2018: https://github.com/tc39/proposal-object-rest-spread
         const { password, ...typeOrmModuleOptionsLog } = typeOrmModuleOptions;
         if (!loggerDefaultValue) {
-            console.debug('typeOrmModuleOptions: %o', typeOrmModuleOptionsLog);
+            console.debug('typeOrmModuleOptions: %o', typeOrmModuleOptionsLog); // eslint-disable-line sonarjs/no-duplicate-string
         }
         break;
     }

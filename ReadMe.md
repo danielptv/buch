@@ -580,16 +580,24 @@ SonarQube-Server mit _Docker Compose_ als Docker-Container gestartet werden:
 Wenn der Server zum ersten Mal gestartet wird, ruft man in einem Webbrowser die
 URL `http://localhost:9000` auf. In der Startseite muss man sich einloggen und
 verwendet dazu als Loginname `admin` und ebenso als Password `admin`. Danach
-wird man weitergeleitet, um das initiale Passwort zu ändern. Das neue Passwort
-trägt man dann in das Skript `sonar-scanner.ps1` im Wurzelverzeichnis ein.
-Zur Konfiguration für künftige Aufrufe des _SonarQube-Scanners_ trägt man jetzt
-noch in der Konfigurationsdatei `sonar-project.properties` den Projektnamen beim
-der Property `sonar.projectKey` ein.
+wird man weitergeleitet, um das initiale Passwort zu ändern.
+
+Nun wählt man in der Webseite rechts oben das Profil aus und klickt auf den
+Karteireiter _Security_. Im Abschnitt _Generate Tokens_ macht nun die folgende
+Eingaben:
+
+- _Name_: z.B. Softwarearchitektur
+- _Type_: _Global Analysis Token_ auswählen
+- _Expires in_: z.B. _90 days_ auswählen
+
+Abschließend klickt man auf den Button _Generate_ und trägt den generierten
+Token in der Datei `.env` für die Umgebungsvariable `SONAR_TOKEN` ein, damit
+der Token im Skript `scripts\sonar-scanner.js` verwendet werden kann.
 
 Nachdem der Server gestartet ist, wird der SonarQube-Scanner in einer zweiten
-PowerShell mit dem Skript `sonar-scanner.ps1` gestartet. Das Resultat kann dann
-in der Webseite des zuvor gestarteten Servers über die URL `http://localhost:9000`
-inspiziert werden.
+PowerShell mit `gradle sonar` gestartet. Das Resultat kann dann in der Webseite
+des zuvor gestarteten Servers über die URL `http://localhost:9000` inspiziert
+werden.
 
 Abschließend wird der oben gestartete Server heruntergefahren.
 

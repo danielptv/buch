@@ -2,10 +2,11 @@
   // https://typestrong.org/ts-node/docs/configuration
   // https://github.com/tsconfig/bases/#node-18-tsconfigjson
   // https://stackoverflow.com/questions/63742790/unable-to-import-esm-ts-module-in-node/65163089#65163089
-  "extends": "@tsconfig/node18/tsconfig.json",
+  "extends": "@tsconfig/node20/tsconfig.json",
   "ts-node": {
     "esm": true,
-    "experimentalSpecifierResolution": "node"
+    "module": "es2022",
+    // "experimentalSpecifierResolution": "node"
     // "transpileOnly": true,
     // "files": true,
   },

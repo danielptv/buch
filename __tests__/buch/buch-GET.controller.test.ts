@@ -70,7 +70,7 @@ describe('GET /rest', () => {
         const { status, headers, data } = response;
 
         expect(status).toBe(HttpStatus.OK);
-        expect(headers['content-type']).toMatch(/json/iu);
+        expect(headers['content-type']).toMatch(/json/iu); // eslint-disable-line sonarjs/no-duplicate-string
         expect(data).toBeDefined();
 
         const { buecher } = data._embedded;
