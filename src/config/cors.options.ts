@@ -23,8 +23,9 @@ export const corsOptions: CorsOptions = {
         'http://localhost:4200',
         'https://localhost:5173',
         'https://localhost:5174',
-        'http://localhost:5173',
-        'http://localhost:5174',
+        'https://localhost:5175',
+        'https://localhost:5176',
+        'https://localhost:5177',
     ],
     // origin: true,
 
